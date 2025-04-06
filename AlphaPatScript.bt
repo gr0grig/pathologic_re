@@ -1,0 +1,921 @@
+//------------------------------------------------
+//--- 010 Editor v15.0.1 Binary Template
+//
+//      File: 
+//   Authors: 
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: *.bin
+//  ID Bytes: 
+//   History: Alpha Pathalogic Script
+//------------------------------------------------
+
+struct GLOBAL_FUNCTION
+{
+    BYTE Len;
+    CHAR Name[Len];
+    DWORD ArgCount;
+};
+
+
+struct CInstructionMov
+{
+    DWORD VarIn;
+    DWORD ulVarOut;
+};
+
+struct CInstructionMovB
+{
+    DWORD m_ulVarOut;
+    BYTE m_bVal;
+};
+
+struct CInstructionMovI
+{
+    DWORD m_ulVarOut;
+    DWORD m_lVal;
+};
+
+struct CInstructionMovF
+{
+    DWORD m_ulVarOut;
+    DWORD m_fVal; // C-FLOAT
+};
+
+struct CInstructionMovS
+{
+    DWORD m_ulVarOut;
+    DWORD m_ulOffset;
+};
+
+struct CInstructionMovV
+{
+    DWORD m_ulVarOut;
+    //  CVector
+    DWORD x; // float
+    DWORD y; // float
+    DWORD z; // float
+};
+
+
+struct CInstructionMovT
+{
+    DWORD m_ulVarIn;
+    DWORD m_ulVarOut;
+};
+
+
+struct CInstructionTMov
+{
+    DWORD m_ulVarIn;
+    DWORD m_ulVarOut;
+};
+
+struct CInstructionTMovB
+{
+    DWORD m_ulVarOut;
+    BYTE m_bVal;
+};
+
+struct CInstructionTMovI
+{
+    DWORD m_ulVarOut;
+    DWORD m_lVal;
+};
+
+struct CInstructionTMovF
+{
+    DWORD m_ulVarOut;
+    DWORD m_fVal; // float
+};
+
+struct CInstructionTMovS
+{
+    DWORD m_ulVarOut;
+    DWORD m_ulOffset;
+};
+
+struct CInstructionTMovV
+{
+    DWORD m_ulVarOut;
+    //  CVector
+    DWORD x; // float
+    DWORD y; // float
+    DWORD z; // float
+};
+
+struct CInstructionTMovT
+{
+    DWORD m_ulVarIn;
+    DWORD m_ulVarOut;
+};
+
+struct CInstructionJump
+{
+    DWORD VarIn;
+};
+
+struct CInstructionJumpB
+{
+    DWORD m_ulVar;
+    DWORD m_ulOp;
+    WORD m_usPop;
+	BYTE m_bVal;
+};
+
+struct CInstructionPush
+{
+    DWORD VarIn;
+};
+
+struct CInstructionPushB
+{
+    BYTE m_ulVarIn;
+};
+
+struct CInstructionPushI
+{
+    DWORD VarIn;
+};
+
+struct CInstructionPushF
+{
+    DWORD VarIn;
+};
+
+struct CInstructionPushS
+{
+    DWORD VarIn;
+};
+
+struct CInstructionPushT
+{
+    DWORD VarIn;
+};
+
+struct CInstructionPushVec
+{
+    //  CVector
+    DWORD x; // float
+    DWORD y; // float
+    DWORD z; // float
+};
+
+struct CInstructionPushV
+{
+    DWORD m_ulVarCount;
+    if (m_ulVarCount) BYTE m_pVarTypes[m_ulVarCount]<optimize=false>;
+};
+
+struct CInstructionPushE
+{
+    DWORD m_ulVarIn;
+    DWORD m_lIndex;
+    BYTE m_bTaskVar;
+};
+
+struct CInstructionPushGE
+{
+    DWORD VarIn;
+};
+
+struct CInstructionPop
+{
+    DWORD VarIn;
+};
+
+struct CInstructionPopE
+{
+    DWORD m_ulVarOut;
+    DWORD m_lIndex;
+    BYTE m_Flags;
+};
+
+struct CInstructionPopGE
+{
+    DWORD m_ulVarOut;
+    BYTE m_Flags;
+};
+
+struct CInstructionSetNull
+{
+    DWORD VarIn;
+};
+
+struct CInstructionSetNullT
+{
+    DWORD VarIn;
+};
+
+struct CInstructionAdd
+{
+    DWORD m_ulVar1;
+    DWORD m_ulVar2;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionSub
+{
+    DWORD m_ulVar1;
+    DWORD m_ulVar2;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionMult
+{
+    DWORD m_ulVar1;
+    DWORD m_ulVar2;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionDiv
+{
+    DWORD m_ulVar1;
+    DWORD m_ulVar2;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionMod
+{
+    DWORD m_ulVar1;
+    DWORD m_ulVar2;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionAnd
+{
+    DWORD m_ulVar1;
+    DWORD m_ulVar2;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionOr
+{
+    DWORD m_ulVar1;
+    DWORD m_ulVar2;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionXor
+{
+    DWORD m_ulVar1;
+    DWORD m_ulVar2;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionEq
+{
+    DWORD m_ulVar1;
+    DWORD m_ulVar2;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionNeq
+{
+    DWORD m_ulVar1;
+    DWORD m_ulVar2;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionLT
+{
+    DWORD m_ulVar1;
+    DWORD m_ulVar2;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionGT
+{
+    DWORD m_ulVar1;
+    DWORD m_ulVar2;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionLE
+{
+    DWORD m_ulVar1;
+    DWORD m_ulVar2;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionGE
+{
+    DWORD m_ulVar1;
+    DWORD m_ulVar2;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionNullEq
+{
+    DWORD m_ulVar;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionNullNeq
+{
+    DWORD m_ulVar;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionNeg
+{
+    DWORD m_ulVar;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionNot
+{
+    DWORD m_ulVar;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionAdd2
+{
+    DWORD m_ulVar1;
+    DWORD m_ulVar2;
+    DWORD m_ulVarOut;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionSub2
+{
+    DWORD m_ulVar1;
+    DWORD m_ulVar2;
+    DWORD m_ulVarOut;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionMult2
+{
+    DWORD m_ulVar1;
+    DWORD m_ulVar2;
+    DWORD m_ulVarOut;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionDiv2
+{
+    DWORD m_ulVar1;
+    DWORD m_ulVar2;
+    DWORD m_ulVarOut;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionMod2
+{
+    DWORD m_ulVar1;
+    DWORD m_ulVar2;
+    DWORD m_ulVarOut;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionAnd2
+{
+    DWORD m_ulVar1;
+    DWORD m_ulVar2;
+    DWORD m_ulVarOut;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionOr2
+{
+    DWORD m_ulVar1;
+    DWORD m_ulVar2;
+    DWORD m_ulVarOut;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionXor2
+{
+    DWORD m_ulVar1;
+    DWORD m_ulVar2;
+    DWORD m_ulVarOut;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionEq2
+{
+    DWORD m_ulVar1;
+    DWORD m_ulVar2;
+    DWORD m_ulVarOut;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionNeq2
+{
+    DWORD m_ulVar1;
+    DWORD m_ulVar2;
+    DWORD m_ulVarOut;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionLT2
+{
+    DWORD m_ulVar1;
+    DWORD m_ulVar2;
+    DWORD m_ulVarOut;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionGT2
+{
+    DWORD m_ulVar1;
+    DWORD m_ulVar2;
+    DWORD m_ulVarOut;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionLE2
+{
+    DWORD m_ulVar1;
+    DWORD m_ulVar2;
+    DWORD m_ulVarOut;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionGE2
+{
+    DWORD m_ulVar1;
+    DWORD m_ulVar2;
+    DWORD m_ulVarOut;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionNullEq2
+{
+    DWORD m_ulVar;
+    DWORD m_ulVarOut;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionNullNeq2
+{
+    DWORD m_ulVar;
+    DWORD m_ulVarOut;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionNeg2
+{
+    DWORD m_ulVar;
+    DWORD m_ulVarOut;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionNot2
+{
+    DWORD m_ulVar;
+    DWORD m_ulVarOut;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionSqrt
+{
+    DWORD m_ulVar;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionSqrt2
+{
+    DWORD m_ulVar;
+    DWORD m_ulVarOut;
+    BYTE m_TaskVar;
+};
+
+
+struct CInstructionSin
+{
+    DWORD m_ulVar;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionSin2
+{
+    DWORD m_ulVar;
+    DWORD m_ulVarOut;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionCos
+{
+    DWORD m_ulVar;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionCos2
+{
+    DWORD m_ulVar;
+    DWORD m_ulVarOut;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionASin
+{
+    DWORD m_ulVar;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionASin2
+{
+    DWORD m_ulVar;
+    DWORD m_ulVarOut;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionPow
+{
+    DWORD m_ulVar;
+    DWORD m_ulVarOut;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionPow2
+{
+    DWORD m_ulVar1;
+    DWORD m_ulVar2;
+    DWORD m_ulVarOut;
+    BYTE m_TaskVar;
+};
+
+struct CInstructionCall
+{
+    DWORD VarIn;
+};
+
+struct CInstructionReturn
+{
+    DWORD VarIn;
+};
+
+struct CInstructionTaskCall
+{
+    DWORD VarIn;
+};
+
+struct CInstructionTaskReturn
+{
+    
+};
+
+struct CInstructionFunc_VAR
+{
+    DWORD m_ulVar;
+    BYTE m_bTask;
+};
+    
+struct CInstructionFunc
+{
+    DWORD m_ulFuncIndex;
+    local DWORD count = m_pGlobals[m_ulFuncIndex].ArgCount;
+    if (count) CInstructionFunc_VAR var[count]<optimize=false>;
+};
+
+struct CInstructionObjFunc
+{
+    DWORD m_ulVar;
+    DWORD m_ulNameOffset;
+    DWORD m_ulParmCount;
+    if (m_ulParmCount) CInstructionFunc_VAR m_pVars[m_ulParmCount]<optimize=false>;
+};
+
+struct CInstructionTObjFunc
+{
+    DWORD m_ulVar;
+    DWORD m_ulNameOffset;
+    DWORD m_ulParmCount;
+    if (m_ulParmCount) CInstructionFunc_VAR m_pVars[m_ulParmCount]<optimize=false>;
+};
+
+struct CInstructionEventEnable
+{
+    DWORD VarIn;
+};
+
+struct CInstructionEventDisable
+{
+    DWORD VarIn;
+};
+
+struct CInstructionFuncExist
+{
+    DWORD m_ulVar1;
+    DWORD m_ulVar2;
+    DWORD m_ulVarOut;
+    BYTE m_TaskVar;
+};   
+
+struct CInstructionFuncExist2
+{
+    DWORD m_ulVar1;
+    DWORD m_ulVar2;
+    DWORD m_ulVar3;
+    DWORD m_ulVarOut;
+    BYTE m_TaskVar;
+};   
+
+
+typedef enum<WORD>
+{
+   MOV  = 0,
+   MOVB,
+   MOVI,
+   MOVF,
+   MOVS,
+   MOVV,
+   MOVT,
+   TMOV,
+   TMOVB,
+   TMOVI,
+   TMOVF,
+   TMOVS,
+   TMOVV,
+   TMOVT,
+   JUMP,
+   JUMPB,
+   PUSH,
+   PUSHB,
+   PUSHI,
+   PUSHF,
+   PUSHS, 
+   PUSHT,
+   PUSHVEC,
+   PUSHV,
+   PUSHE,
+   PUSHGE, 
+   POP,
+   POPE,
+   POPGE,
+   SETNULL,
+   SETNULLT,
+   ADD,
+   SUB,
+   MULT,
+   DIV,
+   MOD,
+   AND,
+   OR,
+   XOR,
+   EQ,
+   NEQ,
+   LT,
+   GT,
+   LE,
+   GE,
+   NULLEQ,
+   NULLNEQ,
+   NEG,
+   NOT,
+   ADD2, 
+   SUB2,
+   MULT2, 
+   DIV2,
+   MOD2,
+   AND2,
+   OR2,
+   XOR2,
+   EQ2,
+   NEQ2,
+   LT2,
+   GT2,
+   LE2,
+   GE2,
+   NULLEQ2,
+   NULLNEQ2,
+   NEG2,
+   NOT2,
+   SQRT,
+   SQRT2,
+   SIN,
+   SIN2,
+   COS,
+   COS2,
+   ASIN,
+   ASIN2,
+   POW,
+   POW2,
+   CALL,
+   RETURN,
+   TASKCALL,
+   TASKRETURN,
+   FUNC,
+   OBJFUNC,
+   TOBJFUNC,
+   EVENTENABLE,
+   EVENTDISABLE,
+   FUNCEXIST,
+   FUNCEXIST2
+} CInstruction <comment="WORD">;
+
+
+struct IInstruction
+{
+    CInstruction ulType <format=hex>;
+    //Printf("OPCODE: %X\n", ulType);
+    
+    if(ulType == 0x0) CInstructionMov inst;
+    if(ulType == 0x1) CInstructionMovB inst;
+    if(ulType == 0x2) CInstructionMovI inst;
+    if(ulType == 0x3) CInstructionMovF inst;
+    if(ulType == 0x4) CInstructionMovS inst;
+    if(ulType == 0x5) CInstructionMovV inst;
+    if(ulType == 0x6) CInstructionMovT inst;
+    if(ulType == 0x7) CInstructionTMov inst;
+    if(ulType == 0x8) CInstructionTMovB inst;
+    if(ulType == 0x9) CInstructionTMovI inst;
+    if(ulType == 0xA) CInstructionTMovF inst;
+    if(ulType == 0xB) CInstructionTMovS inst;
+    if(ulType == 0xC) CInstructionTMovV inst;
+    if(ulType == 0xD) CInstructionTMovT inst;
+    if(ulType == 0xE) CInstructionJump inst;
+    if(ulType == 0xF) CInstructionJumpB inst;
+    if(ulType == 0x10) CInstructionPush inst;
+    if(ulType == 0x11) CInstructionPushB inst; // ??? 1 Or 4 ???
+    if(ulType == 0x12) CInstructionPushI inst; 
+    if(ulType == 0x13) CInstructionPushF inst; 
+    if(ulType == 0x14) CInstructionPushS inst; 
+    if(ulType == 0x15) CInstructionPushT inst; 
+    if(ulType == 0x16) CInstructionPushVec inst; 
+    if(ulType == 0x17) CInstructionPushV inst; 
+    if(ulType == 0x18) CInstructionPushE inst; 
+    if(ulType == 0x19) CInstructionPushGE inst; 
+    if(ulType == 0x1A) CInstructionPop inst; 
+    if(ulType == 0x1B) CInstructionPopE inst;
+    if(ulType == 0x1C) CInstructionPopGE inst;
+    if(ulType == 0x1D) CInstructionSetNull inst;
+    if(ulType == 0x1E) CInstructionSetNullT inst;
+    if(ulType == 0x1F) CInstructionAdd inst;
+    if(ulType == 0x20) CInstructionSub inst;
+    if(ulType == 0x21) CInstructionMult inst;
+    if(ulType == 0x22) CInstructionDiv inst;
+    if(ulType == 0x23) CInstructionMod inst;
+    if(ulType == 0x24) CInstructionAnd inst;
+    if(ulType == 0x25) CInstructionOr inst;
+    if(ulType == 0x26) CInstructionXor inst;
+    if(ulType == 0x27) CInstructionEq inst;
+    if(ulType == 0x28) CInstructionNeq inst;
+    if(ulType == 0x29) CInstructionLT inst;
+    if(ulType == 0x2A) CInstructionGT inst;
+    if(ulType == 0x2B) CInstructionLE inst;
+    if(ulType == 0x2C) CInstructionGE inst;
+    if(ulType == 0x2D) CInstructionNullEq inst; 
+    if(ulType == 0x2E) CInstructionNullNeq inst; 
+    if(ulType == 0x2F) CInstructionNeg inst; 
+    if(ulType == 0x30) CInstructionNot inst; 
+    if(ulType == 0x31) CInstructionAdd2 inst; 
+    if(ulType == 0x32) CInstructionSub2 inst; 
+    if(ulType == 0x33) CInstructionMult2 inst; 
+    if(ulType == 0x34) CInstructionDiv2 inst; 
+    if(ulType == 0x35) CInstructionMod2 inst; 
+    if(ulType == 0x36) CInstructionAnd2 inst;
+    if(ulType == 0x37) CInstructionOr2 inst;
+    if(ulType == 0x38) CInstructionXor2 inst;
+    if(ulType == 0x39) CInstructionEq2 inst;
+    if(ulType == 0x3A) CInstructionNeq2 inst;
+    if(ulType == 0x3B) CInstructionLT2 inst;
+    if(ulType == 0x3C) CInstructionGT2 inst;
+    if(ulType == 0x3D) CInstructionLE2 inst;
+    if(ulType == 0x3E) CInstructionGE2 inst;
+    if(ulType == 0x3F) CInstructionNullEq2 inst;
+    if(ulType == 0x40) CInstructionNullNeq2 inst;
+    if(ulType == 0x41) CInstructionNeg2 inst;
+    if(ulType == 0x42) CInstructionNot2 inst;
+    if(ulType == 0x43) CInstructionSqrt inst;
+    if(ulType == 0x44) CInstructionSqrt2 inst;
+    if(ulType == 0x45) CInstructionSin inst;
+    if(ulType == 0x46) CInstructionSin2 inst;
+    if(ulType == 0x47) CInstructionCos inst;
+    if(ulType == 0x48) CInstructionCos2 inst;
+    if(ulType == 0x49) CInstructionASin inst;
+    if(ulType == 0x4A) CInstructionASin2 inst;
+    if(ulType == 0x4B) CInstructionPow inst;
+    if(ulType == 0x4C) CInstructionPow2 inst;
+    if(ulType == 0x4D) CInstructionCall inst;
+    if(ulType == 0x4E) CInstructionReturn inst;
+    if(ulType == 0x4F) CInstructionTaskCall inst;
+    if(ulType == 0x50) CInstructionTaskReturn inst;
+    if(ulType == 0x51) CInstructionFunc inst;
+    if(ulType == 0x52) CInstructionObjFunc inst; // TEST IT
+    if(ulType == 0x53) CInstructionTObjFunc inst; // TEST IT
+    if(ulType == 0x54) CInstructionEventEnable inst;
+    if(ulType == 0x55) CInstructionEventDisable inst;
+    if(ulType == 0x56) CInstructionFuncExist inst;
+    if(ulType == 0x57) CInstructionFuncExist2 inst;
+    // invalid.. if else    
+ 
+};
+
+
+struct EVENT
+{
+    DWORD ulEventID;
+    DWORD m_ulOp;
+    DWORD m_ulVarCount;
+    CHAR m_pVarTypes[m_ulVarCount]<optimize=false>;
+};
+
+
+struct TASK
+{
+    DWORD m_ulVarCount;
+    if(m_ulVarCount) BYTE m_pVarTypes[m_ulVarCount]<optimize=false>;
+    DWORD m_ulParmCount;
+    DWORD event_count;
+    if(event_count) EVENT m_Events[event_count]<optimize=false>;
+};
+
+struct GlobalVar
+{
+    BYTE len;
+    CHAR name[len]<optimize=false>;
+};
+
+typedef enum<BYTE>
+{
+   BOOL  = 1,
+   INT_,
+   FLOAT_,
+   STRING_,
+   POINTER,
+   COORDINATES
+} VAR_TYPE;
+
+
+struct VarTypes
+{
+    VAR_TYPE type;
+    BYTE flag;
+    
+    if(flag)
+    {
+        if(flag & 0x80)
+        {
+            // not used ingame
+        }
+        else
+        {
+           BYTE len; 
+           CHAR str[len]<optimize=false>;    
+        }
+    }
+};
+
+
+struct EventId
+{
+    DWORD event_id;
+    DWORD m_ulOp;
+    DWORD m_ulVarCount;
+    BYTE m_pVarTypes[m_ulVarCount] <optimize=false>;
+};
+
+
+
+
+   
+string VarTypes_Read( VarTypes &f )
+{
+    return EnumToString(f.type);
+}
+    
+DWORD m_ulGlobalVarCount;
+if(m_ulGlobalVarCount) VarTypes gvar_types[m_ulGlobalVarCount]<optimize=false, read=VarTypes_Read>;
+
+
+
+DWORD m_ulDataPoolSize;
+
+BYTE m_pDataPool[m_ulDataPoolSize];
+
+string m_pGlobals_Read( GLOBAL_FUNCTION &f )
+{
+    return f.Name;   
+}
+
+DWORD m_ulGlobalCount;
+GLOBAL_FUNCTION m_pGlobals[m_ulGlobalCount] <optimize=false, read=m_pGlobals_Read>;
+
+DWORD m_ulRunTask;
+DWORD m_ulRunOp;
+DWORD m_ulTaskCount;
+TASK m_pTasks[m_ulTaskCount] <optimize=false>;
+
+DWORD event_count;
+if(event_count) EventId Events[event_count] <optimize=false>;
+
+ 
+string IInstruction_Read( IInstruction &f )
+{
+    string s;   
+    SPrintf( s, "%s (%X)", EnumToString(f.ulType), f.ulType );
+    return s;
+}
+
+DWORD m_ulCodeSize;
+IInstruction opcode[m_ulCodeSize] <optimize=false, read=IInstruction_Read>;
+
+
+
+
+
+

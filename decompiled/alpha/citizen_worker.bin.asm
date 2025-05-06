@@ -1,0 +1,3850 @@
+GlobalVarCount = 2
+	G_VAR_0 object 
+	G_VAR_1 bool 
+
+Strings:
+	all
+	idle
+	fdie
+	GetPosition
+	bdie
+	GetScriptProperty
+	Owner
+	HasScriptProperty
+	GetScriptProperty
+	@GetEyesHeight
+	GetEyesHeight
+	head
+	attack_begin
+	attack
+	@GetAttackDistance
+	GetAttackDistance
+	GetPFPosition
+	attack_on
+	attack_stay
+	fjump
+	attack_off
+	attack_middle
+	attack_end
+	bjump
+	IsAttacking
+	IsAttacking
+	walk
+	run
+	SetNPCName
+	SetPhoto
+	SetPlayerName
+	IsDialogEnd
+	GetReturnValue
+	Neutral
+	SetMessage
+	ClearReplies
+	AddReply
+	fire
+	phys
+	HasProperty
+	HasProperty
+	health
+	armor
+	GetProperty
+	armor_
+	SetProperty
+	IsDead
+	IsDead
+	GetScene
+	noaccess
+	scripted
+	blood.xml
+	fhit
+	bhit
+	hit_react
+	1
+	2
+	playing 
+	start: 
+	end: 
+	killme
+	player
+	GenerateMoney: iMin > iMax
+	Money
+	lemon
+	rusk
+	hook
+	syringe
+	watch
+	razor
+	beads
+	bracelet
+	ear_ring
+	gold_ring
+	silver_ring
+	flower
+	ui/NPC_None.png
+	class
+	littleboy
+	littlegirl
+	wasted_girl
+	woman
+	worker
+
+Import:
+	DoTrade (0 args)
+	WaitForAnimEnd (0 args)
+	PlayAnimation (2 args)
+	StopAnimation (0 args)
+	StopTrade (0 args)
+	Hold (0 args)
+	GetPosition (1 args)
+	GetDirection (1 args)
+	RemoveRTEnvelope (0 args)
+	SetDeathState (0 args)
+	Stop (0 args)
+	StopAsync (0 args)
+	LookAsync (3 args)
+	UnlookAsync (1 args)
+	LockAnimationEnd (2 args)
+	RemoveEnvelope (0 args)
+	StopSecondaryAnimation (0 args)
+	SensePlayerOnly (1 args)
+	KillTimer (1 args)
+	ResetAAS (0 args)
+	IsPlayerActor (2 args)
+	SetTimer (2 args)
+	rand (2 args)
+	Sleep (1 args)
+	GetCameraFarDistance (1 args)
+	GetRandomPFPointInCircle (4 args)
+	FindShiftedPathTo (2 args)
+	RotatePath (2 args)
+	FollowPath (3 args)
+	RequestClearPath (1 args)
+	StopGroup0 (0 args)
+	irand (2 args)
+	WaitForAnimEnd (1 args)
+	Sleep (2 args)
+	HasAnimation (3 args)
+	IsExisting3DSound (2 args)
+	GetPFPosition (1 args)
+	rand (1 args)
+	Face (1 args)
+	SetSpeed (1 args)
+	GetVictim (2 args)
+	ReportAttack (1 args)
+	ReportHit (4 args)
+	SetAttackState (1 args)
+	IsAnimationPlaying (1 args)
+	sync (0 args)
+	Speak (1 args)
+	FindPathTo (2 args)
+	FollowPath (5 args)
+	CreateDialog (1 args)
+	IsOverrideActive (1 args)
+	DoDialog (1 args)
+	StopDialog (1 args)
+	lshWaitForAnimEnd (0 args)
+	lshStopAnimation (0 args)
+	GetScene (1 args)
+	GetEyesHeight (1 args)
+	AddActorByType (6 args)
+	GetSecondaryAnimationType (1 args)
+	FadeSecondaryAnimation (4 args)
+	RotateAsync (2 args)
+	IsLoaded (1 args)
+	StopWorld (0 args)
+	CameraTransit (2 args)
+	Rotate (2 args)
+	CameraWaitForPlayFinish (0 args)
+	ResumeWorld (0 args)
+	CameraSwitchToNormal (0 args)
+	Trace (1 args)
+	lshGetAnimTimes (3 args)
+	lshPlayAnimation (2 args)
+	lshStopSpeech (0 args)
+	GetGameTime (1 args)
+	GetProperty (2 args)
+	SignalDeath (1 args)
+	GetVariable (2 args)
+	GetInvItemByName (2 args)
+	AddItem (4 args)
+	WorkWithCorpse (1 args)
+	CanSee (2 args)
+	ReportReputationChange (3 args)
+	SetRTEnvelope (2 args)
+
+RunOp = 0xaa
+RunTask = 2
+
+GlobalTasks: 
+	GTASK_0 Vars = (bool) Params = 1
+		EVENT_11 Op = 0xf Vars = (int)
+	GTASK_1  Params = 1
+		EVENT_0 Op = 0x25 Vars = (object)
+		EVENT_6 Op = 0x33 Vars = ()
+		EVENT_22 Op = 0xa4 Vars = (object, int, float, float)
+		EVENT_16 Op = 0xa6 Vars = (object, string)
+		EVENT_41 Op = 0xa8 Vars = (object)
+	GTASK_2 Vars = (bool, bool, bool) Params = 0
+		EVENT_0 Op = 0xc2 Vars = (object)
+		EVENT_17 Op = 0xd6 Vars = (object)
+		EVENT_30 Op = 0xea Vars = (object, object)
+		EVENT_40 Op = 0x104 Vars = (object)
+		EVENT_42 Op = 0x118 Vars = (object, string)
+		EVENT_1 Op = 0x12e Vars = (object)
+		EVENT_3 Op = 0x134 Vars = (object)
+		EVENT_7 Op = 0x13a Vars = (int)
+		EVENT_6 Op = 0x146 Vars = ()
+		EVENT_41 Op = 0x15d Vars = (object)
+		EVENT_10 Op = 0x1c7 Vars = (object)
+		EVENT_28 Op = 0x1cb Vars = ()
+	GTASK_3  Params = 0
+		EVENT_0 Op = 0x1de Vars = (object)
+		EVENT_17 Op = 0x1f2 Vars = (object)
+		EVENT_30 Op = 0x206 Vars = (object, object)
+		EVENT_40 Op = 0x220 Vars = (object)
+		EVENT_42 Op = 0x234 Vars = (object, string)
+		EVENT_6 Op = 0x24a Vars = ()
+	GTASK_4 Vars = (object) Params = 1
+		EVENT_0 Op = 0x2d3 Vars = (object)
+		EVENT_17 Op = 0x2e7 Vars = (object)
+		EVENT_30 Op = 0x2fb Vars = (object, object)
+		EVENT_40 Op = 0x315 Vars = (object)
+		EVENT_42 Op = 0x329 Vars = (object, string)
+		EVENT_41 Op = 0x34a Vars = (object)
+		EVENT_7 Op = 0x353 Vars = (int)
+		EVENT_6 Op = 0x376 Vars = ()
+	GTASK_5 Vars = (object, int, int, bool, int) Params = 1
+	GTASK_6 Vars = (bool, object) Params = 6
+		EVENT_6 Op = 0x576 Vars = ()
+		EVENT_7 Op = 0x5e3 Vars = (int)
+		EVENT_10 Op = 0x5f5 Vars = (object)
+		EVENT_41 Op = 0x600 Vars = (object)
+	GTASK_7 Vars = (object) Params = 2
+	GTASK_8 Vars = (object, object, string, bool) Params = 2
+		EVENT_11 Op = 0x6b6 Vars = (int, int)
+
+Events:
+EVENT_16 Op = 0x948 Vars = (object, string)
+EVENT_41 Op = 0x955 Vars = (object)
+EVENT_22 Op = 0x95b Vars = (object, int, float, float)
+
+0x0: PushEmpty()
+0x1: @ DoTrade()
+0x2: Pop(0)
+0x3: Stack[0 + Tasks[-1].StackPointer] = (bool)0
+0x4: @ WaitForAnimEnd()
+0x5: Pop(0)
+0x6: Push("all")
+0x7: Push("idle")
+0x8: @ PlayAnimation(Stack[-2], Stack[-1])
+0x9: Pop(2)
+0xa: Push( Stack[0 + Tasks[-1].StackPointer] )
+0xb: IF (Stack[-1] == 0) GOTO 0xd; Pop(1)
+
+0xc: Return(); Pop(0)
+
+0xd: GOTO 0x4
+
+0xe: Return(); Pop(0)
+
+0xf: PushEmpty()
+0x10: @ StopAnimation()
+0x11: Pop(0)
+0x12: @ StopTrade()
+0x13: Pop(0)
+0x14: Stack[0 + Tasks[-1].StackPointer] = (bool)1
+0x15: Return(); Pop(0)
+
+0x16: PushEmpty()
+0x17: EventDisable(0)
+0x18: PushEmpty(object)
+0x19: Stack[-1] = Stack[-2]
+0x1a: Call 0x37
+
+0x1b: Pop(1)
+0x1c: PushEmpty(object)
+0x1d: Stack[-1] = Stack[-2]
+0x1e: Call 0xb56
+
+0x1f: Pop(1)
+0x20: EventEnable(0)
+0x21: @ Hold()
+0x22: Pop(0)
+0x23: GOTO 0x21
+
+0x24: Return(); Pop(0)
+
+0x25: PushEmpty(int, int)
+0x26: PushEmpty(int, object)
+0x27: Stack[-1] = Stack[-5]
+0x28: Call 0x9de
+
+0x29: Stack[-3] = Stack[-2]
+0x2a: Pop(2)
+0x2b: Push((int) 0)
+0x2c: Pop(1); Push((bool) Stack[-2] > Stack[-1])
+0x2d: IF (Stack[-1] == 0) GOTO 0x32; Pop(1)
+
+0x2e: PushEmpty(object)
+0x2f: Stack[-1] = Stack[-4]
+0x30: Call 0x9e1
+
+0x31: Pop(1)
+0x32: Return(); Pop(2)
+
+0x33: PushEmpty()
+0x34: Call 0x9e7
+
+0x35: Pop(0)
+0x36: Return(); Pop(0)
+
+0x37: PushEmpty(cvector, cvector, cvector, cvector, string, object, bool, bool, float, cvector, cvector, cvector, cvector, cvector, string, object, bool, bool, float, cvector)
+0x38: Pop(0); Push((bool) Stack[-21] == 0)
+0x39: IF (Stack[-1] == 0) GOTO 0x3f; Pop(1)
+
+0x3a: PushEmpty(string)
+0x3b: Stack[-1] = "fdie"
+0x3c: Call 0x8e
+
+0x3d: Pop(1)
+0x3e: GOTO 0x8d
+
+0x3f: @@ GetPosition(Stack[-10])
+0x40: Pop(0)
+0x41: @ GetPosition(Stack[-9])
+0x42: Pop(0)
+0x43: @ GetDirection(Stack[-8])
+0x44: Pop(0)
+0x45: Stack[-7] = Stack[-9] - Stack[-10]; Pop(0);
+0x46: Push(CvectorIndex(Stack[-7], 0))
+0x47: Push(CvectorIndex(Stack[-9], 0))
+0x48: Pop(2); Push(Stack[-2] * Stack[-1]);
+0x49: Push(CvectorIndex(Stack[-8], 2))
+0x4a: Push(CvectorIndex(Stack[-10], 2))
+0x4b: Pop(2); Push(Stack[-2] * Stack[-1]);
+0x4c: Pop(2); Push(Stack[-2] + Stack[-1]);
+0x4d: Push((int) 0)
+0x4e: Pop(2); Push((bool) Stack[-2] >= Stack[-1])
+0x4f: IF (Stack[-1] == 0) GOTO 0x52; Pop(1)
+
+0x50: Stack[-6] = "fdie"
+0x51: GOTO 0x53
+
+0x52: Stack[-6] = "bdie"
+0x53: @ RemoveRTEnvelope()
+0x54: Pop(0)
+0x55: @ SetDeathState()
+0x56: Pop(0)
+0x57: @ Stop()
+0x58: Pop(0)
+0x59: @ StopAsync()
+0x5a: Pop(0)
+0x5b: Stack[-5] = Stack[-21]
+0x5c: Push("GetScriptProperty")
+0x5d: Push((int) 2)
+0x5e: Pop(2); Push(IsFuncExist(Stack[-23], Stack[-2], Stack[-1]))
+0x5f: IF (Stack[-1] == 0) GOTO 0x6b; Pop(1)
+
+0x60: Push("Owner")
+0x61: @@ HasScriptProperty(Stack[-5], Stack[-1])
+0x62: Pop(1)
+0x63: Push(Stack[-4])
+0x64: IF (Stack[-1] == 0) GOTO 0x6b; Pop(1)
+
+0x65: Push("Owner")
+0x66: @@ GetScriptProperty(Stack[-6], Stack[-1])
+0x67: Pop(1)
+0x68: Pop(0); Push((bool) Stack[-5] == 0)
+0x69: IF (Stack[-1] == 0) GOTO 0x6b; Pop(1)
+
+0x6a: Stack[-5] = Stack[-21]
+0x6b: Push("@GetEyesHeight")
+0x6c: Push((int) 1)
+0x6d: Pop(2); Push(IsFuncExist(Stack[-7], Stack[-2], Stack[-1]))
+0x6e: IF (Stack[-1] == 0) GOTO 0x7a; Pop(1)
+
+0x6f: @@ GetEyesHeight(Stack[-2])
+0x70: Pop(0)
+0x71: Stack[-1] = CVector(0.0, 0.0, 0.0)
+0x72: Push(CvectorIndex(Stack[-1], 1))
+0x73: Stack[-1] = Stack[-3]
+0x74: CvectorIndex(Stack[-2], 1) = Stack[-1];
+0x75: Push("head")
+0x76: @ LookAsync(Stack[-22], Stack[-1], Stack[-2])
+0x77: Pop(1)
+0x78: Stack[-3] = (bool) 1
+0x79: GOTO 0x7b
+
+0x7a: Stack[-3] = (bool) 0
+0x7b: Push("all")
+0x7c: @ PlayAnimation(Stack[-1], Stack[-7])
+0x7d: Pop(1)
+0x7e: @ WaitForAnimEnd()
+0x7f: Pop(0)
+0x80: Push(Stack[-3])
+0x81: IF (Stack[-1] == 0) GOTO 0x87; Pop(1)
+
+0x82: @ StopAsync()
+0x83: Pop(0)
+0x84: Push("head")
+0x85: @ UnlookAsync(Stack[-1])
+0x86: Pop(1)
+0x87: Push("all")
+0x88: @ LockAnimationEnd(Stack[-1], Stack[-7])
+0x89: Pop(1)
+0x8a: @ RemoveEnvelope()
+0x8b: Pop(0)
+0x8c: Stack[-5] = 0
+0x8d: Return(); Pop(20)
+
+0x8e: PushEmpty()
+0x8f: @ RemoveRTEnvelope()
+0x90: Pop(0)
+0x91: @ SetDeathState()
+0x92: Pop(0)
+0x93: @ Stop()
+0x94: Pop(0)
+0x95: @ StopAsync()
+0x96: Pop(0)
+0x97: @ StopSecondaryAnimation()
+0x98: Pop(0)
+0x99: Push("all")
+0x9a: @ PlayAnimation(Stack[-1], Stack[-2])
+0x9b: Pop(1)
+0x9c: @ WaitForAnimEnd()
+0x9d: Pop(0)
+0x9e: Push("all")
+0x9f: @ LockAnimationEnd(Stack[-1], Stack[-2])
+0xa0: Pop(1)
+0xa1: @ RemoveEnvelope()
+0xa2: Pop(0)
+0xa3: Return(); Pop(0)
+
+0xa4: PushEmpty()
+0xa5: Return(); Pop(0)
+
+0xa6: PushEmpty()
+0xa7: Return(); Pop(0)
+
+0xa8: PushEmpty()
+0xa9: Return(); Pop(0)
+
+0xaa: Push((bool) 1)
+0xab: @ SensePlayerOnly(Stack[-1])
+0xac: Pop(1)
+0xad: PushEmpty()
+0xae: Call 0xad1
+
+0xaf: Pop(0)
+0xb0: PushEmpty()
+0xb1: Call 0xb9
+
+0xb2: Pop(0)
+0xb3: Stack[2 + Tasks[-1].StackPointer] = (bool)0
+0xb4: PushEmpty()
+0xb5: Call 0x18e
+
+0xb6: Pop(0)
+0xb7: GOTO 0xb3
+
+0xb8: Return(); Pop(0)
+
+0xb9: PushEmpty(bool)
+0xba: Call 0x85e
+
+0xbb: Pop(0)
+0xbc: Pop(1); Push((bool) Stack[-1] == 0)
+0xbd: IF (Stack[-1] == 0) GOTO 0xc1; Pop(1)
+
+0xbe: PushEmpty()
+0xbf: Call 0x9e7
+
+0xc0: Pop(0)
+0xc1: Return(); Pop(0)
+
+0xc2: PushEmpty(int, int)
+0xc3: PushEmpty(int, object)
+0xc4: Stack[-1] = Stack[-5]
+0xc5: Call 0x9de
+
+0xc6: Stack[-3] = Stack[-2]
+0xc7: Pop(2)
+0xc8: Push((int) 0)
+0xc9: Pop(1); Push((bool) Stack[-2] > Stack[-1])
+0xca: IF (Stack[-1] == 0) GOTO 0xd5; Pop(1)
+
+0xcb: Push((int) 1)
+0xcc: Pop(1); Push((bool) Stack[-2] > Stack[-1])
+0xcd: IF (Stack[-1] == 0) GOTO 0xd1; Pop(1)
+
+0xce: PushEmpty()
+0xcf: Call 0x14d
+
+0xd0: Pop(0)
+0xd1: PushEmpty(object)
+0xd2: Stack[-1] = Stack[-4]
+0xd3: Call 0x9e1
+
+0xd4: Pop(1)
+0xd5: Return(); Pop(2)
+
+0xd6: PushEmpty(int, int)
+0xd7: PushEmpty(int, object)
+0xd8: Stack[-1] = Stack[-5]
+0xd9: Call 0x98c
+
+0xda: Stack[-3] = Stack[-2]
+0xdb: Pop(2)
+0xdc: Push((int) 0)
+0xdd: Pop(1); Push((bool) Stack[-2] > Stack[-1])
+0xde: IF (Stack[-1] == 0) GOTO 0xe9; Pop(1)
+
+0xdf: Push((int) 1)
+0xe0: Pop(1); Push((bool) Stack[-2] > Stack[-1])
+0xe1: IF (Stack[-1] == 0) GOTO 0xe5; Pop(1)
+
+0xe2: PushEmpty()
+0xe3: Call 0x14d
+
+0xe4: Pop(0)
+0xe5: PushEmpty(object)
+0xe6: Stack[-1] = Stack[-4]
+0xe7: Call 0x996
+
+0xe8: Pop(1)
+0xe9: Return(); Pop(2)
+
+0xea: PushEmpty(int, int)
+0xeb: PushEmpty(bool, object, object)
+0xec: Stack[-2] = Stack[-7]
+0xed: Stack[-1] = Stack[-6]
+0xee: Call 0xb04
+
+0xef: Pop(2)
+0xf0: IF (Stack[-1] == 0) GOTO 0x103; Pop(1)
+
+0xf1: PushEmpty(int, object)
+0xf2: Stack[-1] = Stack[-6]
+0xf3: Call 0x99e
+
+0xf4: Stack[-3] = Stack[-2]
+0xf5: Pop(2)
+0xf6: Push((int) 0)
+0xf7: Pop(1); Push((bool) Stack[-2] > Stack[-1])
+0xf8: IF (Stack[-1] == 0) GOTO 0x103; Pop(1)
+
+0xf9: Push((int) 1)
+0xfa: Pop(1); Push((bool) Stack[-2] > Stack[-1])
+0xfb: IF (Stack[-1] == 0) GOTO 0xff; Pop(1)
+
+0xfc: PushEmpty()
+0xfd: Call 0x14d
+
+0xfe: Pop(0)
+0xff: PushEmpty(object)
+0x100: Stack[-1] = Stack[-5]
+0x101: Call 0x9a5
+
+0x102: Pop(1)
+0x103: Return(); Pop(2)
+
+0x104: PushEmpty(int, int)
+0x105: PushEmpty(int, object)
+0x106: Stack[-1] = Stack[-5]
+0x107: Call 0x9ab
+
+0x108: Stack[-3] = Stack[-2]
+0x109: Pop(2)
+0x10a: Push((int) 0)
+0x10b: Pop(1); Push((bool) Stack[-2] > Stack[-1])
+0x10c: IF (Stack[-1] == 0) GOTO 0x117; Pop(1)
+
+0x10d: Push((int) 1)
+0x10e: Pop(1); Push((bool) Stack[-2] > Stack[-1])
+0x10f: IF (Stack[-1] == 0) GOTO 0x113; Pop(1)
+
+0x110: PushEmpty()
+0x111: Call 0x14d
+
+0x112: Pop(0)
+0x113: PushEmpty(object)
+0x114: Stack[-1] = Stack[-4]
+0x115: Call 0x9ae
+
+0x116: Pop(1)
+0x117: Return(); Pop(2)
+
+0x118: PushEmpty(int, int)
+0x119: PushEmpty(int, string, object)
+0x11a: Stack[-2] = Stack[-6]
+0x11b: Stack[-1] = Stack[-7]
+0x11c: Call 0x9b0
+
+0x11d: Stack[-4] = Stack[-3]
+0x11e: Pop(3)
+0x11f: Push((int) 0)
+0x120: Pop(1); Push((bool) Stack[-2] > Stack[-1])
+0x121: IF (Stack[-1] == 0) GOTO 0x12d; Pop(1)
+
+0x122: Push((int) 1)
+0x123: Pop(1); Push((bool) Stack[-2] > Stack[-1])
+0x124: IF (Stack[-1] == 0) GOTO 0x128; Pop(1)
+
+0x125: PushEmpty()
+0x126: Call 0x14d
+
+0x127: Pop(0)
+0x128: PushEmpty(string, object)
+0x129: Stack[-2] = Stack[-5]
+0x12a: Stack[-1] = Stack[-6]
+0x12b: Call 0x9bc
+
+0x12c: Pop(2)
+0x12d: Return(); Pop(2)
+
+0x12e: PushEmpty()
+0x12f: PushEmpty(object)
+0x130: Stack[-1] = Stack[-2]
+0x131: Call 0x166
+
+0x132: Pop(1)
+0x133: Return(); Pop(0)
+
+0x134: PushEmpty()
+0x135: PushEmpty(object)
+0x136: Stack[-1] = Stack[-2]
+0x137: Call 0x166
+
+0x138: Pop(1)
+0x139: Return(); Pop(0)
+
+0x13a: PushEmpty()
+0x13b: Push((int) 110)
+0x13c: Pop(1); Push((bool) Stack[-2] != Stack[-1])
+0x13d: IF (Stack[-1] == 0) GOTO 0x13f; Pop(1)
+
+0x13e: Return(); Pop(0)
+
+0x13f: Stack[2 + Tasks[-1].StackPointer] = (bool)0
+0x140: Push((int) 110)
+0x141: @ KillTimer(Stack[-1])
+0x142: Pop(1)
+0x143: @ ResetAAS()
+0x144: Pop(0)
+0x145: Return(); Pop(0)
+
+0x146: PushEmpty()
+0x147: Call 0x14d
+
+0x148: Pop(0)
+0x149: PushEmpty()
+0x14a: Call 0x9e7
+
+0x14b: Pop(0)
+0x14c: Return(); Pop(0)
+
+0x14d: Push((int) 110)
+0x14e: @ KillTimer(Stack[-1])
+0x14f: Pop(1)
+0x150: Stack[2 + Tasks[-1].StackPointer] = (bool)0
+0x151: PushEmpty()
+0x152: Call 0x1ce
+
+0x153: Pop(0)
+0x154: Return(); Pop(0)
+
+0x155: Push((int) 110)
+0x156: @ KillTimer(Stack[-1])
+0x157: Pop(1)
+0x158: Stack[2 + Tasks[-1].StackPointer] = (bool)0
+0x159: PushEmpty()
+0x15a: Call 0x1d5
+
+0x15b: Pop(0)
+0x15c: Return(); Pop(0)
+
+0x15d: PushEmpty()
+0x15e: PushEmpty()
+0x15f: Call 0x14d
+
+0x160: Pop(0)
+0x161: PushEmpty(object)
+0x162: Stack[-1] = Stack[-2]
+0x163: Call 0x955
+
+0x164: Pop(1)
+0x165: Return(); Pop(0)
+
+0x166: PushEmpty(bool, int, bool, int)
+0x167: PushEmpty(bool, object)
+0x168: Stack[-1] = Stack[-7]
+0x169: Call 0x7f8
+
+0x16a: Pop(1)
+0x16b: Pop(1); Push((bool) Stack[-1] == 0)
+0x16c: IF (Stack[-1] == 0) GOTO 0x16e; Pop(1)
+
+0x16d: Return(); Pop(4)
+
+0x16e: Push( Stack[2 + Tasks[-1].StackPointer] )
+0x16f: IF (Stack[-1] == 0) GOTO 0x171; Pop(1)
+
+0x170: Return(); Pop(4)
+
+0x171: @ IsPlayerActor(Stack[-5], Stack[-2])
+0x172: Pop(0)
+0x173: Pop(0); Push((bool) Stack[-2] == 0)
+0x174: IF (Stack[-1] == 0) GOTO 0x176; Pop(1)
+
+0x175: Return(); Pop(4)
+
+0x176: PushEmpty(int, object)
+0x177: Stack[-1] = Stack[-7]
+0x178: Call 0x97b
+
+0x179: Stack[-3] = Stack[-2]
+0x17a: Pop(2)
+0x17b: Push((int) 0)
+0x17c: Pop(1); Push((bool) Stack[-2] > Stack[-1])
+0x17d: IF (Stack[-1] == 0) GOTO 0x18d; Pop(1)
+
+0x17e: Push((int) 1)
+0x17f: Pop(1); Push((bool) Stack[-2] > Stack[-1])
+0x180: IF (Stack[-1] == 0) GOTO 0x184; Pop(1)
+
+0x181: PushEmpty()
+0x182: Call 0x155
+
+0x183: Pop(0)
+0x184: PushEmpty(object)
+0x185: Stack[-1] = Stack[-6]
+0x186: Call 0x984
+
+0x187: Pop(1)
+0x188: Stack[2 + Tasks[-1].StackPointer] = (bool)1
+0x189: Push((int) 110)
+0x18a: Push((float)10.0)
+0x18b: @ SetTimer(Stack[-2], Stack[-1])
+0x18c: Pop(2)
+0x18d: Return(); Pop(4)
+
+0x18e: PushEmpty(float, cvector, cvector, float, bool, object, bool, float, cvector, cvector, float, bool, object, bool)
+0x18f: Stack[0 + Tasks[-1].StackPointer] = (bool)0
+0x190: Stack[1 + Tasks[-1].StackPointer] = (bool)0
+0x191: Push((float)0.5)
+0x192: @ rand(Stack[-8], Stack[-1])
+0x193: Pop(1)
+0x194: @ Sleep(Stack[-7])
+0x195: Pop(0)
+0x196: Pop(0); Push((bool) Stack[0 + Tasks[-1].StackPointer] == 0)
+0x197: IF (Stack[-1] == 0) GOTO 0x1c6; Pop(1)
+
+0x198: Pop(0); Push((bool) Stack[1 + Tasks[-1].StackPointer] == 0)
+0x199: IF (Stack[-1] == 0) GOTO 0x1aa; Pop(1)
+
+0x19a: @ GetPosition(Stack[-5])
+0x19b: Pop(0)
+0x19c: @ GetCameraFarDistance(Stack[-4])
+0x19d: Pop(0)
+0x19e: Push((float)2.5)
+0x19f: Stack[-5] = Stack[-5] * Stack[-1]; Pop(1);
+0x1a0: @ GetRandomPFPointInCircle(Stack[-6], Stack[-5], Stack[-4], Stack[-3])
+0x1a1: Pop(0)
+0x1a2: Push(Stack[-3])
+0x1a3: IF (Stack[-1] == 0) GOTO 0x1a5; Pop(1)
+
+0x1a4: GOTO 0x1a9
+
+0x1a5: Push((int) 1)
+0x1a6: @ Sleep(Stack[-1])
+0x1a7: Pop(1)
+0x1a8: GOTO 0x19a
+
+0x1a9: GOTO 0x1ab
+
+0x1aa: Stack[1 + Tasks[-1].StackPointer] = (bool)0
+0x1ab: @ FindShiftedPathTo(Stack[-2], Stack[-6])
+0x1ac: Pop(0)
+0x1ad: Pop(0); Push(( Stack[-2] != 0 )
+0x1ae: IF (Stack[-1] == 0) GOTO 0x1c1; Pop(1)
+
+0x1af: @ RotatePath(Stack[-2], Stack[-1])
+0x1b0: Pop(0)
+0x1b1: Push(Stack[-1])
+0x1b2: IF (Stack[-1] == 0) GOTO 0x1c0; Pop(1)
+
+0x1b3: PushEmpty(bool)
+0x1b4: Call 0x1dc
+
+0x1b5: Pop(0)
+0x1b6: @ FollowPath(Stack[-3], Stack[-1], Stack[-2])
+0x1b7: Pop(1)
+0x1b8: Stack[-2] = 0
+0x1b9: Push(Stack[-1])
+0x1ba: IF (Stack[-1] == 0) GOTO 0x1c0; Pop(1)
+
+0x1bb: PushEmpty()
+0x1bc: Push(-0, 0); TaskCall(3)
+0x1bd: Call 0x251
+
+0x1be: Pop(-0, 0); TaskReturn
+0x1bf: Pop(0)
+0x1c0: GOTO 0x1c4
+
+0x1c1: Push((int) 1)
+0x1c2: @ Sleep(Stack[-1])
+0x1c3: Pop(1)
+0x1c4: Stack[-2] = 0
+0x1c5: GOTO 0x196
+
+0x1c6: Return(); Pop(14)
+
+0x1c7: PushEmpty()
+0x1c8: @ RequestClearPath(Stack[-1])
+0x1c9: Pop(0)
+0x1ca: Return(); Pop(0)
+
+0x1cb: @ Stop()
+0x1cc: Pop(0)
+0x1cd: Return(); Pop(0)
+
+0x1ce: Stack[0 + Tasks[-1].StackPointer] = (bool)1
+0x1cf: Stack[1 + Tasks[-1].StackPointer] = (bool)0
+0x1d0: @ Stop()
+0x1d1: Pop(0)
+0x1d2: @ StopGroup0()
+0x1d3: Pop(0)
+0x1d4: Return(); Pop(0)
+
+0x1d5: Stack[0 + Tasks[-1].StackPointer] = (bool)1
+0x1d6: Stack[1 + Tasks[-1].StackPointer] = (bool)1
+0x1d7: @ Stop()
+0x1d8: Pop(0)
+0x1d9: @ StopGroup0()
+0x1da: Pop(0)
+0x1db: Return(); Pop(0)
+
+0x1dc: Stack[-1] = (bool) 0
+0x1dd: Return(); Pop(0)
+
+0x1de: PushEmpty(int, int)
+0x1df: PushEmpty(int, object)
+0x1e0: Stack[-1] = Stack[-5]
+0x1e1: Call 0x9de
+
+0x1e2: Stack[-3] = Stack[-2]
+0x1e3: Pop(2)
+0x1e4: Push((int) 0)
+0x1e5: Pop(1); Push((bool) Stack[-2] > Stack[-1])
+0x1e6: IF (Stack[-1] == 0) GOTO 0x1f1; Pop(1)
+
+0x1e7: Push((int) 1)
+0x1e8: Pop(1); Push((bool) Stack[-2] > Stack[-1])
+0x1e9: IF (Stack[-1] == 0) GOTO 0x1ed; Pop(1)
+
+0x1ea: PushEmpty()
+0x1eb: Call 0x296
+
+0x1ec: Pop(0)
+0x1ed: PushEmpty(object)
+0x1ee: Stack[-1] = Stack[-4]
+0x1ef: Call 0x9e1
+
+0x1f0: Pop(1)
+0x1f1: Return(); Pop(2)
+
+0x1f2: PushEmpty(int, int)
+0x1f3: PushEmpty(int, object)
+0x1f4: Stack[-1] = Stack[-5]
+0x1f5: Call 0x98c
+
+0x1f6: Stack[-3] = Stack[-2]
+0x1f7: Pop(2)
+0x1f8: Push((int) 0)
+0x1f9: Pop(1); Push((bool) Stack[-2] > Stack[-1])
+0x1fa: IF (Stack[-1] == 0) GOTO 0x205; Pop(1)
+
+0x1fb: Push((int) 1)
+0x1fc: Pop(1); Push((bool) Stack[-2] > Stack[-1])
+0x1fd: IF (Stack[-1] == 0) GOTO 0x201; Pop(1)
+
+0x1fe: PushEmpty()
+0x1ff: Call 0x296
+
+0x200: Pop(0)
+0x201: PushEmpty(object)
+0x202: Stack[-1] = Stack[-4]
+0x203: Call 0x996
+
+0x204: Pop(1)
+0x205: Return(); Pop(2)
+
+0x206: PushEmpty(int, int)
+0x207: PushEmpty(bool, object, object)
+0x208: Stack[-2] = Stack[-7]
+0x209: Stack[-1] = Stack[-6]
+0x20a: Call 0xb04
+
+0x20b: Pop(2)
+0x20c: IF (Stack[-1] == 0) GOTO 0x21f; Pop(1)
+
+0x20d: PushEmpty(int, object)
+0x20e: Stack[-1] = Stack[-6]
+0x20f: Call 0x99e
+
+0x210: Stack[-3] = Stack[-2]
+0x211: Pop(2)
+0x212: Push((int) 0)
+0x213: Pop(1); Push((bool) Stack[-2] > Stack[-1])
+0x214: IF (Stack[-1] == 0) GOTO 0x21f; Pop(1)
+
+0x215: Push((int) 1)
+0x216: Pop(1); Push((bool) Stack[-2] > Stack[-1])
+0x217: IF (Stack[-1] == 0) GOTO 0x21b; Pop(1)
+
+0x218: PushEmpty()
+0x219: Call 0x296
+
+0x21a: Pop(0)
+0x21b: PushEmpty(object)
+0x21c: Stack[-1] = Stack[-5]
+0x21d: Call 0x9a5
+
+0x21e: Pop(1)
+0x21f: Return(); Pop(2)
+
+0x220: PushEmpty(int, int)
+0x221: PushEmpty(int, object)
+0x222: Stack[-1] = Stack[-5]
+0x223: Call 0x9ab
+
+0x224: Stack[-3] = Stack[-2]
+0x225: Pop(2)
+0x226: Push((int) 0)
+0x227: Pop(1); Push((bool) Stack[-2] > Stack[-1])
+0x228: IF (Stack[-1] == 0) GOTO 0x233; Pop(1)
+
+0x229: Push((int) 1)
+0x22a: Pop(1); Push((bool) Stack[-2] > Stack[-1])
+0x22b: IF (Stack[-1] == 0) GOTO 0x22f; Pop(1)
+
+0x22c: PushEmpty()
+0x22d: Call 0x296
+
+0x22e: Pop(0)
+0x22f: PushEmpty(object)
+0x230: Stack[-1] = Stack[-4]
+0x231: Call 0x9ae
+
+0x232: Pop(1)
+0x233: Return(); Pop(2)
+
+0x234: PushEmpty(int, int)
+0x235: PushEmpty(int, string, object)
+0x236: Stack[-2] = Stack[-6]
+0x237: Stack[-1] = Stack[-7]
+0x238: Call 0x9b0
+
+0x239: Stack[-4] = Stack[-3]
+0x23a: Pop(3)
+0x23b: Push((int) 0)
+0x23c: Pop(1); Push((bool) Stack[-2] > Stack[-1])
+0x23d: IF (Stack[-1] == 0) GOTO 0x249; Pop(1)
+
+0x23e: Push((int) 1)
+0x23f: Pop(1); Push((bool) Stack[-2] > Stack[-1])
+0x240: IF (Stack[-1] == 0) GOTO 0x244; Pop(1)
+
+0x241: PushEmpty()
+0x242: Call 0x296
+
+0x243: Pop(0)
+0x244: PushEmpty(string, object)
+0x245: Stack[-2] = Stack[-5]
+0x246: Stack[-1] = Stack[-6]
+0x247: Call 0x9bc
+
+0x248: Pop(2)
+0x249: Return(); Pop(2)
+
+0x24a: PushEmpty()
+0x24b: Call 0x296
+
+0x24c: Pop(0)
+0x24d: PushEmpty()
+0x24e: Call 0x9e7
+
+0x24f: Pop(0)
+0x250: Return(); Pop(0)
+
+0x251: PushEmpty(int, int, int, int, bool, float, bool, int, int, int, int, bool, float, bool)
+0x252: @ WaitForAnimEnd()
+0x253: Pop(0)
+0x254: PushEmpty(bool)
+0x255: Call 0x85e
+
+0x256: Pop(0)
+0x257: Pop(1); Push((bool) Stack[-1] == 0)
+0x258: IF (Stack[-1] == 0) GOTO 0x25a; Pop(1)
+
+0x259: Return(); Pop(14)
+
+0x25a: PushEmpty(int)
+0x25b: Call 0x96a
+
+0x25c: Stack[-8] = Stack[-1]
+0x25d: Pop(1)
+0x25e: Stack[-6] = (int) 0
+0x25f: PushEmpty(bool)
+0x260: Stack[-1] = (bool) 0
+0x261: Push((int) 5)
+0x262: Pop(1); Push((bool) Stack[-8] < Stack[-1])
+0x263: IF (Stack[-1] == 0) GOTO 0x269; Pop(1)
+
+0x264: PushEmpty(bool)
+0x265: Call 0x85e
+
+0x266: Pop(0)
+0x267: IF (Stack[-1] == 0) GOTO 0x269; Pop(1)
+
+0x268: Stack[-1] = (bool) 1
+0x269: IF (Stack[-1] == 0) GOTO 0x295; Pop(1)
+
+0x26a: Push((int) 3)
+0x26b: @ irand(Stack[-6], Stack[-1])
+0x26c: Pop(1)
+0x26d: Push((int) 0)
+0x26e: Pop(1); Push((bool) Stack[-6] == Stack[-1])
+0x26f: IF (Stack[-1] == 0) GOTO 0x281; Pop(1)
+
+0x270: Push(Stack[-7])
+0x271: IF (Stack[-1] == 0) GOTO 0x280; Pop(1)
+
+0x272: @ irand(Stack[-4], Stack[-7])
+0x273: Pop(0)
+0x274: Push("all")
+0x275: PushEmpty(string, int)
+0x276: Stack[-1] = Stack[-7]
+0x277: Call 0x963
+
+0x278: Pop(1)
+0x279: @ PlayAnimation(Stack[-2], Stack[-1])
+0x27a: Pop(2)
+0x27b: @ WaitForAnimEnd(Stack[-3])
+0x27c: Pop(0)
+0x27d: Pop(0); Push((bool) Stack[-3] == 0)
+0x27e: IF (Stack[-1] == 0) GOTO 0x280; Pop(1)
+
+0x27f: GOTO 0x295
+
+0x280: GOTO 0x292
+
+0x281: Push((int) 1)
+0x282: Pop(1); Push((bool) Stack[-6] == Stack[-1])
+0x283: IF (Stack[-1] == 0) GOTO 0x28f; Pop(1)
+
+0x284: Push((int) 4)
+0x285: @ rand(Stack[-3], Stack[-1])
+0x286: Pop(1)
+0x287: Push((int) 1)
+0x288: Pop(1); Push(Stack[-3] + Stack[-1]);
+0x289: @ Sleep(Stack[-1], Stack[-2])
+0x28a: Pop(1)
+0x28b: Pop(0); Push((bool) Stack[-1] == 0)
+0x28c: IF (Stack[-1] == 0) GOTO 0x28e; Pop(1)
+
+0x28d: GOTO 0x295
+
+0x28e: GOTO 0x292
+
+0x28f: Push(Stack[-6])
+0x290: IF (Stack[-1] == 0) GOTO 0x292; Pop(1)
+
+0x291: GOTO 0x295
+
+0x292: Push((int) 1)
+0x293: Stack[-7] = Stack[-7] + Stack[-1]; Pop(1);
+0x294: GOTO 0x25f
+
+0x295: Return(); Pop(14)
+
+0x296: @ StopAnimation()
+0x297: Pop(0)
+0x298: @ StopGroup0()
+0x299: Pop(0)
+0x29a: Return(); Pop(0)
+
+0x29b: PushEmpty(cvector, cvector, bool, cvector, cvector, bool)
+0x29c: Stack[0 + Tasks[-1].StackPointer] = Stack[-7]
+0x29d: PushEmpty()
+0x29e: Call 0x2ce
+
+0x29f: Pop(0)
+0x2a0: @ GetDirection(Stack[-3])
+0x2a1: Pop(0)
+0x2a2: PushEmpty(cvector, object)
+0x2a3: Stack[-1] = Stack[0 + Tasks[-1].StackPointer]
+0x2a4: Call 0x774
+
+0x2a5: Stack[-4] = Stack[-2]
+0x2a6: Pop(2)
+0x2a7: PushEmpty(float, cvector, cvector)
+0x2a8: Stack[-2] = Stack[-6]
+0x2a9: Stack[-1] = Stack[-5]
+0x2aa: Call 0x926
+
+0x2ab: Pop(2)
+0x2ac: Push((int) 0)
+0x2ad: Pop(2); Push((bool) Stack[-2] < Stack[-1])
+0x2ae: IF (Stack[-1] == 0) GOTO 0x2b5; Pop(1)
+
+0x2af: PushEmpty(object)
+0x2b0: Stack[-1] = Stack[0 + Tasks[-1].StackPointer]
+0x2b1: Call 0x853
+
+0x2b2: Pop(1)
+0x2b3: Stack[-1] = (bool) 1
+0x2b4: GOTO 0x2b8
+
+0x2b5: Push((float)1.5)
+0x2b6: @ Sleep(Stack[-1], Stack[-2])
+0x2b7: Pop(1)
+0x2b8: Push(Stack[-1])
+0x2b9: IF (Stack[-1] == 0) GOTO 0x2c8; Pop(1)
+
+0x2ba: PushEmpty(object)
+0x2bb: Stack[-1] = Stack[0 + Tasks[-1].StackPointer]
+0x2bc: Call 0x853
+
+0x2bd: Pop(1)
+0x2be: Push((int) 111)
+0x2bf: Push((float)0.5)
+0x2c0: @ SetTimer(Stack[-2], Stack[-1])
+0x2c1: Pop(2)
+0x2c2: Push((float)5.0)
+0x2c3: @ Sleep(Stack[-1])
+0x2c4: Pop(1)
+0x2c5: Push((int) 111)
+0x2c6: @ KillTimer(Stack[-1])
+0x2c7: Pop(1)
+0x2c8: @ StopAsync()
+0x2c9: Pop(0)
+0x2ca: Push("head")
+0x2cb: @ UnlookAsync(Stack[-1])
+0x2cc: Pop(1)
+0x2cd: Return(); Pop(6)
+
+0x2ce: PushEmpty(object)
+0x2cf: Stack[-1] = Stack[0 + Tasks[-1].StackPointer]
+0x2d0: Call 0x8e5
+
+0x2d1: Pop(1)
+0x2d2: Return(); Pop(0)
+
+0x2d3: PushEmpty(int, int)
+0x2d4: PushEmpty(int, object)
+0x2d5: Stack[-1] = Stack[-5]
+0x2d6: Call 0x9de
+
+0x2d7: Stack[-3] = Stack[-2]
+0x2d8: Pop(2)
+0x2d9: Push((int) 0)
+0x2da: Pop(1); Push((bool) Stack[-2] > Stack[-1])
+0x2db: IF (Stack[-1] == 0) GOTO 0x2e6; Pop(1)
+
+0x2dc: Push((int) 1)
+0x2dd: Pop(1); Push((bool) Stack[-2] > Stack[-1])
+0x2de: IF (Stack[-1] == 0) GOTO 0x2e2; Pop(1)
+
+0x2df: PushEmpty()
+0x2e0: Call 0x33f
+
+0x2e1: Pop(0)
+0x2e2: PushEmpty(object)
+0x2e3: Stack[-1] = Stack[-4]
+0x2e4: Call 0x9e1
+
+0x2e5: Pop(1)
+0x2e6: Return(); Pop(2)
+
+0x2e7: PushEmpty(int, int)
+0x2e8: PushEmpty(int, object)
+0x2e9: Stack[-1] = Stack[-5]
+0x2ea: Call 0x98c
+
+0x2eb: Stack[-3] = Stack[-2]
+0x2ec: Pop(2)
+0x2ed: Push((int) 0)
+0x2ee: Pop(1); Push((bool) Stack[-2] > Stack[-1])
+0x2ef: IF (Stack[-1] == 0) GOTO 0x2fa; Pop(1)
+
+0x2f0: Push((int) 1)
+0x2f1: Pop(1); Push((bool) Stack[-2] > Stack[-1])
+0x2f2: IF (Stack[-1] == 0) GOTO 0x2f6; Pop(1)
+
+0x2f3: PushEmpty()
+0x2f4: Call 0x33f
+
+0x2f5: Pop(0)
+0x2f6: PushEmpty(object)
+0x2f7: Stack[-1] = Stack[-4]
+0x2f8: Call 0x996
+
+0x2f9: Pop(1)
+0x2fa: Return(); Pop(2)
+
+0x2fb: PushEmpty(int, int)
+0x2fc: PushEmpty(bool, object, object)
+0x2fd: Stack[-2] = Stack[-7]
+0x2fe: Stack[-1] = Stack[-6]
+0x2ff: Call 0xb04
+
+0x300: Pop(2)
+0x301: IF (Stack[-1] == 0) GOTO 0x314; Pop(1)
+
+0x302: PushEmpty(int, object)
+0x303: Stack[-1] = Stack[-6]
+0x304: Call 0x99e
+
+0x305: Stack[-3] = Stack[-2]
+0x306: Pop(2)
+0x307: Push((int) 0)
+0x308: Pop(1); Push((bool) Stack[-2] > Stack[-1])
+0x309: IF (Stack[-1] == 0) GOTO 0x314; Pop(1)
+
+0x30a: Push((int) 1)
+0x30b: Pop(1); Push((bool) Stack[-2] > Stack[-1])
+0x30c: IF (Stack[-1] == 0) GOTO 0x310; Pop(1)
+
+0x30d: PushEmpty()
+0x30e: Call 0x33f
+
+0x30f: Pop(0)
+0x310: PushEmpty(object)
+0x311: Stack[-1] = Stack[-5]
+0x312: Call 0x9a5
+
+0x313: Pop(1)
+0x314: Return(); Pop(2)
+
+0x315: PushEmpty(int, int)
+0x316: PushEmpty(int, object)
+0x317: Stack[-1] = Stack[-5]
+0x318: Call 0x9ab
+
+0x319: Stack[-3] = Stack[-2]
+0x31a: Pop(2)
+0x31b: Push((int) 0)
+0x31c: Pop(1); Push((bool) Stack[-2] > Stack[-1])
+0x31d: IF (Stack[-1] == 0) GOTO 0x328; Pop(1)
+
+0x31e: Push((int) 1)
+0x31f: Pop(1); Push((bool) Stack[-2] > Stack[-1])
+0x320: IF (Stack[-1] == 0) GOTO 0x324; Pop(1)
+
+0x321: PushEmpty()
+0x322: Call 0x33f
+
+0x323: Pop(0)
+0x324: PushEmpty(object)
+0x325: Stack[-1] = Stack[-4]
+0x326: Call 0x9ae
+
+0x327: Pop(1)
+0x328: Return(); Pop(2)
+
+0x329: PushEmpty(int, int)
+0x32a: PushEmpty(int, string, object)
+0x32b: Stack[-2] = Stack[-6]
+0x32c: Stack[-1] = Stack[-7]
+0x32d: Call 0x9b0
+
+0x32e: Stack[-4] = Stack[-3]
+0x32f: Pop(3)
+0x330: Push((int) 0)
+0x331: Pop(1); Push((bool) Stack[-2] > Stack[-1])
+0x332: IF (Stack[-1] == 0) GOTO 0x33e; Pop(1)
+
+0x333: Push((int) 1)
+0x334: Pop(1); Push((bool) Stack[-2] > Stack[-1])
+0x335: IF (Stack[-1] == 0) GOTO 0x339; Pop(1)
+
+0x336: PushEmpty()
+0x337: Call 0x33f
+
+0x338: Pop(0)
+0x339: PushEmpty(string, object)
+0x33a: Stack[-2] = Stack[-5]
+0x33b: Stack[-1] = Stack[-6]
+0x33c: Call 0x9bc
+
+0x33d: Pop(2)
+0x33e: Return(); Pop(2)
+
+0x33f: @ StopGroup0()
+0x340: Pop(0)
+0x341: @ StopAsync()
+0x342: Pop(0)
+0x343: Push("head")
+0x344: @ UnlookAsync(Stack[-1])
+0x345: Pop(1)
+0x346: Push((int) 111)
+0x347: @ KillTimer(Stack[-1])
+0x348: Pop(1)
+0x349: Return(); Pop(0)
+
+0x34a: PushEmpty()
+0x34b: PushEmpty()
+0x34c: Call 0x33f
+
+0x34d: Pop(0)
+0x34e: PushEmpty(object)
+0x34f: Stack[-1] = Stack[-2]
+0x350: Call 0x955
+
+0x351: Pop(1)
+0x352: Return(); Pop(0)
+
+0x353: PushEmpty(cvector, cvector, cvector, cvector)
+0x354: Push((int) 111)
+0x355: Pop(1); Push((bool) Stack[-6] != Stack[-1])
+0x356: IF (Stack[-1] == 0) GOTO 0x358; Pop(1)
+
+0x357: Return(); Pop(4)
+
+0x358: PushEmpty(bool, object)
+0x359: Stack[-1] = Stack[0 + Tasks[-1].StackPointer]
+0x35a: Call 0x7f8
+
+0x35b: Pop(1)
+0x35c: Pop(1); Push((bool) Stack[-1] == 0)
+0x35d: IF (Stack[-1] == 0) GOTO 0x362; Pop(1)
+
+0x35e: PushEmpty()
+0x35f: Call 0x33f
+
+0x360: Pop(0)
+0x361: Return(); Pop(4)
+
+0x362: @ GetDirection(Stack[-2])
+0x363: Pop(0)
+0x364: PushEmpty(cvector, object)
+0x365: Stack[-1] = Stack[0 + Tasks[-1].StackPointer]
+0x366: Call 0x774
+
+0x367: Stack[-3] = Stack[-2]
+0x368: Pop(2)
+0x369: PushEmpty(float, cvector, cvector)
+0x36a: Stack[-2] = Stack[-5]
+0x36b: Stack[-1] = Stack[-4]
+0x36c: Call 0x926
+
+0x36d: Pop(2)
+0x36e: Push((float)0.5)
+0x36f: Pop(2); Push((bool) Stack[-2] < Stack[-1])
+0x370: IF (Stack[-1] == 0) GOTO 0x375; Pop(1)
+
+0x371: PushEmpty(object)
+0x372: Stack[-1] = Stack[0 + Tasks[-1].StackPointer]
+0x373: Call 0x853
+
+0x374: Pop(1)
+0x375: Return(); Pop(4)
+
+0x376: PushEmpty()
+0x377: Call 0x33f
+
+0x378: Pop(0)
+0x379: PushEmpty()
+0x37a: Call 0x9e7
+
+0x37b: Pop(0)
+0x37c: Return(); Pop(0)
+
+0x37d: PushEmpty()
+0x37e: PushEmpty(object, bool, float)
+0x37f: Stack[-3] = Stack[-4]
+0x380: Stack[-2] = (bool) 1
+0x381: Stack[-1] = (float) 180.0
+0x382: Call 0x38b
+
+0x383: Pop(3)
+0x384: Return(); Pop(0)
+
+0x385: PushEmpty()
+0x386: Stack[-3] = (float) 0.05
+0x387: Return(); Pop(0)
+
+0x388: PushEmpty()
+0x389: Stack[-3] = (int) 0
+0x38a: Return(); Pop(0)
+
+0x38b: PushEmpty(bool, bool, float, cvector, cvector, bool, bool, cvector, float, float, bool, bool, float, cvector, cvector, bool, bool, cvector, float, float)
+0x38c: Stack[1 + Tasks[-1].StackPointer] = (int)0
+0x38d: Push("all")
+0x38e: Push("attack_begin")
+0x38f: Push((int) 1)
+0x390: Pop(1); Push(Stack[1 + StackPtr] + Stack[-1]);
+0x391: Pop(2); Push(Stack[-2] + Stack[-1]);
+0x392: @ HasAnimation(Stack[-12], Stack[-2], Stack[-1])
+0x393: Pop(2)
+0x394: Pop(0); Push((bool) Stack[-10] == 0)
+0x395: IF (Stack[-1] == 0) GOTO 0x397; Pop(1)
+
+0x396: GOTO 0x39a
+
+0x397: Push((int) 1)
+0x398: Stack[1 + Tasks[-1].StackPointer] = Stack[1 + Tasks[-1].StackPointer] + Stack[-1]; Pop(1);
+0x399: GOTO 0x38d
+
+0x39a: Stack[2 + Tasks[-1].StackPointer] = (int)0
+0x39b: Push("attack")
+0x39c: Push((int) 1)
+0x39d: Pop(1); Push(Stack[2 + StackPtr] + Stack[-1]);
+0x39e: Pop(2); Push(Stack[-2] + Stack[-1]);
+0x39f: @ IsExisting3DSound(Stack[-10], Stack[-1])
+0x3a0: Pop(1)
+0x3a1: Pop(0); Push((bool) Stack[-9] == 0)
+0x3a2: IF (Stack[-1] == 0) GOTO 0x3a4; Pop(1)
+
+0x3a3: GOTO 0x3a7
+
+0x3a4: Push((int) 1)
+0x3a5: Stack[2 + Tasks[-1].StackPointer] = Stack[2 + Tasks[-1].StackPointer] + Stack[-1]; Pop(1);
+0x3a6: GOTO 0x39b
+
+0x3a7: Stack[4 + Tasks[-1].StackPointer] = (int)0
+0x3a8: Push("@GetAttackDistance")
+0x3a9: Push((int) 1)
+0x3aa: Pop(2); Push(IsFuncExist(Stack[-25], Stack[-2], Stack[-1]))
+0x3ab: IF (Stack[-1] == 0) GOTO 0x3b1; Pop(1)
+
+0x3ac: @@ GetAttackDistance(Stack[-8])
+0x3ad: Pop(0)
+0x3ae: Push((int) 50)
+0x3af: Stack[-9] = Stack[-9] + Stack[-1]; Pop(1);
+0x3b0: GOTO 0x3b2
+
+0x3b1: Stack[-8] = Stack[-21]
+0x3b2: Push((int) 150)
+0x3b3: Pop(1); Push((bool) Stack[-9] >= Stack[-1])
+0x3b4: IF (Stack[-1] == 0) GOTO 0x3b6; Pop(1)
+
+0x3b5: Stack[-8] = (int) 150
+0x3b6: Stack[3 + Tasks[-1].StackPointer] = (bool)0
+0x3b7: Stack[0 + Tasks[-1].StackPointer] = Stack[-23]
+0x3b8: @ IsPlayerActor(Stack[-0], Stack[-5])
+0x3b9: Pop(0)
+0x3ba: Push(Stack[-22])
+0x3bb: IF (Stack[-1] == 0) GOTO 0x3be; Pop(1)
+
+0x3bc: Stack[-4] = (bool) 0
+0x3bd: GOTO 0x3bf
+
+0x3be: Stack[-4] = (bool) 1
+0x3bf: PushEmpty(bool)
+0x3c0: Stack[-1] = (bool) 0
+0x3c1: PushEmpty(bool, object)
+0x3c2: Stack[-1] = Stack[0 + Tasks[-1].StackPointer]
+0x3c3: Call 0x7f8
+
+0x3c4: Pop(1)
+0x3c5: IF (Stack[-1] == 0) GOTO 0x3c9; Pop(1)
+
+0x3c6: Pop(0); Push((bool) Stack[3 + Tasks[-1].StackPointer] == 0)
+0x3c7: IF (Stack[-1] == 0) GOTO 0x3c9; Pop(1)
+
+0x3c8: Stack[-1] = (bool) 1
+0x3c9: IF (Stack[-1] == 0) GOTO 0x447; Pop(1)
+
+0x3ca: @@ GetPFPosition(Stack[-7])
+0x3cb: Pop(0)
+0x3cc: @ GetPFPosition(Stack[-6])
+0x3cd: Pop(0)
+0x3ce: Stack[-3] = Stack[-7] - Stack[-6]; Pop(0);
+0x3cf: Stack[-2] = Stack[-3] | Stack[-3]; Pop(0);
+0x3d0: Push((float)400.0)
+0x3d1: Pop(1); Push(Stack[-1] + Stack[-9]);
+0x3d2: Push((float)400.0)
+0x3d3: Pop(1); Push(Stack[-1] + Stack[-10]);
+0x3d4: Pop(2); Push(Stack[-2] * Stack[-1]);
+0x3d5: Pop(1); Push((bool) Stack[-3] >= Stack[-1])
+0x3d6: IF (Stack[-1] == 0) GOTO 0x3e6; Pop(1)
+
+0x3d7: PushEmpty(bool, object, float, float, bool, bool)
+0x3d8: Stack[-5] = Stack[0 + Tasks[-1].StackPointer]
+0x3d9: Stack[-4] = Stack[-14]
+0x3da: Stack[-3] = (float) 3000.0
+0x3db: Stack[-2] = (bool) 1
+0x3dc: Stack[-1] = (bool) 0
+0x3dd: Push(-6, 2); TaskCall(6)
+0x3de: Call 0x57d
+
+0x3df: Pop(-6, 2); TaskReturn
+0x3e0: Pop(5)
+0x3e1: Pop(1); Push((bool) Stack[-1] == 0)
+0x3e2: IF (Stack[-1] == 0) GOTO 0x3e4; Pop(1)
+
+0x3e3: GOTO 0x447
+
+0x3e4: Stack[-4] = (bool) 0
+0x3e5: GOTO 0x446
+
+0x3e6: Pop(0); Push(Stack[-21] * Stack[-21]);
+0x3e7: Pop(1); Push((bool) Stack[-3] >= Stack[-1])
+0x3e8: IF (Stack[-1] == 0) GOTO 0x43e; Pop(1)
+
+0x3e9: Pop(0); Push((bool) Stack[-4] == 0)
+0x3ea: IF (Stack[-1] == 0) GOTO 0x3f8; Pop(1)
+
+0x3eb: PushEmpty(object)
+0x3ec: Stack[-1] = Stack[0 + Tasks[-1].StackPointer]
+0x3ed: Call 0x853
+
+0x3ee: Pop(1)
+0x3ef: Push("all")
+0x3f0: Push("attack_on")
+0x3f1: @ PlayAnimation(Stack[-2], Stack[-1])
+0x3f2: Pop(2)
+0x3f3: @ WaitForAnimEnd()
+0x3f4: Pop(0)
+0x3f5: @ StopAsync()
+0x3f6: Pop(0)
+0x3f7: Stack[-4] = (bool) 1
+0x3f8: @ rand(Stack[-1])
+0x3f9: Pop(0)
+0x3fa: PushEmpty(bool)
+0x3fb: Stack[-1] = (bool) 1
+0x3fc: Push((float)0.6)
+0x3fd: Pop(1); Push((bool) Stack[-3] < Stack[-1])
+0x3fe: IF (Stack[-1] == 0) GOTO 0x404; Pop(1)
+
+0x3ff: PushEmpty(bool)
+0x400: Call 0x543
+
+0x401: Pop(0)
+0x402: IF (Stack[-1] == 0) GOTO 0x404; Pop(1)
+
+0x403: Stack[-1] = (bool) 0
+0x404: IF (Stack[-1] == 0) GOTO 0x412; Pop(1)
+
+0x405: @ Face(Stack[-0])
+0x406: Pop(0)
+0x407: Push("all")
+0x408: Push("attack_stay")
+0x409: @ PlayAnimation(Stack[-2], Stack[-1])
+0x40a: Pop(2)
+0x40b: PushEmpty(bool, float)
+0x40c: Stack[-1] = Stack[-23]
+0x40d: Call 0x4e7
+
+0x40e: Pop(2)
+0x40f: @ StopAsync()
+0x410: Pop(0)
+0x411: GOTO 0x43d
+
+0x412: @ Face(Stack[-0])
+0x413: Pop(0)
+0x414: Push("all")
+0x415: Push("fjump")
+0x416: @ PlayAnimation(Stack[-2], Stack[-1])
+0x417: Pop(2)
+0x418: @ WaitForAnimEnd()
+0x419: Pop(0)
+0x41a: Push(CVector(0.0, 0.0, 0.0))
+0x41b: @ SetSpeed(Stack[-1])
+0x41c: Pop(1)
+0x41d: @ Stop()
+0x41e: Pop(0)
+0x41f: @ StopAsync()
+0x420: Pop(0)
+0x421: PushEmpty(bool)
+0x422: Call 0x543
+
+0x423: Pop(0)
+0x424: Pop(1); Push((bool) Stack[-1] == 0)
+0x425: IF (Stack[-1] == 0) GOTO 0x43d; Pop(1)
+
+0x426: PushEmpty(bool, object)
+0x427: Stack[-1] = Stack[0 + Tasks[-1].StackPointer]
+0x428: Call 0x7f8
+
+0x429: Pop(1)
+0x42a: Pop(1); Push((bool) Stack[-1] == 0)
+0x42b: IF (Stack[-1] == 0) GOTO 0x42d; Pop(1)
+
+0x42c: GOTO 0x447
+
+0x42d: @@ GetPFPosition(Stack[-7])
+0x42e: Pop(0)
+0x42f: @ GetPFPosition(Stack[-6])
+0x430: Pop(0)
+0x431: Stack[-3] = Stack[-7] - Stack[-6]; Pop(0);
+0x432: Stack[-2] = Stack[-3] | Stack[-3]; Pop(0);
+0x433: Pop(0); Push(Stack[-21] * Stack[-21]);
+0x434: Pop(1); Push((bool) Stack[-3] < Stack[-1])
+0x435: IF (Stack[-1] == 0) GOTO 0x43d; Pop(1)
+
+0x436: PushEmpty(bool, float)
+0x437: Stack[-1] = Stack[-23]
+0x438: Call 0x47f
+
+0x439: Pop(1)
+0x43a: Pop(1); Push((bool) Stack[-1] == 0)
+0x43b: IF (Stack[-1] == 0) GOTO 0x43d; Pop(1)
+
+0x43c: GOTO 0x447
+
+0x43d: GOTO 0x446
+
+0x43e: PushEmpty(bool, float)
+0x43f: Stack[-1] = Stack[-23]
+0x440: Call 0x47f
+
+0x441: Pop(1)
+0x442: Pop(1); Push((bool) Stack[-1] == 0)
+0x443: IF (Stack[-1] == 0) GOTO 0x445; Pop(1)
+
+0x444: GOTO 0x447
+
+0x445: Stack[-4] = (bool) 1
+0x446: GOTO 0x3bf
+
+0x447: @ WaitForAnimEnd()
+0x448: Pop(0)
+0x449: Push( Stack[3 + Tasks[-1].StackPointer] )
+0x44a: IF (Stack[-1] == 0) GOTO 0x44c; Pop(1)
+
+0x44b: Return(); Pop(20)
+
+0x44c: Push("all")
+0x44d: Push("attack_off")
+0x44e: @ PlayAnimation(Stack[-2], Stack[-1])
+0x44f: Pop(2)
+0x450: @ WaitForAnimEnd()
+0x451: Pop(0)
+0x452: Push(Stack[-5])
+0x453: IF (Stack[-1] == 0) GOTO 0x457; Pop(1)
+
+0x454: Push((float)2.0)
+0x455: @ Sleep(Stack[-1])
+0x456: Pop(1)
+0x457: Return(); Pop(20)
+
+0x458: PushEmpty(object, float, float, object, float, float)
+0x459: Push((float)0.9)
+0x45a: Pop(1); Push(Stack[-9] * Stack[-1]);
+0x45b: @ GetVictim(Stack[-1], Stack[-4])
+0x45c: Pop(1)
+0x45d: @ ReportAttack(Stack[-0])
+0x45e: Pop(0)
+0x45f: Pop(0); Push((bool) Stack[-3] == Stack[0 + Tasks[-1].StackPointer])
+0x460: IF (Stack[-1] == 0) GOTO 0x47d; Pop(1)
+
+0x461: PushEmpty(float, object, int)
+0x462: Stack[-2] = Stack[-6]
+0x463: Stack[-1] = Stack[-10]
+0x464: Call 0x385
+
+0x465: Stack[-5] = Stack[-3]
+0x466: Pop(3)
+0x467: PushEmpty(float, object, float, int)
+0x468: Stack[-3] = Stack[-7]
+0x469: Stack[-2] = Stack[-6]
+0x46a: PushEmpty(int, object, int)
+0x46b: Stack[-2] = Stack[-10]
+0x46c: Stack[-1] = Stack[-14]
+0x46d: Call 0x388
+
+0x46e: Stack[-4] = Stack[-3]
+0x46f: Pop(3)
+0x470: Call 0x78f
+
+0x471: Stack[-5] = Stack[-4]
+0x472: Pop(4)
+0x473: PushEmpty(int)
+0x474: Call 0x56e
+
+0x475: Pop(0)
+0x476: @ ReportHit(Stack[-0], Stack[-1], Stack[-2], Stack[-3])
+0x477: Pop(1)
+0x478: PushEmpty(object, float)
+0x479: Stack[-2] = Stack[-5]
+0x47a: Stack[-1] = Stack[-3]
+0x47b: Call 0x570
+
+0x47c: Pop(2)
+0x47d: Return(); Pop(6)
+
+0x47e: Stack[-3] = 0
+0x47f: PushEmpty(int, bool, int, bool)
+0x480: @ irand(Stack[-2], Stack[-1])
+0x481: Pop(0)
+0x482: Push((int) 1)
+0x483: Stack[-3] = Stack[-3] + Stack[-1]; Pop(1);
+0x484: @ Face(Stack[-0])
+0x485: Pop(0)
+0x486: Push((bool) 1)
+0x487: @ SetAttackState(Stack[-1])
+0x488: Pop(1)
+0x489: Push("all")
+0x48a: Push("attack_begin")
+0x48b: Pop(1); Push(Stack[-1] + Stack[-4]);
+0x48c: @ PlayAnimation(Stack[-2], Stack[-1])
+0x48d: Pop(2)
+0x48e: @ WaitForAnimEnd()
+0x48f: Pop(0)
+0x490: PushEmpty()
+0x491: Call 0x54e
+
+0x492: Pop(0)
+0x493: PushEmpty(bool, object)
+0x494: Stack[-1] = Stack[0 + Tasks[-1].StackPointer]
+0x495: Call 0x7f8
+
+0x496: Pop(1)
+0x497: Pop(1); Push((bool) Stack[-1] == 0)
+0x498: IF (Stack[-1] == 0) GOTO 0x49d; Pop(1)
+
+0x499: @ StopAsync()
+0x49a: Pop(0)
+0x49b: Stack[-6] = (bool) 0
+0x49c: Return(); Pop(4)
+
+0x49d: PushEmpty(float, int)
+0x49e: Stack[-2] = Stack[-7]
+0x49f: Stack[-1] = Stack[-4]
+0x4a0: Call 0x458
+
+0x4a1: Pop(2)
+0x4a2: Push("all")
+0x4a3: Push("attack_middle")
+0x4a4: Pop(1); Push(Stack[-1] + Stack[-4]);
+0x4a5: @ HasAnimation(Stack[-3], Stack[-2], Stack[-1])
+0x4a6: Pop(2)
+0x4a7: Push(Stack[-1])
+0x4a8: IF (Stack[-1] == 0) GOTO 0x4bf; Pop(1)
+
+0x4a9: Push("all")
+0x4aa: Push("attack_middle")
+0x4ab: Pop(1); Push(Stack[-1] + Stack[-4]);
+0x4ac: @ PlayAnimation(Stack[-2], Stack[-1])
+0x4ad: Pop(2)
+0x4ae: @ WaitForAnimEnd()
+0x4af: Pop(0)
+0x4b0: PushEmpty(bool, object)
+0x4b1: Stack[-1] = Stack[0 + Tasks[-1].StackPointer]
+0x4b2: Call 0x7f8
+
+0x4b3: Pop(1)
+0x4b4: Pop(1); Push((bool) Stack[-1] == 0)
+0x4b5: IF (Stack[-1] == 0) GOTO 0x4ba; Pop(1)
+
+0x4b6: @ StopAsync()
+0x4b7: Pop(0)
+0x4b8: Stack[-6] = (bool) 0
+0x4b9: Return(); Pop(4)
+
+0x4ba: PushEmpty(float, int)
+0x4bb: Stack[-2] = Stack[-7]
+0x4bc: Stack[-1] = Stack[-4]
+0x4bd: Call 0x458
+
+0x4be: Pop(2)
+0x4bf: Push((bool) 0)
+0x4c0: @ SetAttackState(Stack[-1])
+0x4c1: Pop(1)
+0x4c2: Push("all")
+0x4c3: Push("attack_end")
+0x4c4: Pop(1); Push(Stack[-1] + Stack[-4]);
+0x4c5: @ PlayAnimation(Stack[-2], Stack[-1])
+0x4c6: Pop(2)
+0x4c7: PushEmpty(bool, float)
+0x4c8: Stack[-1] = (float) 0.75
+0x4c9: Call 0x4cf
+
+0x4ca: Pop(2)
+0x4cb: @ StopAsync()
+0x4cc: Pop(0)
+0x4cd: Stack[-6] = (bool) 1
+0x4ce: Return(); Pop(4)
+
+0x4cf: PushEmpty(float, bool, float, bool)
+0x4d0: @ rand(Stack[-2])
+0x4d1: Pop(0)
+0x4d2: Pop(0); Push((bool) Stack[-2] < Stack[-5])
+0x4d3: IF (Stack[-1] == 0) GOTO 0x4e3; Pop(1)
+
+0x4d4: @ IsAnimationPlaying(Stack[-1])
+0x4d5: Pop(0)
+0x4d6: Pop(0); Push((bool) Stack[-1] == 0)
+0x4d7: IF (Stack[-1] == 0) GOTO 0x4d9; Pop(1)
+
+0x4d8: GOTO 0x4e2
+
+0x4d9: PushEmpty(bool)
+0x4da: Call 0x50f
+
+0x4db: Pop(0)
+0x4dc: IF (Stack[-1] == 0) GOTO 0x4df; Pop(1)
+
+0x4dd: Stack[-6] = (bool) 1
+0x4de: Return(); Pop(4)
+
+0x4df: @ sync()
+0x4e0: Pop(0)
+0x4e1: GOTO 0x4d4
+
+0x4e2: GOTO 0x4e5
+
+0x4e3: @ WaitForAnimEnd()
+0x4e4: Pop(0)
+0x4e5: Stack[-6] = (bool) 0
+0x4e6: Return(); Pop(4)
+
+0x4e7: PushEmpty(bool, cvector, cvector, cvector, float, bool, cvector, cvector, cvector, float)
+0x4e8: @ IsAnimationPlaying(Stack[-5])
+0x4e9: Pop(0)
+0x4ea: Pop(0); Push((bool) Stack[-5] == 0)
+0x4eb: IF (Stack[-1] == 0) GOTO 0x4ed; Pop(1)
+
+0x4ec: GOTO 0x50d
+
+0x4ed: PushEmpty(bool)
+0x4ee: Call 0x50f
+
+0x4ef: Pop(0)
+0x4f0: IF (Stack[-1] == 0) GOTO 0x4f3; Pop(1)
+
+0x4f1: Stack[-12] = (bool) 1
+0x4f2: Return(); Pop(10)
+
+0x4f3: PushEmpty(bool, object)
+0x4f4: Stack[-1] = Stack[0 + Tasks[-1].StackPointer]
+0x4f5: Call 0x7f8
+
+0x4f6: Pop(1)
+0x4f7: Pop(1); Push((bool) Stack[-1] == 0)
+0x4f8: IF (Stack[-1] == 0) GOTO 0x4fb; Pop(1)
+
+0x4f9: Stack[-12] = (bool) 0
+0x4fa: Return(); Pop(10)
+
+0x4fb: @@ GetPFPosition(Stack[-4])
+0x4fc: Pop(0)
+0x4fd: @ GetPFPosition(Stack[-3])
+0x4fe: Pop(0)
+0x4ff: Stack[-2] = Stack[-4] - Stack[-3]; Pop(0);
+0x500: Stack[-1] = Stack[-2] | Stack[-2]; Pop(0);
+0x501: Pop(0); Push(Stack[-11] * Stack[-11]);
+0x502: Pop(1); Push((bool) Stack[-2] < Stack[-1])
+0x503: IF (Stack[-1] == 0) GOTO 0x50a; Pop(1)
+
+0x504: PushEmpty(bool, float)
+0x505: Stack[-1] = Stack[-13]
+0x506: Call 0x47f
+
+0x507: Pop(2)
+0x508: Stack[-12] = (bool) 1
+0x509: Return(); Pop(10)
+
+0x50a: @ sync()
+0x50b: Pop(0)
+0x50c: GOTO 0x4e8
+
+0x50d: Stack[-12] = (bool) 0
+0x50e: Return(); Pop(10)
+
+0x50f: PushEmpty(cvector, cvector, cvector, float, float, cvector, cvector, cvector, float, float)
+0x510: PushEmpty(bool, object)
+0x511: Stack[-1] = Stack[0 + Tasks[-1].StackPointer]
+0x512: Call 0x7f8
+
+0x513: Pop(1)
+0x514: Pop(1); Push((bool) Stack[-1] == 0)
+0x515: IF (Stack[-1] == 0) GOTO 0x518; Pop(1)
+
+0x516: Stack[-11] = (bool) 0
+0x517: Return(); Pop(10)
+
+0x518: PushEmpty(bool)
+0x519: Call 0x543
+
+0x51a: Pop(0)
+0x51b: IF (Stack[-1] == 0) GOTO 0x52e; Pop(1)
+
+0x51c: @@ GetPFPosition(Stack[-5])
+0x51d: Pop(0)
+0x51e: @ GetPFPosition(Stack[-4])
+0x51f: Pop(0)
+0x520: Stack[-3] = Stack[-5] - Stack[-4]; Pop(0);
+0x521: Stack[-2] = Stack[-3] | Stack[-3]; Pop(0);
+0x522: @@ GetAttackDistance(Stack[-1])
+0x523: Pop(0)
+0x524: Push((int) 50)
+0x525: Stack[-2] = Stack[-2] + Stack[-1]; Pop(1);
+0x526: Pop(0); Push(Stack[-1] * Stack[-1]);
+0x527: Pop(1); Push((bool) Stack[-3] <= Stack[-1])
+0x528: IF (Stack[-1] == 0) GOTO 0x52e; Pop(1)
+
+0x529: PushEmpty()
+0x52a: Call 0x530
+
+0x52b: Pop(0)
+0x52c: Stack[-11] = (bool) 1
+0x52d: Return(); Pop(10)
+
+0x52e: Stack[-11] = (bool) 0
+0x52f: Return(); Pop(10)
+
+0x530: PushEmpty(cvector, cvector, cvector, cvector)
+0x531: @ Face(Stack[-0])
+0x532: Pop(0)
+0x533: Push("all")
+0x534: Push("bjump")
+0x535: @ PlayAnimation(Stack[-2], Stack[-1])
+0x536: Pop(2)
+0x537: @@ GetPFPosition(Stack[-2])
+0x538: Pop(0)
+0x539: @ GetPFPosition(Stack[-1])
+0x53a: Pop(0)
+0x53b: @ WaitForAnimEnd()
+0x53c: Pop(0)
+0x53d: @ StopAsync()
+0x53e: Pop(0)
+0x53f: Push(CVector(0.0, 0.0, 0.0))
+0x540: @ SetSpeed(Stack[-1])
+0x541: Pop(1)
+0x542: Return(); Pop(4)
+
+0x543: PushEmpty(bool, bool)
+0x544: Push("IsAttacking")
+0x545: Push((int) 1)
+0x546: Pop(2); Push(IsFuncExist(Stack[0 + Tasks[-1].StackPointer], Stack[-2], Stack[-1]))
+0x547: IF (Stack[-1] == 0) GOTO 0x54c; Pop(1)
+
+0x548: @@ IsAttacking(Stack[-1])
+0x549: Pop(0)
+0x54a: Stack[-3] = Stack[-1]
+0x54b: Return(); Pop(2)
+
+0x54c: Stack[-3] = (bool) 0
+0x54d: Return(); Pop(2)
+
+0x54e: PushEmpty(float, int, float, int)
+0x54f: Pop(0); Push((bool) Stack[2 + Tasks[-1].StackPointer] == 0)
+0x550: IF (Stack[-1] == 0) GOTO 0x552; Pop(1)
+
+0x551: Return(); Pop(4)
+
+0x552: Push( Stack[4 + Tasks[-1].StackPointer] )
+0x553: IF (Stack[-1] == 0) GOTO 0x55a; Pop(1)
+
+0x554: Push((int) -1)
+0x555: Stack[4 + Tasks[-1].StackPointer] = Stack[4 + Tasks[-1].StackPointer] + Stack[-1]; Pop(1);
+0x556: Push((int) 0)
+0x557: Pop(1); Push((bool) Stack[4 + Tasks[-1].StackPointer] > Stack[-1])
+0x558: IF (Stack[-1] == 0) GOTO 0x55a; Pop(1)
+
+0x559: Return(); Pop(4)
+
+0x55a: @ rand(Stack[-2])
+0x55b: Pop(0)
+0x55c: PushEmpty(float)
+0x55d: Call 0x574
+
+0x55e: Pop(0)
+0x55f: Pop(1); Push((bool) Stack[-3] < Stack[-1])
+0x560: IF (Stack[-1] == 0) GOTO 0x56d; Pop(1)
+
+0x561: @ irand(Stack[-1], Stack[-2])
+0x562: Pop(0)
+0x563: Push((int) 1)
+0x564: Stack[-2] = Stack[-2] + Stack[-1]; Pop(1);
+0x565: Push("attack")
+0x566: Pop(1); Push(Stack[-1] + Stack[-2]);
+0x567: @ Speak(Stack[-1])
+0x568: Pop(1)
+0x569: PushEmpty(int)
+0x56a: Call 0x572
+
+0x56b: Stack[4 + Tasks[-1].StackPointer] = Stack[-1]
+0x56c: Pop(1)
+0x56d: Return(); Pop(4)
+
+0x56e: Stack[-1] = (int) 0
+0x56f: Return(); Pop(0)
+
+0x570: PushEmpty()
+0x571: Return(); Pop(0)
+
+0x572: Stack[-1] = (int) 1
+0x573: Return(); Pop(0)
+
+0x574: Stack[-1] = (float) 0.5
+0x575: Return(); Pop(0)
+
+0x576: PushEmpty()
+0x577: Call 0x5f9
+
+0x578: Pop(0)
+0x579: PushEmpty()
+0x57a: Call 0x9e7
+
+0x57b: Pop(0)
+0x57c: Return(); Pop(0)
+
+0x57d: PushEmpty(bool, bool, object, cvector, cvector, cvector, float, object, bool, bool, object, cvector, cvector, cvector, float, object)
+0x57e: Stack[0 + Tasks[-1].StackPointer] = (bool)0
+0x57f: Stack[1 + Tasks[-1].StackPointer] = Stack[-21]
+0x580: Stack[-7] = Stack[-17]
+0x581: PushEmpty(bool, object)
+0x582: Stack[-1] = Stack[-23]
+0x583: Call 0x609
+
+0x584: Pop(1)
+0x585: Pop(1); Push((bool) Stack[-1] == 0)
+0x586: IF (Stack[-1] == 0) GOTO 0x589; Pop(1)
+
+0x587: Stack[-22] = (bool) 0
+0x588: Return(); Pop(16)
+
+0x589: @@ GetPosition(Stack[-5])
+0x58a: Pop(0)
+0x58b: @ GetPosition(Stack[-4])
+0x58c: Pop(0)
+0x58d: Stack[-3] = Stack[-5] - Stack[-4]; Pop(0);
+0x58e: Stack[-2] = Stack[-3] | Stack[-3]; Pop(0);
+0x58f: PushEmpty(bool)
+0x590: Stack[-1] = (bool) 0
+0x591: Push((int) 0)
+0x592: Pop(1); Push((bool) Stack[-21] > Stack[-1])
+0x593: IF (Stack[-1] == 0) GOTO 0x598; Pop(1)
+
+0x594: Pop(0); Push(Stack[-20] * Stack[-20]);
+0x595: Pop(1); Push((bool) Stack[-4] > Stack[-1])
+0x596: IF (Stack[-1] == 0) GOTO 0x598; Pop(1)
+
+0x597: Stack[-1] = (bool) 1
+0x598: IF (Stack[-1] == 0) GOTO 0x59d; Pop(1)
+
+0x599: @ Stop()
+0x59a: Pop(0)
+0x59b: Stack[-22] = (bool) 0
+0x59c: Return(); Pop(16)
+
+0x59d: Pop(0); Push(Stack[-20] * Stack[-20]);
+0x59e: Pop(1); Push((bool) Stack[-3] > Stack[-1])
+0x59f: IF (Stack[-1] == 0) GOTO 0x5db; Pop(1)
+
+0x5a0: @@ GetPFPosition(Stack[-5])
+0x5a1: Pop(0)
+0x5a2: @ FindPathTo(Stack[-1], Stack[-5])
+0x5a3: Pop(0)
+0x5a4: Pop(0); Push(( Stack[-1] != 0 )
+0x5a5: IF (Stack[-1] == 0) GOTO 0x5a8; Pop(1)
+
+0x5a6: Stack[-6] = Stack[-1]
+0x5a7: Stack[-1] = 0
+0x5a8: Pop(0); Push(( Stack[-6] != 0 )
+0x5a9: IF (Stack[-1] == 0) GOTO 0x5c9; Pop(1)
+
+0x5aa: Push(Stack[-7])
+0x5ab: IF (Stack[-1] == 0) GOTO 0x5b2; Pop(1)
+
+0x5ac: Stack[-7] = (bool) 0
+0x5ad: @ RotatePath(Stack[-6], Stack[-8])
+0x5ae: Pop(0)
+0x5af: Pop(0); Push((bool) Stack[-8] == 0)
+0x5b0: IF (Stack[-1] == 0) GOTO 0x5b2; Pop(1)
+
+0x5b1: GOTO 0x5e1
+
+0x5b2: Push((int) 0)
+0x5b3: Push((float)0.3)
+0x5b4: @ SetTimer(Stack[-2], Stack[-1])
+0x5b5: Pop(2)
+0x5b6: PushEmpty(string)
+0x5b7: Call 0x610
+
+0x5b8: Pop(0)
+0x5b9: PushEmpty(string)
+0x5ba: Call 0x612
+
+0x5bb: Pop(0)
+0x5bc: @ FollowPath(Stack[-8], Stack[-20], Stack[-10], Stack[-2], Stack[-1])
+0x5bd: Pop(2)
+0x5be: Pop(0); Push((bool) Stack[-8] == 0)
+0x5bf: IF (Stack[-1] == 0) GOTO 0x5c7; Pop(1)
+
+0x5c0: Push( Stack[0 + Tasks[-1].StackPointer] )
+0x5c1: IF (Stack[-1] == 0) GOTO 0x5c5; Pop(1)
+
+0x5c2: Stack[-6] = 0
+0x5c3: GOTO 0x5e1
+
+0x5c4: GOTO 0x5c6
+
+0x5c5: GOTO 0x5e0
+
+0x5c6: GOTO 0x5c8
+
+0x5c7: Stack[-6] = 0
+0x5c8: GOTO 0x5d9
+
+0x5c9: Push((int) 0)
+0x5ca: @ KillTimer(Stack[-1])
+0x5cb: Pop(1)
+0x5cc: Push((float)0.5)
+0x5cd: @ Sleep(Stack[-1], Stack[-9])
+0x5ce: Pop(1)
+0x5cf: Pop(0); Push((bool) Stack[-8] == 0)
+0x5d0: IF (Stack[-1] == 0) GOTO 0x5d5; Pop(1)
+
+0x5d1: Push( Stack[0 + Tasks[-1].StackPointer] )
+0x5d2: IF (Stack[-1] == 0) GOTO 0x5d5; Pop(1)
+
+0x5d3: Stack[-6] = 0
+0x5d4: GOTO 0x5e1
+
+0x5d5: Push((int) 0)
+0x5d6: Push((float)0.3)
+0x5d7: @ SetTimer(Stack[-2], Stack[-1])
+0x5d8: Pop(2)
+0x5d9: Stack[-1] = 0
+0x5da: GOTO 0x5df
+
+0x5db: Push((int) 0)
+0x5dc: @ KillTimer(Stack[-1])
+0x5dd: Pop(1)
+0x5de: GOTO 0x5e1
+
+0x5df: Stack[-6] = 0
+0x5e0: GOTO 0x581
+
+0x5e1: Stack[-22] = !Stack[0 + Tasks[-1].StackPointer]; Pop(0);
+0x5e2: Return(); Pop(16)
+
+0x5e3: PushEmpty()
+0x5e4: Push((int) 0)
+0x5e5: Pop(1); Push((bool) Stack[-2] != Stack[-1])
+0x5e6: IF (Stack[-1] == 0) GOTO 0x5e8; Pop(1)
+
+0x5e7: Return(); Pop(0)
+
+0x5e8: PushEmpty(bool, object)
+0x5e9: Stack[-1] = Stack[1 + Tasks[-1].StackPointer]
+0x5ea: Call 0x609
+
+0x5eb: Pop(1)
+0x5ec: Pop(1); Push((bool) Stack[-1] == 0)
+0x5ed: IF (Stack[-1] == 0) GOTO 0x5ef; Pop(1)
+
+0x5ee: Stack[0 + Tasks[-1].StackPointer] = (bool)1
+0x5ef: Push((int) 0)
+0x5f0: @ KillTimer(Stack[-1])
+0x5f1: Pop(1)
+0x5f2: @ Stop()
+0x5f3: Pop(0)
+0x5f4: Return(); Pop(0)
+
+0x5f5: PushEmpty()
+0x5f6: @ RequestClearPath(Stack[-1])
+0x5f7: Pop(0)
+0x5f8: Return(); Pop(0)
+
+0x5f9: Stack[0 + Tasks[-1].StackPointer] = (bool)1
+0x5fa: Push((int) 0)
+0x5fb: @ KillTimer(Stack[-1])
+0x5fc: Pop(1)
+0x5fd: @ Stop()
+0x5fe: Pop(0)
+0x5ff: Return(); Pop(0)
+
+0x600: PushEmpty()
+0x601: PushEmpty()
+0x602: Call 0x5f9
+
+0x603: Pop(0)
+0x604: PushEmpty(object)
+0x605: Stack[-1] = Stack[-2]
+0x606: Call 0x955
+
+0x607: Pop(1)
+0x608: Return(); Pop(0)
+
+0x609: PushEmpty()
+0x60a: PushEmpty(bool, object)
+0x60b: Stack[-1] = Stack[-3]
+0x60c: Call 0x7f8
+
+0x60d: Stack[-4] = Stack[-2]
+0x60e: Pop(2)
+0x60f: Return(); Pop(0)
+
+0x610: Stack[-1] = "walk"
+0x611: Return(); Pop(0)
+
+0x612: Stack[-1] = "run"
+0x613: Return(); Pop(0)
+
+0x614: PushEmpty(object, bool, int, bool, object, bool, int, bool)
+0x615: Stack[0 + Tasks[-1].StackPointer] = Stack[-9]
+0x616: PushEmpty(bool, object)
+0x617: Stack[-1] = Stack[-11]
+0x618: Call 0x863
+
+0x619: Pop(1)
+0x61a: Pop(1); Push((bool) Stack[-1] == 0)
+0x61b: IF (Stack[-1] == 0) GOTO 0x61e; Pop(1)
+
+0x61c: Stack[-10] = (int) -2
+0x61d: Return(); Pop(8)
+
+0x61e: @ CreateDialog(Stack[-4])
+0x61f: Pop(0)
+0x620: PushEmpty(int)
+0x621: Call 0xacb
+
+0x622: Pop(0)
+0x623: @@ SetNPCName(Stack[-1])
+0x624: Pop(1)
+0x625: PushEmpty(string)
+0x626: Call 0xacd
+
+0x627: Pop(0)
+0x628: @@ SetPhoto(Stack[-1])
+0x629: Pop(1)
+0x62a: PushEmpty(int)
+0x62b: Call 0x9e8
+
+0x62c: Pop(0)
+0x62d: @@ SetPlayerName(Stack[-1])
+0x62e: Pop(1)
+0x62f: Stack[-2] = (int) -1
+0x630: @ IsOverrideActive(Stack[-3])
+0x631: Pop(0)
+0x632: Push(Stack[-3])
+0x633: IF (Stack[-1] == 0) GOTO 0x636; Pop(1)
+
+0x634: Stack[-10] = (int) -2
+0x635: Return(); Pop(8)
+
+0x636: @ DoDialog(Stack[-4])
+0x637: Pop(0)
+0x638: PushEmpty(object, object)
+0x639: Stack[-2] = Stack[-11]
+0x63a: Stack[-1] = Stack[-6]
+0x63b: Push(-2, 4); TaskCall(8)
+0x63c: Call 0x653
+
+0x63d: Pop(-2, 4); TaskReturn
+0x63e: Pop(2)
+0x63f: @@ IsDialogEnd(Stack[-1])
+0x640: Pop(0)
+0x641: Pop(0); Push((bool) Stack[-1] == 0)
+0x642: IF (Stack[-1] == 0) GOTO 0x648; Pop(1)
+
+0x643: @ sync()
+0x644: Pop(0)
+0x645: @@ IsDialogEnd(Stack[-1])
+0x646: Pop(0)
+0x647: GOTO 0x641
+
+0x648: PushEmpty(object)
+0x649: Stack[-1] = Stack[-10]
+0x64a: Call 0x89b
+
+0x64b: Pop(1)
+0x64c: @ StopDialog(Stack[-4])
+0x64d: Pop(0)
+0x64e: @@ GetReturnValue(Stack[-2])
+0x64f: Pop(0)
+0x650: Stack[-10] = Stack[-2]
+0x651: Return(); Pop(8)
+
+0x652: Stack[-4] = 0
+0x653: PushEmpty()
+0x654: Stack[0 + Tasks[-1].StackPointer] = Stack[-1]
+0x655: Stack[1 + Tasks[-1].StackPointer] = Stack[-2]
+0x656: Stack[3 + Tasks[-1].StackPointer] = (bool)0
+0x657: Push((int) 1)
+0x658: IF (Stack[-1] == 0) GOTO 0x688; Pop(1)
+
+0x659: PushEmpty(string)
+0x65a: Stack[-1] = "Neutral"
+0x65b: Call 0x6a6
+
+0x65c: Pop(1)
+0x65d: Push((int) 14649)
+0x65e: @@ SetMessage(Stack[-1])
+0x65f: Pop(1)
+0x660: @@ ClearReplies()
+0x661: Pop(0)
+0x662: Push((int) 14650)
+0x663: Push((int) 15888)
+0x664: Push((int) 15887)
+0x665: @@ AddReply(Stack[-3], Stack[-2], Stack[-1])
+0x666: Pop(3)
+0x667: Push((int) 14658)
+0x668: Push((int) -1)
+0x669: Push((int) 15895)
+0x66a: @@ AddReply(Stack[-3], Stack[-2], Stack[-1])
+0x66b: Pop(3)
+0x66c: Push((int) 14659)
+0x66d: Push((int) -1)
+0x66e: Push((int) 15896)
+0x66f: @@ AddReply(Stack[-3], Stack[-2], Stack[-1])
+0x670: Pop(3)
+0x671: GOTO 0x688
+
+0x672: PushEmpty(string)
+0x673: Stack[-1] = "Neutral"
+0x674: Call 0x6a6
+
+0x675: Pop(1)
+0x676: Push((int) 14660)
+0x677: @@ SetMessage(Stack[-1])
+0x678: Pop(1)
+0x679: @@ ClearReplies()
+0x67a: Pop(0)
+0x67b: Push((int) 14661)
+0x67c: Push((int) 15899)
+0x67d: Push((int) 15898)
+0x67e: @@ AddReply(Stack[-3], Stack[-2], Stack[-1])
+0x67f: Pop(3)
+0x680: Push((int) 14667)
+0x681: Push((int) 15905)
+0x682: Push((int) 15904)
+0x683: @@ AddReply(Stack[-3], Stack[-2], Stack[-1])
+0x684: Pop(3)
+0x685: GOTO 0x688
+
+0x686: Return(); Pop(0)
+
+0x687: GOTO 0x657
+
+0x688: PushEmpty(bool)
+0x689: Call 0xacf
+
+0x68a: Pop(0)
+0x68b: IF (Stack[-1] == 0) GOTO 0x697; Pop(1)
+
+0x68c: @ lshWaitForAnimEnd()
+0x68d: Pop(0)
+0x68e: Push( Stack[3 + Tasks[-1].StackPointer] )
+0x68f: IF (Stack[-1] == 0) GOTO 0x691; Pop(1)
+
+0x690: GOTO 0x696
+
+0x691: PushEmpty(string)
+0x692: Stack[-1] = Stack[2 + Tasks[-1].StackPointer]
+0x693: Call 0x8d3
+
+0x694: Pop(1)
+0x695: GOTO 0x68c
+
+0x696: GOTO 0x6a5
+
+0x697: Push("all")
+0x698: Push("idle")
+0x699: @ PlayAnimation(Stack[-2], Stack[-1])
+0x69a: Pop(2)
+0x69b: @ WaitForAnimEnd()
+0x69c: Pop(0)
+0x69d: Push( Stack[3 + Tasks[-1].StackPointer] )
+0x69e: IF (Stack[-1] == 0) GOTO 0x6a0; Pop(1)
+
+0x69f: GOTO 0x6a5
+
+0x6a0: Push("all")
+0x6a1: Push("idle")
+0x6a2: @ PlayAnimation(Stack[-2], Stack[-1])
+0x6a3: Pop(2)
+0x6a4: GOTO 0x69b
+
+0x6a5: Return(); Pop(0)
+
+0x6a6: PushEmpty()
+0x6a7: PushEmpty(bool)
+0x6a8: Call 0xacf
+
+0x6a9: Pop(0)
+0x6aa: Pop(1); Push((bool) Stack[-1] == 0)
+0x6ab: IF (Stack[-1] == 0) GOTO 0x6ad; Pop(1)
+
+0x6ac: Return(); Pop(0)
+
+0x6ad: Pop(0); Push((bool) Stack[-1] == Stack[2 + Tasks[-1].StackPointer])
+0x6ae: IF (Stack[-1] == 0) GOTO 0x6b0; Pop(1)
+
+0x6af: Return(); Pop(0)
+
+0x6b0: PushEmpty(string)
+0x6b1: Stack[-1] = Stack[-2]
+0x6b2: Call 0x8d3
+
+0x6b3: Pop(1)
+0x6b4: Stack[2 + Tasks[-1].StackPointer] = Stack[-1]
+0x6b5: Return(); Pop(0)
+
+0x6b6: PushEmpty()
+0x6b7: Push((int) 1)
+0x6b8: IF (Stack[-1] == 0) GOTO 0x76b; Pop(1)
+
+0x6b9: PushEmpty()
+0x6ba: Call 0x8f0
+
+0x6bb: Pop(0)
+0x6bc: Push((int) 15886)
+0x6bd: Pop(1); Push((bool) Stack[-3] == Stack[-1])
+0x6be: IF (Stack[-1] == 0) GOTO 0x6ec; Pop(1)
+
+0x6bf: PushEmpty(string)
+0x6c0: Stack[-1] = "Neutral"
+0x6c1: Call 0x6a6
+
+0x6c2: Pop(1)
+0x6c3: Push((int) 14649)
+0x6c4: @@ SetMessage(Stack[-1])
+0x6c5: Pop(1)
+0x6c6: @@ ClearReplies()
+0x6c7: Pop(0)
+0x6c8: Push((int) 14650)
+0x6c9: Push((int) 15888)
+0x6ca: Push((int) 15887)
+0x6cb: @@ AddReply(Stack[-3], Stack[-2], Stack[-1])
+0x6cc: Pop(3)
+0x6cd: Push((int) 14658)
+0x6ce: Push((int) -1)
+0x6cf: Push((int) 15895)
+0x6d0: @@ AddReply(Stack[-3], Stack[-2], Stack[-1])
+0x6d1: Pop(3)
+0x6d2: Push((int) 14659)
+0x6d3: Push((int) -1)
+0x6d4: Push((int) 15896)
+0x6d5: @@ AddReply(Stack[-3], Stack[-2], Stack[-1])
+0x6d6: Pop(3)
+0x6d7: Return(); Pop(0)
+
+0x6d8: PushEmpty(string)
+0x6d9: Stack[-1] = "Neutral"
+0x6da: Call 0x6a6
+
+0x6db: Pop(1)
+0x6dc: Push((int) 14660)
+0x6dd: @@ SetMessage(Stack[-1])
+0x6de: Pop(1)
+0x6df: @@ ClearReplies()
+0x6e0: Pop(0)
+0x6e1: Push((int) 14661)
+0x6e2: Push((int) 15899)
+0x6e3: Push((int) 15898)
+0x6e4: @@ AddReply(Stack[-3], Stack[-2], Stack[-1])
+0x6e5: Pop(3)
+0x6e6: Push((int) 14667)
+0x6e7: Push((int) 15905)
+0x6e8: Push((int) 15904)
+0x6e9: @@ AddReply(Stack[-3], Stack[-2], Stack[-1])
+0x6ea: Pop(3)
+0x6eb: Return(); Pop(0)
+
+0x6ec: Push((int) 15905)
+0x6ed: Pop(1); Push((bool) Stack[-3] == Stack[-1])
+0x6ee: IF (Stack[-1] == 0) GOTO 0x703; Pop(1)
+
+0x6ef: PushEmpty(string)
+0x6f0: Stack[-1] = "Neutral"
+0x6f1: Call 0x6a6
+
+0x6f2: Pop(1)
+0x6f3: Push((int) 14668)
+0x6f4: @@ SetMessage(Stack[-1])
+0x6f5: Pop(1)
+0x6f6: @@ ClearReplies()
+0x6f7: Pop(0)
+0x6f8: Push((int) 14669)
+0x6f9: Push((int) 15899)
+0x6fa: Push((int) 15906)
+0x6fb: @@ AddReply(Stack[-3], Stack[-2], Stack[-1])
+0x6fc: Pop(3)
+0x6fd: Push((int) 14670)
+0x6fe: Push((int) -1)
+0x6ff: Push((int) 15908)
+0x700: @@ AddReply(Stack[-3], Stack[-2], Stack[-1])
+0x701: Pop(3)
+0x702: Return(); Pop(0)
+
+0x703: Push((int) 15899)
+0x704: Pop(1); Push((bool) Stack[-3] == Stack[-1])
+0x705: IF (Stack[-1] == 0) GOTO 0x715; Pop(1)
+
+0x706: PushEmpty(string)
+0x707: Stack[-1] = "Neutral"
+0x708: Call 0x6a6
+
+0x709: Pop(1)
+0x70a: Push((int) 14662)
+0x70b: @@ SetMessage(Stack[-1])
+0x70c: Pop(1)
+0x70d: @@ ClearReplies()
+0x70e: Pop(0)
+0x70f: Push((int) 14663)
+0x710: Push((int) 15901)
+0x711: Push((int) 15900)
+0x712: @@ AddReply(Stack[-3], Stack[-2], Stack[-1])
+0x713: Pop(3)
+0x714: Return(); Pop(0)
+
+0x715: Push((int) 15901)
+0x716: Pop(1); Push((bool) Stack[-3] == Stack[-1])
+0x717: IF (Stack[-1] == 0) GOTO 0x72c; Pop(1)
+
+0x718: PushEmpty(string)
+0x719: Stack[-1] = "Neutral"
+0x71a: Call 0x6a6
+
+0x71b: Pop(1)
+0x71c: Push((int) 14664)
+0x71d: @@ SetMessage(Stack[-1])
+0x71e: Pop(1)
+0x71f: @@ ClearReplies()
+0x720: Pop(0)
+0x721: Push((int) 14665)
+0x722: Push((int) -1)
+0x723: Push((int) 15902)
+0x724: @@ AddReply(Stack[-3], Stack[-2], Stack[-1])
+0x725: Pop(3)
+0x726: Push((int) 14666)
+0x727: Push((int) -1)
+0x728: Push((int) 15903)
+0x729: @@ AddReply(Stack[-3], Stack[-2], Stack[-1])
+0x72a: Pop(3)
+0x72b: Return(); Pop(0)
+
+0x72c: Push((int) 15888)
+0x72d: Pop(1); Push((bool) Stack[-3] == Stack[-1])
+0x72e: IF (Stack[-1] == 0) GOTO 0x743; Pop(1)
+
+0x72f: PushEmpty(string)
+0x730: Stack[-1] = "Neutral"
+0x731: Call 0x6a6
+
+0x732: Pop(1)
+0x733: Push((int) 14651)
+0x734: @@ SetMessage(Stack[-1])
+0x735: Pop(1)
+0x736: @@ ClearReplies()
+0x737: Pop(0)
+0x738: Push((int) 14652)
+0x739: Push((int) 15890)
+0x73a: Push((int) 15889)
+0x73b: @@ AddReply(Stack[-3], Stack[-2], Stack[-1])
+0x73c: Pop(3)
+0x73d: Push((int) 14657)
+0x73e: Push((int) -1)
+0x73f: Push((int) 15894)
+0x740: @@ AddReply(Stack[-3], Stack[-2], Stack[-1])
+0x741: Pop(3)
+0x742: Return(); Pop(0)
+
+0x743: Push((int) 15890)
+0x744: Pop(1); Push((bool) Stack[-3] == Stack[-1])
+0x745: IF (Stack[-1] == 0) GOTO 0x75f; Pop(1)
+
+0x746: PushEmpty(string)
+0x747: Stack[-1] = "Neutral"
+0x748: Call 0x6a6
+
+0x749: Pop(1)
+0x74a: Push((int) 14653)
+0x74b: @@ SetMessage(Stack[-1])
+0x74c: Pop(1)
+0x74d: @@ ClearReplies()
+0x74e: Pop(0)
+0x74f: Push((int) 14654)
+0x750: Push((int) -1)
+0x751: Push((int) 15891)
+0x752: @@ AddReply(Stack[-3], Stack[-2], Stack[-1])
+0x753: Pop(3)
+0x754: Push((int) 14655)
+0x755: Push((int) -1)
+0x756: Push((int) 15892)
+0x757: @@ AddReply(Stack[-3], Stack[-2], Stack[-1])
+0x758: Pop(3)
+0x759: Push((int) 14656)
+0x75a: Push((int) -1)
+0x75b: Push((int) 15893)
+0x75c: @@ AddReply(Stack[-3], Stack[-2], Stack[-1])
+0x75d: Pop(3)
+0x75e: Return(); Pop(0)
+
+0x75f: Stack[3 + Tasks[-1].StackPointer] = (bool)1
+0x760: PushEmpty(bool)
+0x761: Call 0xacf
+
+0x762: Pop(0)
+0x763: IF (Stack[-1] == 0) GOTO 0x767; Pop(1)
+
+0x764: @ lshStopAnimation()
+0x765: Pop(0)
+0x766: GOTO 0x769
+
+0x767: @ StopAnimation()
+0x768: Pop(0)
+0x769: Return(); Pop(0)
+
+0x76a: GOTO 0x6b7
+
+0x76b: Return(); Pop(0)
+
+0x76c: PushEmpty()
+0x76d: Push((int) 1)
+0x76e: Pop(1); Push((bool) Stack[-2] == Stack[-1])
+0x76f: IF (Stack[-1] == 0) GOTO 0x772; Pop(1)
+
+0x770: Stack[-2] = "fire"
+0x771: Return(); Pop(0)
+
+0x772: Stack[-2] = "phys"
+0x773: Return(); Pop(0)
+
+0x774: PushEmpty(cvector, cvector, cvector, cvector)
+0x775: @ GetPosition(Stack[-2])
+0x776: Pop(0)
+0x777: @@ GetPosition(Stack[-1])
+0x778: Pop(0)
+0x779: Stack[-6] = Stack[-1] - Stack[-2]; Pop(0);
+0x77a: Return(); Pop(4)
+
+0x77b: PushEmpty(cvector, cvector, cvector, cvector, cvector, cvector)
+0x77c: @ GetPosition(Stack[-3])
+0x77d: Pop(0)
+0x77e: @@ GetPosition(Stack[-2])
+0x77f: Pop(0)
+0x780: Stack[-1] = Stack[-2] - Stack[-3]; Pop(0);
+0x781: Stack[-8] = Stack[-1] | Stack[-1]; Pop(0);
+0x782: Return(); Pop(6)
+
+0x783: PushEmpty(bool, bool)
+0x784: Push("HasProperty")
+0x785: Push((int) 2)
+0x786: Pop(2); Push(IsFuncExist(Stack[-6], Stack[-2], Stack[-1]))
+0x787: Pop(1); Push((bool) Stack[-1] == 0)
+0x788: IF (Stack[-1] == 0) GOTO 0x78b; Pop(1)
+
+0x789: Stack[-5] = (bool) 0
+0x78a: Return(); Pop(2)
+
+0x78b: @@ HasProperty(Stack[-3], Stack[-1])
+0x78c: Pop(0)
+0x78d: Stack[-5] = Stack[-1]
+0x78e: Return(); Pop(2)
+
+0x78f: PushEmpty(int, string, int, float, float, float, int, string, int, float, float, float)
+0x790: PushEmpty(bool, object, string)
+0x791: Stack[-2] = Stack[-18]
+0x792: Stack[-1] = "health"
+0x793: Call 0x783
+
+0x794: Pop(2)
+0x795: Pop(1); Push((bool) Stack[-1] == 0)
+0x796: IF (Stack[-1] == 0) GOTO 0x799; Pop(1)
+
+0x797: Stack[-16] = (float) 0.0
+0x798: Return(); Pop(12)
+
+0x799: PushEmpty(bool, object, string)
+0x79a: Stack[-2] = Stack[-18]
+0x79b: Stack[-1] = "armor"
+0x79c: Call 0x783
+
+0x79d: Pop(2)
+0x79e: Pop(1); Push((bool) Stack[-1] == 0)
+0x79f: IF (Stack[-1] == 0) GOTO 0x7a2; Pop(1)
+
+0x7a0: Stack[-6] = (int) 0
+0x7a1: GOTO 0x7a5
+
+0x7a2: Push("armor")
+0x7a3: @@ GetProperty(Stack[-1], Stack[-7])
+0x7a4: Pop(1)
+0x7a5: Push("armor_")
+0x7a6: PushEmpty(string, int)
+0x7a7: Stack[-1] = Stack[-16]
+0x7a8: Call 0x76c
+
+0x7a9: Pop(1)
+0x7aa: Stack[-7] = Stack[-2] + Stack[-1]; Pop(2);
+0x7ab: PushEmpty(bool, object, string)
+0x7ac: Stack[-2] = Stack[-18]
+0x7ad: Stack[-1] = Stack[-8]
+0x7ae: Call 0x783
+
+0x7af: Pop(2)
+0x7b0: Pop(1); Push((bool) Stack[-1] == 0)
+0x7b1: IF (Stack[-1] == 0) GOTO 0x7b4; Pop(1)
+
+0x7b2: Stack[-4] = (int) 0
+0x7b3: GOTO 0x7b6
+
+0x7b4: @@ GetProperty(Stack[-5], Stack[-4])
+0x7b5: Pop(0)
+0x7b6: PushEmpty(float, float, float)
+0x7b7: Pop(0); Push(Stack[-9] + Stack[-7]);
+0x7b8: Push((float)100.0)
+0x7b9: Stack[-4] = Stack[-2] / Stack[-1]; Pop(2);
+0x7ba: Stack[-1] = (int) 1
+0x7bb: Call 0x901
+
+0x7bc: Stack[-6] = Stack[-3]
+0x7bd: Pop(3)
+0x7be: Push("health")
+0x7bf: @@ GetProperty(Stack[-1], Stack[-3])
+0x7c0: Pop(1)
+0x7c1: Push((int) 1)
+0x7c2: Pop(1); Push(Stack[-1] - Stack[-4]);
+0x7c3: Stack[-2] = Stack[-15] * Stack[-1]; Pop(1);
+0x7c4: Push("health")
+0x7c5: PushEmpty(float, float, float, float)
+0x7c6: Stack[-3] = Stack[-7] - Stack[-6]; Pop(0);
+0x7c7: Stack[-2] = (int) 0
+0x7c8: Stack[-1] = (int) 1
+0x7c9: Call 0x908
+
+0x7ca: Pop(3)
+0x7cb: @@ SetProperty(Stack[-2], Stack[-1])
+0x7cc: Pop(2)
+0x7cd: Stack[-16] = Stack[-1]
+0x7ce: Return(); Pop(12)
+
+0x7cf: PushEmpty(bool, bool)
+0x7d0: @@ IsDead(Stack[-1])
+0x7d1: Pop(0)
+0x7d2: Stack[-4] = Stack[-1]
+0x7d3: Return(); Pop(2)
+
+0x7d4: PushEmpty(object, object, object, object)
+0x7d5: Pop(0); Push((bool) Stack[-5] == 0)
+0x7d6: IF (Stack[-1] == 0) GOTO 0x7d9; Pop(1)
+
+0x7d7: Stack[-6] = (bool) 0
+0x7d8: Return(); Pop(4)
+
+0x7d9: PushEmpty(bool)
+0x7da: Stack[-1] = (bool) 0
+0x7db: Push("IsDead")
+0x7dc: Push((int) 1)
+0x7dd: Pop(2); Push(IsFuncExist(Stack[-8], Stack[-2], Stack[-1]))
+0x7de: IF (Stack[-1] == 0) GOTO 0x7e5; Pop(1)
+
+0x7df: PushEmpty(bool, object)
+0x7e0: Stack[-1] = Stack[-8]
+0x7e1: Call 0x7cf
+
+0x7e2: Pop(1)
+0x7e3: IF (Stack[-1] == 0) GOTO 0x7e5; Pop(1)
+
+0x7e4: Stack[-1] = (bool) 1
+0x7e5: IF (Stack[-1] == 0) GOTO 0x7e8; Pop(1)
+
+0x7e6: Stack[-6] = (bool) 0
+0x7e7: Return(); Pop(4)
+
+0x7e8: @ GetScene(Stack[-2])
+0x7e9: Pop(0)
+0x7ea: Pop(0); Push((bool) Stack[-2] == 0)
+0x7eb: IF (Stack[-1] == 0) GOTO 0x7ee; Pop(1)
+
+0x7ec: Stack[-6] = (bool) 0
+0x7ed: Return(); Pop(4)
+
+0x7ee: @@ GetScene(Stack[-1])
+0x7ef: Pop(0)
+0x7f0: Pop(0); Push((bool) Stack[-2] != Stack[-1])
+0x7f1: IF (Stack[-1] == 0) GOTO 0x7f4; Pop(1)
+
+0x7f2: Stack[-6] = (bool) 0
+0x7f3: Return(); Pop(4)
+
+0x7f4: Stack[-6] = (bool) 1
+0x7f5: Return(); Pop(4)
+
+0x7f6: Stack[-1] = 0
+0x7f7: Stack[-2] = 0
+0x7f8: PushEmpty(int, int)
+0x7f9: PushEmpty(bool, object)
+0x7fa: Stack[-1] = Stack[-5]
+0x7fb: Call 0x7d4
+
+0x7fc: Pop(1)
+0x7fd: Pop(1); Push((bool) Stack[-1] == 0)
+0x7fe: IF (Stack[-1] == 0) GOTO 0x801; Pop(1)
+
+0x7ff: Stack[-4] = (bool) 0
+0x800: Return(); Pop(2)
+
+0x801: PushEmpty(bool, object, string)
+0x802: Stack[-2] = Stack[-6]
+0x803: Stack[-1] = "noaccess"
+0x804: Call 0x783
+
+0x805: Pop(2)
+0x806: Pop(1); Push((bool) Stack[-1] == 0)
+0x807: IF (Stack[-1] == 0) GOTO 0x80a; Pop(1)
+
+0x808: Stack[-4] = (bool) 1
+0x809: Return(); Pop(2)
+
+0x80a: Push("noaccess")
+0x80b: @@ GetProperty(Stack[-1], Stack[-2])
+0x80c: Pop(1)
+0x80d: Push((int) 0)
+0x80e: Stack[-5] = Stack[-2] == Stack[-1]; Pop(1);
+0x80f: Return(); Pop(2)
+
+0x810: PushEmpty(object, object, cvector, float, int, cvector, cvector, cvector, cvector, string, object, object, cvector, float, int, cvector, cvector, cvector, cvector, string)
+0x811: PushEmpty(bool)
+0x812: Stack[-1] = (bool) 0
+0x813: Push((int) 4)
+0x814: Pop(1); Push((bool) Stack[-24] != Stack[-1])
+0x815: IF (Stack[-1] == 0) GOTO 0x81a; Pop(1)
+
+0x816: Push((int) 5)
+0x817: Pop(1); Push((bool) Stack[-24] != Stack[-1])
+0x818: IF (Stack[-1] == 0) GOTO 0x81a; Pop(1)
+
+0x819: Stack[-1] = (bool) 1
+0x81a: IF (Stack[-1] == 0) GOTO 0x82d; Pop(1)
+
+0x81b: @ GetScene(Stack[-10])
+0x81c: Pop(0)
+0x81d: @ GetPosition(Stack[-8])
+0x81e: Pop(0)
+0x81f: @ GetEyesHeight(Stack[-7])
+0x820: Pop(0)
+0x821: Push(CvectorIndex(Stack[-8], 1))
+0x822: Push((int) 2)
+0x823: Pop(1); Push(Stack[-9] / Stack[-1]);
+0x824: Stack[-2] = Stack[-2] + Stack[-1]; Pop(1);
+0x825: CvectorIndex(Stack[-9], 1) = Stack[-1];
+0x826: Push("scripted")
+0x827: Push(CVector(0.0, 0.0, 1.0))
+0x828: Push("blood.xml")
+0x829: @ AddActorByType(Stack[-12], Stack[-3], Stack[-13], Stack[-11], Stack[-2], Stack[-1])
+0x82a: Pop(3)
+0x82b: Stack[-9] = 0
+0x82c: Stack[-10] = 0
+0x82d: Pop(0); Push((bool) Stack[-23] == 0)
+0x82e: IF (Stack[-1] == 0) GOTO 0x830; Pop(1)
+
+0x82f: Return(); Pop(20)
+
+0x830: @ GetSecondaryAnimationType(Stack[-6])
+0x831: Pop(0)
+0x832: Push((int) 0)
+0x833: Pop(1); Push((bool) Stack[-7] < Stack[-1])
+0x834: IF (Stack[-1] == 0) GOTO 0x836; Pop(1)
+
+0x835: Return(); Pop(20)
+
+0x836: @@ GetPosition(Stack[-5])
+0x837: Pop(0)
+0x838: @ GetPosition(Stack[-4])
+0x839: Pop(0)
+0x83a: @ GetDirection(Stack[-3])
+0x83b: Pop(0)
+0x83c: Stack[-2] = Stack[-4] - Stack[-5]; Pop(0);
+0x83d: Push(CvectorIndex(Stack[-2], 0))
+0x83e: Push(CvectorIndex(Stack[-4], 0))
+0x83f: Pop(2); Push(Stack[-2] * Stack[-1]);
+0x840: Push(CvectorIndex(Stack[-3], 2))
+0x841: Push(CvectorIndex(Stack[-5], 2))
+0x842: Pop(2); Push(Stack[-2] * Stack[-1]);
+0x843: Pop(2); Push(Stack[-2] + Stack[-1]);
+0x844: Push((int) 0)
+0x845: Pop(2); Push((bool) Stack[-2] >= Stack[-1])
+0x846: IF (Stack[-1] == 0) GOTO 0x849; Pop(1)
+
+0x847: Stack[-1] = "fhit"
+0x848: GOTO 0x84a
+
+0x849: Stack[-1] = "bhit"
+0x84a: Push("hit_react")
+0x84b: Push("1")
+0x84c: Pop(1); Push(Stack[-3] + Stack[-1]);
+0x84d: Push("2")
+0x84e: Pop(1); Push(Stack[-4] + Stack[-1]);
+0x84f: Push((int) -10)
+0x850: @ FadeSecondaryAnimation(Stack[-4], Stack[-3], Stack[-2], Stack[-1])
+0x851: Pop(4)
+0x852: Return(); Pop(20)
+
+0x853: PushEmpty(cvector, cvector, cvector, cvector, cvector, cvector)
+0x854: @@ GetPosition(Stack[-3])
+0x855: Pop(0)
+0x856: @ GetPosition(Stack[-2])
+0x857: Pop(0)
+0x858: Stack[-1] = Stack[-3] - Stack[-2]; Pop(0);
+0x859: Push(CvectorIndex(Stack[-1], 0))
+0x85a: Push(CvectorIndex(Stack[-2], 2))
+0x85b: @ RotateAsync(Stack[-2], Stack[-1])
+0x85c: Pop(2)
+0x85d: Return(); Pop(6)
+
+0x85e: PushEmpty(bool, bool)
+0x85f: @ IsLoaded(Stack[-1])
+0x860: Pop(0)
+0x861: Stack[-3] = Stack[-1]
+0x862: Return(); Pop(2)
+
+0x863: PushEmpty(float, cvector, cvector, cvector, cvector, cvector, cvector, bool, float, cvector, cvector, cvector, cvector, cvector, cvector, bool)
+0x864: @@ GetPosition(Stack[-7])
+0x865: Pop(0)
+0x866: @@ GetEyesHeight(Stack[-8])
+0x867: Pop(0)
+0x868: Push(CvectorIndex(Stack[-7], 1))
+0x869: Stack[-1] = Stack[-1] + Stack[-9]; Pop(0);
+0x86a: CvectorIndex(Stack[-8], 1) = Stack[-1];
+0x86b: @ GetPosition(Stack[-6])
+0x86c: Pop(0)
+0x86d: @ GetEyesHeight(Stack[-8])
+0x86e: Pop(0)
+0x86f: Push(CvectorIndex(Stack[-6], 1))
+0x870: Stack[-1] = Stack[-1] + Stack[-9]; Pop(0);
+0x871: CvectorIndex(Stack[-7], 1) = Stack[-1];
+0x872: Stack[-5] = Stack[-7] - Stack[-6]; Pop(0);
+0x873: Push(CvectorIndex(Stack[-5], 1))
+0x874: Stack[-1] = (int) 0
+0x875: CvectorIndex(Stack[-6], 1) = Stack[-1];
+0x876: Pop(0); Push(Stack[-5] | Stack[-5]);
+0x877: Pop(1); Push(Sqrt(Stack[-1]))
+0x878: Stack[-6] = Stack[-6] / Stack[-1]; Pop(1);
+0x879: Stack[-4] = -Stack[-5]; Pop(0);
+0x87a: Push((int) 70)
+0x87b: Pop(1); Push(Stack[-6] * Stack[-1]);
+0x87c: PushEmpty(cvector, cvector)
+0x87d: Push(CVector(0.0, 1.0, 0.0))
+0x87e: Stack[-2] = Stack[-8] ^ Stack[-1]; Pop(1);
+0x87f: Call 0x8f7
+
+0x880: Pop(1)
+0x881: Push((int) 25)
+0x882: Pop(2); Push(Stack[-2] * Stack[-1]);
+0x883: Pop(2); Push(Stack[-2] + Stack[-1]);
+0x884: Push(CVector(0.0, 10.0, 0.0))
+0x885: Stack[-5] = Stack[-2] - Stack[-1]; Pop(2);
+0x886: Stack[-2] = Stack[-6] + Stack[-3]; Pop(0);
+0x887: @ IsOverrideActive(Stack[-1])
+0x888: Pop(0)
+0x889: Push(Stack[-1])
+0x88a: IF (Stack[-1] == 0) GOTO 0x88d; Pop(1)
+
+0x88b: Stack[-18] = (bool) 0
+0x88c: Return(); Pop(16)
+
+0x88d: @ StopWorld()
+0x88e: Pop(0)
+0x88f: @ CameraTransit(Stack[-2], Stack[-4])
+0x890: Pop(0)
+0x891: Push(CvectorIndex(Stack[-3], 0))
+0x892: Push(CvectorIndex(Stack[-4], 2))
+0x893: @ Rotate(Stack[-2], Stack[-1])
+0x894: Pop(2)
+0x895: @ CameraWaitForPlayFinish()
+0x896: Pop(0)
+0x897: @ ResumeWorld()
+0x898: Pop(0)
+0x899: Stack[-18] = (bool) 1
+0x89a: Return(); Pop(16)
+
+0x89b: PushEmpty()
+0x89c: @ CameraSwitchToNormal()
+0x89d: Pop(0)
+0x89e: Return(); Pop(0)
+
+0x89f: PushEmpty(float, cvector, cvector, cvector, cvector, cvector, cvector, bool, float, cvector, cvector, cvector, cvector, cvector, cvector, bool)
+0x8a0: @@ GetPosition(Stack[-7])
+0x8a1: Pop(0)
+0x8a2: @@ GetEyesHeight(Stack[-8])
+0x8a3: Pop(0)
+0x8a4: Push(CvectorIndex(Stack[-7], 1))
+0x8a5: Stack[-1] = Stack[-1] + Stack[-9]; Pop(0);
+0x8a6: CvectorIndex(Stack[-8], 1) = Stack[-1];
+0x8a7: @ GetPosition(Stack[-6])
+0x8a8: Pop(0)
+0x8a9: @ GetEyesHeight(Stack[-8])
+0x8aa: Pop(0)
+0x8ab: Push(CvectorIndex(Stack[-6], 1))
+0x8ac: Stack[-1] = Stack[-1] + Stack[-9]; Pop(0);
+0x8ad: CvectorIndex(Stack[-7], 1) = Stack[-1];
+0x8ae: Stack[-5] = Stack[-7] - Stack[-6]; Pop(0);
+0x8af: Push(CvectorIndex(Stack[-5], 1))
+0x8b0: Stack[-1] = (int) 0
+0x8b1: CvectorIndex(Stack[-6], 1) = Stack[-1];
+0x8b2: Pop(0); Push(Stack[-5] | Stack[-5]);
+0x8b3: Pop(1); Push(Sqrt(Stack[-1]))
+0x8b4: Stack[-6] = Stack[-6] / Stack[-1]; Pop(1);
+0x8b5: Stack[-4] = -Stack[-5]; Pop(0);
+0x8b6: Push((int) 70)
+0x8b7: Pop(1); Push(Stack[-6] * Stack[-1]);
+0x8b8: Push(CVector(0.0, 10.0, 0.0))
+0x8b9: Stack[-5] = Stack[-2] - Stack[-1]; Pop(2);
+0x8ba: Stack[-2] = Stack[-6] + Stack[-3]; Pop(0);
+0x8bb: @ IsOverrideActive(Stack[-1])
+0x8bc: Pop(0)
+0x8bd: Push(Stack[-1])
+0x8be: IF (Stack[-1] == 0) GOTO 0x8c1; Pop(1)
+
+0x8bf: Stack[-18] = (bool) 0
+0x8c0: Return(); Pop(16)
+
+0x8c1: @ StopWorld()
+0x8c2: Pop(0)
+0x8c3: @ CameraTransit(Stack[-2], Stack[-4])
+0x8c4: Pop(0)
+0x8c5: Push(CvectorIndex(Stack[-3], 0))
+0x8c6: Push(CvectorIndex(Stack[-4], 2))
+0x8c7: @ Rotate(Stack[-2], Stack[-1])
+0x8c8: Pop(2)
+0x8c9: @ CameraWaitForPlayFinish()
+0x8ca: Pop(0)
+0x8cb: @ ResumeWorld()
+0x8cc: Pop(0)
+0x8cd: Stack[-18] = (bool) 1
+0x8ce: Return(); Pop(16)
+
+0x8cf: PushEmpty()
+0x8d0: @ CameraSwitchToNormal()
+0x8d1: Pop(0)
+0x8d2: Return(); Pop(0)
+
+0x8d3: PushEmpty(float, float, float, float)
+0x8d4: Push("playing ")
+0x8d5: Pop(1); Push(Stack[-1] + Stack[-6]);
+0x8d6: @ Trace(Stack[-1])
+0x8d7: Pop(1)
+0x8d8: @ lshGetAnimTimes(Stack[-5], Stack[-2], Stack[-1])
+0x8d9: Pop(0)
+0x8da: @ lshPlayAnimation(Stack[-2], Stack[-1])
+0x8db: Pop(0)
+0x8dc: Push("start: ")
+0x8dd: Pop(1); Push(Stack[-1] + Stack[-3]);
+0x8de: @ Trace(Stack[-1])
+0x8df: Pop(1)
+0x8e0: Push("end: ")
+0x8e1: Pop(1); Push(Stack[-1] + Stack[-2]);
+0x8e2: @ Trace(Stack[-1])
+0x8e3: Pop(1)
+0x8e4: Return(); Pop(4)
+
+0x8e5: PushEmpty(float, cvector, float, cvector)
+0x8e6: @@ GetEyesHeight(Stack[-2])
+0x8e7: Pop(0)
+0x8e8: Stack[-1] = CVector(0.0, 0.0, 0.0)
+0x8e9: Push(CvectorIndex(Stack[-1], 1))
+0x8ea: Stack[-1] = Stack[-3]
+0x8eb: CvectorIndex(Stack[-2], 1) = Stack[-1];
+0x8ec: Push("head")
+0x8ed: @ LookAsync(Stack[-6], Stack[-1], Stack[-2])
+0x8ee: Pop(1)
+0x8ef: Return(); Pop(4)
+
+0x8f0: PushEmpty(bool)
+0x8f1: Call 0xacf
+
+0x8f2: Pop(0)
+0x8f3: IF (Stack[-1] == 0) GOTO 0x8f6; Pop(1)
+
+0x8f4: @ lshStopSpeech()
+0x8f5: Pop(0)
+0x8f6: Return(); Pop(0)
+
+0x8f7: PushEmpty(float, float)
+0x8f8: Pop(0); Push(Stack[-3] | Stack[-3]);
+0x8f9: Stack[-2] = Sqrt(Stack[-1]); Pop(1);
+0x8fa: Push((float)0.0)
+0x8fb: Pop(1); Push((bool) Stack[-2] < Stack[-1])
+0x8fc: IF (Stack[-1] == 0) GOTO 0x8ff; Pop(1)
+
+0x8fd: Stack[-4] = CVector(0.0, 0.0, 0.0)
+0x8fe: Return(); Pop(2)
+
+0x8ff: Stack[-4] = Stack[-3] / Stack[-1]; Pop(0);
+0x900: Return(); Pop(2)
+
+0x901: PushEmpty()
+0x902: Pop(0); Push((bool) Stack[-2] < Stack[-1])
+0x903: IF (Stack[-1] == 0) GOTO 0x906; Pop(1)
+
+0x904: Stack[-3] = Stack[-2]
+0x905: GOTO 0x907
+
+0x906: Stack[-3] = Stack[-1]
+0x907: Return(); Pop(0)
+
+0x908: PushEmpty()
+0x909: Pop(0); Push((bool) Stack[-3] < Stack[-2])
+0x90a: IF (Stack[-1] == 0) GOTO 0x90d; Pop(1)
+
+0x90b: Stack[-4] = Stack[-2]
+0x90c: Return(); Pop(0)
+
+0x90d: Pop(0); Push((bool) Stack[-3] > Stack[-1])
+0x90e: IF (Stack[-1] == 0) GOTO 0x911; Pop(1)
+
+0x90f: Stack[-4] = Stack[-1]
+0x910: Return(); Pop(0)
+
+0x911: Stack[-4] = Stack[-3]
+0x912: Return(); Pop(0)
+
+0x913: PushEmpty()
+0x914: Push(CvectorIndex(Stack[-2], 0))
+0x915: Push(CvectorIndex(Stack[-2], 0))
+0x916: Pop(2); Push(Stack[-2] * Stack[-1]);
+0x917: Push(CvectorIndex(Stack[-3], 2))
+0x918: Push(CvectorIndex(Stack[-3], 2))
+0x919: Pop(2); Push(Stack[-2] * Stack[-1]);
+0x91a: Stack[-5] = Stack[-2] + Stack[-1]; Pop(2);
+0x91b: Return(); Pop(0)
+
+0x91c: PushEmpty()
+0x91d: Push(CvectorIndex(Stack[-1], 0))
+0x91e: Push(CvectorIndex(Stack[-2], 0))
+0x91f: Pop(2); Push(Stack[-2] * Stack[-1]);
+0x920: Push(CvectorIndex(Stack[-2], 2))
+0x921: Push(CvectorIndex(Stack[-3], 2))
+0x922: Pop(2); Push(Stack[-2] * Stack[-1]);
+0x923: Pop(2); Push(Stack[-2] + Stack[-1]);
+0x924: Stack[-3] = Sqrt(Stack[-1]); Pop(1);
+0x925: Return(); Pop(0)
+
+0x926: PushEmpty()
+0x927: PushEmpty(float, cvector, cvector)
+0x928: Stack[-2] = Stack[-5]
+0x929: Stack[-1] = Stack[-4]
+0x92a: Call 0x913
+
+0x92b: Pop(2)
+0x92c: PushEmpty(float, cvector)
+0x92d: Stack[-1] = Stack[-5]
+0x92e: Call 0x91c
+
+0x92f: Pop(1)
+0x930: PushEmpty(float, cvector)
+0x931: Stack[-1] = Stack[-5]
+0x932: Call 0x91c
+
+0x933: Pop(1)
+0x934: Pop(2); Push(Stack[-2] * Stack[-1]);
+0x935: Stack[-5] = Stack[-2] / Stack[-1]; Pop(2);
+0x936: Return(); Pop(0)
+
+0x937: PushEmpty(float, float)
+0x938: @ GetGameTime(Stack[-1])
+0x939: Pop(0)
+0x93a: Push((int) 1)
+0x93b: PushEmpty(int)
+0x93c: Push((int) 24)
+0x93d: Stack[-2] = Stack[-4] / Stack[-1]; Pop(1);
+0x93e: Stack[-5] = Stack[-2] + Stack[-1]; Pop(2);
+0x93f: Return(); Pop(2)
+
+0x940: PushEmpty()
+0x941: PushEmpty(object)
+0x942: Stack[-1] = Stack[-2]
+0x943: Push(-1, 0); TaskCall(1)
+0x944: Call 0x16
+
+0x945: Pop(-1, 0); TaskReturn
+0x946: Pop(1)
+0x947: Return(); Pop(0)
+
+0x948: PushEmpty(float, float)
+0x949: Push("health")
+0x94a: Pop(1); Push((bool) Stack[-4] == Stack[-1])
+0x94b: IF (Stack[-1] == 0) GOTO 0x954; Pop(1)
+
+0x94c: Push("health")
+0x94d: @ GetProperty(Stack[-1], Stack[-2])
+0x94e: Pop(1)
+0x94f: Push((int) 0)
+0x950: Pop(1); Push((bool) Stack[-2] <= Stack[-1])
+0x951: IF (Stack[-1] == 0) GOTO 0x954; Pop(1)
+
+0x952: @ SignalDeath(Stack[-4])
+0x953: Pop(0)
+0x954: Return(); Pop(2)
+
+0x955: PushEmpty()
+0x956: PushEmpty(object)
+0x957: Stack[-1] = Stack[-2]
+0x958: Call 0x940
+
+0x959: Pop(1)
+0x95a: Return(); Pop(0)
+
+0x95b: PushEmpty()
+0x95c: PushEmpty(object, int, float)
+0x95d: Stack[-3] = Stack[-7]
+0x95e: Stack[-2] = Stack[-6]
+0x95f: Stack[-1] = Stack[-5]
+0x960: Call 0x810
+
+0x961: Pop(3)
+0x962: Return(); Pop(0)
+
+0x963: PushEmpty(string, string)
+0x964: Stack[-1] = "idle"
+0x965: Push(Stack[-3])
+0x966: IF (Stack[-1] == 0) GOTO 0x968; Pop(1)
+
+0x967: Stack[-1] = Stack[-1] + Stack[-3]; Pop(0);
+0x968: Stack[-4] = Stack[-1]
+0x969: Return(); Pop(2)
+
+0x96a: PushEmpty(int, bool, int, bool)
+0x96b: Stack[-2] = (int) 0
+0x96c: Push("all")
+0x96d: PushEmpty(string, int)
+0x96e: Stack[-1] = Stack[-5]
+0x96f: Call 0x963
+
+0x970: Pop(1)
+0x971: @ HasAnimation(Stack[-3], Stack[-2], Stack[-1])
+0x972: Pop(2)
+0x973: Pop(0); Push((bool) Stack[-1] == 0)
+0x974: IF (Stack[-1] == 0) GOTO 0x976; Pop(1)
+
+0x975: GOTO 0x979
+
+0x976: Push((int) 1)
+0x977: Stack[-3] = Stack[-3] + Stack[-1]; Pop(1);
+0x978: GOTO 0x96c
+
+0x979: Stack[-5] = Stack[-2]
+0x97a: Return(); Pop(4)
+
+0x97b: PushEmpty()
+0x97c: PushEmpty(bool)
+0x97d: Call 0xaff
+
+0x97e: Pop(0)
+0x97f: IF (Stack[-1] == 0) GOTO 0x982; Pop(1)
+
+0x980: Stack[-2] = (int) 2
+0x981: GOTO 0x983
+
+0x982: Stack[-2] = (int) 0
+0x983: Return(); Pop(0)
+
+0x984: PushEmpty()
+0x985: PushEmpty(object)
+0x986: Stack[-1] = Stack[-2]
+0x987: Push(-1, 1); TaskCall(4)
+0x988: Call 0x29b
+
+0x989: Pop(-1, 1); TaskReturn
+0x98a: Pop(1)
+0x98b: Return(); Pop(0)
+
+0x98c: PushEmpty()
+0x98d: PushEmpty(bool, object)
+0x98e: Stack[-1] = Stack[-3]
+0x98f: Call 0x7f8
+
+0x990: Pop(1)
+0x991: IF (Stack[-1] == 0) GOTO 0x994; Pop(1)
+
+0x992: Stack[-2] = (int) 2
+0x993: GOTO 0x995
+
+0x994: Stack[-2] = (int) 0
+0x995: Return(); Pop(0)
+
+0x996: PushEmpty()
+0x997: PushEmpty(object)
+0x998: Stack[-1] = Stack[-2]
+0x999: Push(-1, 5); TaskCall(5)
+0x99a: Call 0x37d
+
+0x99b: Pop(-1, 5); TaskReturn
+0x99c: Pop(1)
+0x99d: Return(); Pop(0)
+
+0x99e: PushEmpty()
+0x99f: PushEmpty(int, object)
+0x9a0: Stack[-1] = Stack[-3]
+0x9a1: Call 0x98c
+
+0x9a2: Stack[-4] = Stack[-2]
+0x9a3: Pop(2)
+0x9a4: Return(); Pop(0)
+
+0x9a5: PushEmpty()
+0x9a6: PushEmpty(object)
+0x9a7: Stack[-1] = Stack[-2]
+0x9a8: Call 0x996
+
+0x9a9: Pop(1)
+0x9aa: Return(); Pop(0)
+
+0x9ab: PushEmpty()
+0x9ac: Stack[-2] = (int) 0
+0x9ad: Return(); Pop(0)
+
+0x9ae: PushEmpty()
+0x9af: Return(); Pop(0)
+
+0x9b0: PushEmpty()
+0x9b1: Push("killme")
+0x9b2: Pop(1); Push((bool) Stack[-3] == Stack[-1])
+0x9b3: IF (Stack[-1] == 0) GOTO 0x9ba; Pop(1)
+
+0x9b4: PushEmpty(int, object)
+0x9b5: Stack[-1] = Stack[-3]
+0x9b6: Call 0x9c6
+
+0x9b7: Stack[-5] = Stack[-2]
+0x9b8: Pop(2)
+0x9b9: Return(); Pop(0)
+
+0x9ba: Stack[-3] = (int) 0
+0x9bb: Return(); Pop(0)
+
+0x9bc: PushEmpty()
+0x9bd: Push("killme")
+0x9be: Pop(1); Push((bool) Stack[-3] == Stack[-1])
+0x9bf: IF (Stack[-1] == 0) GOTO 0x9c5; Pop(1)
+
+0x9c0: PushEmpty(object)
+0x9c1: Stack[-1] = Stack[-2]
+0x9c2: Call 0x9d8
+
+0x9c3: Pop(1)
+0x9c4: Return(); Pop(0)
+
+0x9c5: Return(); Pop(0)
+
+0x9c6: PushEmpty()
+0x9c7: PushEmpty(bool, object)
+0x9c8: Stack[-1] = Stack[-3]
+0x9c9: Call 0x7f8
+
+0x9ca: Pop(1)
+0x9cb: Pop(1); Push((bool) Stack[-1] == 0)
+0x9cc: IF (Stack[-1] == 0) GOTO 0x9cf; Pop(1)
+
+0x9cd: Stack[-2] = (int) 0
+0x9ce: Return(); Pop(0)
+
+0x9cf: PushEmpty(bool, object)
+0x9d0: Stack[-1] = Stack[-3]
+0x9d1: Call 0xb01
+
+0x9d2: Pop(1)
+0x9d3: IF (Stack[-1] == 0) GOTO 0x9d6; Pop(1)
+
+0x9d4: Stack[-2] = (int) 2
+0x9d5: GOTO 0x9d7
+
+0x9d6: Stack[-2] = (int) 0
+0x9d7: Return(); Pop(0)
+
+0x9d8: PushEmpty()
+0x9d9: PushEmpty(object)
+0x9da: Stack[-1] = Stack[-2]
+0x9db: Call 0x996
+
+0x9dc: Pop(1)
+0x9dd: Return(); Pop(0)
+
+0x9de: PushEmpty()
+0x9df: Stack[-2] = (int) 2
+0x9e0: Return(); Pop(0)
+
+0x9e1: PushEmpty()
+0x9e2: PushEmpty(object)
+0x9e3: Stack[-1] = Stack[-2]
+0x9e4: Call 0xad9
+
+0x9e5: Pop(1)
+0x9e6: Return(); Pop(0)
+
+0x9e7: Return(); Pop(0)
+
+0x9e8: PushEmpty(int, int)
+0x9e9: Push("player")
+0x9ea: @ GetVariable(Stack[-1], Stack[-2])
+0x9eb: Pop(1)
+0x9ec: Push((int) 0)
+0x9ed: Pop(1); Push((bool) Stack[-2] == Stack[-1])
+0x9ee: IF (Stack[-1] == 0) GOTO 0x9f2; Pop(1)
+
+0x9ef: Stack[-3] = (int) 200001
+0x9f0: Return(); Pop(2)
+
+0x9f1: GOTO 0x9f7
+
+0x9f2: Push((int) 1)
+0x9f3: Pop(1); Push((bool) Stack[-2] == Stack[-1])
+0x9f4: IF (Stack[-1] == 0) GOTO 0x9f7; Pop(1)
+
+0x9f5: Stack[-3] = (int) 200002
+0x9f6: Return(); Pop(2)
+
+0x9f7: Stack[-3] = (int) 200003
+0x9f8: Return(); Pop(2)
+
+0x9f9: PushEmpty(int, int, int, bool, int, int, int, bool)
+0x9fa: Pop(0); Push((bool) Stack[-10] > Stack[-9])
+0x9fb: IF (Stack[-1] == 0) GOTO 0xa00; Pop(1)
+
+0x9fc: Push("GenerateMoney: iMin > iMax")
+0x9fd: @ Trace(Stack[-1])
+0x9fe: Pop(1)
+0x9ff: Return(); Pop(8)
+
+0xa00: Stack[-4] = (int) 0
+0xa01: Pop(0); Push((bool) Stack[-10] != Stack[-9])
+0xa02: IF (Stack[-1] == 0) GOTO 0xa07; Pop(1)
+
+0xa03: Pop(0); Push(Stack[-9] - Stack[-10]);
+0xa04: @ irand(Stack[-4], Stack[-1])
+0xa05: Pop(1)
+0xa06: GOTO 0xa0b
+
+0xa07: Push((int) 0)
+0xa08: Pop(1); Push((bool) Stack[-11] == Stack[-1])
+0xa09: IF (Stack[-1] == 0) GOTO 0xa0b; Pop(1)
+
+0xa0a: Return(); Pop(8)
+
+0xa0b: Stack[-4] = Stack[-4] + Stack[-10]; Pop(0);
+0xa0c: Push((int) 0)
+0xa0d: Pop(1); Push((bool) Stack[-5] == Stack[-1])
+0xa0e: IF (Stack[-1] == 0) GOTO 0xa10; Pop(1)
+
+0xa0f: Return(); Pop(8)
+
+0xa10: Push("Money")
+0xa11: @ GetInvItemByName(Stack[-3], Stack[-1])
+0xa12: Pop(1)
+0xa13: Push((int) 0)
+0xa14: @ AddItem(Stack[-2], Stack[-3], Stack[-1], Stack[-5])
+0xa15: Pop(1)
+0xa16: Return(); Pop(8)
+
+0xa17: PushEmpty(int, bool, int, bool)
+0xa18: Push(Stack[-5])
+0xa19: IF (Stack[-1] == 0) GOTO 0xa70; Pop(1)
+
+0xa1a: PushEmpty(int, int)
+0xa1b: Stack[-2] = (int) 0
+0xa1c: Push((int) 100)
+0xa1d: PushEmpty(int)
+0xa1e: Call 0x937
+
+0xa1f: Pop(0)
+0xa20: Push((int) 100)
+0xa21: Pop(2); Push(Stack[-2] * Stack[-1]);
+0xa22: Stack[-3] = Stack[-2] + Stack[-1]; Pop(2);
+0xa23: Call 0x9f9
+
+0xa24: Pop(2)
+0xa25: Push((int) 9)
+0xa26: @ irand(Stack[-3], Stack[-1])
+0xa27: Pop(1)
+0xa28: Push((int) 0)
+0xa29: Pop(1); Push((bool) Stack[-3] == Stack[-1])
+0xa2a: IF (Stack[-1] == 0) GOTO 0xa34; Pop(1)
+
+0xa2b: PushEmpty(int, string)
+0xa2c: Stack[-1] = "lemon"
+0xa2d: Call 0xac6
+
+0xa2e: Pop(1)
+0xa2f: Push((int) 0)
+0xa30: Push((int) 1)
+0xa31: @ AddItem(Stack[-4], Stack[-3], Stack[-2], Stack[-1])
+0xa32: Pop(3)
+0xa33: GOTO 0xa6f
+
+0xa34: Push((int) 1)
+0xa35: Pop(1); Push((bool) Stack[-3] == Stack[-1])
+0xa36: IF (Stack[-1] == 0) GOTO 0xa40; Pop(1)
+
+0xa37: PushEmpty(int, string)
+0xa38: Stack[-1] = "rusk"
+0xa39: Call 0xac6
+
+0xa3a: Pop(1)
+0xa3b: Push((int) 0)
+0xa3c: Push((int) 1)
+0xa3d: @ AddItem(Stack[-4], Stack[-3], Stack[-2], Stack[-1])
+0xa3e: Pop(3)
+0xa3f: GOTO 0xa6f
+
+0xa40: Push((int) 2)
+0xa41: Pop(1); Push((bool) Stack[-3] == Stack[-1])
+0xa42: IF (Stack[-1] == 0) GOTO 0xa4c; Pop(1)
+
+0xa43: PushEmpty(int, string)
+0xa44: Stack[-1] = "hook"
+0xa45: Call 0xac6
+
+0xa46: Pop(1)
+0xa47: Push((int) 0)
+0xa48: Push((int) 1)
+0xa49: @ AddItem(Stack[-4], Stack[-3], Stack[-2], Stack[-1])
+0xa4a: Pop(3)
+0xa4b: GOTO 0xa6f
+
+0xa4c: Push((int) 4)
+0xa4d: Pop(1); Push((bool) Stack[-3] == Stack[-1])
+0xa4e: IF (Stack[-1] == 0) GOTO 0xa58; Pop(1)
+
+0xa4f: PushEmpty(int, string)
+0xa50: Stack[-1] = "syringe"
+0xa51: Call 0xac6
+
+0xa52: Pop(1)
+0xa53: Push((int) 0)
+0xa54: Push((int) 1)
+0xa55: @ AddItem(Stack[-4], Stack[-3], Stack[-2], Stack[-1])
+0xa56: Pop(3)
+0xa57: GOTO 0xa6f
+
+0xa58: Push((int) 5)
+0xa59: Pop(1); Push((bool) Stack[-3] == Stack[-1])
+0xa5a: IF (Stack[-1] == 0) GOTO 0xa64; Pop(1)
+
+0xa5b: PushEmpty(int, string)
+0xa5c: Stack[-1] = "watch"
+0xa5d: Call 0xac6
+
+0xa5e: Pop(1)
+0xa5f: Push((int) 0)
+0xa60: Push((int) 1)
+0xa61: @ AddItem(Stack[-4], Stack[-3], Stack[-2], Stack[-1])
+0xa62: Pop(3)
+0xa63: GOTO 0xa6f
+
+0xa64: Push((int) 6)
+0xa65: Pop(1); Push((bool) Stack[-3] == Stack[-1])
+0xa66: IF (Stack[-1] == 0) GOTO 0xa6f; Pop(1)
+
+0xa67: PushEmpty(int, string)
+0xa68: Stack[-1] = "razor"
+0xa69: Call 0xac6
+
+0xa6a: Pop(1)
+0xa6b: Push((int) 0)
+0xa6c: Push((int) 1)
+0xa6d: @ AddItem(Stack[-4], Stack[-3], Stack[-2], Stack[-1])
+0xa6e: Pop(3)
+0xa6f: GOTO 0xac5
+
+0xa70: PushEmpty(int, int)
+0xa71: Stack[-2] = (int) 0
+0xa72: Push((int) 50)
+0xa73: PushEmpty(int)
+0xa74: Call 0x937
+
+0xa75: Pop(0)
+0xa76: Push((int) 50)
+0xa77: Pop(2); Push(Stack[-2] * Stack[-1]);
+0xa78: Stack[-3] = Stack[-2] + Stack[-1]; Pop(2);
+0xa79: Call 0x9f9
+
+0xa7a: Pop(2)
+0xa7b: Push((int) 8)
+0xa7c: @ irand(Stack[-3], Stack[-1])
+0xa7d: Pop(1)
+0xa7e: Push((int) 0)
+0xa7f: Pop(1); Push((bool) Stack[-3] == Stack[-1])
+0xa80: IF (Stack[-1] == 0) GOTO 0xa8a; Pop(1)
+
+0xa81: PushEmpty(int, string)
+0xa82: Stack[-1] = "beads"
+0xa83: Call 0xac6
+
+0xa84: Pop(1)
+0xa85: Push((int) 0)
+0xa86: Push((int) 1)
+0xa87: @ AddItem(Stack[-4], Stack[-3], Stack[-2], Stack[-1])
+0xa88: Pop(3)
+0xa89: GOTO 0xac5
+
+0xa8a: Push((int) 1)
+0xa8b: Pop(1); Push((bool) Stack[-3] == Stack[-1])
+0xa8c: IF (Stack[-1] == 0) GOTO 0xa96; Pop(1)
+
+0xa8d: PushEmpty(int, string)
+0xa8e: Stack[-1] = "bracelet"
+0xa8f: Call 0xac6
+
+0xa90: Pop(1)
+0xa91: Push((int) 0)
+0xa92: Push((int) 1)
+0xa93: @ AddItem(Stack[-4], Stack[-3], Stack[-2], Stack[-1])
+0xa94: Pop(3)
+0xa95: GOTO 0xac5
+
+0xa96: Push((int) 2)
+0xa97: Pop(1); Push((bool) Stack[-3] == Stack[-1])
+0xa98: IF (Stack[-1] == 0) GOTO 0xaa2; Pop(1)
+
+0xa99: PushEmpty(int, string)
+0xa9a: Stack[-1] = "ear_ring"
+0xa9b: Call 0xac6
+
+0xa9c: Pop(1)
+0xa9d: Push((int) 0)
+0xa9e: Push((int) 1)
+0xa9f: @ AddItem(Stack[-4], Stack[-3], Stack[-2], Stack[-1])
+0xaa0: Pop(3)
+0xaa1: GOTO 0xac5
+
+0xaa2: Push((int) 3)
+0xaa3: Pop(1); Push((bool) Stack[-3] == Stack[-1])
+0xaa4: IF (Stack[-1] == 0) GOTO 0xaae; Pop(1)
+
+0xaa5: PushEmpty(int, string)
+0xaa6: Stack[-1] = "gold_ring"
+0xaa7: Call 0xac6
+
+0xaa8: Pop(1)
+0xaa9: Push((int) 0)
+0xaaa: Push((int) 1)
+0xaab: @ AddItem(Stack[-4], Stack[-3], Stack[-2], Stack[-1])
+0xaac: Pop(3)
+0xaad: GOTO 0xac5
+
+0xaae: Push((int) 4)
+0xaaf: Pop(1); Push((bool) Stack[-3] == Stack[-1])
+0xab0: IF (Stack[-1] == 0) GOTO 0xaba; Pop(1)
+
+0xab1: PushEmpty(int, string)
+0xab2: Stack[-1] = "silver_ring"
+0xab3: Call 0xac6
+
+0xab4: Pop(1)
+0xab5: Push((int) 0)
+0xab6: Push((int) 1)
+0xab7: @ AddItem(Stack[-4], Stack[-3], Stack[-2], Stack[-1])
+0xab8: Pop(3)
+0xab9: GOTO 0xac5
+
+0xaba: Push((int) 5)
+0xabb: Pop(1); Push((bool) Stack[-3] == Stack[-1])
+0xabc: IF (Stack[-1] == 0) GOTO 0xac5; Pop(1)
+
+0xabd: PushEmpty(int, string)
+0xabe: Stack[-1] = "flower"
+0xabf: Call 0xac6
+
+0xac0: Pop(1)
+0xac1: Push((int) 0)
+0xac2: Push((int) 1)
+0xac3: @ AddItem(Stack[-4], Stack[-3], Stack[-2], Stack[-1])
+0xac4: Pop(3)
+0xac5: Return(); Pop(4)
+
+0xac6: PushEmpty(int, int)
+0xac7: @ GetInvItemByName(Stack[-1], Stack[-3])
+0xac8: Pop(0)
+0xac9: Stack[-4] = Stack[-1]
+0xaca: Return(); Pop(2)
+
+0xacb: Stack[-1] = (int) 3353
+0xacc: Return(); Pop(0)
+
+0xacd: Stack[-1] = "ui/NPC_None.png"
+0xace: Return(); Pop(0)
+
+0xacf: Stack[-1] = (bool) 0
+0xad0: Return(); Pop(0)
+
+0xad1: Push(GlobalVars[1])
+0xad2: Stack[-1] = (bool) 0
+0xad3: GlobalVars[1] = Stack[-1]; Pop(1)
+0xad4: PushEmpty(bool)
+0xad5: Stack[-1] = (bool) 1
+0xad6: Call 0xa17
+
+0xad7: Pop(1)
+0xad8: Return(); Pop(0)
+
+0xad9: PushEmpty(bool, bool)
+0xada: Push(GlobalVars[1])
+0xadb: IF (Stack[-1] == 0) GOTO 0xae4; Pop(1)
+
+0xadc: @ IsOverrideActive(Stack[-1])
+0xadd: Pop(0)
+0xade: Pop(0); Push((bool) Stack[-1] == 0)
+0xadf: IF (Stack[-1] == 0) GOTO 0xae2; Pop(1)
+
+0xae0: @ WorkWithCorpse(Stack[-3])
+0xae1: Pop(0)
+0xae2: Return(); Pop(2)
+
+0xae3: GOTO 0xafe
+
+0xae4: Push((int) 1000)
+0xae5: PushEmpty(int, object)
+0xae6: Stack[-1] = Stack[-6]
+0xae7: Push(-2, 1); TaskCall(7)
+0xae8: Call 0x614
+
+0xae9: Pop(-2, 1); TaskReturn
+0xaea: Pop(1)
+0xaeb: Pop(2); Push((bool) Stack[-2] == Stack[-1])
+0xaec: IF (Stack[-1] == 0) GOTO 0xafe; Pop(1)
+
+0xaed: PushEmpty(bool, object)
+0xaee: Stack[-1] = Stack[-5]
+0xaef: Call 0x89f
+
+0xaf0: Pop(1)
+0xaf1: Pop(1); Push((bool) Stack[-1] == 0)
+0xaf2: IF (Stack[-1] == 0) GOTO 0xaf4; Pop(1)
+
+0xaf3: Return(); Pop(2)
+
+0xaf4: PushEmpty(object)
+0xaf5: Stack[-1] = Stack[-4]
+0xaf6: Push(-1, 1); TaskCall(0)
+0xaf7: Call 0x0
+
+0xaf8: Pop(-1, 1); TaskReturn
+0xaf9: Pop(1)
+0xafa: PushEmpty(object)
+0xafb: Stack[-1] = Stack[-4]
+0xafc: Call 0x8cf
+
+0xafd: Pop(1)
+0xafe: Return(); Pop(2)
+
+0xaff: Stack[-1] = (bool) 0
+0xb00: Return(); Pop(0)
+
+0xb01: PushEmpty()
+0xb02: Stack[-2] = (bool) 1
+0xb03: Return(); Pop(0)
+
+0xb04: PushEmpty(string, bool, string, bool)
+0xb05: PushEmpty(bool, object, string)
+0xb06: Stack[-2] = Stack[-8]
+0xb07: Stack[-1] = "class"
+0xb08: Call 0x783
+
+0xb09: Pop(2)
+0xb0a: Pop(1); Push((bool) Stack[-1] == 0)
+0xb0b: IF (Stack[-1] == 0) GOTO 0xb0e; Pop(1)
+
+0xb0c: Stack[-7] = (bool) 0
+0xb0d: Return(); Pop(4)
+
+0xb0e: Push("class")
+0xb0f: @@ GetProperty(Stack[-1], Stack[-3])
+0xb10: Pop(1)
+0xb11: PushEmpty(bool)
+0xb12: Stack[-1] = (bool) 0
+0xb13: PushEmpty(bool)
+0xb14: Stack[-1] = (bool) 0
+0xb15: PushEmpty(bool)
+0xb16: Stack[-1] = (bool) 0
+0xb17: PushEmpty(bool)
+0xb18: Stack[-1] = (bool) 0
+0xb19: PushEmpty(bool)
+0xb1a: Stack[-1] = (bool) 0
+0xb1b: PushEmpty(bool)
+0xb1c: Stack[-1] = (bool) 0
+0xb1d: Push("littleboy")
+0xb1e: Pop(1); Push((bool) Stack[-9] != Stack[-1])
+0xb1f: IF (Stack[-1] == 0) GOTO 0xb24; Pop(1)
+
+0xb20: Push("littlegirl")
+0xb21: Pop(1); Push((bool) Stack[-9] != Stack[-1])
+0xb22: IF (Stack[-1] == 0) GOTO 0xb24; Pop(1)
+
+0xb23: Stack[-1] = (bool) 1
+0xb24: IF (Stack[-1] == 0) GOTO 0xb29; Pop(1)
+
+0xb25: Push("boy")
+0xb26: Pop(1); Push((bool) Stack[-8] != Stack[-1])
+0xb27: IF (Stack[-1] == 0) GOTO 0xb29; Pop(1)
+
+0xb28: Stack[-1] = (bool) 1
+0xb29: IF (Stack[-1] == 0) GOTO 0xb2e; Pop(1)
+
+0xb2a: Push("girl")
+0xb2b: Pop(1); Push((bool) Stack[-7] != Stack[-1])
+0xb2c: IF (Stack[-1] == 0) GOTO 0xb2e; Pop(1)
+
+0xb2d: Stack[-1] = (bool) 1
+0xb2e: IF (Stack[-1] == 0) GOTO 0xb33; Pop(1)
+
+0xb2f: Push("wasted_girl")
+0xb30: Pop(1); Push((bool) Stack[-6] != Stack[-1])
+0xb31: IF (Stack[-1] == 0) GOTO 0xb33; Pop(1)
+
+0xb32: Stack[-1] = (bool) 1
+0xb33: IF (Stack[-1] == 0) GOTO 0xb38; Pop(1)
+
+0xb34: Push("woman")
+0xb35: Pop(1); Push((bool) Stack[-5] != Stack[-1])
+0xb36: IF (Stack[-1] == 0) GOTO 0xb38; Pop(1)
+
+0xb37: Stack[-1] = (bool) 1
+0xb38: IF (Stack[-1] == 0) GOTO 0xb3d; Pop(1)
+
+0xb39: Push("worker")
+0xb3a: Pop(1); Push((bool) Stack[-4] != Stack[-1])
+0xb3b: IF (Stack[-1] == 0) GOTO 0xb3d; Pop(1)
+
+0xb3c: Stack[-1] = (bool) 1
+0xb3d: IF (Stack[-1] == 0) GOTO 0xb40; Pop(1)
+
+0xb3e: Stack[-7] = (bool) 0
+0xb3f: Return(); Pop(4)
+
+0xb40: @ CanSee(Stack[-1], Stack[-6])
+0xb41: Pop(0)
+0xb42: PushEmpty(bool)
+0xb43: Stack[-1] = (bool) 1
+0xb44: Push(Stack[-2])
+0xb45: IF (Stack[-1] == 0) GOTO 0xb4e; Pop(1)
+
+0xb46: PushEmpty(float, object)
+0xb47: Stack[-1] = Stack[-9]
+0xb48: Call 0x77b
+
+0xb49: Pop(1)
+0xb4a: Push((float)250000.0)
+0xb4b: Pop(2); Push((bool) Stack[-2] <= Stack[-1])
+0xb4c: IF (Stack[-1] == 0) GOTO 0xb4e; Pop(1)
+
+0xb4d: Stack[-1] = (bool) 0
+0xb4e: IF (Stack[-1] == 0) GOTO 0xb54; Pop(1)
+
+0xb4f: Push((float)-0.3)
+0xb50: @ ReportReputationChange(Stack[-7], Stack[-6], Stack[-1])
+0xb51: Pop(1)
+0xb52: Stack[-7] = (bool) 1
+0xb53: Return(); Pop(4)
+
+0xb54: Stack[-7] = (bool) 0
+0xb55: Return(); Pop(4)
+
+0xb56: PushEmpty()
+0xb57: Push(GlobalVars[1])
+0xb58: Stack[-1] = (bool) 1
+0xb59: GlobalVars[1] = Stack[-1]; Pop(1)
+0xb5a: Push((int) 50)
+0xb5b: Push((int) 40)
+0xb5c: @ SetRTEnvelope(Stack[-2], Stack[-1])
+0xb5d: Pop(2)
+0xb5e: Return(); Pop(0)
+

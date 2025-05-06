@@ -1,0 +1,1051 @@
+task_1_event_11(var_0_object, var_1_object, var_2_object, var_3_string, var_4_bool, var_5_int, var_6_int, var_7_bool)
+{
+	var_8_int = 1; // 0xce PushI
+	if(var_8_int == 0) goto Label_418; // 0xcf JumpB
+	func_709(); // 0xd1 NEW_2
+	var_10_int = 22542; // 0xd3 PushI
+	var_11_bool = var_7_bool == var_10_int; // 0xd4 Eq
+	if(var_11_bool == 0) goto Label_219; // 0xd5 JumpB
+	var_12_object = Obj(); var_13_object = Obj(); // 0xd6 PushV
+	var_12_object = var_1_object; // 0xd7 MovT
+	var_13_object = var_0_object; // 0xd8 MovT
+	func_773(); // 0xd9 NEW_2
+	
+Label_219:
+	var_52_int = 22539; // 0xdb PushI
+	var_53_bool = var_6_int == var_52_int; // 0xdc Eq
+	if(var_53_bool == 0) goto Label_293; // 0xdd JumpB
+	var_54_bool = 0; var_55_object = Obj(); // 0xde PushV
+	var_55_object = var_1_object; // 0xdf MovT
+	func_803(var_55_object); // 0xe0 NEW_2
+	if(var_54_bool == 0) goto Label_242; // 0xe2 JumpB
+	var_62_string = ""; // 0xe3 PushV
+	var_62_string = "Neutral"; // 0xe4 MovS
+	func_183(var_7_bool, var_62_string); // 0xe5 NEW_2
+	var_79_int = 521352; // 0xe7 PushI
+	SetMessage(var_79_int); // 0xe8 TObjFunc
+	ClearReplies(); // 0xea TObjFunc
+	var_80_int = 524063; // 0xec PushI
+	var_81_int = 25361; // 0xed PushI
+	var_82_int = 25360; // 0xee PushI
+	AddReply(var_80_int, var_81_int, var_82_int); // 0xef TObjFunc
+	return 0; // 0xf1 Return
+	
+Label_242:
+	var_83_bool = 0; var_84_object = Obj(); // 0xf2 PushV
+	var_84_object = var_1_object; // 0xf3 MovT
+	func_815(var_83_bool, var_84_object); // 0xf4 NEW_2
+	var_91_bool = var_83_bool == 0; // 0xf6 Not
+	if(var_91_bool == 0) goto Label_268; // 0xf7 JumpB
+	var_92_string = ""; // 0xf8 PushV
+	var_92_string = "Neutral"; // 0xf9 MovS
+	func_183(var_7_bool, var_92_string); // 0xfa NEW_2
+	var_93_int = 521356; // 0xfc PushI
+	SetMessage(var_93_int); // 0xfd TObjFunc
+	ClearReplies(); // 0xff TObjFunc
+	var_94_int = 521357; // 0x101 PushI
+	var_95_int = 25366; // 0x102 PushI
+	var_96_int = 22544; // 0x103 PushI
+	AddReply(var_94_int, var_95_int, var_96_int); // 0x104 TObjFunc
+	var_97_int = 524069; // 0x106 PushI
+	var_98_int = 25368; // 0x107 PushI
+	var_99_int = 25367; // 0x108 PushI
+	AddReply(var_97_int, var_98_int, var_99_int); // 0x109 TObjFunc
+	return 0; // 0x10b Return
+	
+Label_268:
+	var_100_bool = 0; var_101_object = Obj(); // 0x10c PushV
+	var_101_object = var_1_object; // 0x10d MovT
+	func_815(var_100_bool, var_101_object); // 0x10e NEW_2
+	if(var_100_bool == 0) goto Label_293; // 0x110 JumpB
+	var_102_object = Obj(); var_103_object = Obj(); // 0x111 PushV
+	var_102_object = var_1_object; // 0x112 MovT
+	var_103_object = var_0_object; // 0x113 MovT
+	func_797(); // 0x114 NEW_2
+	var_106_string = ""; // 0x116 PushV
+	var_106_string = "Neutral"; // 0x117 MovS
+	func_183(var_7_bool, var_106_string); // 0x118 NEW_2
+	var_107_int = 521358; // 0x11a PushI
+	SetMessage(var_107_int); // 0x11b TObjFunc
+	ClearReplies(); // 0x11d TObjFunc
+	var_108_int = 521359; // 0x11f PushI
+	var_109_int = -1; // 0x120 PushI
+	var_110_int = 22546; // 0x121 PushI
+	AddReply(var_108_int, var_109_int, var_110_int); // 0x122 TObjFunc
+	return 0; // 0x124 Return
+	
+Label_293:
+	var_111_int = 25368; // 0x125 PushI
+	var_112_bool = var_6_int == var_111_int; // 0x126 Eq
+	if(var_112_bool == 0) goto Label_311; // 0x127 JumpB
+	var_113_string = ""; // 0x128 PushV
+	var_113_string = "Neutral"; // 0x129 MovS
+	func_183(var_7_bool, var_113_string); // 0x12a NEW_2
+	var_114_int = 524070; // 0x12c PushI
+	SetMessage(var_114_int); // 0x12d TObjFunc
+	ClearReplies(); // 0x12f TObjFunc
+	var_115_int = 524071; // 0x131 PushI
+	var_116_int = 25366; // 0x132 PushI
+	var_117_int = 25369; // 0x133 PushI
+	AddReply(var_115_int, var_116_int, var_117_int); // 0x134 TObjFunc
+	return 0; // 0x136 Return
+	
+Label_311:
+	var_118_int = 25366; // 0x137 PushI
+	var_119_bool = var_6_int == var_118_int; // 0x138 Eq
+	if(var_119_bool == 0) goto Label_329; // 0x139 JumpB
+	var_120_string = ""; // 0x13a PushV
+	var_120_string = "Neutral"; // 0x13b MovS
+	func_183(var_7_bool, var_120_string); // 0x13c NEW_2
+	var_121_int = 524068; // 0x13e PushI
+	SetMessage(var_121_int); // 0x13f TObjFunc
+	ClearReplies(); // 0x141 TObjFunc
+	var_122_int = 524072; // 0x143 PushI
+	var_123_int = 25372; // 0x144 PushI
+	var_124_int = 25371; // 0x145 PushI
+	AddReply(var_122_int, var_123_int, var_124_int); // 0x146 TObjFunc
+	return 0; // 0x148 Return
+	
+Label_329:
+	var_125_int = 25372; // 0x149 PushI
+	var_126_bool = var_6_int == var_125_int; // 0x14a Eq
+	if(var_126_bool == 0) goto Label_347; // 0x14b JumpB
+	var_127_string = ""; // 0x14c PushV
+	var_127_string = "Neutral"; // 0x14d MovS
+	func_183(var_7_bool, var_127_string); // 0x14e NEW_2
+	var_128_int = 524073; // 0x150 PushI
+	SetMessage(var_128_int); // 0x151 TObjFunc
+	ClearReplies(); // 0x153 TObjFunc
+	var_129_int = 524074; // 0x155 PushI
+	var_130_int = -1; // 0x156 PushI
+	var_131_int = 25373; // 0x157 PushI
+	AddReply(var_129_int, var_130_int, var_131_int); // 0x158 TObjFunc
+	return 0; // 0x15a Return
+	
+Label_347:
+	var_132_int = 25361; // 0x15b PushI
+	var_133_bool = var_6_int == var_132_int; // 0x15c Eq
+	if(var_133_bool == 0) goto Label_365; // 0x15d JumpB
+	var_134_string = ""; // 0x15e PushV
+	var_134_string = "Neutral"; // 0x15f MovS
+	func_183(var_7_bool, var_134_string); // 0x160 NEW_2
+	var_135_int = 524064; // 0x162 PushI
+	SetMessage(var_135_int); // 0x163 TObjFunc
+	ClearReplies(); // 0x165 TObjFunc
+	var_136_int = 524065; // 0x167 PushI
+	var_137_int = 25363; // 0x168 PushI
+	var_138_int = 25362; // 0x169 PushI
+	AddReply(var_136_int, var_137_int, var_138_int); // 0x16a TObjFunc
+	return 0; // 0x16c Return
+	
+Label_365:
+	var_139_int = 25363; // 0x16d PushI
+	var_140_bool = var_6_int == var_139_int; // 0x16e Eq
+	if(var_140_bool == 0) goto Label_388; // 0x16f JumpB
+	var_141_string = ""; // 0x170 PushV
+	var_141_string = "Neutral"; // 0x171 MovS
+	func_183(var_7_bool, var_141_string); // 0x172 NEW_2
+	var_142_int = 524066; // 0x174 PushI
+	SetMessage(var_142_int); // 0x175 TObjFunc
+	ClearReplies(); // 0x177 TObjFunc
+	var_143_int = 521353; // 0x179 PushI
+	var_144_int = 22541; // 0x17a PushI
+	var_145_int = 22540; // 0x17b PushI
+	AddReply(var_143_int, var_144_int, var_145_int); // 0x17c TObjFunc
+	var_146_int = 524067; // 0x17e PushI
+	var_147_int = 22541; // 0x17f PushI
+	var_148_int = 25364; // 0x180 PushI
+	AddReply(var_146_int, var_147_int, var_148_int); // 0x181 TObjFunc
+	return 0; // 0x183 Return
+	
+Label_388:
+	var_149_int = 22541; // 0x184 PushI
+	var_150_bool = var_6_int == var_149_int; // 0x185 Eq
+	if(var_150_bool == 0) goto Label_406; // 0x186 JumpB
+	var_151_string = ""; // 0x187 PushV
+	var_151_string = "Neutral"; // 0x188 MovS
+	func_183(var_7_bool, var_151_string); // 0x189 NEW_2
+	var_152_int = 521354; // 0x18b PushI
+	SetMessage(var_152_int); // 0x18c TObjFunc
+	ClearReplies(); // 0x18e TObjFunc
+	var_153_int = 521355; // 0x190 PushI
+	var_154_int = -1; // 0x191 PushI
+	var_155_int = 22542; // 0x192 PushI
+	AddReply(var_153_int, var_154_int, var_155_int); // 0x193 TObjFunc
+	return 0; // 0x195 Return
+	
+Label_406:
+	var_3_string = 1; // 0x196 TMovB
+	var_156_bool = 0; // 0x197 PushV
+	func_911(var_156_bool); // 0x198 NEW_2
+	if(var_156_bool == 0) goto Label_414; // 0x19a JumpB
+	lshStopAnimation(); // 0x19b Func
+	goto Label_416; // 0x19d Jump
+	
+Label_416:
+	return 0; // 0x1a0 Return
+	
+Label_414:
+	StopAnimation(); // 0x19e Func
+	
+Label_418:
+	return 0; // 0x1a2 Return
+}
+
+
+task_2_event_0(var_0_object, var_1_object, var_2_object, var_3_string, var_4_bool, var_5_bool, var_6_object)
+{
+	func_583(); // 0x1a5 NEW_2
+	var_7_int = 0; var_8_object = Obj(); // 0x1a7 PushV
+	var_8_object = var_6_object; // 0x1a8 Mov
+	TaskCall(0); // 0x1a9 TaskCall
+	func_0(var_9_object, var_7_int, var_8_object); // 0x1aa NEW_2
+	TaskReturn(); // 0x1ab TaskReturn
+	return 0; // 0x1ad Return
+}
+
+
+task_2_event_26(var_0_object, var_1_object, var_2_object, var_3_string, var_4_bool, var_5_bool, var_6_string)
+{
+	var_7_string = "cleanup"; // 0x1d8 PushS
+	var_8_bool = var_6_string == var_7_string; // 0x1d9 Eq
+	if(var_8_bool == 0) goto Label_478; // 0x1da JumpB
+	func_451(var_6_string); // 0x1dc NEW_2
+	
+Label_478:
+	return 0; // 0x1de Return
+}
+
+
+task_2_event_5(var_0_object, var_1_object, var_2_object, var_3_string, var_4_bool, var_5_bool)
+{
+	StopGroup0(); // 0x1df Func
+	sync(); // 0x1e1 Func
+	return 0; // 0x1e3 Return
+}
+
+
+task_2_event_6(var_0_object, var_1_object, var_2_object, var_3_string, var_4_bool, var_5_bool)
+{
+	var_6_bool = 0; // 0x1e4 PushV
+	var_6_bool = 0; // 0x1e5 MovB
+	var_7_object = var_0_object; // 0x1e6 PushT
+	if(var_7_object == 0) goto Label_493; // 0x1e7 JumpB
+	var_8_bool = 0; // 0x1e8 PushV
+	func_500(var_8_bool); // 0x1e9 NEW_2
+	if(var_8_bool == 0) goto Label_493; // 0x1eb JumpB
+	var_6_bool = 1; // 0x1ec MovB
+	
+Label_493:
+	if(var_6_bool == 0) goto Label_499; // 0x1ed JumpB
+	var_9_object = Obj(); // 0x1ee PushV
+	func_716(var_9_object); // 0x1ef NEW_2
+	RemoveActor(var_9_object); // 0x1f1 Func
+	
+Label_499:
+	return 0; // 0x1f3 Return
+}
+
+
+main(var_0_object, var_1_object, var_2_object, var_3_string, var_4_bool, var_5_bool)
+{
+	var_6_float = 0; var_7_float = 0; // 0x1ae PushV
+	
+Label_431:
+	var_8_bool = 0; // 0x1af PushV
+	func_588(var_8_bool); // 0x1b0 NEW_2
+	var_11_bool = var_8_bool == 0; // 0x1b2 Not
+	if(var_11_bool == 0) goto Label_439; // 0x1b3 JumpB
+	Hold(); // 0x1b4 Func
+	goto Label_431; // 0x1b6 Jump
+	
+Label_439:
+	var_12_int = 3; // 0x1b7 PushI
+	rand(var_7_float, var_12_int); // 0x1b8 Func
+	var_13_int = 3; // 0x1ba PushI
+	var_14_int = var_7_float + var_13_int; // 0x1bb Add
+	Sleep(var_14_int); // 0x1bc Func
+	func_502(); // 0x1bf NEW_2
+	goto Label_431; // 0x1c1 Jump
+}
+
+
+func_0(var_0_object, var_7_int, var_8_object)
+{
+	var_10_object = Obj(); var_11_bool = 0; var_12_int = 0; var_13_bool = 0; var_14_object = Obj(); var_15_bool = 0; var_16_int = 0; var_17_bool = 0; // 0x0 PushV
+	var_0_object = var_8_object; // 0x1 TMov
+	var_18_bool = 0; var_19_object = Obj(); var_20_float = 0; // 0x2 PushV
+	var_19_object = var_8_object; // 0x3 Mov
+	var_20_float = 130.0; // 0x4 MovF
+	func_593(var_19_object, var_20_float); // 0x5 NEW_2
+	var_64_bool = var_18_bool == 0; // 0x7 Not
+	if(var_64_bool == 0) goto Label_11; // 0x8 JumpB
+	var_7_int = -2; // 0x9 MovI
+	return 8; // 0xa Return
+	
+Label_11:
+	CreateDialog(var_14_object); // 0xb Func
+	var_65_int = 0; // 0xd PushV
+	func_905(var_65_int); // 0xe NEW_2
+	SetNPCName(var_65_int); // 0x10 ObjFunc
+	var_66_int = 0; // 0x12 PushV
+	func_903(var_66_int); // 0x13 NEW_2
+	SetNPCDescription(var_66_int); // 0x15 ObjFunc
+	var_67_string = ""; // 0x17 PushV
+	func_907(var_67_string); // 0x18 NEW_2
+	SetPhoto(var_67_string); // 0x1a ObjFunc
+	var_68_string = ""; // 0x1c PushV
+	func_909(var_68_string); // 0x1d NEW_2
+	SetPhoto2(var_68_string); // 0x1f ObjFunc
+	var_69_int = 0; // 0x21 PushV
+	func_886(var_69_int); // 0x22 NEW_2
+	SetPlayerName(var_69_int); // 0x24 ObjFunc
+	var_16_int = -1; // 0x26 MovI
+	IsOverrideActive(var_15_bool); // 0x27 Func
+	var_77_bool = var_15_bool; // 0x29 Push
+	if(var_77_bool == 0) goto Label_45; // 0x2a JumpB
+	var_7_int = -2; // 0x2b MovI
+	return 8; // 0x2c Return
+	
+Label_45:
+	DoDialog(var_14_object); // 0x2d Func
+	var_78_object = Obj(); var_79_object = Obj(); // 0x2f PushV
+	var_78_object = var_8_object; // 0x30 Mov
+	var_79_object = var_14_object; // 0x31 Mov
+	TaskCall(1); // 0x32 TaskCall
+	func_74(var_80_object, var_81_object, var_82_string, var_83_bool, var_78_object, var_79_object); // 0x33 NEW_2
+	TaskReturn(); // 0x34 TaskReturn
+	IsDialogEnd(var_17_bool); // 0x36 ObjFunc
+	
+Label_56:
+	var_160_bool = var_17_bool == 0; // 0x38 Not
+	if(var_160_bool == 0) goto Label_63; // 0x39 JumpB
+	sync(); // 0x3a Func
+	IsDialogEnd(var_17_bool); // 0x3c ObjFunc
+	goto Label_56; // 0x3e Jump
+	
+Label_63:
+	var_161_object = Obj(); // 0x3f PushV
+	var_161_object = var_8_object; // 0x40 Mov
+	func_661(); // 0x41 NEW_2
+	StopDialog(var_14_object); // 0x43 Func
+	GetReturnValue(var_16_int); // 0x45 ObjFunc
+	var_7_int = var_16_int; // 0x47 Mov
+	return 8; // 0x48 Return
+}
+
+
+func_773()
+{
+	var_14_float = 0; var_15_float = 0; // 0x305 PushV
+	var_16_string = "b7q03"; // 0x306 PushS
+	var_17_int = 2; // 0x307 PushI
+	SetVariable(var_16_string, var_17_int); // 0x308 Func
+	func_832(); // 0x30b NEW_2
+	var_41_string = "disease"; // 0x30d PushS
+	GetProperty(var_41_string, var_15_float); // 0x30e ObjFunc
+	var_42_float = 0.5; // 0x310 PushF
+	var_43_bool = var_15_float < var_42_float; // 0x311 LT
+	if(var_43_bool == 0) goto Label_791; // 0x312 JumpB
+	var_44_string = "disease"; // 0x313 PushS
+	var_45_float = 0.5; // 0x314 PushF
+	SetProperty(var_44_string, var_45_float); // 0x315 ObjFunc
+	
+Label_791:
+	var_46_bool = 0; var_47_string = ""; var_48_string = ""; // 0x317 PushV
+	var_47_string = "quest_b7_03"; // 0x318 MovS
+	var_48_string = "remove_birdmask"; // 0x319 MovS
+	func_737(var_46_bool, var_47_string, var_48_string); // 0x31a NEW_2
+	return 2; // 0x31c Return
+}
+
+
+func_903(var_66_int)
+{
+	var_66_int = 515571; // 0x387 MovI
+	return 0; // 0x388 Return
+}
+
+
+func_905(var_65_int)
+{
+	var_65_int = 504029; // 0x389 MovI
+	return 0; // 0x38a Return
+}
+
+
+func_907(var_67_string)
+{
+	var_67_string = "ui/NPC_bmask.png"; // 0x38b MovS
+	return 0; // 0x38c Return
+}
+
+
+func_909(var_68_string)
+{
+	var_68_string = "ui/NPC_bmask_b.png"; // 0x38d MovS
+	return 0; // 0x38e Return
+}
+
+
+func_911(var_60_bool)
+{
+	var_60_bool = 0; // 0x38f MovB
+	return 0; // 0x390 Return
+}
+
+
+func_661()
+{
+	var_162_bool = 0; var_163_bool = 0; // 0x295 PushV
+	CameraSwitchToNormal(); // 0x296 Func
+	var_164_bool = 0; // 0x298 PushV
+	func_911(var_164_bool); // 0x299 NEW_2
+	if(var_164_bool == 0) goto Label_669; // 0x29b JumpB
+	goto Label_677; // 0x29c Jump
+	
+Label_677:
+	return 2; // 0x2a5 Return
+	
+Label_669:
+	var_165_string = "head"; // 0x29d PushS
+	HasAnimationTrack(var_163_bool, var_165_string); // 0x29e Func
+	var_166_bool = var_163_bool; // 0x2a0 Push
+	if(var_166_bool == 0) goto Label_677; // 0x2a1 JumpB
+	var_167_string = "head"; // 0x2a2 PushS
+	UnlookAsync(var_167_string); // 0x2a3 Func
+}
+
+
+func_797()
+{
+	var_153_string = "b7q03SerumWorks"; // 0x31e PushS
+	var_154_int = 1; // 0x31f PushI
+	SetVariable(var_153_string, var_154_int); // 0x320 Func
+	return 0; // 0x322 Return
+}
+
+
+func_803(var_85_bool)
+{
+	var_87_int = 0; var_88_string = ""; // 0x324 PushV
+	var_88_string = "b7q03"; // 0x325 MovS
+	func_732(var_87_int, var_88_string); // 0x326 NEW_2
+	var_91_int = 1; // 0x328 PushI
+	var_92_bool = var_87_int == var_91_int; // 0x329 Eq
+	if(var_92_bool == 0) goto Label_813; // 0x32a JumpB
+	var_85_bool = 1; // 0x32b MovB
+	return 0; // 0x32c Return
+	
+Label_813:
+	var_85_bool = 0; // 0x32d MovB
+	return 0; // 0x32e Return
+}
+
+
+func_678(var_116_string)
+{
+	var_117_bool = 0; var_118_float = 0; var_119_float = 0; var_120_bool = 0; var_121_float = 0; var_122_float = 0; // 0x2a6 PushV
+	lshHasAnimation(var_120_bool, var_116_string); // 0x2a7 Func
+	var_123_bool = var_120_bool; // 0x2a9 Push
+	if(var_123_bool == 0) goto Label_689; // 0x2aa JumpB
+	lshGetAnimTimes(var_116_string, var_121_float, var_122_float); // 0x2ab Func
+	var_124_bool = 0; // 0x2ad PushB
+	lshPlayAnimation(var_121_float, var_122_float, var_124_bool); // 0x2ae Func
+	goto Label_693; // 0x2b0 Jump
+	
+Label_693:
+	return 6; // 0x2b5 Return
+	
+Label_689:
+	var_125_string = "Can't find lsh animation : "; // 0x2b1 PushS
+	var_126_int = var_125_string + var_116_string; // 0x2b2 Add
+	Trace(var_126_int); // 0x2b3 Func
+}
+
+
+func_815(var_132_bool, var_133_object)
+{
+	var_134_bool = 0; var_135_object = Obj(); // 0x330 PushV
+	var_135_object = var_133_object; // 0x331 Mov
+	func_825(var_135_object); // 0x332 NEW_2
+	if(var_134_bool == 0) goto Label_823; // 0x334 JumpB
+	var_132_bool = 1; // 0x335 MovB
+	return 0; // 0x336 Return
+	
+Label_823:
+	var_132_bool = 0; // 0x337 MovB
+	return 0; // 0x338 Return
+}
+
+
+func_694(var_97_string, var_98_bool)
+{
+	var_101_bool = 0; var_102_float = 0; var_103_float = 0; var_104_bool = 0; var_105_float = 0; var_106_float = 0; // 0x2b6 PushV
+	lshHasAnimation(var_104_bool, var_97_string); // 0x2b7 Func
+	var_107_bool = var_104_bool; // 0x2b9 Push
+	if(var_107_bool == 0) goto Label_704; // 0x2ba JumpB
+	lshGetAnimTimes(var_97_string, var_105_float, var_106_float); // 0x2bb Func
+	lshPlayAnimation(var_105_float, var_106_float, var_98_bool); // 0x2bd Func
+	goto Label_708; // 0x2bf Jump
+	
+Label_708:
+	return 6; // 0x2c4 Return
+	
+Label_704:
+	var_108_string = "Can't find lsh animation : "; // 0x2c0 PushS
+	var_109_int = var_108_string + var_97_string; // 0x2c1 Add
+	Trace(var_109_int); // 0x2c2 Func
+}
+
+
+func_183(var_2_object, var_93_string)
+{
+	var_94_bool = 0; // 0xb8 PushV
+	func_911(var_94_bool); // 0xb9 NEW_2
+	var_95_bool = var_94_bool == 0; // 0xbb Not
+	if(var_95_bool == 0) goto Label_190; // 0xbc JumpB
+	return 0; // 0xbd Return
+	
+Label_190:
+	var_96_bool = var_93_string == var_2_object; // 0xbe Eq
+	if(var_96_bool == 0) goto Label_193; // 0xbf JumpB
+	return 0; // 0xc0 Return
+	
+Label_193:
+	var_97_string = ""; var_98_bool = 0; // 0xc1 PushV
+	var_97_string = var_93_string; // 0xc2 Mov
+	var_99_string = ""; // 0xc3 PushS
+	var_100_bool = var_93_string == var_99_string; // 0xc4 Eq
+	if(var_100_bool == 0) goto Label_200; // 0xc5 JumpB
+	var_98_bool = 0; // 0xc6 MovB
+	goto Label_201; // 0xc7 Jump
+	
+Label_201:
+	func_694(var_97_string, var_98_bool); // 0xc9 NEW_2
+	var_2_object = var_93_string; // 0xcb TMov
+	return 0; // 0xcc Return
+	
+Label_200:
+	var_98_bool = 1; // 0xc8 MovB
+}
+
+
+func_825(var_134_bool)
+{
+	var_136_float = 0; var_137_float = 0; // 0x339 PushV
+	var_138_string = "disease"; // 0x33a PushS
+	GetProperty(var_138_string, var_137_float); // 0x33b ObjFunc
+	var_139_int = 0; // 0x33d PushI
+	var_134_bool = var_137_float == var_139_int; // 0x33e Eq2
+	return 2; // 0x33f Return
+}
+
+
+func_832()
+{
+	var_18_object = Obj(); var_19_object = Obj(); // 0x340 PushV
+	var_20_int = 282; // 0x341 PushI
+	var_21_int = 2; // 0x342 PushI
+	var_22_int = 521365; // 0x343 PushI
+	CreateDiaryEntry(var_19_object, var_20_int, var_21_int, var_22_int); // 0x344 Func
+	var_23_bool = 0; var_24_object = Obj(); var_25_int = 0; // 0x346 PushV
+	var_24_object = var_19_object; // 0x347 Mov
+	var_25_int = 280; // 0x348 MovI
+	func_858(var_23_bool, var_24_object, var_25_int); // 0x349 NEW_2
+	return 2; // 0x34b Return
+}
+
+
+func_451(var_0_object)
+{
+	var_9_bool = 0; var_10_bool = 0; // 0x1c3 PushV
+	var_0_object = 1; // 0x1c4 TMovB
+	IsLoaded(var_10_bool); // 0x1c5 Func
+	var_11_bool = 0; // 0x1c7 PushV
+	var_11_bool = 0; // 0x1c8 MovB
+	var_12_bool = var_10_bool == 0; // 0x1c9 Not
+	if(var_12_bool == 0) goto Label_464; // 0x1ca JumpB
+	var_13_bool = 0; // 0x1cb PushV
+	func_500(var_13_bool); // 0x1cc NEW_2
+	if(var_13_bool == 0) goto Label_464; // 0x1ce JumpB
+	var_11_bool = 1; // 0x1cf MovB
+	
+Label_464:
+	if(var_11_bool == 0) goto Label_470; // 0x1d0 JumpB
+	var_14_object = Obj(); // 0x1d1 PushV
+	func_716(var_14_object); // 0x1d2 NEW_2
+	RemoveActor(var_14_object); // 0x1d4 Func
+	
+Label_470:
+	return 2; // 0x1d6 Return
+}
+
+
+func_709()
+{
+	var_9_bool = 0; // 0x2c5 PushV
+	func_911(var_9_bool); // 0x2c6 NEW_2
+	if(var_9_bool == 0) goto Label_715; // 0x2c8 JumpB
+	lshStopSpeech(); // 0x2c9 Func
+	
+Label_715:
+	return 0; // 0x2cb Return
+}
+
+
+func_581(var_56_bool)
+{
+	var_56_bool = 1; // 0x245 MovB
+	return 0; // 0x246 Return
+}
+
+
+func_583()
+{
+	StopAnimation(); // 0x247 Func
+	StopGroup0(); // 0x249 Func
+	return 0; // 0x24b Return
+}
+
+
+func_74(var_0_object, var_1_object, var_2_object, var_3_string, var_78_object, var_79_object)
+{
+	var_0_object = var_79_object; // 0x4b TMov
+	var_1_object = var_78_object; // 0x4c TMov
+	var_3_string = 0; // 0x4d TMovB
+	var_84_int = 1; // 0x4e PushI
+	if(var_84_int == 0) goto Label_153; // 0x4f JumpB
+	var_85_bool = 0; var_86_object = Obj(); // 0x50 PushV
+	var_86_object = var_1_object; // 0x51 MovT
+	func_803(var_86_object); // 0x52 NEW_2
+	if(var_85_bool == 0) goto Label_100; // 0x54 JumpB
+	var_93_string = ""; // 0x55 PushV
+	var_93_string = "Neutral"; // 0x56 MovS
+	func_183(var_79_object, var_93_string); // 0x57 NEW_2
+	var_110_int = 521352; // 0x59 PushI
+	SetMessage(var_110_int); // 0x5a TObjFunc
+	ClearReplies(); // 0x5c TObjFunc
+	var_111_int = 524063; // 0x5e PushI
+	var_112_int = 25361; // 0x5f PushI
+	var_113_int = 25360; // 0x60 PushI
+	AddReply(var_111_int, var_112_int, var_113_int); // 0x61 TObjFunc
+	goto Label_153; // 0x63 Jump
+	
+Label_153:
+	var_114_bool = 0; // 0x99 PushV
+	func_911(var_114_bool); // 0x9a NEW_2
+	if(var_114_bool == 0) goto Label_168; // 0x9c JumpB
+	
+Label_157:
+	lshWaitForAnimEnd(); // 0x9d Func
+	var_115_string = var_3_string; // 0x9f PushT
+	if(var_115_string == 0) goto Label_162; // 0xa0 JumpB
+	goto Label_167; // 0xa1 Jump
+	
+Label_167:
+	goto Label_182; // 0xa7 Jump
+	
+Label_182:
+	return 0; // 0xb6 Return
+	
+Label_162:
+	var_116_string = ""; // 0xa2 PushV
+	var_116_string = var_2_object; // 0xa3 MovT
+	func_678(var_116_string); // 0xa4 NEW_2
+	goto Label_157; // 0xa6 Jump
+	
+Label_168:
+	var_127_string = "all"; // 0xa8 PushS
+	var_128_string = "idle"; // 0xa9 PushS
+	PlayAnimation(var_127_string, var_128_string); // 0xaa Func
+	
+Label_172:
+	WaitForAnimEnd(); // 0xac Func
+	var_129_string = var_3_string; // 0xae PushT
+	if(var_129_string == 0) goto Label_177; // 0xaf JumpB
+	goto Label_182; // 0xb0 Jump
+	
+Label_177:
+	var_130_string = "all"; // 0xb1 PushS
+	var_131_string = "idle"; // 0xb2 PushS
+	PlayAnimation(var_130_string, var_131_string); // 0xb3 Func
+	goto Label_172; // 0xb5 Jump
+	
+Label_100:
+	var_132_bool = 0; var_133_object = Obj(); // 0x64 PushV
+	var_133_object = var_1_object; // 0x65 MovT
+	func_815(var_132_bool, var_133_object); // 0x66 NEW_2
+	var_140_bool = var_132_bool == 0; // 0x68 Not
+	if(var_140_bool == 0) goto Label_126; // 0x69 JumpB
+	var_141_string = ""; // 0x6a PushV
+	var_141_string = "Neutral"; // 0x6b MovS
+	func_183(var_79_object, var_141_string); // 0x6c NEW_2
+	var_142_int = 521356; // 0x6e PushI
+	SetMessage(var_142_int); // 0x6f TObjFunc
+	ClearReplies(); // 0x71 TObjFunc
+	var_143_int = 521357; // 0x73 PushI
+	var_144_int = 25366; // 0x74 PushI
+	var_145_int = 22544; // 0x75 PushI
+	AddReply(var_143_int, var_144_int, var_145_int); // 0x76 TObjFunc
+	var_146_int = 524069; // 0x78 PushI
+	var_147_int = 25368; // 0x79 PushI
+	var_148_int = 25367; // 0x7a PushI
+	AddReply(var_146_int, var_147_int, var_148_int); // 0x7b TObjFunc
+	goto Label_153; // 0x7d Jump
+	
+Label_126:
+	var_149_bool = 0; var_150_object = Obj(); // 0x7e PushV
+	var_150_object = var_1_object; // 0x7f MovT
+	func_815(var_149_bool, var_150_object); // 0x80 NEW_2
+	if(var_149_bool == 0) goto Label_151; // 0x82 JumpB
+	var_151_object = Obj(); var_152_object = Obj(); // 0x83 PushV
+	var_151_object = var_1_object; // 0x84 MovT
+	var_152_object = var_0_object; // 0x85 MovT
+	func_797(); // 0x86 NEW_2
+	var_155_string = ""; // 0x88 PushV
+	var_155_string = "Neutral"; // 0x89 MovS
+	func_183(var_79_object, var_155_string); // 0x8a NEW_2
+	var_156_int = 521358; // 0x8c PushI
+	SetMessage(var_156_int); // 0x8d TObjFunc
+	ClearReplies(); // 0x8f TObjFunc
+	var_157_int = 521359; // 0x91 PushI
+	var_158_int = -1; // 0x92 PushI
+	var_159_int = 22546; // 0x93 PushI
+	AddReply(var_157_int, var_158_int, var_159_int); // 0x94 TObjFunc
+	goto Label_153; // 0x96 Jump
+	
+Label_151:
+	return 0; // 0x97 Return
+}
+
+
+func_588(var_8_bool)
+{
+	var_9_bool = 0; var_10_bool = 0; // 0x24c PushV
+	IsLoaded(var_10_bool); // 0x24d Func
+	var_8_bool = var_10_bool; // 0x24f Mov
+	return 2; // 0x250 Return
+}
+
+
+func_716(var_9_object)
+{
+	var_10_object = Obj(); var_11_object = Obj(); // 0x2cc PushV
+	self(var_11_object); // 0x2cd Func
+	var_9_object = var_11_object; // 0x2cf Mov
+	return 2; // 0x2d0 Return
+}
+
+
+func_845(var_32_object)
+{
+	var_33_object = Obj(); var_34_object = Obj(); // 0x34d PushV
+	GetDiaryRoot(var_34_object); // 0x34e Func
+	var_35_bool = var_34_object == 0; // 0x350 Not
+	if(var_35_bool == 0) goto Label_855; // 0x351 JumpB
+	var_36_string = "Can't retrieve diary root"; // 0x352 PushS
+	Trace(var_36_string); // 0x353 Func
+	var_32_object = 0; // 0x355 MovB
+	return 2; // 0x356 Return
+	
+Label_855:
+	var_32_object = var_34_object; // 0x357 Mov
+	return 2; // 0x358 Return
+}
+
+
+func_593(var_18_bool, var_20_float)
+{
+	var_21_float = 0; var_22_cvector = CVector(0,0,0); var_23_cvector = CVector(0,0,0); var_24_cvector = CVector(0,0,0); var_25_cvector = CVector(0,0,0); var_26_cvector = CVector(0,0,0); var_27_cvector = CVector(0,0,0); var_28_bool = 0; var_29_bool = 0; var_30_float = 0; var_31_cvector = CVector(0,0,0); var_32_cvector = CVector(0,0,0); var_33_cvector = CVector(0,0,0); var_34_cvector = CVector(0,0,0); var_35_cvector = CVector(0,0,0); var_36_cvector = CVector(0,0,0); var_37_bool = 0; var_38_bool = 0; // 0x251 PushV
+	GetPosition(var_31_cvector); // 0x252 ObjFunc
+	GetEyesHeight(var_30_float); // 0x254 ObjFunc
+	var_39_float = GetByIndex(var_31_cvector, 1); // 0x256 PushE
+	var_39_float = var_39_float + var_30_float; // 0x257 Add2
+	SetByIndex(var_31_cvector, 1) = var_39_float; // 0x258 PopE
+	GetPosition(var_32_cvector); // 0x259 Func
+	GetEyesHeight(var_30_float); // 0x25b Func
+	var_40_float = GetByIndex(var_32_cvector, 1); // 0x25d PushE
+	var_40_float = var_40_float + var_30_float; // 0x25e Add2
+	SetByIndex(var_32_cvector, 1) = var_40_float; // 0x25f PopE
+	var_33_cvector = var_31_cvector - var_32_cvector; // 0x260 Sub2
+	var_41_float = GetByIndex(var_33_cvector, 1); // 0x261 PushE
+	var_41_float = 0; // 0x262 MovI
+	SetByIndex(var_33_cvector, 1) = var_41_float; // 0x263 PopE
+	var_42_int = var_33_cvector | var_33_cvector; // 0x264 Or
+	var_43_float = sqrt(var_42_int); // 0x265 Sqrt
+	var_33_cvector = var_33_cvector / var_33_cvector; // 0x266 Div2
+	var_34_cvector = -var_33_cvector; // 0x267 Neg2
+	var_44_float = var_33_cvector * var_20_float; // 0x268 Mult
+	var_45_cvector = CVector(0,0,0); var_46_cvector = CVector(0,0,0); // 0x269 PushV
+	var_47_cvector = CVector(0.0, 1.0, 0.0); // 0x26a PushVec
+	var_46_cvector = var_34_cvector ^ var_47_cvector; // 0x26b Xor2
+	func_722(var_45_cvector, var_46_cvector); // 0x26c NEW_2
+	var_53_int = 25; // 0x26e PushI
+	var_54_float = var_45_cvector * var_53_int; // 0x26f Mult
+	var_55_int = var_44_float + var_54_float; // 0x270 Add
+	var_56_cvector = CVector(0.0, 10.0, 0.0); // 0x271 PushVec
+	var_35_cvector = var_55_int - var_56_cvector; // 0x272 Sub2
+	var_36_cvector = var_32_cvector + var_35_cvector; // 0x273 Add2
+	IsOverrideActive(var_37_bool); // 0x274 Func
+	var_57_bool = var_37_bool; // 0x276 Push
+	if(var_57_bool == 0) goto Label_634; // 0x277 JumpB
+	var_18_bool = 0; // 0x278 MovB
+	return 18; // 0x279 Return
+	
+Label_634:
+	StopWorld(); // 0x27a Func
+	CameraTransit(var_36_cvector, var_34_cvector); // 0x27c Func
+	var_58_float = GetByIndex(var_35_cvector, 0); // 0x27e PushE
+	var_59_float = GetByIndex(var_35_cvector, 2); // 0x27f PushE
+	Rotate(var_58_float, var_59_float); // 0x280 Func
+	var_60_bool = 0; // 0x282 PushV
+	func_911(var_60_bool); // 0x283 NEW_2
+	if(var_60_bool == 0) goto Label_647; // 0x285 JumpB
+	goto Label_655; // 0x286 Jump
+	
+Label_655:
+	CameraWaitForPlayFinish(); // 0x28f Func
+	ResumeWorld(); // 0x291 Func
+	var_18_bool = 1; // 0x293 MovB
+	return 18; // 0x294 Return
+	
+Label_647:
+	var_61_string = "head"; // 0x287 PushS
+	HasAnimationTrack(var_38_bool, var_61_string); // 0x288 Func
+	var_62_bool = var_38_bool; // 0x28a Push
+	if(var_62_bool == 0) goto Label_655; // 0x28b JumpB
+	var_63_string = "head"; // 0x28c PushS
+	LookAsyncCamera(var_63_string); // 0x28d Func
+}
+
+
+func_722(var_45_cvector, var_46_cvector)
+{
+	var_48_float = 0; var_49_float = 0; // 0x2d2 PushV
+	var_50_int = var_46_cvector | var_46_cvector; // 0x2d3 Or
+	var_49_float = sqrt(var_50_int); // 0x2d4 Sqrt2
+	var_51_float = 0.0; // 0x2d5 PushF
+	var_52_bool = var_49_float < var_51_float; // 0x2d6 LT
+	if(var_52_bool == 0) goto Label_730; // 0x2d7 JumpB
+	var_45_cvector = CVector(0.0, 0.0, 0.0); // 0x2d8 MovV
+	return 2; // 0x2d9 Return
+	
+Label_730:
+	var_45_cvector = var_46_cvector / var_46_cvector; // 0x2da Div2
+	return 2; // 0x2db Return
+}
+
+
+func_858(var_23_bool, var_24_object, var_25_int)
+{
+	var_26_object = Obj(); var_27_object = Obj(); var_28_int = 0; var_29_object = Obj(); var_30_object = Obj(); var_31_int = 0; // 0x35a PushV
+	var_32_object = Obj(); // 0x35b PushV
+	func_845(var_32_object); // 0x35c NEW_2
+	var_29_object = var_32_object; // 0x35d Mov
+	Find(var_25_int, var_30_object); // 0x35f ObjFunc
+	var_37_bool = var_30_object == 0; // 0x361 Not
+	if(var_37_bool == 0) goto Label_873; // 0x362 JumpB
+	var_38_string = "Can't find diary parent with id: "; // 0x363 PushS
+	var_39_int = var_38_string + var_25_int; // 0x364 Add
+	Trace(var_39_int); // 0x365 Func
+	var_23_bool = 0; // 0x367 MovB
+	return 6; // 0x368 Return
+	
+Label_873:
+	AddChild(var_24_object); // 0x369 ObjFunc
+	var_40_int = 7; // 0x36b PushI
+	SendWorldWndMessage(var_40_int); // 0x36c Func
+	GetCategory(var_31_int); // 0x36e ObjFunc
+	SetDiarySection(var_31_int); // 0x370 Func
+	var_23_bool = 0; // 0x372 MovB
+	return 6; // 0x373 Return
+}
+
+
+func_732(var_87_int, var_88_string)
+{
+	var_89_int = 0; var_90_int = 0; // 0x2dc PushV
+	GetVariable(var_88_string, var_90_int); // 0x2dd Func
+	var_87_int = var_90_int; // 0x2df Mov
+	return 2; // 0x2e0 Return
+}
+
+
+func_737(var_46_bool, var_47_string, var_48_string)
+{
+	var_49_object = Obj(); var_50_object = Obj(); // 0x2e1 PushV
+	FindActor(var_50_object, var_47_string); // 0x2e2 Func
+	var_51_bool = var_50_object == 0; // 0x2e4 NullEq
+	if(var_51_bool == 0) goto Label_744; // 0x2e5 JumpB
+	var_46_bool = 0; // 0x2e6 MovB
+	return 2; // 0x2e7 Return
+	
+Label_744:
+	Trigger(var_50_object, var_48_string); // 0x2e8 Func
+	var_46_bool = 1; // 0x2ea MovB
+	return 2; // 0x2eb Return
+}
+
+
+func_749(var_37_string, var_38_int)
+{
+	var_39_string = ""; var_40_string = ""; // 0x2ed PushV
+	var_40_string = "idle"; // 0x2ee MovS
+	var_41_int = var_38_int; // 0x2ef Push
+	if(var_41_int == 0) goto Label_754; // 0x2f0 JumpB
+	var_40_string = var_40_string + var_38_int; // 0x2f1 Add2
+	
+Label_754:
+	var_37_string = var_40_string; // 0x2f2 Mov
+	return 2; // 0x2f3 Return
+}
+
+
+func_500(var_8_bool)
+{
+	var_8_bool = 1; // 0x1f4 MovB
+	return 0; // 0x1f5 Return
+}
+
+
+func_756(var_31_int)
+{
+	var_32_int = 0; var_33_bool = 0; var_34_int = 0; var_35_bool = 0; // 0x2f4 PushV
+	var_34_int = 0; // 0x2f5 MovI
+	
+Label_758:
+	var_36_string = "all"; // 0x2f6 PushS
+	var_37_string = ""; var_38_int = 0; // 0x2f7 PushV
+	var_38_int = var_34_int; // 0x2f8 Mov
+	func_749(var_37_string, var_38_int); // 0x2f9 NEW_2
+	HasAnimation(var_35_bool, var_36_string, var_37_string); // 0x2fb Func
+	var_42_bool = var_35_bool == 0; // 0x2fd Not
+	if(var_42_bool == 0) goto Label_768; // 0x2fe JumpB
+	goto Label_771; // 0x2ff Jump
+	
+Label_771:
+	var_31_int = var_34_int; // 0x303 Mov
+	return 4; // 0x304 Return
+	
+Label_768:
+	var_43_int = 1; // 0x300 PushI
+	var_34_int = var_34_int + var_43_int; // 0x301 Add2
+	goto Label_758; // 0x302 Jump
+}
+
+
+func_886(var_69_int)
+{
+	var_70_int = 0; var_71_int = 0; // 0x376 PushV
+	var_72_string = "branch"; // 0x377 PushS
+	GetVariable(var_72_string, var_71_int); // 0x378 Func
+	var_73_int = 0; // 0x37a PushI
+	var_74_bool = var_71_int == var_73_int; // 0x37b Eq
+	if(var_74_bool == 0) goto Label_896; // 0x37c JumpB
+	var_69_int = 1; // 0x37d MovI
+	return 2; // 0x37e Return
+	
+Label_896:
+	var_75_int = 1; // 0x380 PushI
+	var_76_bool = var_71_int == var_75_int; // 0x381 Eq
+	if(var_76_bool == 0) goto Label_901; // 0x382 JumpB
+	var_69_int = 2; // 0x383 MovI
+	return 2; // 0x384 Return
+	
+Label_901:
+	var_69_int = 3; // 0x385 MovI
+	return 2; // 0x386 Return
+}
+
+
+func_502()
+{
+	var_15_int = 0; var_16_int = 0; var_17_int = 0; var_18_int = 0; var_19_bool = 0; var_20_float = 0; var_21_bool = 0; var_22_int = 0; var_23_int = 0; var_24_int = 0; var_25_int = 0; var_26_bool = 0; var_27_float = 0; var_28_bool = 0; // 0x1f6 PushV
+	WaitForAnimEnd(); // 0x1f7 Func
+	var_29_bool = 0; // 0x1f9 PushV
+	func_588(var_29_bool); // 0x1fa NEW_2
+	var_30_bool = var_29_bool == 0; // 0x1fc Not
+	if(var_30_bool == 0) goto Label_511; // 0x1fd JumpB
+	return 14; // 0x1fe Return
+	
+Label_511:
+	var_31_int = 0; // 0x1ff PushV
+	func_756(var_31_int); // 0x200 NEW_2
+	var_22_int = var_31_int; // 0x201 Mov
+	var_23_int = 0; // 0x203 MovI
+	
+Label_516:
+	var_44_bool = 0; // 0x204 PushV
+	var_44_bool = 0; // 0x205 MovB
+	var_45_int = 5; // 0x206 PushI
+	var_46_bool = var_23_int < var_45_int; // 0x207 LT
+	if(var_46_bool == 0) goto Label_526; // 0x208 JumpB
+	var_47_bool = 0; // 0x209 PushV
+	func_588(var_47_bool); // 0x20a NEW_2
+	if(var_47_bool == 0) goto Label_526; // 0x20c JumpB
+	var_44_bool = 1; // 0x20d MovB
+	
+Label_526:
+	if(var_44_bool == 0) goto Label_578; // 0x20e JumpB
+	var_48_int = 3; // 0x20f PushI
+	irand(var_24_int, var_48_int); // 0x210 Func
+	var_49_int = 0; // 0x212 PushI
+	var_50_bool = var_24_int == var_49_int; // 0x213 Eq
+	if(var_50_bool == 0) goto Label_550; // 0x214 JumpB
+	var_51_int = var_22_int; // 0x215 Push
+	if(var_51_int == 0) goto Label_549; // 0x216 JumpB
+	irand(var_25_int, var_22_int); // 0x217 Func
+	var_52_string = "all"; // 0x219 PushS
+	var_53_string = ""; var_54_int = 0; // 0x21a PushV
+	var_54_int = var_25_int; // 0x21b Mov
+	func_749(var_53_string, var_54_int); // 0x21c NEW_2
+	PlayAnimation(var_52_string, var_53_string); // 0x21e Func
+	WaitForAnimEnd(var_26_bool); // 0x220 Func
+	var_55_bool = var_26_bool == 0; // 0x222 Not
+	if(var_55_bool == 0) goto Label_549; // 0x223 JumpB
+	goto Label_578; // 0x224 Jump
+	
+Label_578:
+	ResetAAS(); // 0x242 Func
+	return 14; // 0x244 Return
+	
+Label_549:
+	goto Label_567; // 0x225 Jump
+	
+Label_567:
+	var_56_bool = 0; // 0x237 PushV
+	func_581(var_56_bool); // 0x238 NEW_2
+	var_57_bool = var_56_bool == 0; // 0x23a Not
+	if(var_57_bool == 0) goto Label_573; // 0x23b JumpB
+	goto Label_578; // 0x23c Jump
+	
+Label_573:
+	ResetAAS(); // 0x23d Func
+	var_58_int = 1; // 0x23f PushI
+	var_23_int = var_23_int + var_58_int; // 0x240 Add2
+	goto Label_516; // 0x241 Jump
+	
+Label_550:
+	var_59_int = 1; // 0x226 PushI
+	var_60_bool = var_24_int == var_59_int; // 0x227 Eq
+	if(var_60_bool == 0) goto Label_564; // 0x228 JumpB
+	var_61_int = 4; // 0x229 PushI
+	rand(var_27_float, var_61_int); // 0x22a Func
+	var_62_int = 1; // 0x22c PushI
+	var_63_int = var_27_float + var_62_int; // 0x22d Add
+	Sleep(var_63_int, var_28_bool); // 0x22e Func
+	var_64_bool = var_28_bool == 0; // 0x230 Not
+	if(var_64_bool == 0) goto Label_563; // 0x231 JumpB
+	goto Label_578; // 0x232 Jump
+	
+Label_563:
+	goto Label_567; // 0x233 Jump
+	
+Label_564:
+	var_65_int = var_23_int; // 0x234 Push
+	if(var_65_int == 0) goto Label_567; // 0x235 JumpB
+	goto Label_578; // 0x236 Jump
+}
+
+

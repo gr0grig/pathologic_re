@@ -8,7 +8,7 @@
 //  Category: 
 // File Mask: *.bin
 //  ID Bytes: 
-//   History: Alpha Pathalogic Script
+//   History: Pathalogic Script
 //------------------------------------------------
 
 struct GLOBAL_FUNCTION
@@ -550,7 +550,7 @@ struct CInstructionReturn
 
 struct CInstructionTaskCall
 {
-    DWORD VarIn;
+    DWORD m_ulTaskID;;
 };
 
 struct CInstructionTaskReturn
@@ -913,9 +913,4 @@ string IInstruction_Read( IInstruction &f )
 
 DWORD m_ulCodeSize;
 IInstruction opcode[m_ulCodeSize] <optimize=false, read=IInstruction_Read>;
-
-
-
-
-
 

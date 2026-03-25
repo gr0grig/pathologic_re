@@ -39,8 +39,17 @@ class Reader:
 		return self.f.read(size).decode('utf-8')
 
 	def float(self):
-		return round(struct.unpack('f', self.f.read(4))[0], 5)
+		return struct.unpack('f', self.f.read(4))[0]
 
+
+def read_vle_string(r):
+	length_byte = r.uint8()
+	if (length_byte & 0x80) == 0:
+		length = length_byte
+	else:
+		high_byte = r.uint8()
+		length = (length_byte & 0x7F) | (high_byte << 7)
+	return r.str_a(length)
 
 class VarTypes:
 	def __init__(self, r, index):
@@ -48,7 +57,7 @@ class VarTypes:
 		self.type = r.uint8()
 		self.flag = r.uint8()
 		if self.flag:
-			self.str = r.str_a(r.uint8())
+			self.str = read_vle_string(r)
 
 
 VAR_TYPE = Enum('VAR_TYPE', [('BOOL', 1), ('INT', 2), ('FLOAT', 3), ('STRING', 4), ('OBJECT', 5), ('CVECTOR', 6)])
@@ -96,9 +105,14 @@ def get_strlen_a(data):
 	return length
 
 def get_str_from_addr(data):
-	if get_strlen_a(data) == 1:
+	# Detect UTF-16LE vs ASCII:
+	# UTF-16LE ASCII-range chars have pattern: <char> 0x00
+	# A single-char ASCII string "x\0" has data[1]==0x00 too, but then data[2] would be
+	# the next string or padding, not 0x00. For UTF-16LE "x\0" would be: xx 00 00 00 (4 bytes).
+	# Check: if len >= 2 and data[0] != 0 and data[1] == 0, it's UTF-16LE.
+	if len(data) >= 2 and data[0] != 0 and data[1] == 0:
 		length = get_strlen_w(data)
-		string = data[:length*2].decode('utf-16').encode("utf-8").decode("utf-8")
+		string = data[:length*2].decode('utf-16-le')
 	else:
 		length = get_strlen_a(data)
 		string = data[:length].decode('utf-8')
@@ -115,12 +129,25 @@ class DataPool:
 	def __init__(self, r):
 		self.size = r.uint32()
 		self.data = r.bytes(self.size)
+		self.encoding = self._detect_encoding()
 		self.strings = self.dump_strings()
+
+	def _detect_encoding(self):
+		"""Detect pool encoding: 'utf16le' or 'utf8'."""
+		d = self.data
+		if len(d) >= 2 and d[0] != 0 and d[1] == 0:
+			return 'utf16le'
+		return 'utf8'
 
 	def __repr__(self):
 		out = f'Strings:\n'
-		for s in self.strings:
-			out += '\t' + s + '\n'
+		for enc, s in self.strings:
+			out += f'\t{enc}:{s}\n'
+		# Emit raw pool bytes so assembler can reproduce exact pool layout
+		if self.data:
+			out += f'// @pool_raw:{self.data.hex()}\n'
+		if self.encoding != 'utf16le':
+			out += f'// @pool_encoding:{self.encoding}\n'
 		return out + '\n'
 
 	def dump_strings(self):
@@ -130,9 +157,13 @@ class DataPool:
 		while True:
 			len_a = get_strlen_a(pool_bytes) + 1
 			len_w = get_strlen_w(pool_bytes) + 1
-			if len_a ==1:
+			if len_a == 1:
 				break
-			strings.append(get_str_from_addr(pool_bytes))
+			s = get_str_from_addr(pool_bytes)
+			# Detect per-string encoding: UTF-16LE if second byte is 0
+			is_wide = len(pool_bytes) >= 2 and pool_bytes[0] != 0 and pool_bytes[1] == 0
+			enc = 'W' if is_wide else 'A'
+			strings.append((enc, s))
 			index = len_w * 2 if len_a == 2 else len_a
 			pool_bytes = pool_bytes[index:]
 
@@ -142,9 +173,8 @@ class DataPool:
 class GFUNC:
 
 	def __init__(self, r, index):
-		size = r.uint8()
 		self.index = index
-		self.name = r.str_a(size)
+		self.name = read_vle_string(r)
 		self.arg_count = r.uint32()
 
 	def __repr__(self):
@@ -239,8 +269,8 @@ class GlobEvents:
 class CInstructionMov:
 	def __init__(self, r):
 		self.OpCode = 'Mov'
-		self.VarIn = r.uint32()
 		self.VarOut = r.uint32()
+		self.VarIn = r.uint32()
 
 	def __repr__(self):
 		return f'Stack[-{self.VarOut}] = Stack[-{self.VarIn}]'
@@ -280,7 +310,7 @@ class CInstructionMovS:
 		self.String = get_str_from_pool(self.Offset)
 
 	def __repr__(self):
-		return f'Stack[-{self.VarOut}] = "{self.String}"'
+		return f'Stack[-{self.VarOut}] = "{self.String}" // @poff={self.Offset}'
 
 class CVector:
 	def __init__(self, r):
@@ -354,7 +384,7 @@ class CInstructionTMovS:
 		self.String = get_str_from_pool(self.Offset)
 
 	def __repr__(self):
-		return f'Stack[{self.VarOut} + Tasks[-1].StackPointer] = "{self.String}"'
+		return f'Stack[{self.VarOut} + Tasks[-1].StackPointer] = "{self.String}" // @poff={self.Offset}'
 
 class CInstructionTMovV:
 	def __init__(self, r):
@@ -388,9 +418,8 @@ class CInstructionJumpB:
 		self.OpCode = 'JumpB'
 		self.lVar = r.uint32()
 		self.VarIn = r.uint32()
-		zero = r.uint8() 
-		self.sPop = r.uint8()
 		self.bVal = r.uint8()
+		self.sPop = r.uint16()
 		self.PopCount = self.sPop
 
 	def __repr__(self):
@@ -441,7 +470,7 @@ class CInstructionPushS:
 		self.String = get_str_from_pool(self.Offset)
 
 	def __repr__(self):
-		return f'Push("{self.String}")'
+		return f'Push("{self.String}") // @poff={self.Offset}'
 
 class CInstructionPushT:
 	def __init__(self, r):
@@ -478,12 +507,11 @@ class CInstructionPushE:
 		self.OpCode = 'PushE'
 		self.VarIn = r.uint32()
 
-		# index field is really 1 signed byte hidden in 4 unsigned
-		temp = r.bytes(1)
+		# byte layout: TaskFlag(1) + Index(1) + pad(2) + pad(1)
+		self.TaskVar = r.uint8()
 		self.Index = r.int8()
 		temp = r.bytes(2)
-
-		self.TaskVar = r.int8()
+		temp2 = r.int8()
 		self.PushType = [VAR_TYPE.FLOAT]
 
 	def __repr__(self):
@@ -576,10 +604,10 @@ class CInstructionAdd:
 		if self.TaskVar >= 0:
 			var_1 = f'Stack[-{self.Var1}]'
 		else:
-			var_1 = f'Stack[{self.Var1} + StackPtr]'
+			var_1 = f'Stack[{self.Var1} + Tasks[-1].StackPointer]'
 
 		if self.TaskVar & 0x40:
-			var_2 = f'Stack[{self.Var2} + StackPtr]'
+			var_2 = f'Stack[{self.Var2} + Tasks[-1].StackPointer]'
 		else:
 			var_2 = f'Stack[-{self.Var2}]'
 
@@ -598,10 +626,10 @@ class CInstructionSub:
 		if self.TaskVar >= 0:
 			var_1 = f'Stack[-{self.Var1}]'
 		else:
-			var_1 = f'Stack[{self.Var1} + StackPtr]'
+			var_1 = f'Stack[{self.Var1} + Tasks[-1].StackPointer]'
 
 		if self.TaskVar & 0x40:
-			var_2 = f'Stack[{self.Var2} + StackPtr]'
+			var_2 = f'Stack[{self.Var2} + Tasks[-1].StackPointer]'
 		else:
 			var_2 = f'Stack[-{self.Var2}]'
 
@@ -620,10 +648,10 @@ class CInstructionMult:
 		if self.TaskVar >= 0:
 			var_1 = f'Stack[-{self.Var1}]'
 		else:
-			var_1 = f'Stack[{self.Var1} + StackPtr]'
+			var_1 = f'Stack[{self.Var1} + Tasks[-1].StackPointer]'
 
 		if self.TaskVar & 0x40:
-			var_2 = f'Stack[{self.Var2} + StackPtr]'
+			var_2 = f'Stack[{self.Var2} + Tasks[-1].StackPointer]'
 		else:
 			var_2 = f'Stack[-{self.Var2}]'
 
@@ -642,10 +670,10 @@ class CInstructionDiv:
 		if self.TaskVar >= 0:
 			var_1 = f'Stack[-{self.Var1}]'
 		else:
-			var_1 = f'Stack[{self.Var1} + StackPtr]'
+			var_1 = f'Stack[{self.Var1} + Tasks[-1].StackPointer]'
 
 		if self.TaskVar & 0x40:
-			var_2 = f'Stack[{self.Var2} + StackPtr]'
+			var_2 = f'Stack[{self.Var2} + Tasks[-1].StackPointer]'
 		else:
 			var_2 = f'Stack[-{self.Var2}]'
 
@@ -664,10 +692,10 @@ class CInstructionMod:
 		if self.TaskVar >= 0:
 			var_1 = f'Stack[-{self.Var1}]'
 		else:
-			var_1 = f'Stack[{self.Var1} + StackPtr]'
+			var_1 = f'Stack[{self.Var1} + Tasks[-1].StackPointer]'
 
 		if self.TaskVar & 0x40:
-			var_2 = f'Stack[{self.Var2} + StackPtr]'
+			var_2 = f'Stack[{self.Var2} + Tasks[-1].StackPointer]'
 		else:
 			var_2 = f'Stack[-{self.Var2}]'
 
@@ -686,10 +714,10 @@ class CInstructionAnd:
 		if self.TaskVar >= 0:
 			var_1 = f'Stack[-{self.Var1}]'
 		else:
-			var_1 = f'Stack[{self.Var1} + StackPtr]'
+			var_1 = f'Stack[{self.Var1} + Tasks[-1].StackPointer]'
 
 		if self.TaskVar & 0x40:
-			var_2 = f'Stack[{self.Var2} + StackPtr]'
+			var_2 = f'Stack[{self.Var2} + Tasks[-1].StackPointer]'
 		else:
 			var_2 = f'Stack[-{self.Var2}]'
 
@@ -708,10 +736,10 @@ class CInstructionOr:
 		if self.TaskVar >= 0:
 			var_1 = f'Stack[-{self.Var1}]'
 		else:
-			var_1 = f'Stack[{self.Var1} + StackPtr]'
+			var_1 = f'Stack[{self.Var1} + Tasks[-1].StackPointer]'
 
 		if self.TaskVar & 0x40:
-			var_2 = f'Stack[{self.Var2} + StackPtr]'
+			var_2 = f'Stack[{self.Var2} + Tasks[-1].StackPointer]'
 		else:
 			var_2 = f'Stack[-{self.Var2}]'
 
@@ -730,10 +758,10 @@ class CInstructionXor:
 		if self.TaskVar >= 0:
 			var_1 = f'Stack[-{self.Var1}]'
 		else:
-			var_1 = f'Stack[{self.Var1} + StackPtr]'
+			var_1 = f'Stack[{self.Var1} + Tasks[-1].StackPointer]'
 
 		if self.TaskVar & 0x40:
-			var_2 = f'Stack[{self.Var2} + StackPtr]'
+			var_2 = f'Stack[{self.Var2} + Tasks[-1].StackPointer]'
 		else:
 			var_2 = f'Stack[-{self.Var2}]'
 
@@ -887,7 +915,7 @@ class CInstructionNullEq:
 		else:
 			var_1 = f'Stack[{self.Var} + Tasks[-1].StackPointer]'
 
-		return f'Pop({self.PopCount}); Push((bool) {var_1} == 0)'
+		return f'Pop({self.PopCount}); PushNull((bool) {var_1} == 0)'
 
 class CInstructionNullNeq:
 	def __init__(self, r):
@@ -1559,23 +1587,24 @@ class CInstructionASin2:
 class CInstructionPow:
 	def __init__(self, r):
 		self.OpCode = 'Pow'
-		self.Var = r.uint32()
-		self.VarOut = r.uint32()
+		self.Var1 = r.uint32()
+		self.Var2 = r.uint32()
 		self.TaskVar = r.int8()
 		self.PopCount = self.TaskVar & 0x3F
+		self.PushType = [VAR_TYPE.FLOAT]
 
 	def __repr__(self):
 		if self.TaskVar >= 0:
-			var_1 = f'Stack[-{self.Var}]'
+			var_1 = f'Stack[-{self.Var1}]'
 		else:
-			var_1 = f'Stack[{self.Var} + Tasks[-1].StackPointer]'
+			var_1 = f'Stack[{self.Var1} + Tasks[-1].StackPointer]'
 
 		if (self.TaskVar & 0x40) != 0:
-			var_out = f'Stack[{self.VarOut} + Tasks[-1].StackPointer]'
+			var_2 = f'Stack[{self.Var2} + Tasks[-1].StackPointer]'
 		else:
-			var_out = f'Stack[-{self.VarOut}]'
+			var_2 = f'Stack[-{self.Var2}]'
 
-		return f'{var_out} = Pow({var_1}); Pop({self.PopCount});'
+		return f'Pop({self.PopCount}); Push(Pow({var_1}, {var_2}));'
 
 
 class CInstructionPow2:
@@ -1688,9 +1717,12 @@ class CInstructionFunc:
 		self.fvar = [FUNC_VAR(r) for i in range(self.arg_count)]
 
 	def __repr__(self):
-		args_num = [f'Stack[-{x.Var}]' for x in self.fvar]
-		args =', '.join(args_num) # just ignore Tasks for now
-
+		def fmt_arg(x):
+			s = f'Stack[-{x.Var}]'
+			if x.Task: s += 'T'
+			return s
+		args_num = [fmt_arg(x) for x in self.fvar]
+		args = ', '.join(args_num)
 		if not self.fvar: args = ''
 		return f'@ {self.func_name}({args})'
 		
@@ -1704,10 +1736,13 @@ class CInstructionObjFunc:
 		self.fvar = [FUNC_VAR(r) for i in range(self.ParmCount)]
 
 	def __repr__(self):
-		args_num = [f'Stack[-{x.Var}]' for x in self.fvar]
-		args =', '.join(args_num) # just ignore Tasks for now
-		# just ignore 'self.Var' for now
-		return f'@@ {self.func_name}({args})'
+		def fmt_arg(x):
+			s = f'Stack[-{x.Var}]'
+			if x.Task: s += 'T'
+			return s
+		args_num = [fmt_arg(x) for x in self.fvar]
+		args = ', '.join(args_num)
+		return f'@@ {self.func_name}({args}); Obj={self.Var} // @poff={self.NameOffset}'
 
 class CInstructionTObjFunc:
 	def __init__(self, r):
@@ -1719,10 +1754,13 @@ class CInstructionTObjFunc:
 		self.func_name = get_str_from_pool(self.NameOffset)
 
 	def __repr__(self):
-
-		args_num = [f'Stack[-{x.Var}]' for x in self.fvar]
-		args =', '.join(args_num) # just ignore Tasks for now
-		return f'@@ {self.func_name}({args})'
+		def fmt_arg(x):
+			s = f'Stack[-{x.Var}]'
+			if x.Task: s += 'T'
+			return s
+		args_num = [fmt_arg(x) for x in self.fvar]
+		args = ', '.join(args_num)
+		return f'@@@ {self.func_name}({args}); Obj={self.Var} // @poff={self.NameOffset}'
 
 
 class CInstructionEventEnable:

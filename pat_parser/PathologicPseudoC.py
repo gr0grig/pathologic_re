@@ -2390,6 +2390,9 @@ class PathologicPseudoC:
 		# CVector literal
 		if value.startswith('CVector(') and value.endswith(')'):
 			return True
+		# Null object literal
+		if value == 'Obj()':
+			return True
 		# Numeric literal (int or float, possibly negative)
 		if re.match(r'^-?\d+(\.\d+)?$', value):
 			return True
@@ -2421,8 +2424,47 @@ class PathologicPseudoC:
 			i += 1
 		return ranges
 
+	@staticmethod
+	def _var_type(var_name):
+		"""Extract type from variable name like var_6_bool -> 'bool'."""
+		m = re.match(r'var_\d+_(\w+)', var_name)
+		return m.group(1) if m else None
+
+	@staticmethod
+	def _wrap_with_cast(value, var_type):
+		"""Wrap a literal value with a type cast based on variable type.
+		E.g. value='1', var_type='bool' -> '(bool)1'"""
+		if not var_type:
+			return value
+		# String literals: only need cast if target is not string
+		if value.startswith('"'):
+			return value
+		# Obj() / Obj(x) don't need casts
+		if value.startswith('Obj('):
+			return value
+		# CVector doesn't need cast
+		if value.startswith('CVector('):
+			return value
+		# Object null: 0 assigned to object var -> Obj() (null object literal)
+		if var_type == 'object' and value == '0':
+			return 'Obj()'
+		# Type-specific casts
+		if var_type == 'int' and re.match(r'^-?\d+$', value):
+			return f'(int){value}'
+		if var_type == 'float' and re.match(r'^-?\d+(\.\d+)?$', value):
+			return f'(float){value}'
+		if var_type == 'bool' and value in ('0', '1', 'true', 'false'):
+			return f'(bool){value}'
+		if var_type == 'string' and value == '""':
+			return value
+		# Default: add cast for known types
+		if var_type in ('int', 'float', 'bool'):
+			return f'({var_type}){value}'
+		return value
+
 	def pass_InlineConstants(self, text):
-		"""Inline single-use constant variables into their usage site."""
+		"""Inline single-use constant variables into their usage site.
+		Adds type casts to preserve MovI/MovF/MovB distinction for round-trip."""
 		lines = text.split('\n')
 
 		changed = True
@@ -2436,8 +2478,8 @@ class PathologicPseudoC:
 				for i in range(func_start, func_end):
 					line_stripped = lines[i].strip()
 
-					# Match constant assignment: var_X = LITERAL;
-					m = re.match(r'^(var_\d+_\w+) = (.+);$', line_stripped)
+					# Match constant assignment: var_X_TYPE = LITERAL; (possibly with // comment)
+					m = re.match(r'^(var_\d+_\w+) = (.+);\s*(?://.*)?$', line_stripped)
 					if not m:
 						continue
 
@@ -2494,9 +2536,13 @@ class PathologicPseudoC:
 					if assign_indent > use_indent:
 						continue
 
+					# Wrap value with type cast to preserve Push type distinction
+					var_type = self._var_type(var_name)
+					cast_value = self._wrap_with_cast(value, var_type)
+
 					# Perform the inline substitution
 					lines[use_line_idx] = var_pattern.sub(
-						lambda m: value, lines[use_line_idx])
+						lambda m: cast_value, lines[use_line_idx])
 
 					# Remove the assignment line
 					lines[i] = None
@@ -2714,8 +2760,7 @@ class PathologicPseudoC:
 		#self.printed = self.pass_WhileTrue(self.printed)
 		self.printed = self.pass_StructureIfGoto(self.printed)
 		self.printed = self.pass_FixLoopReturn(self.printed)
-		# Disabled: inlining loses MovI/MovF/MovS distinction needed for round-trip
-		# self.printed = self.pass_InlineConstants(self.printed)
+		self.printed = self.pass_InlineConstants(self.printed)
 		return self.printed
 
 	def fake_print(self, string):

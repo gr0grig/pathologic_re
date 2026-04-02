@@ -1,0 +1,21 @@
+<form name = "ui_game" x = "0" y = "0" w = "800" h = "600" script = "ui_game_min.bin" context = "gamemenu">
+	<image name = "default" x = "0" y = "0" w = "1" h = "1">ui/ui_game_menu.tga</image>
+	<cursor name = "default" script = "ui_cursor.bin" w = "32" h = "32">
+		<image name = "default" x = "0" y = "0" w = "1" h = "1">ui/ui_cursor.tga</image>
+	</cursor>
+	
+	<form name = "newgame_button" x = "272" y = "128" w = "256" h = "64" script = "ui_game_button.bin"> 
+		<image name = "default" x = "0" y = "0" w = "1" h = "1">ui/ui_game_new.tga</image>
+		<image name = "highlight" x = "0" y = "0" w = "1" h = "1">ui/ui_game_new_over.tga</image>
+	</form>
+
+	<form name = "loadgame_button" x = "272" y = "208" w = "256" h = "64" script = "ui_game_button.bin"> 
+		<image name = "default" x = "0" y = "0" w = "1" h = "1">ui/ui_game_load.tga</image>
+		<image name = "highlight" x = "0" y = "0" w = "1" h = "1">ui/ui_game_load_over.tga</image>
+	</form>
+
+	<form name = "savegame_button" x = "272" y = "288" w = "256" h = "64" script = "ui_game_button.bin"> 
+		<image name = "default" x = "0" y = "0" w = "1" h = "1">ui/ui_game_save.tga</image>
+		<image name = "highlight" x = "0" y = "0" w = "1" h = "1">ui/ui_game_save_over.tga</image>
+	</form>
+</form>

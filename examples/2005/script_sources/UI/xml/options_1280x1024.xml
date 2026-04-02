@@ -1,0 +1,31 @@
+<form name="options_1280x1024" x="472" y="282" w="336" h="460">
+  <image name="default" x="0.0234375" y="0.84375" w="0.001953125" h="0.03125">ui/ui_group_2_1.tex</image>
+  <form name="sub" x="474" y="284" w="332" h="456">
+    <form name="options" x="474" y="320" w="332" h="420" script="ui_options.bin">
+      <form name="tab" x="474" y="284" w="332" h="36">
+        <image name="default" x="0.001953125" y="0.015625" w="0.6484375" h="0.5625">ui/ui_group_26_1.tex</image>
+        <form name="video" x="479" y="289" w="104" h="24" script="ui_tab_button.bin">
+          <image name="default" x="0.001953125" y="0.03125" w="0.203125" h="0.75">ui/ui_group_21_2.tex</image>
+          <image name="pressed" x="0.6621094" y="0.421875" w="0.203125" h="0.375">ui/ui_group_21_1.tex</image>
+          <image name="text" x="0.2089844" y="0.609375" w="0.203125" h="0.375">ui/ui_group_26_1.tex</image>
+        </form>
+        <form name="audio" x="588" y="289" w="104" h="24" script="ui_tab_button.bin">
+          <image name="default" x="0.001953125" y="0.03125" w="0.203125" h="0.75">ui/ui_group_21_2.tex</image>
+          <image name="pressed" x="0.6621094" y="0.421875" w="0.203125" h="0.375">ui/ui_group_21_1.tex</image>
+          <image name="text" x="0.4160156" y="0.609375" w="0.203125" h="0.375">ui/ui_group_26_1.tex</image>
+        </form>
+        <form name="controls" x="697" y="289" w="104" h="24" script="ui_tab_button.bin">
+          <image name="default" x="0.001953125" y="0.03125" w="0.203125" h="0.75">ui/ui_group_21_2.tex</image>
+          <image name="pressed" x="0.6621094" y="0.421875" w="0.203125" h="0.375">ui/ui_group_21_1.tex</image>
+          <image name="text" x="0.001953125" y="0.609375" w="0.203125" h="0.375">ui/ui_group_26_1.tex</image>
+        </form>
+      </form>
+      <form name="apply" x="662" y="701" w="104" h="24" script="ui_button.bin">
+        <image name="default" x="0.001953125" y="0.03125" w="0.203125" h="0.75">ui/ui_group_21_2.tex</image>
+        <image name="pressed" x="0.6621094" y="0.421875" w="0.203125" h="0.375">ui/ui_group_21_1.tex</image>
+        <image name="text" x="0.6542969" y="0.015625" w="0.2050781" h="0.390625">ui/ui_group_26_1.tex</image>
+      </form>
+      <font name="default" size="10" face="fritz_quadrata" />
+    </form>
+  </form>
+</form>

@@ -1,0 +1,7 @@
+<form name="gameover_beda" x="0" y="0" w="800" h="600" script="ui_gameover_beda.bin">
+  <image name="default" x="0.0009765625" y="0.0009765625" w="0.78125" h="0.5859375">ui/ui_group_29_1.tex</image>
+  <sound name="menumusic" stream="1" loop="1">mainmenu.ogg</sound>
+  <cursor name="default" script="ui_cursor.bin" w="32" h="32">
+    <image name="default" x="0" y="0" w="1" h="1">ui/ui_cursor.tga</image>
+  </cursor>
+</form>

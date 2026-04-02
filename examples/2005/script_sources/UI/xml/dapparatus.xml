@@ -1,0 +1,32 @@
+<form name="dapparatus" x="0" y="0" w="800" h="600" script="ui_dapparatus.bin">
+  <form name="bg" x="0" y="0" w="800" h="498">
+    <image name="default" x="0.8359375" y="0.03125" w="0.0078125" h="0.03125">ui/ui_group_20_1.tex</image>
+    <form name="base" x="187" y="0" w="426" h="512">
+      <image name="default" x="0.001953125" y="0.0009765625" w="0.8320313" h="0.5">ui/ui_group_20_2.tex</image>
+      <form name="output" x="397" y="300" w="52" h="52" script="ui_apparatus_io_slot.bin">
+        <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+        <image name="selected" x="0.015625" y="0.015625" w="0.8125" h="0.8125">ui/ui_group_1_3.tex</image>
+      </form>
+      <form name="input_organ" x="367" y="50" w="52" h="52" script="ui_apparatus_io_slot.bin">
+        <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+        <image name="selected" x="0.015625" y="0.015625" w="0.8125" h="0.8125">ui/ui_group_1_3.tex</image>
+      </form>
+      <form name="input_grass" x="427" y="50" w="52" h="52" script="ui_apparatus_io_slot.bin">
+        <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+        <image name="selected" x="0.015625" y="0.015625" w="0.8125" h="0.8125">ui/ui_group_1_3.tex</image>
+      </form>
+      <form name="combine" x="372" y="200" w="104" h="24" script="ui_button.bin">
+        <image name="default" x="0.001953125" y="0.03125" w="0.203125" h="0.75">ui/ui_group_21_2.tex</image>
+        <image name="pressed" x="0.6621094" y="0.421875" w="0.203125" h="0.375">ui/ui_group_21_1.tex</image>
+        <image name="text" x="0.0078125" y="0.03125" w="0.8125" h="0.75">ui/ui_group_20_1.tex</image>
+      </form>
+    </form>
+  </form>
+  <cursor name="default" script="ui_tooltip_cursor.bin" w="32" h="32">
+    <image name="default" x="0" y="0" w="1" h="1">ui/ui_cursor.tga</image>
+    <image name="border" x="0" y="0" w="1" h="1">ui/ui_tooltip_border.png</image>
+    <image name="bg" x="0" y="0" w="1" h="1">ui/ui_tooltip_bg.png</image>
+    <font name="default" size="10" face="fritz_quadrata" />
+    <font name="big" size="12" face="fritz_quadrata" />
+  </cursor>
+</form>

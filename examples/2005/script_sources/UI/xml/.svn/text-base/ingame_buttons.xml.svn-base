@@ -1,0 +1,26 @@
+<form name="ingame_buttons" x="250" y="242" w="300" h="174">
+  <form name="continue" x="250" y="242" w="300" h="29" script="ui_game_button_highlight.bin">
+    <image name="default" x="0.2958984" y="0.03125" w="0.2929688" h="0.90625">ui/ui_group_10_1.tex</image>
+    <image name="highlight" x="0.2958984" y="0.03125" w="0.2929688" h="0.90625">ui/ui_group_10_3.tex</image>
+  </form>
+  <form name="newgame" x="250" y="271" w="300" h="29" script="ui_game_button_highlight.bin">
+    <image name="default" x="0.5908203" y="0.03125" w="0.2929688" h="0.90625">ui/ui_group_10_4.tex</image>
+    <image name="highlight" x="0.5908203" y="0.03125" w="0.2929688" h="0.90625">ui/ui_group_10_3.tex</image>
+  </form>
+  <form name="loadgame" x="250" y="300" w="300" h="29" script="ui_game_button_highlight.bin">
+    <image name="default" x="0.2958984" y="0.03125" w="0.2929688" h="0.90625">ui/ui_group_10_2.tex</image>
+    <image name="highlight" x="0.5908203" y="0.03125" w="0.2929688" h="0.90625">ui/ui_group_10_1.tex</image>
+  </form>
+  <form name="savegame" x="250" y="329" w="300" h="29" script="ui_game_button_highlight.bin">
+    <image name="default" x="0.0009765625" y="0.03125" w="0.2929688" h="0.90625">ui/ui_group_10_4.tex</image>
+    <image name="highlight" x="0.5908203" y="0.03125" w="0.2929688" h="0.90625">ui/ui_group_10_2.tex</image>
+  </form>
+  <form name="gameoptions" x="250" y="358" w="300" h="29" script="ui_game_button_highlight.bin">
+    <image name="default" x="0.0009765625" y="0.03125" w="0.2929688" h="0.90625">ui/ui_group_10_2.tex</image>
+    <image name="highlight" x="0.0009765625" y="0.03125" w="0.2929688" h="0.90625">ui/ui_group_10_3.tex</image>
+  </form>
+  <form name="quitgame" x="250" y="387" w="300" h="29" script="ui_game_button_highlight.bin">
+    <image name="default" x="0.2958984" y="0.03125" w="0.2929688" h="0.90625">ui/ui_group_10_4.tex</image>
+    <image name="highlight" x="0.0009765625" y="0.03125" w="0.2929688" h="0.90625">ui/ui_group_10_1.tex</image>
+  </form>
+</form>

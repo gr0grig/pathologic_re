@@ -1,0 +1,2 @@
+include citizen_zombie_base.sci
+include bcitizen_attack_retreat.sci

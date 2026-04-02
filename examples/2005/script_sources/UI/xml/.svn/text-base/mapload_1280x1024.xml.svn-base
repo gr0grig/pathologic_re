@@ -1,0 +1,7 @@
+<form name="mapload_1280x1024" x="0" y="0" w="1280" h="1024">
+  <form name="editbox" x="908" y="18" w="180" h="16" script="ui_editbox.bin">
+    <image name="default" x="0.25" y="0.25" w="0.5" h="0.5">ui/ui_group_16_1.tex</image>
+    <image name="text_cursor" x="0.25" y="0.03125" w="0.25" h="0.5">ui/ui_group_16_2.tex</image>
+    <font name="default" size="10" face="fritz_quadrata" />
+  </form>
+</form>

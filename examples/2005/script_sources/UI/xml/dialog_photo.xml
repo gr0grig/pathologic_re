@@ -1,0 +1,20 @@
+<form name="dialog_photo" x="2" y="114" w="796" h="284">
+  <image name="default" x="0.0234375" y="0.84375" w="0.001953125" h="0.03125">ui/ui_group_2_1.tex</image>
+  <form name="text" x="333" y="116" w="425" h="280" script="ui_dialog_btext.bin">
+    <font name="default" size="10" face="fritz_quadrata" />
+  </form>
+  <form name="photo" x="12" y="117" w="234" h="278" script="ui_dialog_bphoto.bin">
+    <form name="left_border" x="11" y="116" w="1" h="280">
+      <image name="default" x="0.25" y="0.25" w="0.25" h="0.25">ui/ui_group_32_1.tex</image>
+    </form>
+    <form name="right_border" x="246" y="116" w="1" h="280">
+      <image name="default" x="0.25" y="0.25" w="0.25" h="0.25">ui/ui_group_32_1.tex</image>
+    </form>
+    <form name="top_border" x="12" y="116" w="234" h="1">
+      <image name="default" x="0.25" y="0.25" w="0.25" h="0.25">ui/ui_group_32_1.tex</image>
+    </form>
+    <form name="bottom_border" x="12" y="395" w="234" h="1">
+      <image name="default" x="0.25" y="0.25" w="0.25" h="0.25">ui/ui_group_32_1.tex</image>
+    </form>
+  </form>
+</form>

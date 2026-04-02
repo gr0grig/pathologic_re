@@ -1,0 +1,13 @@
+include dgame.sci
+////////////////////////////////////////////////////////
+// danko day 2
+////////////////////////////////////////////////////////
+
+// CONSTANTS
+const string c_iD2_Quest01_Trigger = "d2q01_trigger";
+// CONSTANTS
+
+void D2_Init()
+{
+	ClearMapMarks();
+}

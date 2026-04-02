@@ -1,0 +1,182 @@
+<form name="character_1024x768" x="268" y="150" w="488" h="468" script="ui_player_stats.bin">
+  <form name="base" x="268" y="150" w="488" h="468">
+    <image name="default" x="0.9589844" y="0.015625" w="0.03125" h="0.25">ui/ui_group_9_1.tex</image>
+    <form name="character_bottom" x="268" y="582" w="488" h="36">
+      <image name="default" x="0.001953125" y="0.015625" w="0.953125" h="0.5625">ui/ui_group_9_1.tex</image>
+      <form name="people_button" x="439" y="588" w="143" h="24" script="ui_button.bin">
+        <image name="default" x="0.5683594" y="0.03125" w="0.2792969" h="0.75">ui/ui_group_9_2.tex</image>
+        <image name="pressed" x="0.2851563" y="0.03125" w="0.2792969" h="0.75">ui/ui_group_9_2.tex</image>
+        <image name="text" x="0.001953125" y="0.03125" w="0.2792969" h="0.75">ui/ui_group_9_2.tex</image>
+      </form>
+    </form>
+    <form name="clothes_text" x="514" y="419" w="240" h="22" script="ui_player_stat_text.bin">
+      <font name="default" size="14" face="fritz_quadrata" />
+    </form>
+    <form name="character_frame_left" x="268" y="170" w="2" h="412">
+      <image name="default" x="0.009765625" y="0.953125" w="0.00390625" h="0.03125">ui/ui_group_9_1.tex</image>
+      <form name="decor1" x="268" y="170" w="2" h="23">
+        <image name="default" x="0.9824219" y="0.296875" w="0.00390625" h="0.359375">ui/ui_group_9_1.tex</image>
+      </form>
+      <form name="decor2" x="268" y="501" w="2" h="28">
+        <image name="default" x="0.9667969" y="0.296875" w="0.00390625" h="0.4375">ui/ui_group_9_1.tex</image>
+      </form>
+    </form>
+    <form name="character_frame_middle" x="512" y="170" w="2" h="412">
+      <image name="default" x="0.009765625" y="0.953125" w="0.00390625" h="0.03125">ui/ui_group_9_1.tex</image>
+      <form name="decor1" x="512" y="170" w="2" h="23">
+        <image name="default" x="0.9746094" y="0.296875" w="0.00390625" h="0.359375">ui/ui_group_9_1.tex</image>
+      </form>
+      <form name="decor2" x="512" y="219" w="2" h="28">
+        <image name="default" x="0.9667969" y="0.296875" w="0.00390625" h="0.4375">ui/ui_group_9_1.tex</image>
+      </form>
+      <form name="decor3" x="512" y="416" w="2" h="28">
+        <image name="default" x="0.9667969" y="0.296875" w="0.00390625" h="0.4375">ui/ui_group_9_1.tex</image>
+      </form>
+    </form>
+    <form name="character_frame_right" x="754" y="170" w="2" h="412">
+      <image name="default" x="0.009765625" y="0.953125" w="0.00390625" h="0.03125">ui/ui_group_9_1.tex</image>
+      <form name="decor1" x="754" y="219" w="2" h="28">
+        <image name="default" x="0.9589844" y="0.296875" w="0.00390625" h="0.4375">ui/ui_group_9_1.tex</image>
+      </form>
+      <form name="decor2" x="754" y="416" w="2" h="28">
+        <image name="default" x="0.9589844" y="0.296875" w="0.00390625" h="0.4375">ui/ui_group_9_1.tex</image>
+      </form>
+    </form>
+    <form name="character_lm_hor1" x="270" y="190" w="242" h="2">
+      <image name="default" x="0.001953125" y="0.953125" w="0.00390625" h="0.03125">ui/ui_group_9_1.tex</image>
+    </form>
+    <form name="character_lm_hor2" x="270" y="503" w="242" h="2">
+      <image name="default" x="0.001953125" y="0.953125" w="0.00390625" h="0.03125">ui/ui_group_9_1.tex</image>
+    </form>
+    <form name="character_lm_hor3" x="270" y="525" w="242" h="2">
+      <image name="default" x="0.001953125" y="0.953125" w="0.00390625" h="0.03125">ui/ui_group_9_1.tex</image>
+    </form>
+    <form name="character_mr_hor1" x="514" y="221" w="240" h="2">
+      <image name="default" x="0.001953125" y="0.953125" w="0.00390625" h="0.03125">ui/ui_group_9_1.tex</image>
+    </form>
+    <form name="character_mr_hor2" x="514" y="243" w="240" h="2">
+      <image name="default" x="0.001953125" y="0.953125" w="0.00390625" h="0.03125">ui/ui_group_9_1.tex</image>
+    </form>
+    <form name="character_mr_hor3" x="514" y="418" w="240" h="2">
+      <image name="default" x="0.001953125" y="0.953125" w="0.00390625" h="0.03125">ui/ui_group_9_1.tex</image>
+    </form>
+    <form name="character_mr_hor4" x="514" y="440" w="240" h="2">
+      <image name="default" x="0.001953125" y="0.953125" w="0.00390625" h="0.03125">ui/ui_group_9_1.tex</image>
+    </form>
+    <form name="character_name" x="270" y="169" w="242" h="22" script="ui_player_stats_name.bin">
+      <font name="default" size="14" face="fritz_quadrata" />
+    </form>
+    <form name="body_text" x="514" y="223" w="239" h="22" script="ui_player_stat_text.bin">
+      <font name="default" size="14" face="fritz_quadrata" />
+    </form>
+    <form name="character_stat" x="514" y="245" w="240" h="173">
+      <form name="immunity_text" x="529" y="281" w="224" h="13" script="ui_dynamic_text.bin">
+        <font name="default" size="10" face="fritz_quadrata" />
+      </form>
+      <form name="immunity" x="529" y="298" w="204" h="12" script="ui_player_stats_bar.bin">
+        <image name="default" x="0.4033203" y="0.0625" w="0.1992188" h="0.75">ui/ui_group_9_3.tex</image>
+        <image name="r1" x="0.6044922" y="0.0625" w="0.1992188" h="0.75">ui/ui_group_9_3.tex</image>
+        <image name="r2" x="0.2021484" y="0.0625" w="0.1992188" h="0.75">ui/ui_group_9_3.tex</image>
+        <image name="r3" x="0.0009765625" y="0.0625" w="0.1992188" h="0.75">ui/ui_group_9_3.tex</image>
+      </form>
+      <form name="health_text" x="529" y="248" w="224" h="13" script="ui_dynamic_text.bin">
+        <font name="default" size="10" face="fritz_quadrata" />
+      </form>
+      <form name="hunger" x="529" y="331" w="204" h="12" script="ui_player_stats_bar.bin">
+        <image name="default" x="0.4033203" y="0.0625" w="0.1992188" h="0.75">ui/ui_group_9_3.tex</image>
+        <image name="r1" x="0.6044922" y="0.0625" w="0.1992188" h="0.75">ui/ui_group_9_3.tex</image>
+        <image name="r2" x="0.2021484" y="0.0625" w="0.1992188" h="0.75">ui/ui_group_9_3.tex</image>
+        <image name="r3" x="0.0009765625" y="0.0625" w="0.1992188" h="0.75">ui/ui_group_9_3.tex</image>
+      </form>
+      <form name="hunger_text" x="529" y="314" w="224" h="13" script="ui_dynamic_text.bin">
+        <font name="default" size="10" face="fritz_quadrata" />
+      </form>
+      <form name="tiredness" x="529" y="364" w="204" h="12" script="ui_player_stats_bar.bin">
+        <image name="default" x="0.4033203" y="0.0625" w="0.1992188" h="0.75">ui/ui_group_9_3.tex</image>
+        <image name="r1" x="0.6044922" y="0.0625" w="0.1992188" h="0.75">ui/ui_group_9_3.tex</image>
+        <image name="r2" x="0.2021484" y="0.0625" w="0.1992188" h="0.75">ui/ui_group_9_3.tex</image>
+        <image name="r3" x="0.0009765625" y="0.0625" w="0.1992188" h="0.75">ui/ui_group_9_3.tex</image>
+      </form>
+      <form name="infection_text" x="529" y="380" w="224" h="13" script="ui_dynamic_text.bin">
+        <font name="default" size="10" face="fritz_quadrata" />
+      </form>
+      <form name="infection" x="529" y="397" w="204" h="12" script="ui_player_stats_bar.bin">
+        <image name="default" x="0.4033203" y="0.0625" w="0.1992188" h="0.75">ui/ui_group_9_3.tex</image>
+        <image name="r1" x="0.6044922" y="0.0625" w="0.1992188" h="0.75">ui/ui_group_9_3.tex</image>
+        <image name="r2" x="0.2021484" y="0.0625" w="0.1992188" h="0.75">ui/ui_group_9_3.tex</image>
+        <image name="r3" x="0.0009765625" y="0.0625" w="0.1992188" h="0.75">ui/ui_group_9_3.tex</image>
+      </form>
+      <form name="tiredness_text" x="529" y="347" w="224" h="13" script="ui_dynamic_text.bin">
+        <font name="default" size="10" face="fritz_quadrata" />
+      </form>
+      <form name="health" x="529" y="265" w="204" h="12" script="ui_player_stats_bar.bin">
+        <image name="default" x="0.4033203" y="0.0625" w="0.1992188" h="0.75">ui/ui_group_9_3.tex</image>
+        <image name="r1" x="0.6044922" y="0.0625" w="0.1992188" h="0.75">ui/ui_group_9_3.tex</image>
+        <image name="r2" x="0.2021484" y="0.0625" w="0.1992188" h="0.75">ui/ui_group_9_3.tex</image>
+        <image name="r3" x="0.0009765625" y="0.0625" w="0.1992188" h="0.75">ui/ui_group_9_3.tex</image>
+      </form>
+    </form>
+    <form name="character_top" x="268" y="150" w="488" h="20">
+      <image name="default" x="0.001953125" y="0.609375" w="0.953125" h="0.3125">ui/ui_group_9_1.tex</image>
+    </form>
+    <form name="clothes_stat" x="514" y="442" w="240" h="140">
+      <form name="armor_phys" x="529" y="462" w="204" h="12" script="ui_player_stats_bar.bin">
+        <image name="default" x="0.4033203" y="0.0625" w="0.1992188" h="0.75">ui/ui_group_9_3.tex</image>
+        <image name="r1" x="0.6044922" y="0.0625" w="0.1992188" h="0.75">ui/ui_group_9_3.tex</image>
+        <image name="r2" x="0.2021484" y="0.0625" w="0.1992188" h="0.75">ui/ui_group_9_3.tex</image>
+        <image name="r3" x="0.0009765625" y="0.0625" w="0.1992188" h="0.75">ui/ui_group_9_3.tex</image>
+      </form>
+      <form name="armor_phys_text" x="529" y="445" w="224" h="13" script="ui_dynamic_text.bin">
+        <font name="default" size="10" face="fritz_quadrata" />
+      </form>
+      <form name="armor_bullet" x="529" y="495" w="204" h="12" script="ui_player_stats_bar.bin">
+        <image name="default" x="0.4033203" y="0.0625" w="0.1992188" h="0.75">ui/ui_group_9_3.tex</image>
+        <image name="r1" x="0.6044922" y="0.0625" w="0.1992188" h="0.75">ui/ui_group_9_3.tex</image>
+        <image name="r2" x="0.2021484" y="0.0625" w="0.1992188" h="0.75">ui/ui_group_9_3.tex</image>
+        <image name="r3" x="0.0009765625" y="0.0625" w="0.1992188" h="0.75">ui/ui_group_9_3.tex</image>
+      </form>
+      <form name="armor_fire" x="529" y="528" w="204" h="12" script="ui_player_stats_bar.bin">
+        <image name="default" x="0.4033203" y="0.0625" w="0.1992188" h="0.75">ui/ui_group_9_3.tex</image>
+        <image name="r1" x="0.6044922" y="0.0625" w="0.1992188" h="0.75">ui/ui_group_9_3.tex</image>
+        <image name="r2" x="0.2021484" y="0.0625" w="0.1992188" h="0.75">ui/ui_group_9_3.tex</image>
+        <image name="r3" x="0.0009765625" y="0.0625" w="0.1992188" h="0.75">ui/ui_group_9_3.tex</image>
+      </form>
+      <form name="armor_disease" x="529" y="561" w="204" h="12" script="ui_player_stats_bar.bin">
+        <image name="default" x="0.4033203" y="0.0625" w="0.1992188" h="0.75">ui/ui_group_9_3.tex</image>
+        <image name="r1" x="0.6044922" y="0.0625" w="0.1992188" h="0.75">ui/ui_group_9_3.tex</image>
+        <image name="r2" x="0.2021484" y="0.0625" w="0.1992188" h="0.75">ui/ui_group_9_3.tex</image>
+        <image name="r3" x="0.0009765625" y="0.0625" w="0.1992188" h="0.75">ui/ui_group_9_3.tex</image>
+      </form>
+      <form name="armor_bullet_text" x="529" y="478" w="224" h="13" script="ui_dynamic_text.bin">
+        <font name="default" size="10" face="fritz_quadrata" />
+      </form>
+      <form name="armor_fire_text" x="529" y="511" w="224" h="13" script="ui_dynamic_text.bin">
+        <font name="default" size="10" face="fritz_quadrata" />
+      </form>
+      <form name="armor_disease_text" x="529" y="544" w="224" h="13" script="ui_dynamic_text.bin">
+        <font name="default" size="10" face="fritz_quadrata" />
+      </form>
+    </form>
+    <form name="current_time" x="270" y="527" w="242" h="55" script="ui_player_stats_time.bin">
+      <font name="default" size="14" face="fritz_quadrata" />
+    </form>
+    <form name="photo" x="270" y="192" w="242" h="311" script="ui_player_stats_photo.bin" />
+    <form name="reputation_stat" x="514" y="170" w="240" h="51">
+      <form name="reputation" x="529" y="200" w="204" h="12" script="ui_player_stats_bar.bin">
+        <image name="default" x="0.4033203" y="0.0625" w="0.1992188" h="0.75">ui/ui_group_9_3.tex</image>
+        <image name="r1" x="0.6044922" y="0.0625" w="0.1992188" h="0.75">ui/ui_group_9_3.tex</image>
+        <image name="r2" x="0.2021484" y="0.0625" w="0.1992188" h="0.75">ui/ui_group_9_3.tex</image>
+        <image name="r3" x="0.0009765625" y="0.0625" w="0.1992188" h="0.75">ui/ui_group_9_3.tex</image>
+      </form>
+      <form name="reputation_text" x="529" y="183" w="224" h="13" script="ui_dynamic_text.bin">
+        <font name="default" size="10" face="fritz_quadrata" />
+      </form>
+    </form>
+    <form name="time_text" x="270" y="505" w="242" h="20" script="ui_player_stat_text.bin">
+      <font name="default" size="14" face="fritz_quadrata" />
+    </form>
+  </form>
+  <cursor name="default" script="ui_cursor.bin" w="32" h="32">
+    <image name="default" x="0" y="0" w="1" h="1">ui/ui_cursor.tga</image>
+  </cursor>
+</form>

@@ -1,0 +1,29 @@
+<form name="game_choose_pers_1024x768" x="0" y="0" w="1024" h="768">
+  <form name="border_danko" x="107" y="199" w="254" h="301">
+    <image name="default" x="0.009765625" y="0.5859375" w="0.001953125" h="0.001953125">ui/ui_group_6_1.tex</image>
+    <form name="danko" x="109" y="201" w="250" h="297" script="ui_game_button_highlight1.bin">
+      <image name="default" x="0.00390625" y="0.001953125" w="0.9765625" h="0.5800781">ui/ui_group_6_2.tex</image>
+      <image name="disabled" x="0.001953125" y="0.5859375" w="0.00390625" h="0.00390625">ui/ui_group_6_1.tex</image>
+    </form>
+  </form>
+  <form name="border_burah" x="382" y="199" w="254" h="301">
+    <image name="default" x="0.009765625" y="0.5859375" w="0.001953125" h="0.001953125">ui/ui_group_6_1.tex</image>
+    <form name="burah" x="384" y="201" w="250" h="297" script="ui_game_button_highlight1.bin">
+      <image name="default" x="0.001953125" y="0.001953125" w="0.4882813" h="0.5800781">ui/ui_group_6_1.tex</image>
+      <image name="disabled" x="0.001953125" y="0.5859375" w="0.00390625" h="0.00390625">ui/ui_group_6_1.tex</image>
+    </form>
+  </form>
+  <form name="border_klara" x="657" y="199" w="254" h="301">
+    <image name="default" x="0.009765625" y="0.5859375" w="0.001953125" h="0.001953125">ui/ui_group_6_1.tex</image>
+    <form name="klara" x="659" y="201" w="250" h="297" script="ui_game_button_highlight1.bin">
+      <image name="default" x="0.4941406" y="0.001953125" w="0.4882813" h="0.5800781">ui/ui_group_6_1.tex</image>
+      <image name="disabled" x="0.001953125" y="0.5859375" w="0.00390625" h="0.00390625">ui/ui_group_6_1.tex</image>
+    </form>
+  </form>
+  <form name="player_desc" x="139" y="535" w="740" h="200" script="ui_dynamic_text.bin">
+    <font name="default" size="10" face="fritz_quadrata" />
+  </form>
+  <form name="player_name" x="139" y="505" w="300" h="30" script="ui_dynamic_text.bin">
+    <font name="default" size="12" face="fritz_quadrata" />
+  </form>
+</form>

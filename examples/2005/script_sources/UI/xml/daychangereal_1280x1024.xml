@@ -1,0 +1,5 @@
+<form name="daychangereal_1280x1024" x="240" y="447" w="800" h="130" script="ui_daychangereal.bin">
+  <font name="default" size="20" face="fritz_quadrata" />
+  <voice name="dead" stream="1" loop="0">volonteers_dead.ogg</voice>
+  <voice name="alive" stream="1" loop="0">volonteers_alive.ogg</voice>
+</form>

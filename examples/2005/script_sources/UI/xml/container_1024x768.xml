@@ -1,0 +1,65 @@
+<form name="container_1024x768" x="0" y="0" w="1024" h="768" script="ui_container.bin">
+  <form name="base" x="385" y="327" w="254" h="114">
+    <form name="border_up" x="385" y="327" w="254" h="13">
+      <image name="default" x="0.00390625" y="0.625" w="0.9921875" h="0.203125">ui/ui_group_8_1.tex</image>
+    </form>
+    <form name="border_down" x="385" y="428" w="254" h="13">
+      <image name="default" x="0.00390625" y="0.0625" w="0.9921875" h="0.8125">ui/ui_group_27_1.tex</image>
+    </form>
+    <form name="border_left" x="385" y="340" w="2" h="88">
+      <image name="default" x="0.125" y="0.0078125" w="0.25" h="0.5">ui/ui_group_17_1.tex</image>
+    </form>
+    <form name="border_right" x="637" y="340" w="2" h="88">
+      <image name="default" x="0.625" y="0.0078125" w="0.25" h="0.5">ui/ui_group_17_1.tex</image>
+    </form>
+    <form name="background" x="387" y="340" w="250" h="88">
+      <image name="default" x="0.00390625" y="0.828125" w="0.0625" h="0.125">ui/ui_group_7_1.tex</image>
+      <form name="cslot01" x="396" y="346" w="52" h="52" script="ui_container_slot.bin">
+        <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+        <font name="default" size="8" face="fritz_quadrata" />
+      </form>
+      <form name="cslot02" x="456" y="346" w="52" h="52" script="ui_container_slot.bin">
+        <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+        <font name="default" size="8" face="fritz_quadrata" />
+      </form>
+      <form name="cslot03" x="516" y="346" w="52" h="52" script="ui_container_slot.bin">
+        <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+        <font name="default" size="8" face="fritz_quadrata" />
+      </form>
+      <form name="cslot04" x="576" y="346" w="52" h="52" script="ui_container_slot.bin">
+        <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+        <font name="default" size="8" face="fritz_quadrata" />
+      </form>
+      <form name="scrollbar_base" x="396" y="403" w="232" h="20">
+        <form name="scroll_left" x="396" y="403" w="30" h="20">
+          <image name="default" x="0.4296875" y="0.1796875" w="0.234375" h="0.15625">ui/ui_group_8_3.tex</image>
+        </form>
+        <form name="scroll_middle" x="426" y="403" w="172" h="20">
+          <image name="default" x="0.5703125" y="0.4921875" w="0.078125" h="0.15625">ui/ui_group_8_3.tex</image>
+        </form>
+        <form name="scroll_right" x="598" y="403" w="30" h="20">
+          <image name="default" x="0.4296875" y="0.0078125" w="0.234375" h="0.15625">ui/ui_group_8_3.tex</image>
+        </form>
+        <form name="scrollbar" x="417" y="406" w="191" h="14" script="ui_scrollbar_hor.bin">
+          <image name="slider" x="0.03125" y="0.0625" w="0.4375" h="0.875">ui/ui_group_8_2.tex</image>
+          <image name="slider_pressed" x="0.53125" y="0.0625" w="0.4375" h="0.875">ui/ui_group_8_2.tex</image>
+          <form name="scroll_button_up" x="399" y="405" w="16" h="16" script="ui_scrollbar_button.bin">
+            <image name="default" x="0.4296875" y="0.4921875" w="0.125" h="0.125">ui/ui_group_8_3.tex</image>
+            <image name="pressed" x="0.5703125" y="0.3515625" w="0.125" h="0.125">ui/ui_group_8_3.tex</image>
+          </form>
+          <form name="scroll_button_down" x="610" y="405" w="16" h="16" script="ui_scrollbar_button.bin">
+            <image name="default" x="0.0078125" y="0.4296875" w="0.125" h="0.125">ui/ui_group_8_3.tex</image>
+            <image name="pressed" x="0.4296875" y="0.3515625" w="0.125" h="0.125">ui/ui_group_8_3.tex</image>
+          </form>
+        </form>
+      </form>
+    </form>
+  </form>
+  <cursor name="default" script="ui_tooltip_cursor.bin" w="32" h="32">
+    <image name="default" x="0" y="0" w="1" h="1">ui/ui_cursor.tga</image>
+    <image name="border" x="0" y="0" w="1" h="1">ui/ui_tooltip_border.png</image>
+    <image name="bg" x="0" y="0" w="1" h="1">ui/ui_tooltip_bg.png</image>
+    <font name="default" size="10" face="fritz_quadrata" />
+    <font name="big" size="12" face="fritz_quadrata" />
+  </cursor>
+</form>

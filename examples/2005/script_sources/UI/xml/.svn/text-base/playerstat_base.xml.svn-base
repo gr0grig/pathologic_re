@@ -1,0 +1,22 @@
+<base> 
+	<image name = "cross" x = "0" y = "0" w = "1" h = "1">ui/ui_hud_cross.png</image>
+	<image name = "mail" x = "0" y = "0" w = "1" h = "1">ui/ui_hud_mail.png</image>
+	<sound name="mail" stream="0" loop="0">mail_received.ogg</sound>
+	<image name = "diary" x = "0" y = "0" w = "1" h = "1">ui/ui_hud_diary.png</image>
+	<sound name="diary" stream="0" loop="0">diary_update.ogg</sound>	
+	<image name = "rep_up" x = "0" y = "0" w = "1" h = "1">ui/ui_hud_rep_up.png</image>
+	<image name = "rep_down" x = "0" y = "0" w = "1" h = "1">ui/ui_hud_rep_down.png</image>
+	<sound name="rep_down" stream="0" loop="0">ReputationDown.ogg</sound>	
+	<sound name="rep_up" stream="0" loop="0">ReputationUp.ogg</sound>	
+	<image name = "slot" x = "0" y = "0" w = "1" h = "1">ui/ui_hud_item_slot.png</image>
+	<image name = "nerv_b" x = "0" y = "0" w = "1" h = "1">ui/ui_nerv_b.png</image>
+	<image name = "nerv_r" x = "0" y = "0" w = "1" h = "1">ui/ui_nerv_1.png</image>
+	<image name = "nerv_g" x = "0" y = "0" w = "1" h = "1">ui/ui_nerv_3.png</image>
+	<image name = "nerv_y" x = "0" y = "0" w = "1" h = "1">ui/ui_nerv_2.png</image>
+	<image name = "hunger" x = "0" y = "0" w = "1" h = "1">ui/ui_nerv_hunger_rus.png</image>
+	<image name = "immunity" x = "0" y = "0" w = "1" h = "1">ui/ui_nerv_immunity_rus.png</image>
+	<image name = "disease" x = "0" y = "0" w = "1" h = "1">ui/ui_nerv_infection_rus.png</image>
+	<image name = "reputation" x = "0" y = "0" w = "1" h = "1">ui/ui_nerv_reputation_rus.png</image>
+	<image name = "tiredness" x = "0" y = "0" w = "1" h = "1">ui/ui_nerv_exhaustion_rus.png</image>
+	<image name = "health" x = "0" y = "0" w = "1" h = "1">ui/ui_nerv_health_rus.png</image>
+</base>

@@ -1,0 +1,98 @@
+<form name="message" x="221" y="70" w="357" h="471" script="ui_message.bin">
+  <form name="panel" x="221" y="70" w="357" h="38">
+    <image name="default" x="0.001953125" y="0.015625" w="0.6972656" h="0.59375">ui/ui_group_5_1.tex</image>
+    <form name="button_day1" x="228" y="77" w="24" h="24" script="ui_tab_button.bin">
+      <image name="default" x="0.8554688" y="0.015625" w="0.046875" h="0.375">ui/ui_group_5_1.tex</image>
+      <image name="text" x="0.703125" y="0.015625" w="0.046875" h="0.375">ui/ui_group_5_1.tex</image>
+      <image name="pressed" x="0.90625" y="0.421875" w="0.046875" h="0.375">ui/ui_group_5_1.tex</image>
+    </form>
+    <form name="button_day2" x="257" y="77" w="24" h="24" script="ui_tab_button.bin">
+      <image name="default" x="0.8554688" y="0.015625" w="0.046875" h="0.375">ui/ui_group_5_1.tex</image>
+      <image name="text" x="0.8046875" y="0.421875" w="0.046875" h="0.375">ui/ui_group_5_1.tex</image>
+      <image name="pressed" x="0.90625" y="0.421875" w="0.046875" h="0.375">ui/ui_group_5_1.tex</image>
+    </form>
+    <form name="button_day3" x="286" y="77" w="24" h="24" script="ui_tab_button.bin">
+      <image name="default" x="0.8554688" y="0.015625" w="0.046875" h="0.375">ui/ui_group_5_1.tex</image>
+      <image name="text" x="0.703125" y="0.1035156" w="0.046875" h="0.046875">ui/ui_group_5_2.tex</image>
+      <image name="pressed" x="0.90625" y="0.421875" w="0.046875" h="0.375">ui/ui_group_5_1.tex</image>
+    </form>
+    <form name="button_day4" x="315" y="77" w="24" h="24" script="ui_tab_button.bin">
+      <image name="default" x="0.8554688" y="0.015625" w="0.046875" h="0.375">ui/ui_group_5_1.tex</image>
+      <image name="text" x="0.703125" y="0.421875" w="0.046875" h="0.375">ui/ui_group_5_1.tex</image>
+      <image name="pressed" x="0.90625" y="0.421875" w="0.046875" h="0.375">ui/ui_group_5_1.tex</image>
+    </form>
+    <form name="button_day5" x="344" y="77" w="24" h="24" script="ui_tab_button.bin">
+      <image name="default" x="0.8554688" y="0.015625" w="0.046875" h="0.375">ui/ui_group_5_1.tex</image>
+      <image name="text" x="0.8554688" y="0.421875" w="0.046875" h="0.375">ui/ui_group_5_1.tex</image>
+      <image name="pressed" x="0.90625" y="0.421875" w="0.046875" h="0.375">ui/ui_group_5_1.tex</image>
+    </form>
+    <form name="button_day6" x="373" y="77" w="24" h="24" script="ui_tab_button.bin">
+      <image name="default" x="0.8554688" y="0.015625" w="0.046875" h="0.375">ui/ui_group_5_1.tex</image>
+      <image name="text" x="0.8046875" y="0.015625" w="0.046875" h="0.375">ui/ui_group_5_1.tex</image>
+      <image name="pressed" x="0.90625" y="0.421875" w="0.046875" h="0.375">ui/ui_group_5_1.tex</image>
+    </form>
+    <form name="button_day7" x="402" y="77" w="24" h="24" script="ui_tab_button.bin">
+      <image name="default" x="0.8554688" y="0.015625" w="0.046875" h="0.375">ui/ui_group_5_1.tex</image>
+      <image name="text" x="0.90625" y="0.015625" w="0.046875" h="0.375">ui/ui_group_5_1.tex</image>
+      <image name="pressed" x="0.90625" y="0.421875" w="0.046875" h="0.375">ui/ui_group_5_1.tex</image>
+    </form>
+    <form name="button_day8" x="431" y="77" w="24" h="24" script="ui_tab_button.bin">
+      <image name="default" x="0.8554688" y="0.015625" w="0.046875" h="0.375">ui/ui_group_5_1.tex</image>
+      <image name="text" x="0.7539063" y="0.421875" w="0.046875" h="0.375">ui/ui_group_5_1.tex</image>
+      <image name="pressed" x="0.90625" y="0.421875" w="0.046875" h="0.375">ui/ui_group_5_1.tex</image>
+    </form>
+    <form name="button_day9" x="460" y="77" w="24" h="24" script="ui_tab_button.bin">
+      <image name="default" x="0.8554688" y="0.015625" w="0.046875" h="0.375">ui/ui_group_5_1.tex</image>
+      <image name="text" x="0.703125" y="0.001953125" w="0.046875" h="0.046875">ui/ui_group_5_2.tex</image>
+      <image name="pressed" x="0.90625" y="0.421875" w="0.046875" h="0.375">ui/ui_group_5_1.tex</image>
+    </form>
+    <form name="button_day10" x="489" y="77" w="24" h="24" script="ui_tab_button.bin">
+      <image name="default" x="0.8554688" y="0.015625" w="0.046875" h="0.375">ui/ui_group_5_1.tex</image>
+      <image name="text" x="0.7539063" y="0.015625" w="0.046875" h="0.375">ui/ui_group_5_1.tex</image>
+      <image name="pressed" x="0.90625" y="0.421875" w="0.046875" h="0.375">ui/ui_group_5_1.tex</image>
+    </form>
+    <form name="button_day11" x="518" y="77" w="24" h="24" script="ui_tab_button.bin">
+      <image name="default" x="0.8554688" y="0.015625" w="0.046875" h="0.375">ui/ui_group_5_1.tex</image>
+      <image name="text" x="0.703125" y="0.05273438" w="0.046875" h="0.046875">ui/ui_group_5_2.tex</image>
+      <image name="pressed" x="0.90625" y="0.421875" w="0.046875" h="0.375">ui/ui_group_5_1.tex</image>
+    </form>
+    <form name="button_day12" x="547" y="77" w="24" h="24" script="ui_tab_button.bin">
+      <image name="default" x="0.8554688" y="0.015625" w="0.046875" h="0.375">ui/ui_group_5_1.tex</image>
+      <image name="text" x="0.703125" y="0.1542969" w="0.046875" h="0.046875">ui/ui_group_5_2.tex</image>
+      <image name="pressed" x="0.90625" y="0.421875" w="0.046875" h="0.375">ui/ui_group_5_1.tex</image>
+    </form>
+  </form>
+  <form name="background" x="221" y="108" w="357" h="422">
+    <image name="default" x="0.001953125" y="0.001953125" w="0.6972656" h="0.8242188">ui/ui_group_5_2.tex</image>
+    <form name="text" x="236" y="123" w="300" h="390" script="ui_message_text.bin">
+      <form name="scrollbar" x="554" y="135" w="14" h="365" script="ui_scrollbar.bin">
+        <image name="slider" x="0.9199219" y="0.40625" w="0.02734375" h="0.4375">ui/ui_group_2_1.tex</image>
+        <image name="slider_pressed" x="0.8886719" y="0.40625" w="0.02734375" h="0.4375">ui/ui_group_2_1.tex</image>
+        <form name="scroll_button_up" x="553" y="117" w="16" h="16" script="ui_scrollbar_button.bin">
+          <image name="default" x="0.7832031" y="0.03125" w="0.03125" h="0.5">ui/ui_group_2_1.tex</image>
+          <image name="pressed" x="0.8183594" y="0.03125" w="0.03125" h="0.5">ui/ui_group_2_1.tex</image>
+        </form>
+        <form name="scroll_button_down" x="553" y="503" w="16" h="16" script="ui_scrollbar_button.bin">
+          <image name="default" x="0.8535156" y="0.03125" w="0.03125" h="0.5">ui/ui_group_2_1.tex</image>
+          <image name="pressed" x="0.7480469" y="0.03125" w="0.03125" h="0.5">ui/ui_group_2_1.tex</image>
+        </form>
+      </form>
+      <font name="default" size="10" face="fritz_quadrata" />
+    </form>
+    <form name="scroll_top" x="551" y="115" w="20" h="30">
+      <image name="default" x="0.7050781" y="0.03125" w="0.0390625" h="0.9375">ui/ui_group_2_1.tex</image>
+    </form>
+    <form name="scroll_bottom" x="551" y="491" w="20" h="30">
+      <image name="default" x="0.6621094" y="0.03125" w="0.0390625" h="0.9375">ui/ui_group_2_1.tex</image>
+    </form>
+    <form name="scroll_middle" x="551" y="145" w="20" h="346">
+      <image name="default" x="0.8886719" y="0.03125" w="0.0390625" h="0.3125">ui/ui_group_2_1.tex</image>
+    </form>
+  </form>
+  <form name="panel_bottom" x="221" y="530" w="357" h="11">
+    <image name="default" x="0.001953125" y="0.640625" w="0.6972656" h="0.171875">ui/ui_group_5_1.tex</image>
+  </form>
+  <cursor name="default" script="ui_cursor.bin" w="32" h="32">
+    <image name="default" x="0" y="0" w="1" h="1">ui/ui_cursor.tga</image>
+  </cursor>
+</form>

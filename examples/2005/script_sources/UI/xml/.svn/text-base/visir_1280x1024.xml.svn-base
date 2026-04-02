@@ -1,0 +1,39 @@
+<form name="visir_1280x1024" x="0" y="0" w="1280" h="1024">
+  <form name="main" x="417" y="290" w="446" h="444">
+    <form name="center" x="513" y="386" w="256" h="256">
+      <image name="default" x="0.001953125" y="0.001953125" w="0.5" h="0.5">ui/ui_group_4_4.tex</image>
+    </form>
+    <form name="arrow_up" x="620" y="290" w="44" h="61">
+      <image name="default" x="0.7890625" y="0.3125" w="0.171875" h="0.2382813">ui/ui_group_4_1.tex</image>
+    </form>
+    <form name="arrow_down" x="620" y="657" w="44" h="77">
+      <image name="default" x="0.7890625" y="0.00390625" w="0.171875" h="0.3007813">ui/ui_group_4_1.tex</image>
+    </form>
+    <form name="arrow_left" x="417" y="486" w="61" h="43">
+      <image name="default" x="0.25" y="0.8007813" w="0.2382813" h="0.1679688">ui/ui_group_4_1.tex</image>
+    </form>
+    <form name="arrow_right" x="802" y="492" w="61" h="43">
+      <image name="default" x="0.4960938" y="0.8007813" w="0.2382813" h="0.1679688">ui/ui_group_4_1.tex</image>
+    </form>
+    <form name="scale_up" x="664" y="291" w="199" h="202">
+      <image name="default" x="0.00390625" y="0.00390625" w="0.7773438" h="0.7890625">ui/ui_group_4_1.tex</image>
+      <form name="vlevel1" x="664" y="291" w="36" h="35" script="ui_visir_level.bin">
+        <image name="default" x="0.7890625" y="0.5585938" w="0.140625" h="0.1367188">ui/ui_group_4_1.tex</image>
+      </form>
+      <form name="vlevel2" x="693" y="296" w="61" h="48" script="ui_visir_level.bin">
+        <image name="default" x="0.00390625" y="0.8007813" w="0.2382813" h="0.1875">ui/ui_group_4_1.tex</image>
+      </form>
+      <form name="vlevel3" x="740" y="318" w="78" h="74" script="ui_visir_level.bin">
+        <image name="default" x="0.0078125" y="0.0078125" w="0.609375" h="0.578125">ui/ui_group_4_3.tex</image>
+      </form>
+      <form name="vlevel4" x="794" y="376" w="69" h="116" script="ui_visir_level.bin">
+        <image name="default" x="0.0078125" y="0.0078125" w="0.5390625" h="0.90625">ui/ui_group_4_2.tex</image>
+      </form>
+    </form>
+    <form name="charge" x="542" y="790" w="200" h="7" script="ui_player_stats_bar.bin">
+      <image name="start" x="0.8125" y="0.703125" w="0.0078125" h="0.02734375">ui/ui_group_4_1.tex</image>
+      <image name="middle" x="0.7890625" y="0.703125" w="0.015625" h="0.02734375">ui/ui_group_4_1.tex</image>
+      <image name="end" x="0.828125" y="0.703125" w="0.0078125" h="0.02734375">ui/ui_group_4_1.tex</image>
+    </form>
+  </form>
+</form>

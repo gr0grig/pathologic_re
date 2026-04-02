@@ -1,0 +1,3 @@
+void citHandleDeath(object actor)
+{
+}

@@ -1,0 +1,343 @@
+<form name="trade" x="0" y="0" w="800" h="600" script="ui_trade_800x600.bin">
+  <form name="panel_left" x="0" y="0" w="152" h="64">
+    <image name="default" x="0.00390625" y="0.0078125" w="0.59375" h="0.5">ui/ui_group_7_2.tex</image>
+    <form name="l_photo_slot" x="12" y="6" w="52" h="52">
+      <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+    </form>
+    <form name="l_money_slot" x="69" y="6" w="52" h="52" script="ui_trade_money_slot.bin">
+      <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <font name="default" size="8" face="fritz_quadrata" />
+    </form>
+  </form>
+  <form name="border_left_up_left" x="0" y="64" w="2" h="10">
+    <image name="default" x="0.1054688" y="0.828125" w="0.0078125" h="0.078125">ui/ui_group_7_1.tex</image>
+  </form>
+  <form name="border_left_up_right" x="150" y="64" w="2" h="10">
+    <image name="default" x="0.1210938" y="0.828125" w="0.0078125" h="0.078125">ui/ui_group_7_1.tex</image>
+  </form>
+  <form name="border_left_vl_left" x="0" y="74" w="2" h="504">
+    <image name="default" x="0.08984375" y="0.828125" w="0.0078125" h="0.078125">ui/ui_group_7_1.tex</image>
+  </form>
+  <form name="border_left_vl_right" x="150" y="74" w="2" h="504">
+    <image name="default" x="0.08984375" y="0.828125" w="0.0078125" h="0.078125">ui/ui_group_7_1.tex</image>
+  </form>
+  <form name="border_left_down_left" x="0" y="578" w="2" h="10">
+    <image name="default" x="0.07421875" y="0.828125" w="0.0078125" h="0.078125">ui/ui_group_7_1.tex</image>
+  </form>
+  <form name="border_left_down_right" x="150" y="578" w="2" h="10">
+    <image name="default" x="0.1367188" y="0.828125" w="0.0078125" h="0.078125">ui/ui_group_7_1.tex</image>
+  </form>
+  <form name="border_left_down" x="0" y="588" w="152" h="12">
+    <image name="default" x="0.001953125" y="0.0625" w="0.296875" h="0.75">ui/ui_group_34_1.tex</image>
+  </form>
+  <form name="background_left" x="2" y="64" w="148" h="524" script="ui_wheel_redirector.bin">
+    <image name="default" x="0.00390625" y="0.828125" w="0.0625" h="0.125">ui/ui_group_7_1.tex</image>
+    <form name="l_slot01" x="12" y="72" w="52" h="52" script="ui_trade_buy_slot.bin">
+      <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="selected" x="0.6054688" y="0.4296875" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="disabled" x="0.1523438" y="0.828125" w="0.00390625" h="0.0078125">ui/ui_group_7_1.tex</image>
+      <font name="default" size="8" face="fritz_quadrata" />
+    </form>
+    <form name="l_slot02" x="69" y="72" w="52" h="52" script="ui_trade_buy_slot.bin">
+      <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="selected" x="0.6054688" y="0.4296875" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="disabled" x="0.1523438" y="0.828125" w="0.00390625" h="0.0078125">ui/ui_group_7_1.tex</image>
+      <font name="default" size="8" face="fritz_quadrata" />
+    </form>
+    <form name="l_slot03" x="12" y="129" w="52" h="52" script="ui_trade_buy_slot.bin">
+      <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="selected" x="0.6054688" y="0.4296875" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="disabled" x="0.1523438" y="0.828125" w="0.00390625" h="0.0078125">ui/ui_group_7_1.tex</image>
+      <font name="default" size="8" face="fritz_quadrata" />
+    </form>
+    <form name="l_slot04" x="69" y="129" w="52" h="52" script="ui_trade_buy_slot.bin">
+      <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="selected" x="0.6054688" y="0.4296875" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="disabled" x="0.1523438" y="0.828125" w="0.00390625" h="0.0078125">ui/ui_group_7_1.tex</image>
+      <font name="default" size="8" face="fritz_quadrata" />
+    </form>
+    <form name="l_slot05" x="12" y="186" w="52" h="52" script="ui_trade_buy_slot.bin">
+      <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="selected" x="0.6054688" y="0.4296875" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="disabled" x="0.1523438" y="0.828125" w="0.00390625" h="0.0078125">ui/ui_group_7_1.tex</image>
+      <font name="default" size="8" face="fritz_quadrata" />
+    </form>
+    <form name="l_slot06" x="69" y="186" w="52" h="52" script="ui_trade_buy_slot.bin">
+      <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="selected" x="0.6054688" y="0.4296875" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="disabled" x="0.1523438" y="0.828125" w="0.00390625" h="0.0078125">ui/ui_group_7_1.tex</image>
+      <font name="default" size="8" face="fritz_quadrata" />
+    </form>
+    <form name="l_slot07" x="12" y="243" w="52" h="52" script="ui_trade_buy_slot.bin">
+      <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="selected" x="0.6054688" y="0.4296875" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="disabled" x="0.1523438" y="0.828125" w="0.00390625" h="0.0078125">ui/ui_group_7_1.tex</image>
+      <font name="default" size="8" face="fritz_quadrata" />
+    </form>
+    <form name="l_slot08" x="69" y="243" w="52" h="52" script="ui_trade_buy_slot.bin">
+      <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="selected" x="0.6054688" y="0.4296875" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="disabled" x="0.1523438" y="0.828125" w="0.00390625" h="0.0078125">ui/ui_group_7_1.tex</image>
+      <font name="default" size="8" face="fritz_quadrata" />
+    </form>
+    <form name="l_slot09" x="12" y="300" w="52" h="52" script="ui_trade_buy_slot.bin">
+      <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="selected" x="0.6054688" y="0.4296875" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="disabled" x="0.1523438" y="0.828125" w="0.00390625" h="0.0078125">ui/ui_group_7_1.tex</image>
+      <font name="default" size="8" face="fritz_quadrata" />
+    </form>
+    <form name="l_slot10" x="69" y="300" w="52" h="52" script="ui_trade_buy_slot.bin">
+      <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="selected" x="0.6054688" y="0.4296875" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="disabled" x="0.1523438" y="0.828125" w="0.00390625" h="0.0078125">ui/ui_group_7_1.tex</image>
+      <font name="default" size="8" face="fritz_quadrata" />
+    </form>
+    <form name="l_slot11" x="12" y="357" w="52" h="52" script="ui_trade_buy_slot.bin">
+      <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="selected" x="0.6054688" y="0.4296875" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="disabled" x="0.1523438" y="0.828125" w="0.00390625" h="0.0078125">ui/ui_group_7_1.tex</image>
+      <font name="default" size="8" face="fritz_quadrata" />
+    </form>
+    <form name="l_slot12" x="69" y="357" w="52" h="52" script="ui_trade_buy_slot.bin">
+      <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="selected" x="0.6054688" y="0.4296875" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="disabled" x="0.1523438" y="0.828125" w="0.00390625" h="0.0078125">ui/ui_group_7_1.tex</image>
+      <font name="default" size="8" face="fritz_quadrata" />
+    </form>
+    <form name="l_slot13" x="12" y="414" w="52" h="52" script="ui_trade_buy_slot.bin">
+      <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="selected" x="0.6054688" y="0.4296875" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="disabled" x="0.1523438" y="0.828125" w="0.00390625" h="0.0078125">ui/ui_group_7_1.tex</image>
+      <font name="default" size="8" face="fritz_quadrata" />
+    </form>
+    <form name="l_slot14" x="69" y="414" w="52" h="52" script="ui_trade_buy_slot.bin">
+      <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="selected" x="0.6054688" y="0.4296875" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="disabled" x="0.1523438" y="0.828125" w="0.00390625" h="0.0078125">ui/ui_group_7_1.tex</image>
+      <font name="default" size="8" face="fritz_quadrata" />
+    </form>
+    <form name="l_slot15" x="12" y="471" w="52" h="52" script="ui_trade_buy_slot.bin">
+      <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="selected" x="0.6054688" y="0.4296875" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="disabled" x="0.1523438" y="0.828125" w="0.00390625" h="0.0078125">ui/ui_group_7_1.tex</image>
+      <font name="default" size="8" face="fritz_quadrata" />
+    </form>
+    <form name="l_slot16" x="69" y="471" w="52" h="52" script="ui_trade_buy_slot.bin">
+      <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="selected" x="0.6054688" y="0.4296875" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="disabled" x="0.1523438" y="0.828125" w="0.00390625" h="0.0078125">ui/ui_group_7_1.tex</image>
+      <font name="default" size="8" face="fritz_quadrata" />
+    </form>
+    <form name="l_slot17" x="12" y="528" w="52" h="52" script="ui_trade_buy_slot.bin">
+      <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="selected" x="0.6054688" y="0.4296875" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="disabled" x="0.1523438" y="0.828125" w="0.00390625" h="0.0078125">ui/ui_group_7_1.tex</image>
+      <font name="default" size="8" face="fritz_quadrata" />
+    </form>
+    <form name="l_slot18" x="69" y="528" w="52" h="52" script="ui_trade_buy_slot.bin">
+      <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="selected" x="0.6054688" y="0.4296875" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="disabled" x="0.1523438" y="0.828125" w="0.00390625" h="0.0078125">ui/ui_group_7_1.tex</image>
+      <font name="default" size="8" face="fritz_quadrata" />
+    </form>
+    <form name="l_scroll_top" x="126" y="72" w="20" h="30">
+      <image name="default" x="0.7050781" y="0.03125" w="0.0390625" h="0.9375">ui/ui_group_2_1.tex</image>
+    </form>
+    <form name="l_scroll_middle" x="126" y="102" w="20" h="448">
+      <image name="default" x="0.8886719" y="0.03125" w="0.0390625" h="0.3125">ui/ui_group_2_1.tex</image>
+    </form>
+    <form name="l_scroll_bottom" x="126" y="550" w="20" h="30">
+      <image name="default" x="0.6621094" y="0.03125" w="0.0390625" h="0.9375">ui/ui_group_2_1.tex</image>
+    </form>
+    <form name="l_scrollbar" x="129" y="92" w="14" h="468" script="ui_scrollbar.bin">
+      <image name="slider" x="0.9199219" y="0.40625" w="0.02734375" h="0.4375">ui/ui_group_2_1.tex</image>
+      <image name="slider_pressed" x="0.8886719" y="0.40625" w="0.02734375" h="0.4375">ui/ui_group_2_1.tex</image>
+      <form name="l_scroll_button_top" x="129" y="74" w="16" h="16" script="ui_scrollbar_button.bin">
+        <image name="default" x="0.7832031" y="0.03125" w="0.03125" h="0.5">ui/ui_group_2_1.tex</image>
+        <image name="pressed" x="0.8183594" y="0.03125" w="0.03125" h="0.5">ui/ui_group_2_1.tex</image>
+      </form>
+      <form name="l_scroll_button_bottom" x="129" y="562" w="16" h="16" script="ui_scrollbar_button.bin">
+        <image name="default" x="0.8535156" y="0.03125" w="0.03125" h="0.5">ui/ui_group_2_1.tex</image>
+        <image name="pressed" x="0.7480469" y="0.03125" w="0.03125" h="0.5">ui/ui_group_2_1.tex</image>
+      </form>
+    </form>
+  </form>
+  <form name="panel_right" x="648" y="0" w="152" h="64">
+    <image name="default" x="0.00390625" y="0.0078125" w="0.59375" h="0.5">ui/ui_group_7_1.tex</image>
+    <form name="r_photo_slot" x="660" y="6" w="52" h="52">
+      <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+    </form>
+    <form name="r_money_slot" x="717" y="6" w="52" h="52" script="ui_trade_money_slot.bin">
+      <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <font name="default" size="8" face="fritz_quadrata" />
+    </form>
+    <form name="ok_button" x="774" y="6" w="20" h="23" script="ui_trade_button.bin">
+      <image name="default" x="0.8164063" y="0.0078125" w="0.078125" h="0.1796875">ui/ui_group_7_1.tex</image>
+      <image name="pressed" x="0.8164063" y="0.3984375" w="0.078125" h="0.1796875">ui/ui_group_7_1.tex</image>
+    </form>
+    <form name="cancel_button" x="774" y="35" w="20" h="23" script="ui_trade_button.bin">
+      <image name="default" x="0.8164063" y="0.59375" w="0.078125" h="0.1796875">ui/ui_group_7_1.tex</image>
+      <image name="pressed" x="0.8164063" y="0.203125" w="0.078125" h="0.1796875">ui/ui_group_7_1.tex</image>
+    </form>
+  </form>
+  <form name="border_right_up_left" x="648" y="64" w="2" h="10">
+    <image name="default" x="0.1054688" y="0.828125" w="0.0078125" h="0.078125">ui/ui_group_7_1.tex</image>
+  </form>
+  <form name="border_rigth_up_right" x="798" y="64" w="2" h="10">
+    <image name="default" x="0.1210938" y="0.828125" w="0.0078125" h="0.078125">ui/ui_group_7_1.tex</image>
+  </form>
+  <form name="border_right_vl_left" x="648" y="74" w="2" h="504">
+    <image name="default" x="0.08984375" y="0.828125" w="0.0078125" h="0.078125">ui/ui_group_7_1.tex</image>
+  </form>
+  <form name="border_right_vl_right" x="798" y="74" w="2" h="504">
+    <image name="default" x="0.08984375" y="0.828125" w="0.0078125" h="0.078125">ui/ui_group_7_1.tex</image>
+  </form>
+  <form name="border_right_down_left" x="648" y="578" w="2" h="10">
+    <image name="default" x="0.07421875" y="0.828125" w="0.0078125" h="0.078125">ui/ui_group_7_1.tex</image>
+  </form>
+  <form name="border_right_down_right" x="798" y="578" w="2" h="10">
+    <image name="default" x="0.1367188" y="0.828125" w="0.0078125" h="0.078125">ui/ui_group_7_1.tex</image>
+  </form>
+  <form name="border_right_down" x="648" y="588" w="152" h="12">
+    <image name="default" x="0.3027344" y="0.0625" w="0.296875" h="0.75">ui/ui_group_34_1.tex</image>
+  </form>
+  <form name="background_right" x="650" y="64" w="148" h="524" script="ui_wheel_redirector.bin">
+    <image name="default" x="0.00390625" y="0.828125" w="0.0625" h="0.125">ui/ui_group_7_1.tex</image>
+    <form name="r_slot01" x="660" y="72" w="52" h="52" script="ui_trade_sell_slot.bin">
+      <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="selected" x="0.6054688" y="0.4296875" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="disabled" x="0.1523438" y="0.828125" w="0.00390625" h="0.0078125">ui/ui_group_7_1.tex</image>
+      <font name="default" size="8" face="fritz_quadrata" />
+    </form>
+    <form name="r_slot02" x="717" y="72" w="52" h="52" script="ui_trade_sell_slot.bin">
+      <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="selected" x="0.6054688" y="0.4296875" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="disabled" x="0.1523438" y="0.828125" w="0.00390625" h="0.0078125">ui/ui_group_7_1.tex</image>
+      <font name="default" size="8" face="fritz_quadrata" />
+    </form>
+    <form name="r_slot03" x="660" y="129" w="52" h="52" script="ui_trade_sell_slot.bin">
+      <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="selected" x="0.6054688" y="0.4296875" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="disabled" x="0.1523438" y="0.828125" w="0.00390625" h="0.0078125">ui/ui_group_7_1.tex</image>
+      <font name="default" size="8" face="fritz_quadrata" />
+    </form>
+    <form name="r_slot04" x="717" y="129" w="52" h="52" script="ui_trade_sell_slot.bin">
+      <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="selected" x="0.6054688" y="0.4296875" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="disabled" x="0.1523438" y="0.828125" w="0.00390625" h="0.0078125">ui/ui_group_7_1.tex</image>
+      <font name="default" size="8" face="fritz_quadrata" />
+    </form>
+    <form name="r_slot05" x="660" y="186" w="52" h="52" script="ui_trade_sell_slot.bin">
+      <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="selected" x="0.6054688" y="0.4296875" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="disabled" x="0.1523438" y="0.828125" w="0.00390625" h="0.0078125">ui/ui_group_7_1.tex</image>
+      <font name="default" size="8" face="fritz_quadrata" />
+    </form>
+    <form name="r_slot06" x="717" y="186" w="52" h="52" script="ui_trade_sell_slot.bin">
+      <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="selected" x="0.6054688" y="0.4296875" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="disabled" x="0.1523438" y="0.828125" w="0.00390625" h="0.0078125">ui/ui_group_7_1.tex</image>
+      <font name="default" size="8" face="fritz_quadrata" />
+    </form>
+    <form name="r_slot07" x="660" y="243" w="52" h="52" script="ui_trade_sell_slot.bin">
+      <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="selected" x="0.6054688" y="0.4296875" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="disabled" x="0.1523438" y="0.828125" w="0.00390625" h="0.0078125">ui/ui_group_7_1.tex</image>
+      <font name="default" size="8" face="fritz_quadrata" />
+    </form>
+    <form name="r_slot08" x="717" y="243" w="52" h="52" script="ui_trade_sell_slot.bin">
+      <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="selected" x="0.6054688" y="0.4296875" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="disabled" x="0.1523438" y="0.828125" w="0.00390625" h="0.0078125">ui/ui_group_7_1.tex</image>
+      <font name="default" size="8" face="fritz_quadrata" />
+    </form>
+    <form name="r_slot09" x="660" y="300" w="52" h="52" script="ui_trade_sell_slot.bin">
+      <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="selected" x="0.6054688" y="0.4296875" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="disabled" x="0.1523438" y="0.828125" w="0.00390625" h="0.0078125">ui/ui_group_7_1.tex</image>
+      <font name="default" size="8" face="fritz_quadrata" />
+    </form>
+    <form name="r_slot10" x="717" y="300" w="52" h="52" script="ui_trade_sell_slot.bin">
+      <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="selected" x="0.6054688" y="0.4296875" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="disabled" x="0.1523438" y="0.828125" w="0.00390625" h="0.0078125">ui/ui_group_7_1.tex</image>
+      <font name="default" size="8" face="fritz_quadrata" />
+    </form>
+    <form name="r_slot11" x="660" y="357" w="52" h="52" script="ui_trade_sell_slot.bin">
+      <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="selected" x="0.6054688" y="0.4296875" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="disabled" x="0.1523438" y="0.828125" w="0.00390625" h="0.0078125">ui/ui_group_7_1.tex</image>
+      <font name="default" size="8" face="fritz_quadrata" />
+    </form>
+    <form name="r_slot12" x="717" y="357" w="52" h="52" script="ui_trade_sell_slot.bin">
+      <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="selected" x="0.6054688" y="0.4296875" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="disabled" x="0.1523438" y="0.828125" w="0.00390625" h="0.0078125">ui/ui_group_7_1.tex</image>
+      <font name="default" size="8" face="fritz_quadrata" />
+    </form>
+    <form name="r_slot13" x="660" y="414" w="52" h="52" script="ui_trade_sell_slot.bin">
+      <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="selected" x="0.6054688" y="0.4296875" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="disabled" x="0.1523438" y="0.828125" w="0.00390625" h="0.0078125">ui/ui_group_7_1.tex</image>
+      <font name="default" size="8" face="fritz_quadrata" />
+    </form>
+    <form name="r_slot14" x="717" y="414" w="52" h="52" script="ui_trade_sell_slot.bin">
+      <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="selected" x="0.6054688" y="0.4296875" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="disabled" x="0.1523438" y="0.828125" w="0.00390625" h="0.0078125">ui/ui_group_7_1.tex</image>
+      <font name="default" size="8" face="fritz_quadrata" />
+    </form>
+    <form name="r_slot15" x="660" y="471" w="52" h="52" script="ui_trade_sell_slot.bin">
+      <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="selected" x="0.6054688" y="0.4296875" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="disabled" x="0.1523438" y="0.828125" w="0.00390625" h="0.0078125">ui/ui_group_7_1.tex</image>
+      <font name="default" size="8" face="fritz_quadrata" />
+    </form>
+    <form name="r_slot16" x="717" y="471" w="52" h="52" script="ui_trade_sell_slot.bin">
+      <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="selected" x="0.6054688" y="0.4296875" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="disabled" x="0.1523438" y="0.828125" w="0.00390625" h="0.0078125">ui/ui_group_7_1.tex</image>
+      <font name="default" size="8" face="fritz_quadrata" />
+    </form>
+    <form name="r_slot17" x="660" y="528" w="52" h="52" script="ui_trade_sell_slot.bin">
+      <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="selected" x="0.6054688" y="0.4296875" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="disabled" x="0.1523438" y="0.828125" w="0.00390625" h="0.0078125">ui/ui_group_7_1.tex</image>
+      <font name="default" size="8" face="fritz_quadrata" />
+    </form>
+    <form name="r_slot18" x="717" y="528" w="52" h="52" script="ui_trade_sell_slot.bin">
+      <image name="default" x="0.6054688" y="0.0078125" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="selected" x="0.6054688" y="0.4296875" w="0.203125" h="0.40625">ui/ui_group_7_1.tex</image>
+      <image name="disabled" x="0.1523438" y="0.828125" w="0.00390625" h="0.0078125">ui/ui_group_7_1.tex</image>
+      <font name="default" size="8" face="fritz_quadrata" />
+    </form>
+    <form name="r_scroll_top" x="774" y="72" w="20" h="30">
+      <image name="default" x="0.7050781" y="0.03125" w="0.0390625" h="0.9375">ui/ui_group_2_1.tex</image>
+    </form>
+    <form name="r_scroll_middle" x="774" y="102" w="20" h="448">
+      <image name="default" x="0.8886719" y="0.03125" w="0.0390625" h="0.3125">ui/ui_group_2_1.tex</image>
+    </form>
+    <form name="r_scroll_bottom" x="774" y="550" w="20" h="30">
+      <image name="default" x="0.6621094" y="0.03125" w="0.0390625" h="0.9375">ui/ui_group_2_1.tex</image>
+    </form>
+    <form name="r_scrollbar" x="777" y="92" w="14" h="468" script="ui_scrollbar.bin">
+      <image name="slider" x="0.9199219" y="0.40625" w="0.02734375" h="0.4375">ui/ui_group_2_1.tex</image>
+      <image name="slider_pressed" x="0.8886719" y="0.40625" w="0.02734375" h="0.4375">ui/ui_group_2_1.tex</image>
+      <form name="r_scroll_button_top" x="777" y="74" w="16" h="16" script="ui_scrollbar_button.bin">
+        <image name="default" x="0.7832031" y="0.03125" w="0.03125" h="0.5">ui/ui_group_2_1.tex</image>
+        <image name="pressed" x="0.8183594" y="0.03125" w="0.03125" h="0.5">ui/ui_group_2_1.tex</image>
+      </form>
+      <form name="r_scroll_button_bottom" x="777" y="562" w="16" h="16" script="ui_scrollbar_button.bin">
+        <image name="default" x="0.8535156" y="0.03125" w="0.03125" h="0.5">ui/ui_group_2_1.tex</image>
+        <image name="pressed" x="0.7480469" y="0.03125" w="0.03125" h="0.5">ui/ui_group_2_1.tex</image>
+      </form>
+    </form>
+  </form>
+  <cursor name="default" script="ui_tooltip_cursor.bin" w="32" h="32">
+    <image name="default" x="0" y="0" w="1" h="1">ui/ui_cursor.tga</image>
+    <image name="border" x="0" y="0" w="1" h="1">ui/ui_tooltip_border.png</image>
+    <image name="bg" x="0" y="0" w="1" h="1">ui/ui_tooltip_bg.png</image>
+    <font name="default" size="10" face="fritz_quadrata" />
+    <font name="big" size="12" face="fritz_quadrata" />
+  </cursor>
+</form>

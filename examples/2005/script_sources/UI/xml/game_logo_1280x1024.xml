@@ -1,0 +1,5 @@
+<form name="game_logo_1280x1024" x="0" y="0" w="1280" h="1024">
+  <form name="logo" x="367" y="0" w="512" h="364">
+    <image name="default" x="0.001953125" y="0.00390625" w="0.6269531" h="0.8320313">ui/ui_group_31_1.tex</image>
+  </form>
+</form>

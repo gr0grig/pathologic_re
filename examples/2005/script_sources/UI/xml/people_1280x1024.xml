@@ -1,0 +1,67 @@
+<form name="people_1280x1024" x="0" y="0" w="1280" h="1024">
+  <form name="people" x="486" y="269" w="336" h="486" script="ui_people.bin">
+    <form name="panel" x="486" y="269" w="336" h="11">
+      <image name="default" x="0.001953125" y="0.03125" w="0.65625" h="0.34375">ui/ui_group_2_1.tex</image>
+    </form>
+    <form name="border_l1_up" x="486" y="280" w="6" h="6">
+      <image name="default" x="0.7480469" y="0.59375" w="0.01171875" h="0.1875">ui/ui_group_2_1.tex</image>
+    </form>
+    <form name="border_r1_up" x="816" y="280" w="6" h="6">
+      <image name="default" x="0.7949219" y="0.59375" w="0.01171875" h="0.1875">ui/ui_group_2_1.tex</image>
+    </form>
+    <form name="border_hor_up1" x="492" y="280" w="324" h="2">
+      <image name="default" x="0.001953125" y="0.84375" w="0.00390625" h="0.0625">ui/ui_group_2_1.tex</image>
+    </form>
+    <form name="border_ver_l2" x="486" y="279" w="2" h="472">
+      <image name="default" x="0.009765625" y="0.84375" w="0.00390625" h="0.0625">ui/ui_group_2_1.tex</image>
+    </form>
+    <form name="border_ver_r2" x="820" y="279" w="2" h="472">
+      <image name="default" x="0.009765625" y="0.84375" w="0.00390625" h="0.0625">ui/ui_group_2_1.tex</image>
+    </form>
+    <form name="border_l_down" x="486" y="749" w="6" h="6">
+      <image name="default" x="0.7636719" y="0.59375" w="0.01171875" h="0.1875">ui/ui_group_2_1.tex</image>
+    </form>
+    <form name="border_r_down" x="816" y="749" w="6" h="6">
+      <image name="default" x="0.7792969" y="0.59375" w="0.01171875" h="0.1875">ui/ui_group_2_1.tex</image>
+    </form>
+    <form name="border_hor_down" x="492" y="753" w="324" h="2">
+      <image name="default" x="0.001953125" y="0.84375" w="0.00390625" h="0.0625">ui/ui_group_2_1.tex</image>
+    </form>
+    <form name="background" x="488" y="282" w="332" h="472">
+      <image name="default" x="0.0234375" y="0.84375" w="0.001953125" h="0.03125">ui/ui_group_2_1.tex</image>
+      <form name="text" x="503" y="297" w="277" h="440" script="ui_people_text.bin">
+        <image name="birdmask" x="0.001953125" y="0.00390625" w="0.5" h="0.5">ui/ui_group_2_2.tex</image>
+        <image name="separator" x="0.01757813" y="0.84375" w="0.001953125" h="0.03125">ui/ui_group_2_1.tex</image>
+        <form name="scrollbar" x="798" y="309" w="14" h="415" script="ui_scrollbar.bin">
+          <image name="slider" x="0.9199219" y="0.40625" w="0.02734375" h="0.4375">ui/ui_group_2_1.tex</image>
+          <image name="slider_pressed" x="0.8886719" y="0.40625" w="0.02734375" h="0.4375">ui/ui_group_2_1.tex</image>
+          <form name="scroll_button_up" x="797" y="291" w="16" h="16" script="ui_scrollbar_button.bin">
+            <image name="default" x="0.7832031" y="0.03125" w="0.03125" h="0.5">ui/ui_group_2_1.tex</image>
+            <image name="pressed" x="0.8183594" y="0.03125" w="0.03125" h="0.5">ui/ui_group_2_1.tex</image>
+          </form>
+          <form name="scroll_button_down" x="797" y="727" w="16" h="16" script="ui_scrollbar_button.bin">
+            <image name="default" x="0.8535156" y="0.03125" w="0.03125" h="0.5">ui/ui_group_2_1.tex</image>
+            <image name="pressed" x="0.7480469" y="0.03125" w="0.03125" h="0.5">ui/ui_group_2_1.tex</image>
+          </form>
+        </form>
+        <font name="default" size="10" face="fritz_quadrata" />
+        <font name="name" size="14" face="fritz_quadrata" />
+      </form>
+      <form name="scroll_top" x="795" y="289" w="20" h="30">
+        <image name="default" x="0.7050781" y="0.03125" w="0.0390625" h="0.9375">ui/ui_group_2_1.tex</image>
+      </form>
+      <form name="scroll_bottom" x="795" y="715" w="20" h="30">
+        <image name="default" x="0.6621094" y="0.03125" w="0.0390625" h="0.9375">ui/ui_group_2_1.tex</image>
+      </form>
+      <form name="scroll_middle" x="795" y="319" w="20" h="396">
+        <image name="default" x="0.8886719" y="0.03125" w="0.0390625" h="0.3125">ui/ui_group_2_1.tex</image>
+      </form>
+    </form>
+    <form name="panel_bottom" x="486" y="755" w="336" h="11">
+      <image name="default" x="0.001953125" y="0.4375" w="0.65625" h="0.34375">ui/ui_group_2_1.tex</image>
+    </form>
+    <cursor name="default" script="ui_cursor.bin" w="32" h="32">
+      <image name="default" x="0" y="0" w="1" h="1">ui/ui_cursor.tga</image>
+    </cursor>
+  </form>
+</form>

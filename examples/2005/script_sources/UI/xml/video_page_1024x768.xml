@@ -1,0 +1,36 @@
+<form name="video_page_1024x768" x="346" y="190" w="332" h="420" script="ui_options_page_video.bin">
+  <form name="separator1" x="346" y="254" w="332" h="1">
+    <image name="default" x="0.515625" y="0.0625" w="0.015625" h="0.0625">ui/ui_group_30_1.tex</image>
+  </form>
+  <form name="separator2" x="346" y="350" w="332" h="1">
+    <image name="default" x="0.515625" y="0.0625" w="0.015625" h="0.0625">ui/ui_group_30_1.tex</image>
+  </form>
+  <form name="shadow_check" x="624" y="226" w="14" h="14" script="ui_checkbox.bin">
+    <image name="default" x="0.265625" y="0.0625" w="0.21875" h="0.875">ui/ui_group_30_1.tex</image>
+    <image name="checked" x="0.015625" y="0.0625" w="0.21875" h="0.875">ui/ui_group_30_1.tex</image>
+  </form>
+  <form name="scroll" x="361" y="306" w="277" h="20">
+    <form name="scroll_left" x="361" y="306" w="30" h="20">
+      <image name="default" x="0.4296875" y="0.1796875" w="0.234375" h="0.15625">ui/ui_group_8_3.tex</image>
+    </form>
+    <form name="scroll_middle" x="391" y="306" w="217" h="20">
+      <image name="default" x="0.5703125" y="0.4921875" w="0.078125" h="0.15625">ui/ui_group_8_3.tex</image>
+    </form>
+    <form name="scroll_right" x="608" y="306" w="30" h="20">
+      <image name="default" x="0.4296875" y="0.0078125" w="0.234375" h="0.15625">ui/ui_group_8_3.tex</image>
+    </form>
+    <form name="gamma_scrollbar" x="382" y="309" w="235" h="14" script="ui_scrollbar_hor.bin">
+      <image name="slider" x="0.03125" y="0.0625" w="0.4375" h="0.875">ui/ui_group_8_2.tex</image>
+      <image name="slider_pressed" x="0.53125" y="0.0625" w="0.4375" h="0.875">ui/ui_group_8_2.tex</image>
+      <form name="scroll_button_up" x="364" y="308" w="16" h="16" script="ui_scrollbar_button.bin">
+        <image name="default" x="0.4296875" y="0.4921875" w="0.125" h="0.125">ui/ui_group_8_3.tex</image>
+        <image name="pressed" x="0.5703125" y="0.3515625" w="0.125" h="0.125">ui/ui_group_8_3.tex</image>
+      </form>
+      <form name="scroll_button_down" x="621" y="308" w="16" h="16" script="ui_scrollbar_button.bin">
+        <image name="default" x="0.0078125" y="0.4296875" w="0.125" h="0.125">ui/ui_group_8_3.tex</image>
+        <image name="pressed" x="0.4296875" y="0.3515625" w="0.125" h="0.125">ui/ui_group_8_3.tex</image>
+      </form>
+    </form>
+  </form>
+  <font name="default" size="10" face="fritz_quadrata" />
+</form>

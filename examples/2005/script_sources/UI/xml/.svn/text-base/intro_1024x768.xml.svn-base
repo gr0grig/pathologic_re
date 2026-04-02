@@ -1,0 +1,26 @@
+<form name="intro_1024x768" x="0" y="0" w="1024" h="768">
+  <image name="default" x="0.0004882813" y="0.0004882813" w="0.5" h="0.5">ui/ui_group_19_1.tex</image>
+  <form name="intro" x="212" y="50" w="600" h="640" script="ui_intro.bin">
+    <font name="intro_font" size="14" face="fritz_quadrata" />
+    <voice name="intro_burah" stream="1" loop="0">chs_burah.ogg</voice>
+    <voice name="intro_danko" stream="1" loop="0">chs_danko.ogg</voice>
+    <voice name="intro_klara" stream="1" loop="0">chs_klara.ogg</voice>
+    <voice name="intro1" stream="1" loop="0">intro1.ogg</voice>
+    <voice name="intro2" stream="1" loop="0">intro2.ogg</voice>
+  </form>
+  <form name="ul" x="0" y="0" w="212" h="384" script="ui_intro_picture.bin">
+    <image name="1" x="0.1264648" y="0.5014648" w="0.125" h="0.25">ui/ui_group_19_1.tex</image>
+    <image name="2" x="0.5014648" y="0.2514648" w="0.125" h="0.25">ui/ui_group_19_1.tex</image>
+    <image name="3" x="0.5014648" y="0.5024414" w="0.125" h="0.25">ui/ui_group_19_1.tex</image>
+  </form>
+  <form name="bl" x="0" y="384" w="212" h="384" script="ui_intro_picture.bin">
+    <image name="1" x="0.5014648" y="0.0004882813" w="0.125" h="0.25">ui/ui_group_19_1.tex</image>
+  </form>
+  <form name="ur" x="812" y="0" w="212" h="384" script="ui_intro_picture.bin">
+    <image name="1" x="0.6274414" y="0.0004882813" w="0.125" h="0.25">ui/ui_group_19_1.tex</image>
+  </form>
+  <form name="br" x="812" y="384" w="212" h="384" script="ui_intro_picture.bin">
+    <image name="1" x="0.0004882813" y="0.5014648" w="0.125" h="0.25">ui/ui_group_19_1.tex</image>
+    <image name="2" x="0.6274414" y="0.2514648" w="0.125" h="0.25">ui/ui_group_19_1.tex</image>
+  </form>
+</form>

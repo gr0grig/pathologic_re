@@ -1,0 +1,5 @@
+include item_mod_health.sci
+
+// CONSTANTS
+const float c_fHealthIncrease = 0.4;
+// CONSTANTS

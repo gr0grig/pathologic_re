@@ -1,0 +1,37 @@
+<form name="load_1024x768" x="346" y="154" w="336" h="460">
+  <image name="default" x="0.0234375" y="0.84375" w="0.001953125" h="0.03125">ui/ui_group_2_1.tex</image>
+  <form name="sub" x="348" y="156" w="332" h="456">
+    <form name="load" x="363" y="171" w="277" h="426" script="ui_load.bin">
+      <image name="separator" x="0.671875" y="0.0625" w="0.015625" h="0.0625">ui/ui_group_24_1.tex</image>
+      <image name="shot_border" x="0.515625" y="0.0625" w="0.0625" h="0.25">ui/ui_group_24_1.tex</image>
+      <image name="button" x="0.001953125" y="0.03125" w="0.203125" h="0.75">ui/ui_group_21_2.tex</image>
+      <image name="button_pressed" x="0.6621094" y="0.421875" w="0.203125" h="0.375">ui/ui_group_21_1.tex</image>
+      <image name="button_text" x="0.0078125" y="0.03125" w="0.8125" h="0.75">ui/ui_group_12_1.tex</image>
+      <form name="scroll" x="655" y="171" w="20" h="426">
+        <form name="scroll_top" x="655" y="171" w="20" h="30">
+          <image name="default" x="0.7050781" y="0.03125" w="0.0390625" h="0.9375">ui/ui_group_2_1.tex</image>
+        </form>
+        <form name="scroll_bottom" x="655" y="567" w="20" h="30">
+          <image name="default" x="0.6621094" y="0.03125" w="0.0390625" h="0.9375">ui/ui_group_2_1.tex</image>
+        </form>
+        <form name="scroll_middle" x="655" y="199" w="20" h="368">
+          <image name="default" x="0.8886719" y="0.03125" w="0.0390625" h="0.3125">ui/ui_group_2_1.tex</image>
+        </form>
+        <form name="scrollbar" x="658" y="191" w="14" h="386" script="ui_scrollbar.bin">
+          <image name="slider" x="0.03125" y="0.0625" w="0.4375" h="0.875">ui/ui_group_8_2.tex</image>
+          <image name="slider_pressed" x="0.53125" y="0.0625" w="0.4375" h="0.875">ui/ui_group_8_2.tex</image>
+          <form name="scroll_button_up" x="657" y="173" w="16" h="16" script="ui_scrollbar_button.bin">
+            <image name="default" x="0.7832031" y="0.03125" w="0.03125" h="0.5">ui/ui_group_2_1.tex</image>
+            <image name="pressed" x="0.8183594" y="0.03125" w="0.03125" h="0.5">ui/ui_group_2_1.tex</image>
+          </form>
+          <form name="scroll_button_down" x="657" y="579" w="16" h="16" script="ui_scrollbar_button.bin">
+            <image name="default" x="0.8535156" y="0.03125" w="0.03125" h="0.5">ui/ui_group_2_1.tex</image>
+            <image name="pressed" x="0.7480469" y="0.03125" w="0.03125" h="0.5">ui/ui_group_2_1.tex</image>
+          </form>
+        </form>
+      </form>
+      <font name="default" size="10" face="fritz_quadrata" />
+      <font name="big" size="12" face="fritz_quadrata" />
+    </form>
+  </form>
+</form>

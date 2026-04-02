@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   committed-rev="1552"
+   name=""
+   committed-date="2005-03-10T13:09:22.994720Z"
+   url="http://server:81/svn/PlagueCity/trunk/Game/script_sources/Util"
+   last-author="ro"
+   kind="dir"
+   uuid="2afc31a5-64b6-9144-a991-f7ecb0784c29"
+   revision="2305"/>
+<entry
+   committed-rev="1552"
+   name="d6q01_patrol_wm.sc"
+   text-time="2005-05-30T09:08:20.376125Z"
+   committed-date="2005-03-10T13:09:22.994720Z"
+   checksum="4f03540d525dd184e5e7f0d149a43523"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:08:19.766750Z"/>
+<entry
+   committed-rev="499"
+   name="body_look.sc"
+   text-time="2005-05-30T09:08:20.501125Z"
+   committed-date="2004-07-09T12:46:11.168000Z"
+   checksum="a95baf1b305c50deb54aec18ec2dd7d5"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:08:19.829250Z"/>
+<entry
+   committed-rev="118"
+   name="cs_scene.sc"
+   text-time="2005-05-30T09:08:20.563625Z"
+   committed-date="2004-05-20T13:10:29.170250Z"
+   checksum="55236e65177201f125a3d18ed9c112ee"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:08:19.844875Z"/>
+<entry
+   committed-rev="1552"
+   name="d6q01_patrol_ww.sc"
+   text-time="2005-05-30T09:08:20.923000Z"
+   committed-date="2005-03-10T13:09:22.994720Z"
+   checksum="6bb1a9bfc6b640a2acdc3c3d93d93f79"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:08:20.016750Z"/>
+<entry
+   committed-rev="118"
+   name="cs_move.sc"
+   text-time="2005-05-30T09:08:20.126125Z"
+   committed-date="2004-05-20T13:10:29.170250Z"
+   checksum="17d3f491b717d3c677faf7a3f763a194"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:08:19.657375Z"/>
+<entry
+   committed-rev="118"
+   name="movie_player.sc"
+   text-time="2005-05-30T09:08:20.079250Z"
+   committed-date="2004-05-20T13:10:29.170250Z"
+   checksum="52abb5ee5987273f91bc705722b7184b"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:08:19.626125Z"/>
+<entry
+   committed-rev="118"
+   name="cs_wanderer.sc"
+   text-time="2005-05-30T09:08:20.188625Z"
+   committed-date="2004-05-20T13:10:29.170250Z"
+   checksum="af0bd778db57000210dbf5ef7c89cc29"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:08:19.688625Z"/>
+<entry
+   committed-rev="130"
+   name="d4q01_wasted_male.sc"
+   text-time="2005-05-30T09:08:20.251125Z"
+   committed-date="2004-05-21T11:44:48.560875Z"
+   checksum="1dfe64c5967ce77feaf536f438587d41"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:08:19.704250Z"/>
+<entry
+   committed-rev="871"
+   name="blood.sc"
+   text-time="2005-05-30T09:08:20.313625Z"
+   committed-date="2004-09-06T17:34:36.174375Z"
+   checksum="098d392e0b7e1e8fe231191c46cbdf4a"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:08:19.751125Z"/>
+<entry
+   committed-rev="130"
+   name="d4q01_wasted_woman.sc"
+   text-time="2005-05-30T09:08:20.454250Z"
+   committed-date="2004-05-21T11:44:48.560875Z"
+   checksum="e4ec2397f4184689bb40194aa39ab91d"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:08:19.798000Z"/>
+<entry
+   committed-rev="118"
+   name="cs_bomb.sc"
+   text-time="2005-05-30T09:08:20.610500Z"
+   committed-date="2004-05-20T13:10:29.170250Z"
+   checksum="afa62cad092b63a5a62fef4d2476391e"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:08:19.891750Z"/>
+<entry
+   committed-rev="130"
+   name="d4q01_birdmask.sc"
+   text-time="2005-05-30T09:08:20.798000Z"
+   committed-date="2004-05-21T11:44:48.560875Z"
+   checksum="88425e8b83a5e95468cb04ffa25d086f"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:08:19.969875Z"/>
+<entry
+   committed-rev="130"
+   name="d4q01_whitemask.sc"
+   text-time="2005-05-30T09:08:20.735500Z"
+   committed-date="2004-05-21T11:44:48.560875Z"
+   checksum="2e4007e5f380de801d66cc2be7ce98c3"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:08:19.938625Z"/>
+<entry
+   committed-rev="1552"
+   name="region_follower.sci"
+   text-time="2005-05-30T09:08:20.673000Z"
+   committed-date="2005-03-10T13:09:22.994720Z"
+   checksum="0296a4d4bc66ec2811ab300369a64c95"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:08:19.923000Z"/>
+<entry
+   committed-rev="1040"
+   name="city.sc"
+   text-time="2005-05-30T09:08:20.860500Z"
+   committed-date="2004-10-16T14:08:00.480250Z"
+   checksum="71f6b2c3c698956a15d81f57fa0063dd"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:08:20.001125Z"/>
+</wc-entries>

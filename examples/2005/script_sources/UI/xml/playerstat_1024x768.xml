@@ -1,0 +1,6 @@
+<form x = "0" y = "0" w = "1024" h = "768" script = "ui_playerstat.bin"> 
+	<reference filename = "playerstat_base.xml" node = "base"/>
+	<font name = "help" size = "16" face = "fritz_quadrata" ></font>
+	<font name = "default" size = "8" face = "fritz_quadrata" ></font>
+	<image name = "nerv_v" x = "0" y = "0" w = "1" h = "1">ui/ui_nerv_v_1024x768.png</image>
+</form>

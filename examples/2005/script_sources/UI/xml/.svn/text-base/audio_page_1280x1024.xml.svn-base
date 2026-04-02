@@ -1,0 +1,107 @@
+<form name="audio_page_1280x1024" x="474" y="318" w="332" h="420" script="ui_options_page_audio.bin">
+  <form name="separator1" x="474" y="395" w="332" h="1">
+    <image name="default" x="0.515625" y="0.0625" w="0.015625" h="0.0625">ui/ui_group_30_1.tex</image>
+  </form>
+  <form name="separator2" x="474" y="477" w="332" h="1">
+    <image name="default" x="0.515625" y="0.0625" w="0.015625" h="0.0625">ui/ui_group_30_1.tex</image>
+  </form>
+  <form name="master_scrollbar" x="489" y="351" w="277" h="20">
+    <form name="scroll_left" x="489" y="351" w="30" h="20">
+      <image name="default" x="0.4296875" y="0.1796875" w="0.234375" h="0.15625">ui/ui_group_8_3.tex</image>
+    </form>
+    <form name="scroll_middle" x="519" y="351" w="217" h="20">
+      <image name="default" x="0.5703125" y="0.4921875" w="0.078125" h="0.15625">ui/ui_group_8_3.tex</image>
+    </form>
+    <form name="scroll_right" x="736" y="351" w="30" h="20">
+      <image name="default" x="0.4296875" y="0.0078125" w="0.234375" h="0.15625">ui/ui_group_8_3.tex</image>
+    </form>
+    <form name="master_scrollbar" x="510" y="354" w="235" h="14" script="ui_scrollbar_hor.bin">
+      <image name="slider" x="0.03125" y="0.0625" w="0.4375" h="0.875">ui/ui_group_8_2.tex</image>
+      <image name="slider_pressed" x="0.53125" y="0.0625" w="0.4375" h="0.875">ui/ui_group_8_2.tex</image>
+      <form name="scroll_button_up" x="492" y="353" w="16" h="16" script="ui_scrollbar_button.bin">
+        <image name="default" x="0.4296875" y="0.4921875" w="0.125" h="0.125">ui/ui_group_8_3.tex</image>
+        <image name="pressed" x="0.5703125" y="0.3515625" w="0.125" h="0.125">ui/ui_group_8_3.tex</image>
+      </form>
+      <form name="scroll_button_down" x="749" y="353" w="16" h="16" script="ui_scrollbar_button.bin">
+        <image name="default" x="0.0078125" y="0.4296875" w="0.125" h="0.125">ui/ui_group_8_3.tex</image>
+        <image name="pressed" x="0.4296875" y="0.3515625" w="0.125" h="0.125">ui/ui_group_8_3.tex</image>
+      </form>
+    </form>
+  </form>
+  <form name="separator3" x="474" y="560" w="332" h="1">
+    <image name="default" x="0.515625" y="0.0625" w="0.015625" h="0.0625">ui/ui_group_30_1.tex</image>
+  </form>
+  <form name="separator4" x="474" y="643" w="332" h="1">
+    <image name="default" x="0.515625" y="0.0625" w="0.015625" h="0.0625">ui/ui_group_30_1.tex</image>
+  </form>
+  <form name="music_scrollbar" x="489" y="434" w="277" h="20">
+    <form name="scroll_left" x="489" y="434" w="30" h="20">
+      <image name="default" x="0.4296875" y="0.1796875" w="0.234375" h="0.15625">ui/ui_group_8_3.tex</image>
+    </form>
+    <form name="scroll_middle" x="519" y="434" w="217" h="20">
+      <image name="default" x="0.5703125" y="0.4921875" w="0.078125" h="0.15625">ui/ui_group_8_3.tex</image>
+    </form>
+    <form name="scroll_right" x="736" y="434" w="30" h="20">
+      <image name="default" x="0.4296875" y="0.0078125" w="0.234375" h="0.15625">ui/ui_group_8_3.tex</image>
+    </form>
+    <form name="music_scrollbar" x="510" y="437" w="235" h="14" script="ui_scrollbar_hor.bin">
+      <image name="slider" x="0.03125" y="0.0625" w="0.4375" h="0.875">ui/ui_group_8_2.tex</image>
+      <image name="slider_pressed" x="0.53125" y="0.0625" w="0.4375" h="0.875">ui/ui_group_8_2.tex</image>
+      <form name="scroll_button_up" x="492" y="436" w="16" h="16" script="ui_scrollbar_button.bin">
+        <image name="default" x="0.4296875" y="0.4921875" w="0.125" h="0.125">ui/ui_group_8_3.tex</image>
+        <image name="pressed" x="0.5703125" y="0.3515625" w="0.125" h="0.125">ui/ui_group_8_3.tex</image>
+      </form>
+      <form name="scroll_button_down" x="749" y="436" w="16" h="16" script="ui_scrollbar_button.bin">
+        <image name="default" x="0.0078125" y="0.4296875" w="0.125" h="0.125">ui/ui_group_8_3.tex</image>
+        <image name="pressed" x="0.4296875" y="0.3515625" w="0.125" h="0.125">ui/ui_group_8_3.tex</image>
+      </form>
+    </form>
+  </form>
+  <form name="voice_scrollbar" x="489" y="518" w="277" h="20">
+    <form name="scroll_left" x="489" y="518" w="30" h="20">
+      <image name="default" x="0.4296875" y="0.1796875" w="0.234375" h="0.15625">ui/ui_group_8_3.tex</image>
+    </form>
+    <form name="scroll_middle" x="519" y="518" w="217" h="20">
+      <image name="default" x="0.5703125" y="0.4921875" w="0.078125" h="0.15625">ui/ui_group_8_3.tex</image>
+    </form>
+    <form name="scroll_right" x="736" y="518" w="30" h="20">
+      <image name="default" x="0.4296875" y="0.0078125" w="0.234375" h="0.15625">ui/ui_group_8_3.tex</image>
+    </form>
+    <form name="voice_scrollbar" x="510" y="521" w="235" h="14" script="ui_scrollbar_hor.bin">
+      <image name="slider" x="0.03125" y="0.0625" w="0.4375" h="0.875">ui/ui_group_8_2.tex</image>
+      <image name="slider_pressed" x="0.53125" y="0.0625" w="0.4375" h="0.875">ui/ui_group_8_2.tex</image>
+      <form name="scroll_button_up" x="492" y="520" w="16" h="16" script="ui_scrollbar_button.bin">
+        <image name="default" x="0.4296875" y="0.4921875" w="0.125" h="0.125">ui/ui_group_8_3.tex</image>
+        <image name="pressed" x="0.5703125" y="0.3515625" w="0.125" h="0.125">ui/ui_group_8_3.tex</image>
+      </form>
+      <form name="scroll_button_down" x="749" y="520" w="16" h="16" script="ui_scrollbar_button.bin">
+        <image name="default" x="0.0078125" y="0.4296875" w="0.125" h="0.125">ui/ui_group_8_3.tex</image>
+        <image name="pressed" x="0.4296875" y="0.3515625" w="0.125" h="0.125">ui/ui_group_8_3.tex</image>
+      </form>
+    </form>
+  </form>
+  <form name="sounds_scrollbar" x="489" y="601" w="277" h="20">
+    <form name="scroll_left" x="489" y="601" w="30" h="20">
+      <image name="default" x="0.4296875" y="0.1796875" w="0.234375" h="0.15625">ui/ui_group_8_3.tex</image>
+    </form>
+    <form name="scroll_middle" x="519" y="601" w="217" h="20">
+      <image name="default" x="0.5703125" y="0.4921875" w="0.078125" h="0.15625">ui/ui_group_8_3.tex</image>
+    </form>
+    <form name="scroll_right" x="736" y="601" w="30" h="20">
+      <image name="default" x="0.4296875" y="0.0078125" w="0.234375" h="0.15625">ui/ui_group_8_3.tex</image>
+    </form>
+    <form name="sounds_scrollbar" x="510" y="604" w="235" h="14" script="ui_scrollbar_hor.bin">
+      <image name="slider" x="0.03125" y="0.0625" w="0.4375" h="0.875">ui/ui_group_8_2.tex</image>
+      <image name="slider_pressed" x="0.53125" y="0.0625" w="0.4375" h="0.875">ui/ui_group_8_2.tex</image>
+      <form name="scroll_button_up" x="492" y="603" w="16" h="16" script="ui_scrollbar_button.bin">
+        <image name="default" x="0.4296875" y="0.4921875" w="0.125" h="0.125">ui/ui_group_8_3.tex</image>
+        <image name="pressed" x="0.5703125" y="0.3515625" w="0.125" h="0.125">ui/ui_group_8_3.tex</image>
+      </form>
+      <form name="scroll_button_down" x="749" y="603" w="16" h="16" script="ui_scrollbar_button.bin">
+        <image name="default" x="0.0078125" y="0.4296875" w="0.125" h="0.125">ui/ui_group_8_3.tex</image>
+        <image name="pressed" x="0.4296875" y="0.3515625" w="0.125" h="0.125">ui/ui_group_8_3.tex</image>
+      </form>
+    </form>
+  </form>
+  <font name="default" size="10" face="fritz_quadrata" />
+</form>

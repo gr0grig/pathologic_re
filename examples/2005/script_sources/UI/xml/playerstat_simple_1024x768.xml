@@ -1,0 +1,5 @@
+<form x = "0" y = "0" w = "1024" h = "768" script = "ui_playerstat_simple.bin"> 
+	<reference filename = "playerstat_base.xml" node = "base"/>
+	<font name = "help" size = "16" face = "fritz_quadrata" ></font>
+	<font name = "default" size = "8" face = "fritz_quadrata" ></font>
+</form>

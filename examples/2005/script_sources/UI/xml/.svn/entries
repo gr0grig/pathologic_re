@@ -1,0 +1,1426 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   committed-rev="2281"
+   name=""
+   committed-date="2005-05-26T09:19:02.421875Z"
+   url="http://server:81/svn/PlagueCity/trunk/Game/script_sources/UI/xml"
+   last-author="ro"
+   kind="dir"
+   uuid="2afc31a5-64b6-9144-a991-f7ecb0784c29"
+   revision="2305"/>
+<entry
+   committed-rev="2184"
+   name="people.xml"
+   text-time="2005-05-30T09:07:35.157375Z"
+   committed-date="2005-05-17T18:59:29.211250Z"
+   checksum="7f376feba776dc576676b929eb09af0c"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:29.641750Z"/>
+<entry
+   committed-rev="2184"
+   name="control_page_1280x1024.xml"
+   text-time="2005-05-30T09:07:35.204250Z"
+   committed-date="2005-05-17T18:59:29.211250Z"
+   checksum="22bfdf81e831ac47e0d20af26135a229"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:29.751125Z"/>
+<entry
+   committed-rev="2184"
+   name="people_1024x768.xml"
+   text-time="2005-05-30T09:07:35.266750Z"
+   committed-date="2005-05-17T18:59:29.211250Z"
+   checksum="6bd78db13107cfe44e00a0441657bfa3"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:29.766750Z"/>
+<entry
+   committed-rev="1930"
+   name="daychangereal.xml"
+   text-time="2005-05-30T09:07:35.313625Z"
+   committed-date="2005-04-18T09:46:42.277125Z"
+   checksum="d177afedd9802b6e30d1778a6c61a735"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:29.798000Z"/>
+<entry
+   committed-rev="2134"
+   name="dream.xml"
+   text-time="2005-05-30T09:07:35.391750Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="e32561c6dbf2cabf289fb081c280ecae"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:29.829250Z"/>
+<entry
+   committed-rev="2184"
+   name="game_buttons_1024x768.xml"
+   text-time="2005-05-30T09:07:35.438625Z"
+   committed-date="2005-05-17T18:59:29.211250Z"
+   checksum="2d417be3049387bc3c21423d02165ba4"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:29.860500Z"/>
+<entry
+   committed-rev="2134"
+   name="gameover_credits_1280x1024.xml"
+   text-time="2005-05-30T09:07:35.501125Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="13e1d6b22446481d7a7e97c0af1c5f20"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:29.876125Z"/>
+<entry
+   committed-rev="2184"
+   name="game_logo_1024x768.xml"
+   text-time="2005-05-30T09:07:35.563625Z"
+   committed-date="2005-05-17T18:59:29.211250Z"
+   checksum="e98df6ac80492d9a0f5e4f678af80220"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:30.016750Z"/>
+<entry
+   committed-rev="2184"
+   name="dialog.xml"
+   text-time="2005-05-30T09:07:35.626125Z"
+   committed-date="2005-05-17T18:59:29.211250Z"
+   checksum="1f7b3b3f637951e1743e19f7ccf36833"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:30.048000Z"/>
+<entry
+   committed-rev="2184"
+   name="game_logo_1280x1024.xml"
+   text-time="2005-05-30T09:07:35.673000Z"
+   committed-date="2005-05-17T18:59:29.211250Z"
+   checksum="6bcafd02bd0115a43642ac2427b02835"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:30.063625Z"/>
+<entry
+   committed-rev="2184"
+   name="microscope.xml"
+   text-time="2005-05-30T09:07:35.735500Z"
+   committed-date="2005-05-17T18:59:29.211250Z"
+   checksum="158d301cb45281d55e66955df1a4ac1c"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:30.094875Z"/>
+<entry
+   committed-rev="2206"
+   name="playerstat_simple_1024x768.xml"
+   text-time="2005-05-30T09:07:35.782375Z"
+   committed-date="2005-05-18T18:31:00.601875Z"
+   checksum="5d258467812ab5b9ffd4c3fc3847e291"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:30.110500Z"/>
+<entry
+   committed-rev="2134"
+   name="trade_1280x1024.xml"
+   text-time="2005-05-30T09:07:35.876125Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="0a4f2de10d4b02aa06a8ee44054dc0cf"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:30.251125Z"/>
+<entry
+   committed-rev="2107"
+   name="gameover_1024x768.xml"
+   text-time="2005-05-30T09:07:35.938625Z"
+   committed-date="2005-05-11T12:41:18.818250Z"
+   checksum="e9e3466c7b872089ecb6b8d0437844ba"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:30.282375Z"/>
+<entry
+   committed-rev="2206"
+   name="playerstat_simple_1280x1024.xml"
+   text-time="2005-05-30T09:07:36.001125Z"
+   committed-date="2005-05-18T18:31:00.601875Z"
+   checksum="7026fda2744e2196e21d591de70d551e"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:30.313625Z"/>
+<entry
+   committed-rev="2134"
+   name="gameover_termit_chudo.xml"
+   text-time="2005-05-30T09:07:36.048000Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="4a5ea5537ab908886b9c6f03d7b3f825"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:30.329250Z"/>
+<entry
+   committed-rev="2107"
+   name="game_1024x768.xml"
+   text-time="2005-05-30T09:07:36.110500Z"
+   committed-date="2005-05-11T12:41:18.818250Z"
+   checksum="1ef65637773105b53728b56c48983f15"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:30.360500Z"/>
+<entry
+   committed-rev="2134"
+   name="agony.xml"
+   text-time="2005-05-30T09:07:36.173000Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="c951a7a972d013a77ae8f3ee437b6b56"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:30.391750Z"/>
+<entry
+   committed-rev="2134"
+   name="mapload_1024x768.xml"
+   text-time="2005-05-30T09:07:36.329250Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="cc602fa4783323fddcd6ee8c8f6aba2b"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:30.485500Z"/>
+<entry
+   committed-rev="2134"
+   name="map_1024x768.xml"
+   text-time="2005-05-30T09:07:36.282375Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="bf048b36e6b95c514ce1f8f6afa0cb24"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:30.454250Z"/>
+<entry
+   committed-rev="2134"
+   name="gameover_beda.xml"
+   text-time="2005-05-30T09:07:36.219875Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="dbbb701e3b520bba26de43008c053342"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:30.423000Z"/>
+<entry
+   committed-rev="2184"
+   name="dialog_photo_1280x1024.xml"
+   text-time="2005-05-30T09:07:36.391750Z"
+   committed-date="2005-05-17T18:59:29.211250Z"
+   checksum="fac16b5ddc0321cd6c964ffa00cf92c2"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:30.501125Z"/>
+<entry
+   committed-rev="2107"
+   name="game_1280x1024.xml"
+   text-time="2005-05-30T09:07:36.516750Z"
+   committed-date="2005-05-11T12:41:18.818250Z"
+   checksum="9ff33b81fc2ca25b5a1bb82d07e1cd32"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:30.563625Z"/>
+<entry
+   committed-rev="2134"
+   name="gameover_credits.xml"
+   text-time="2005-05-30T09:07:36.454250Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="f817b32a6d2b09c5b20c4d51aeb386d8"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:30.532375Z"/>
+<entry
+   committed-rev="2134"
+   name="sys_border_1280x1024.xml"
+   text-time="2005-05-30T09:07:36.579250Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="fb211eccda83e179a85eb65ab0c114a2"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:30.579250Z"/>
+<entry
+   committed-rev="2107"
+   name="daychange_1024x768.xml"
+   text-time="2005-05-30T09:07:36.626125Z"
+   committed-date="2005-05-11T12:41:18.818250Z"
+   checksum="9d5f21c24f0f3aa4c4f8ebddb6d0fea5"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:30.673000Z"/>
+<entry
+   committed-rev="2134"
+   name="gameover_utopist_chudo_1280x1024.xml"
+   text-time="2005-05-30T09:07:36.688625Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="018380a3cb13952642fa7f7f44cd7366"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:30.704250Z"/>
+<entry
+   committed-rev="2250"
+   name="playerstat.xml"
+   text-time="2005-05-30T09:07:36.766750Z"
+   committed-date="2005-05-23T13:57:41.500000Z"
+   checksum="aafb536fef14ccc6e1a8f52129b2b6e6"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:30.735500Z"/>
+<entry
+   committed-rev="2134"
+   name="gameover_termit_1024x768.xml"
+   text-time="2005-05-30T09:07:36.813625Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="b685b0d06202a3b20fa8f5a232b5f9fa"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:30.751125Z"/>
+<entry
+   committed-rev="2134"
+   name="gameover_smirennik_1280x1024.xml"
+   text-time="2005-05-30T09:07:36.876125Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="92b4f3f79a3138567b7179970b39f1e8"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:30.782375Z"/>
+<entry
+   committed-rev="2107"
+   name="daychangereal_1280x1024.xml"
+   text-time="2005-05-30T09:07:36.923000Z"
+   committed-date="2005-05-11T12:41:18.818250Z"
+   checksum="fa32cfe6b2e867234bab4ee47f82b286"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:30.798000Z"/>
+<entry
+   committed-rev="2134"
+   name="options_border_1280x1024.xml"
+   text-time="2005-05-30T09:07:36.985500Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="a2588b8f4b34a300889d79f784209dac"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:30.829250Z"/>
+<entry
+   committed-rev="2134"
+   name="gameover_termit_1280x1024.xml"
+   text-time="2005-05-30T09:07:37.048000Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="49f2cde7ee56fb4f18a0e5e1455c21b7"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:30.860500Z"/>
+<entry
+   committed-rev="2134"
+   name="dapparatus.xml"
+   text-time="2005-05-30T09:07:37.110500Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="46211f7848a8c174c414bd57f01712e9"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:30.876125Z"/>
+<entry
+   committed-rev="2184"
+   name="character_1280x1024.xml"
+   text-time="2005-05-30T09:07:37.173000Z"
+   committed-date="2005-05-17T18:59:29.211250Z"
+   checksum="10225a1578f754240b20ba5367c0e864"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:30.907375Z"/>
+<entry
+   committed-rev="2134"
+   name="dapparatus_1024x768.xml"
+   text-time="2005-05-30T09:07:37.235500Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="17fa7b2fd4f431359ef84718eb106138"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:30.938625Z"/>
+<entry
+   committed-rev="2134"
+   name="dialog_1280x1024.xml"
+   text-time="2005-05-30T09:07:37.298000Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="1167a0dac5c6e2e00cbcd26691c3d48c"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:30.985500Z"/>
+<entry
+   committed-rev="2106"
+   name="choose_pers.xml"
+   text-time="2005-05-30T09:07:37.360500Z"
+   committed-date="2005-05-11T12:34:37.755750Z"
+   checksum="58e778cdecf4f2f886d89af0a647c5ee"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:31.016750Z"/>
+<entry
+   committed-rev="2184"
+   name="dialog_photo_1024x768.xml"
+   text-time="2005-05-30T09:07:37.407375Z"
+   committed-date="2005-05-17T18:59:29.211250Z"
+   checksum="9ce172e7d598a3b01f0cff9cc709942d"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:31.048000Z"/>
+<entry
+   committed-rev="2184"
+   name="microscope_1280x1024.xml"
+   text-time="2005-05-30T09:07:37.485500Z"
+   committed-date="2005-05-17T18:59:29.211250Z"
+   checksum="2f9cb969c6b2697e995c62b4d529bccc"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:31.079250Z"/>
+<entry
+   committed-rev="2134"
+   name="gameover_utopist_chudo.xml"
+   text-time="2005-05-30T09:07:37.548000Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="9bb4e222b97f2299ad1ed8c678712cc0"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:31.110500Z"/>
+<entry
+   committed-rev="2134"
+   name="agony_1024x768.xml"
+   text-time="2005-05-30T09:07:37.610500Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="026e54f702eb30cd6fb2efa24940b51e"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:31.126125Z"/>
+<entry
+   committed-rev="2134"
+   name="diary_1280x1024.xml"
+   text-time="2005-05-30T09:07:37.673000Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="49dba8153f5d03b7ddf76b010c52584b"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:31.157375Z"/>
+<entry
+   committed-rev="1930"
+   name="daychange.xml"
+   text-time="2005-05-30T09:07:37.719875Z"
+   committed-date="2005-04-18T09:46:42.277125Z"
+   checksum="dc6ddb946fac43765be21f222fa53126"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:31.188625Z"/>
+<entry
+   committed-rev="2134"
+   name="gameover_termit_chudo_1280x1024.xml"
+   text-time="2005-05-30T09:07:37.782375Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="9bee4cc6ee88a6d1bf7949386622f67c"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:31.219875Z"/>
+<entry
+   committed-rev="2184"
+   name="repair_1024x768.xml"
+   text-time="2005-05-30T09:07:37.844875Z"
+   committed-date="2005-05-17T18:59:29.211250Z"
+   checksum="73a399e47711fb53441285d280f2eeb4"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:31.266750Z"/>
+<entry
+   committed-rev="2134"
+   name="inventory_base.xml"
+   text-time="2005-05-30T09:07:37.907375Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="3295264c22a0693a0fec044e47eec0dc"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:31.298000Z"/>
+<entry
+   committed-rev="2134"
+   name="options_border_1024x768.xml"
+   text-time="2005-05-30T09:07:37.969875Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="332390a600d3c4ada8febc41840f2abf"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:31.313625Z"/>
+<entry
+   committed-rev="2134"
+   name="visir.xml"
+   text-time="2005-05-30T09:07:38.016750Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="b83020f7dc82ae60f73788702b46380e"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:31.344875Z"/>
+<entry
+   committed-rev="2134"
+   name="corpse_1024x768.xml"
+   text-time="2005-05-30T09:07:38.079250Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="9c17482853d0c3314e24ece4e50209ec"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:31.376125Z"/>
+<entry
+   committed-rev="2134"
+   name="visir_1024x768.xml"
+   text-time="2005-05-30T09:07:38.141750Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="0756815d5137bbc205a4fc5fe971ded4"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:31.407375Z"/>
+<entry
+   committed-rev="2134"
+   name="apparatus.xml"
+   text-time="2005-05-30T09:07:38.204250Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="7e7f1f3956644d9706cdc2ff0bc30819"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:31.423000Z"/>
+<entry
+   committed-rev="2281"
+   name="gameover_fail.xml"
+   text-time="2005-05-30T09:07:38.251125Z"
+   committed-date="2005-05-26T09:19:02.421875Z"
+   checksum="2dea33df14917e06b3b00cd976cff966"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:31.469875Z"/>
+<entry
+   committed-rev="2184"
+   name="trade_1024x768.xml"
+   text-time="2005-05-30T09:07:38.329250Z"
+   committed-date="2005-05-17T18:59:29.211250Z"
+   checksum="37e0579c0fc86b3b1a8b909d19d86a91"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:31.516750Z"/>
+<entry
+   committed-rev="2107"
+   name="inventory_1280x1024.xml"
+   text-time="2005-05-30T09:07:38.391750Z"
+   committed-date="2005-05-11T12:41:18.818250Z"
+   checksum="cd6e417e4e328ed8192f683e4188b3da"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:31.548000Z"/>
+<entry
+   committed-rev="2134"
+   name="diary_1024x768.xml"
+   text-time="2005-05-30T09:07:38.438625Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="81c747aa44f37d65b5632b06872b73ea"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:31.563625Z"/>
+<entry
+   committed-rev="2134"
+   name="load.xml"
+   text-time="2005-05-30T09:07:38.501125Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="70e44ed09429dc3a51ed5c09d966ebcc"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:31.626125Z"/>
+<entry
+   committed-rev="2134"
+   name="message.xml"
+   text-time="2005-05-30T09:07:38.563625Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="3090074904146f9014a68ba1327c798a"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:31.641750Z"/>
+<entry
+   committed-rev="2134"
+   name="message_1024x768.xml"
+   text-time="2005-05-30T09:07:38.626125Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="7fb9cfb291498d5a46f625ffd81e49aa"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:31.673000Z"/>
+<entry
+   committed-rev="2184"
+   name="game_logo.xml"
+   text-time="2005-05-30T09:07:38.673000Z"
+   committed-date="2005-05-17T18:59:29.211250Z"
+   checksum="ed2b0414f95c8a32f7453b3bfa418246"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:31.704250Z"/>
+<entry
+   committed-rev="2107"
+   name="daychangereal_1024x768.xml"
+   text-time="2005-05-30T09:07:38.735500Z"
+   committed-date="2005-05-11T12:41:18.818250Z"
+   checksum="7d4b6ea4013dcd1df3c52d7681bbec4b"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:31.735500Z"/>
+<entry
+   committed-rev="2184"
+   name="repair_1280x1024.xml"
+   text-time="2005-05-30T09:07:38.860500Z"
+   committed-date="2005-05-17T18:59:29.211250Z"
+   checksum="c98dffeae875604639da3d8ecdfd976a"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:31.782375Z"/>
+<entry
+   committed-rev="2134"
+   name="corpse.xml"
+   text-time="2005-05-30T09:07:38.923000Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="6c63304b45632282e093b75c098f2c6e"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:31.813625Z"/>
+<entry
+   committed-rev="2107"
+   name="daychange_1280x1024.xml"
+   text-time="2005-05-30T09:07:39.032375Z"
+   committed-date="2005-05-11T12:41:18.818250Z"
+   checksum="70313d262f802c743362395be245b13a"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:31.860500Z"/>
+<entry
+   committed-rev="2134"
+   name="gameover_utopist.xml"
+   text-time="2005-05-30T09:07:38.969875Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="2d9409db4f927c35be30129d7e1b1d46"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:31.844875Z"/>
+<entry
+   committed-rev="2184"
+   name="people_1280x1024.xml"
+   text-time="2005-05-30T09:07:39.079250Z"
+   committed-date="2005-05-17T18:59:29.211250Z"
+   checksum="d3625d4a25d3188dd7947613675f05b4"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:31.891750Z"/>
+<entry
+   committed-rev="2134"
+   name="intro_1024x768.xml"
+   text-time="2005-05-30T09:07:39.204250Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="58c0d379e88f7e097d0c74e06738aad6"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:31.954250Z"/>
+<entry
+   committed-rev="2134"
+   name="options_1024x768.xml"
+   text-time="2005-05-30T09:07:39.141750Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="3f9219ab1b0ab6b715801d277598bdac"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:31.923000Z"/>
+<entry
+   committed-rev="2134"
+   name="gameover_utopist_1024x768.xml"
+   text-time="2005-05-30T09:07:39.251125Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="105f2da89eb07c669ce220fc1d94d6b9"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:31.969875Z"/>
+<entry
+   committed-rev="2134"
+   name="inventory_base_1280x1024.xml"
+   text-time="2005-05-30T09:07:39.376125Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="c4549b578aa9bcae11ece2b9bbce1585"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:32.032375Z"/>
+<entry
+   committed-rev="2106"
+   name="ingame.xml"
+   text-time="2005-05-30T09:07:39.298000Z"
+   committed-date="2005-05-11T12:34:37.755750Z"
+   checksum="74ceffb929a5aa46d492f5e05b37e04b"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:32.001125Z"/>
+<entry
+   committed-rev="2134"
+   name="dream_1280x1024.xml"
+   text-time="2005-05-30T09:07:39.485500Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="dac3ea53414efad1c03d74ac3d26a9a8"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:32.094875Z"/>
+<entry
+   committed-rev="2206"
+   name="playerstat_simple.xml"
+   text-time="2005-05-30T09:07:39.423000Z"
+   committed-date="2005-05-18T18:31:00.601875Z"
+   checksum="790a5b2dff156104f3fc07fb2236d2cd"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:32.063625Z"/>
+<entry
+   committed-rev="2134"
+   name="dialog_1024x768.xml"
+   text-time="2005-05-30T09:07:39.548000Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="5bb5d77ba65e45d8f3a16df792e0e3a2"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:32.126125Z"/>
+<entry
+   committed-rev="2134"
+   name="audio_page_1280x1024.xml"
+   text-time="2005-05-30T09:07:39.610500Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="1be4d12ad05d3a5542d1f219db8fcc82"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:32.157375Z"/>
+<entry
+   committed-rev="2106"
+   name="game.xml"
+   text-time="2005-05-30T09:07:39.673000Z"
+   committed-date="2005-05-11T12:34:37.755750Z"
+   checksum="9b3128ed53b23199a7ba5d060242c520"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:32.173000Z"/>
+<entry
+   committed-rev="2134"
+   name="gameover_smirennik_chudo_1280x1024.xml"
+   text-time="2005-05-30T09:07:39.735500Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="a2ace5884bd728aeb01b61db276ef60e"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:32.219875Z"/>
+<entry
+   committed-rev="2134"
+   name="gameover_utopist_chudo_1024x768.xml"
+   text-time="2005-05-30T09:07:39.782375Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="df5d98f8b3a75952d1af56636ba63145"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:32.235500Z"/>
+<entry
+   committed-rev="2184"
+   name="repair.xml"
+   text-time="2005-05-30T09:07:39.844875Z"
+   committed-date="2005-05-17T18:59:29.211250Z"
+   checksum="4c2ce563f9191d217cb093185fbfbdf5"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:32.266750Z"/>
+<entry
+   committed-rev="2134"
+   name="container_1024x768.xml"
+   text-time="2005-05-30T09:07:39.907375Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="edefd2b8f10538ce075a2cf7ec4c33d2"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:32.298000Z"/>
+<entry
+   committed-rev="2134"
+   name="ingame_buttons_1280x1024.xml"
+   text-time="2005-05-30T09:07:39.954250Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="936b02bb6975604cc7fdba5bf1a8c8f8"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:32.329250Z"/>
+<entry
+   committed-rev="2134"
+   name="load_1280x1024.xml"
+   text-time="2005-05-30T09:07:40.016750Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="bd4d6759b5b5fd9d6c99fe4542b5977b"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:32.360500Z"/>
+<entry
+   committed-rev="2134"
+   name="gameover_termit.xml"
+   text-time="2005-05-30T09:07:40.126125Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="49a8038a56db91c6af2a5ac83fdbdd75"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:32.423000Z"/>
+<entry
+   committed-rev="2134"
+   name="gameover_beda_1280x1024.xml"
+   text-time="2005-05-30T09:07:40.063625Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="8378edd96b3f00486a11d7f18bf6146e"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:32.376125Z"/>
+<entry
+   committed-rev="2134"
+   name="options.xml"
+   text-time="2005-05-30T09:07:40.298000Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="8de1dc48d22c0ace7ac94bda0b7d297c"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:32.501125Z"/>
+<entry
+   committed-rev="2134"
+   name="dream_1024x768.xml"
+   text-time="2005-05-30T09:07:40.235500Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="8b2a1a64df118774b1493050fc402848"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:32.469875Z"/>
+<entry
+   committed-rev="2134"
+   name="intro.xml"
+   text-time="2005-05-30T09:07:40.173000Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="b07183d8f3f874ed58d77ec3ece7cc9e"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:32.438625Z"/>
+<entry
+   committed-rev="2250"
+   name="playerstat_1280x1024.xml"
+   text-time="2005-05-30T09:07:40.344875Z"
+   committed-date="2005-05-23T13:57:41.500000Z"
+   checksum="46af7f7d4d53c1fe0acd3a712c22eb23"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:32.532375Z"/>
+<entry
+   committed-rev="2134"
+   name="corpse_1280x1024.xml"
+   text-time="2005-05-30T09:07:40.407375Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="de4cfc4feff725798a30e141c81a195b"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:32.610500Z"/>
+<entry
+   committed-rev="2134"
+   name="game_choose_pers_1024x768.xml"
+   text-time="2005-05-30T09:07:40.469875Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="65a187e8325e5db0da523861d89e51e9"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:32.641750Z"/>
+<entry
+   committed-rev="2134"
+   name="gameover_smirennik_chudo.xml"
+   text-time="2005-05-30T09:07:40.532375Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="8fcc660ad5d8d79b522ceb890b9412d7"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:32.673000Z"/>
+<entry
+   committed-rev="2134"
+   name="save_1280x1024.xml"
+   text-time="2005-05-30T09:07:40.579250Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="a1ab8db9790030c4170712e25b397eb0"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:32.704250Z"/>
+<entry
+   committed-rev="2"
+   name="game_min.xml"
+   text-time="2005-05-30T09:07:40.891750Z"
+   committed-date="2004-04-05T10:15:13.467375Z"
+   checksum="69043f8563228041129d27459d02af62"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:32.782375Z"/>
+<entry
+   committed-rev="2184"
+   name="control_page.xml"
+   text-time="2005-05-30T09:07:40.735500Z"
+   committed-date="2005-05-17T18:59:29.211250Z"
+   checksum="36e3b24163b04f23b7aead932a5cc9c0"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:32.735500Z"/>
+<entry
+   committed-rev="2134"
+   name="dapparatus_1280x1024.xml"
+   text-time="2005-05-30T09:07:41.048000Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="0e95af29dab3df299c700f4c25ddf827"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:32.798000Z"/>
+<entry
+   committed-rev="2107"
+   name="gameover_1280x1024.xml"
+   text-time="2005-05-30T09:07:41.376125Z"
+   committed-date="2005-05-11T12:41:18.818250Z"
+   checksum="b6891589b776dc2fa12185a2c98cef55"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:32.860500Z"/>
+<entry
+   committed-rev="2134"
+   name="ingame_buttons.xml"
+   text-time="2005-05-30T09:07:41.219875Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="843176f29fbfe264d26d293fba9d1490"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:32.829250Z"/>
+<entry
+   committed-rev="2184"
+   name="control_page_1024x768.xml"
+   text-time="2005-05-30T09:07:41.579250Z"
+   committed-date="2005-05-17T18:59:29.211250Z"
+   checksum="121983a017e2cf8d221b800fa54ecc44"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:32.891750Z"/>
+<entry
+   committed-rev="2250"
+   name="playerstat_base.xml"
+   text-time="2005-05-30T09:07:41.782375Z"
+   committed-date="2005-05-23T13:57:41.500000Z"
+   checksum="ebc2b070b261236476ee16fd5d761d15"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:32.923000Z"/>
+<entry
+   committed-rev="2134"
+   name="gameover_beda_1024x768.xml"
+   text-time="2005-05-30T09:07:42.032375Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="b3701e5217c2f79c607b6be690386a05"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:32.969875Z"/>
+<entry
+   committed-rev="2134"
+   name="mapload_1280x1024.xml"
+   text-time="2005-05-30T09:07:42.423000Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="eb0c65dd0ec80edbca68db8f410ed879"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:33.016750Z"/>
+<entry
+   committed-rev="2184"
+   name="map_1280x1024.xml"
+   text-time="2005-05-30T09:07:42.266750Z"
+   committed-date="2005-05-17T18:59:29.211250Z"
+   checksum="d4f7314a26b0dfccd990f0285d81db71"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:33.001125Z"/>
+<entry
+   committed-rev="2184"
+   name="game_buttons.xml"
+   text-time="2005-05-30T09:07:42.626125Z"
+   committed-date="2005-05-17T18:59:29.211250Z"
+   checksum="4b1915acb7b7d8b9780f806ccb5f1855"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:33.063625Z"/>
+<entry
+   committed-rev="2184"
+   name="inventory_base_1024x768.xml"
+   text-time="2005-05-30T09:07:42.860500Z"
+   committed-date="2005-05-17T18:59:29.211250Z"
+   checksum="8e988a38d47c32b8abe39d9b7e5fe84d"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:33.094875Z"/>
+<entry
+   committed-rev="2134"
+   name="container_1280x1024.xml"
+   text-time="2005-05-30T09:07:43.251125Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="43941de56aa3aa026ee8cfcc89b2d7e0"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:33.188625Z"/>
+<entry
+   committed-rev="2250"
+   name="playerstat_1024x768.xml"
+   text-time="2005-05-30T09:07:43.063625Z"
+   committed-date="2005-05-23T13:57:41.500000Z"
+   checksum="ca23489a6b68929fc8afe8c188858ee6"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:33.126125Z"/>
+<entry
+   committed-rev="1073"
+   name="inventory.xml"
+   text-time="2005-05-30T09:07:43.454250Z"
+   committed-date="2004-10-23T14:48:33.473500Z"
+   checksum="8383182be7840cf54c093edff844195c"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:33.219875Z"/>
+<entry
+   committed-rev="2134"
+   name="save.xml"
+   text-time="2005-05-30T09:07:43.657375Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="03c74631d4b2c4e3f54054e2ad0722a4"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:33.251125Z"/>
+<entry
+   committed-rev="2134"
+   name="chooseitem.xml"
+   text-time="2005-05-30T09:07:43.844875Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="479c9bab3a836c70072ac7ed8f325a71"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:33.266750Z"/>
+<entry
+   committed-rev="2134"
+   name="intro_1280x1024.xml"
+   text-time="2005-05-30T09:07:44.266750Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="f26e7b65990617bb56b859a46f9f97fa"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:33.344875Z"/>
+<entry
+   committed-rev="2134"
+   name="options_1280x1024.xml"
+   text-time="2005-05-30T09:07:44.063625Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="5aac951361b482eb80d1871f02a58f46"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:33.298000Z"/>
+<entry
+   committed-rev="2134"
+   name="video_page_1024x768.xml"
+   text-time="2005-05-30T09:07:44.860500Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="9303707340e1ec20649eb5234af25091"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:33.438625Z"/>
+<entry
+   committed-rev="2134"
+   name="visir_1280x1024.xml"
+   text-time="2005-05-30T09:07:44.641750Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="a1aeeaf6f30b4d3dd5474bc6ff8b613a"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:33.407375Z"/>
+<entry
+   committed-rev="2134"
+   name="gameover_beda_chudo_1024x768.xml"
+   text-time="2005-05-30T09:07:44.454250Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="326c2a8cebd16012c2e5fff643ebd265"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:33.376125Z"/>
+<entry
+   committed-rev="2184"
+   name="dialog_photo.xml"
+   text-time="2005-05-30T09:07:45.079250Z"
+   committed-date="2005-05-17T18:59:29.211250Z"
+   checksum="5388c88b5f938f66cb416e513a433030"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:33.454250Z"/>
+<entry
+   committed-rev="2281"
+   name="gameover_fail_1280x1024.xml"
+   text-time="2005-05-30T09:07:45.454250Z"
+   committed-date="2005-05-26T09:19:02.421875Z"
+   checksum="a28b8e1e45a7db1fc4126bc7dcd7a233"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:33.516750Z"/>
+<entry
+   committed-rev="2134"
+   name="apparatus_1280x1024.xml"
+   text-time="2005-05-30T09:07:45.282375Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="56e96895f4f4781ee8c511f3667e9ff9"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:33.485500Z"/>
+<entry
+   committed-rev="2134"
+   name="game_choose_pers_1280x1024.xml"
+   text-time="2005-05-30T09:07:45.610500Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="e467ed88220f67fd0726c32318aef656"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:33.548000Z"/>
+<entry
+   committed-rev="2134"
+   name="load_1024x768.xml"
+   text-time="2005-05-30T09:07:46.157375Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="47262839fb15e97296a015dcec747e50"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:33.626125Z"/>
+<entry
+   committed-rev="2134"
+   name="container.xml"
+   text-time="2005-05-30T09:07:45.969875Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="46d9398ab9a155f1deca801d02429905"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:33.594875Z"/>
+<entry
+   committed-rev="2"
+   name="mail.xml"
+   text-time="2005-05-30T09:07:45.782375Z"
+   committed-date="2004-04-05T10:15:13.467375Z"
+   checksum="78453bfba0bb594b561d7e002a57017f"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:33.563625Z"/>
+<entry
+   committed-rev="2134"
+   name="gameover_smirennik.xml"
+   text-time="2005-05-30T09:07:46.298000Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="d6b24fa26411020bf5327337c14006c4"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:33.641750Z"/>
+<entry
+   committed-rev="2134"
+   name="agony_1280x1024.xml"
+   text-time="2005-05-30T09:07:46.532375Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="86523d4319de43c09eb1d4c6644161fb"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:33.688625Z"/>
+<entry
+   committed-rev="2134"
+   name="gameover_smirennik_1024x768.xml"
+   text-time="2005-05-30T09:07:46.719875Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="9b7eefaff8950bdce524f7112c8d9f9e"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:33.766750Z"/>
+<entry
+   committed-rev="2134"
+   name="options_border.xml"
+   text-time="2005-05-30T09:07:46.923000Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="ce2f9c1e26934caa9a547955ec1cad92"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:33.923000Z"/>
+<entry
+   committed-rev="2184"
+   name="character.xml"
+   text-time="2005-05-30T09:07:46.985500Z"
+   committed-date="2005-05-17T18:59:29.211250Z"
+   checksum="6704c8710b2262c81e0099250277883f"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:33.954250Z"/>
+<entry
+   committed-rev="2134"
+   name="audio_page.xml"
+   text-time="2005-05-30T09:07:47.048000Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="ff3bc085b73530f07d7498110ed9b579"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:33.985500Z"/>
+<entry
+   committed-rev="2134"
+   name="message_1280x1024.xml"
+   text-time="2005-05-30T09:07:47.110500Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="4dabe6d083abac9d7f46be44299f1574"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:34.016750Z"/>
+<entry
+   committed-rev="2184"
+   name="character_1024x768.xml"
+   text-time="2005-05-30T09:07:47.173000Z"
+   committed-date="2005-05-17T18:59:29.211250Z"
+   checksum="ce63fb034fd0ec13971a7d90456fd4db"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:34.048000Z"/>
+<entry
+   committed-rev="2184"
+   name="game_buttons_1280x1024.xml"
+   text-time="2005-05-30T09:07:47.219875Z"
+   committed-date="2005-05-17T18:59:29.211250Z"
+   checksum="5086aeb10c7f912e0dfb1c789d170c58"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:34.079250Z"/>
+<entry
+   committed-rev="2107"
+   name="inventory_1024x768.xml"
+   text-time="2005-05-30T09:07:47.282375Z"
+   committed-date="2005-05-11T12:41:18.818250Z"
+   checksum="318ad778e540f77254621fffabd4200d"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:34.110500Z"/>
+<entry
+   committed-rev="2134"
+   name="game_choose_pers.xml"
+   text-time="2005-05-30T09:07:47.329250Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="6821c1876dde3b24506634a48f09b1dd"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:34.126125Z"/>
+<entry
+   committed-rev="2134"
+   name="apparatus_1024x768.xml"
+   text-time="2005-05-30T09:07:47.391750Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="3c6801fe01d84d3270471c04791d8bfe"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:34.157375Z"/>
+<entry
+   committed-rev="2281"
+   name="gameover_fail_1024x768.xml"
+   text-time="2005-05-30T09:07:47.438625Z"
+   committed-date="2005-05-26T09:19:02.421875Z"
+   checksum="bd6c59d0bddbd4849e386099ad163e39"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:34.188625Z"/>
+<entry
+   committed-rev="2134"
+   name="gameover_utopist_1280x1024.xml"
+   text-time="2005-05-30T09:07:47.501125Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="f9126dc8be42fee030bb3f60d8ab6c25"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:34.204250Z"/>
+<entry
+   committed-rev="2134"
+   name="diary.xml"
+   text-time="2005-05-30T09:07:47.548000Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="686d939a75b881e5cff61f7413c7c243"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:34.235500Z"/>
+<entry
+   committed-rev="2107"
+   name="ingame_1280x1024.xml"
+   text-time="2005-05-30T09:07:47.610500Z"
+   committed-date="2005-05-11T12:41:18.818250Z"
+   checksum="f683e1ff28451114f1aae6838181e8c5"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:34.266750Z"/>
+<entry
+   committed-rev="2134"
+   name="gameover_smirennik_chudo_1024x768.xml"
+   text-time="2005-05-30T09:07:47.657375Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="432e983918543dd9a8b7be608af85890"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:34.298000Z"/>
+<entry
+   committed-rev="2134"
+   name="gameover_beda_chudo_1280x1024.xml"
+   text-time="2005-05-30T09:07:47.719875Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="dc124b1f0824e2b3f36138366736f3fa"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:34.313625Z"/>
+<entry
+   committed-rev="2134"
+   name="video_page_1280x1024.xml"
+   text-time="2005-05-30T09:07:47.782375Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="fa792f97b6b08874d5e88695684bc57b"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:34.344875Z"/>
+<entry
+   committed-rev="2107"
+   name="choose_pers_1024x768.xml"
+   text-time="2005-05-30T09:07:47.829250Z"
+   committed-date="2005-05-11T12:41:18.818250Z"
+   checksum="f4e498b30a36e183c1f825c510414923"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:34.376125Z"/>
+<entry
+   committed-rev="2134"
+   name="sys_border_1024x768.xml"
+   text-time="2005-05-30T09:07:47.891750Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="ca3f5f2c25a3d09075dbe1d24d17697b"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:34.407375Z"/>
+<entry
+   committed-rev="2134"
+   name="ingame_buttons_1024x768.xml"
+   text-time="2005-05-30T09:07:47.954250Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="08629bdbe3e1139502adfc8786204126"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:34.438625Z"/>
+<entry
+   committed-rev="2107"
+   name="choose_pers_1280x1024.xml"
+   text-time="2005-05-30T09:07:48.001125Z"
+   committed-date="2005-05-11T12:41:18.818250Z"
+   checksum="663793e5d10d7a3eadb1aa5dd09ea288"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:34.454250Z"/>
+<entry
+   committed-rev="2134"
+   name="gameover_credits_1024x768.xml"
+   text-time="2005-05-30T09:07:48.063625Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="079bcbb68133626bb5ecbb0cae86846f"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:34.485500Z"/>
+<entry
+   committed-rev="2184"
+   name="trade.xml"
+   text-time="2005-05-30T09:07:48.141750Z"
+   committed-date="2005-05-17T18:59:29.211250Z"
+   checksum="4ba78efe8e94b1c596ca589468c2a34c"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:34.516750Z"/>
+<entry
+   committed-rev="2134"
+   name="audio_page_1024x768.xml"
+   text-time="2005-05-30T09:07:48.204250Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="8bd16edacc29c9afba0b78e28bbbed9f"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:34.548000Z"/>
+<entry
+   committed-rev="2134"
+   name="save_1024x768.xml"
+   text-time="2005-05-30T09:07:48.251125Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="20f245cc6ab959f8c8e75e8be4502e7d"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:34.579250Z"/>
+<entry
+   committed-rev="2134"
+   name="video_page.xml"
+   text-time="2005-05-30T09:07:48.313625Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="7fec0428a98e160b92e7b6ae7f984a76"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:34.626125Z"/>
+<entry
+   committed-rev="2134"
+   name="gameover_beda_chudo.xml"
+   text-time="2005-05-30T09:07:48.360500Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="18aea360963c033b052b2172434f9c1d"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:34.657375Z"/>
+<entry
+   committed-rev="2107"
+   name="ingame_1024x768.xml"
+   text-time="2005-05-30T09:07:48.423000Z"
+   committed-date="2005-05-11T12:41:18.818250Z"
+   checksum="820c259a43c777f7f956d4f8fbde170b"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:34.673000Z"/>
+<entry
+   committed-rev="2106"
+   name="gameover.xml"
+   text-time="2005-05-30T09:07:48.469875Z"
+   committed-date="2005-05-11T12:34:37.755750Z"
+   checksum="213ab46ad395372fc4493455bb23ae20"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:34.704250Z"/>
+<entry
+   committed-rev="2184"
+   name="microscope_1024x768.xml"
+   text-time="2005-05-30T09:07:48.532375Z"
+   committed-date="2005-05-17T18:59:29.211250Z"
+   checksum="70427092b81e7f4b27a91ee56180f1e4"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:34.735500Z"/>
+<entry
+   committed-rev="2134"
+   name="sys_border.xml"
+   text-time="2005-05-30T09:07:48.579250Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="e18f174e72697509fd9ebc967f9e5f58"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:34.766750Z"/>
+<entry
+   committed-rev="2134"
+   name="mapload.xml"
+   text-time="2005-05-30T09:07:48.641750Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="c6af9121031950f2e9ad5a8d17db3d37"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:34.954250Z"/>
+<entry
+   committed-rev="2134"
+   name="map.xml"
+   text-time="2005-05-30T09:07:48.704250Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="da8722d5f7c12e538f4bc8ca4280a148"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:35.063625Z"/>
+<entry
+   committed-rev="2134"
+   name="gameover_termit_chudo_1024x768.xml"
+   text-time="2005-05-30T09:07:48.876125Z"
+   committed-date="2005-05-13T19:59:34.537000Z"
+   checksum="b9ea2729bd8f0c9aaf490cb64a70ffac"
+   last-author="ro"
+   kind="file"
+   prop-time="2005-05-30T09:07:35.094875Z"/>
+</wc-entries>

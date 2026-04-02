@@ -1,0 +1,28 @@
+<form name = "mail" x = "200" y = "50" w = "400" h = "500" script = "ui_mail.bin"> 
+	<cursor name = "default" script = "ui_cursor.bin" w = "32" h = "32">
+		<image name = "default" x = "0" y = "0" w = "1" h = "1">ui/ui_cursor.tga</image>
+	</cursor>
+	<image name = "default" x = "0" y = "0" w = "1" h = "1">ui/ui_mail_alpha.tga</image>
+	
+	<form name = "mail_top" x = "200" y = "50" w = "400" h = "2"> 
+	<image name = "default" x = "0" y = "0" w = "1" h = "1">ui/ui_mail_black.tga</image>
+	</form>
+	
+	<form name = "mail_bottom" x = "200" y = "548" w = "400" h = "2"> 
+	<image name = "default" x = "0" y = "0" w = "1" h = "1">ui/ui_mail_black.tga</image>
+	</form>
+	
+	<form name = "mail_left" x = "200" y = "50" w = "2" h = "500"> 
+	<image name = "default" x = "0" y = "0" w = "1" h = "1">ui/ui_mail_black.tga</image>
+	</form>	
+	
+	<form name = "mail_left" x = "598" y = "50" w = "2" h = "500"> 
+	<image name = "default" x = "0" y = "0" w = "1" h = "1">ui/ui_mail_black.tga</image>
+	</form>	
+	
+	<form name = "text" x = "220" y = "75" w = "360" h = "430"  script = "ui_mail_text.bin"> 
+		<image name = "default" x = "0" y = "0" w = "1" h = "1">ui/ui_mail_alpha_dark.tga</image>
+		<font name = "default" size = "10" face = "verdana" ></font>
+		<font name = "default_bold" size = "14" face = "verdana" bold = "1"></font>
+	</form>
+</form>

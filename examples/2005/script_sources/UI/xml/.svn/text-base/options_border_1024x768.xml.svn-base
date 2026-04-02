@@ -1,0 +1,40 @@
+<form name="options_border_1024x768" x="344" y="154" w="336" h="460">
+  <form name="boder" x="344" y="154" w="336" h="460">
+    <form name="border_left_top" x="344" y="156" w="2" h="7">
+      <image name="default" x="0.3125" y="0.0625" w="0.125" h="0.4375">ui/ui_group_3_2.tex</image>
+    </form>
+    <form name="border_bottom" x="351" y="612" w="322" h="2">
+      <image name="default" x="0.71875" y="0.25" w="0.03125" h="0.5">ui/ui_group_3_1.tex</image>
+    </form>
+    <form name="border_top" x="351" y="154" w="322" h="2">
+      <image name="default" x="0.71875" y="0.25" w="0.03125" h="0.5">ui/ui_group_3_1.tex</image>
+    </form>
+    <form name="border_top_left" x="344" y="154" w="7" h="2">
+      <image name="default" x="0.3125" y="0.25" w="0.21875" h="0.5">ui/ui_group_3_1.tex</image>
+    </form>
+    <form name="border_right_top" x="678" y="156" w="2" h="7">
+      <image name="default" x="0.5625" y="0.0625" w="0.125" h="0.4375">ui/ui_group_3_2.tex</image>
+    </form>
+    <form name="border_top_right" x="673" y="154" w="7" h="2">
+      <image name="default" x="0.03125" y="0.25" w="0.21875" h="0.5">ui/ui_group_3_1.tex</image>
+    </form>
+    <form name="border_bottom_left" x="344" y="612" w="7" h="2">
+      <image name="default" x="0.3125" y="0.25" w="0.21875" h="0.5">ui/ui_group_3_1.tex</image>
+    </form>
+    <form name="border_bottom_right" x="673" y="612" w="7" h="2">
+      <image name="default" x="0.03125" y="0.25" w="0.21875" h="0.5">ui/ui_group_3_1.tex</image>
+    </form>
+    <form name="border_left_bottom" x="344" y="605" w="2" h="7">
+      <image name="default" x="0.0625" y="0.0625" w="0.125" h="0.4375">ui/ui_group_3_2.tex</image>
+    </form>
+    <form name="border_right_bottom" x="678" y="605" w="2" h="7">
+      <image name="default" x="0.8125" y="0.0625" w="0.125" h="0.4375">ui/ui_group_3_2.tex</image>
+    </form>
+    <form name="border_left_vertical" x="344" y="161" w="2" h="444">
+      <image name="default" x="0.59375" y="0.25" w="0.0625" h="0.25">ui/ui_group_3_1.tex</image>
+    </form>
+    <form name="border_right_vertical" x="678" y="161" w="2" h="444">
+      <image name="default" x="0.59375" y="0.25" w="0.0625" h="0.25">ui/ui_group_3_1.tex</image>
+    </form>
+  </form>
+</form>

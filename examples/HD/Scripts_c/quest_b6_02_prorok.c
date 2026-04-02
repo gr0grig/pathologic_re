@@ -1,802 +1,696 @@
-// @IMPORTS: CreateDialog/1,IsOverrideActive/1,DoDialog/1,sync/0,StopDialog/1,lshWaitForAnimEnd/0,PlayAnimation/2,WaitForAnimEnd/0,lshStopAnimation/0,StopAnimation/0,Hold/0,rand/2,Sleep/1,IsLoaded/1,RemoveActor/1,StopGroup0/0,irand/2,WaitForAnimEnd/1,Sleep/2,ResetAAS/0,GetPosition/1,GetEyesHeight/1,StopWorld/0,CameraTransit/3,Rotate/2,HasAnimationTrack/2,LookAsyncCamera/1,CameraWaitForPlayFinish/0,ResumeWorld/0,CameraSwitchToNormal/1,UnlookAsync/1,lshHasAnimation/2,lshGetAnimTimes/3,lshPlayAnimation/3,Trace/1,lshStopSpeech/0,self/1,GetVariable/2,HasAnimation/3,SetVariable/2,CreateDiaryEntry/4,GetDiaryRoot/1,SendWorldWndMessage/1,SetDiarySection/1
-// @STRINGS: A:SetNPCName|A:SetNPCDescription|A:SetPhoto|A:SetPhoto2|A:SetPlayerName|A:IsDialogEnd|A:GetReturnValue|W:Neutral|A:SetMessage|A:ClearReplies|A:AddReply|W:all|W:idle|W:cleanup|A:GetPosition|A:GetEyesHeight|W:head|W:Can't find lsh animation : |W:b6q02|W:oob6Prophet1|W:Can't retrieve diary root|A:Find|W:Can't find diary parent with id: |A:AddChild|A:GetCategory|W:branch|W:ui/NPC_Prophet.png|W:ui/NPC_Prophet_b.png
 // @GLOBALS: 0:object:
-// @RUN_OP: 0x17a
-// @RUN_TASK: 2
-// @TASK_0: vars=object params=2
-// @TASK_1: vars=object,object,string,bool params=2
-// @EVENT_11: op=0xb3 vars=int,int
-// @TASK_2: vars=bool params=0
-// @EVENT_0: op=0x16f vars=object
-// @EVENT_26: op=0x1a3 vars=string
-// @EVENT_5: op=0x1ab vars=
-// @EVENT_6: op=0x1b0 vars=
-// @PE: 0x4a,0x9d,0xb3,0x16f,0x1a3,0x2c7,0x2d0,0x2d6
 
-task_1_event_11(var_0_object, var_1_object, var_2_object, var_3_string, var_4_bool, var_5_int, var_6_int, var_7_bool)
+task task_0
 {
-	if((int)1 != 0) {
-		func_659();
-		var_11_bool = var_7_bool == (int)22397;
-		if(var_11_bool != 0) {
-			var_12_object = Obj(); var_13_object = Obj();
-			var_12_object = var_1_object;
-			var_13_object = var_0_object;
-			func_711();
-		}
-		var_40_bool = var_6_int == (int)22383;
-		if(var_40_bool != 0) {
-			var_41_bool = 0; var_42_object = Obj();
-			var_42_object = var_1_object;
-			func_726(var_42_object);
-			if(var_41_bool != 0) {
-				var_49_object = Obj(); var_50_object = Obj();
-				var_49_object = var_1_object;
-				var_50_object = var_0_object;
-				func_720();
-				var_53_string = "";
+}
+
+
+task task_1
+{
+	// @pe
+	void event_11(object var_0_object, object var_1_object, object var_2_object, string var_3_string, bool var_4_bool, int var_5_int, int var_6_int, bool var_7_bool)
+	{
+		if(1 != 0) {
+			func_659();
+			if(var_7_bool == 22397) {
+				object var_12_object; object var_13_object;
+				var_12_object = var_1_object;
+				var_13_object = var_0_object;
+				func_711();
+			}
+			if(var_6_int == 22383) {
+				bool var_41_bool;
+				func_726(var_1_object);
+				if(var_41_bool != 0) {
+					object var_49_object; object var_50_object;
+					var_49_object = var_1_object;
+					var_50_object = var_0_object;
+					func_720();
+					func_157(var_7_bool, "Neutral");
+					var_0_object->SetMessage(521181); //@t
+					var_0_object->ClearReplies(); //@t
+					var_0_object->AddReply(528428, 29813, 29812); //@t
+					var_0_object->AddReply(528434, 29819, 29818); //@t
+					return 0;
+				}
 				func_157(var_7_bool, "Neutral");
-				@@@var_0_object:SetMessage((int)521181);
-				@@@var_0_object:ClearReplies();
-				@@@var_0_object:AddReply((int)528428, (int)29813, (int)29812);
-				@@@var_0_object:AddReply((int)528434, (int)29819, (int)29818);
+				var_0_object->SetMessage(521197); //@t
+				var_0_object->ClearReplies(); //@t
+				var_0_object->AddReply(521198, -1, 22395); //@t
 				return 0;
 			}
-			var_77_string = "";
-			func_157(var_7_bool, "Neutral");
-			@@@var_0_object:SetMessage((int)521197);
-			@@@var_0_object:ClearReplies();
-			@@@var_0_object:AddReply((int)521198, (int)-1, (int)22395);
+			if(var_6_int == 29819) {
+				func_157(var_7_bool, "Neutral");
+				var_0_object->SetMessage(528435); //@t
+				var_0_object->ClearReplies(); //@t
+				var_0_object->AddReply(528436, 29821, 29820); //@t
+				return 0;
+			}
+			if(var_6_int == 29821) {
+				func_157(var_7_bool, "Neutral");
+				var_0_object->SetMessage(528437); //@t
+				var_0_object->ClearReplies(); //@t
+				var_0_object->AddReply(528438, 29815, 29822); //@t
+				return 0;
+			}
+			if(var_6_int == 29813) {
+				func_157(var_7_bool, "Neutral");
+				var_0_object->SetMessage(528429); //@t
+				var_0_object->ClearReplies(); //@t
+				var_0_object->AddReply(528430, 29815, 29814); //@t
+				return 0;
+			}
+			if(var_6_int == 29815) {
+				func_157(var_7_bool, "Neutral");
+				var_0_object->SetMessage(528431); //@t
+				var_0_object->ClearReplies(); //@t
+				var_0_object->AddReply(528432, 29817, 29816); //@t
+				var_0_object->AddReply(528439, 29817, 29824); //@t
+				return 0;
+			}
+			if(var_6_int == 29817) {
+				func_157(var_7_bool, "Neutral");
+				var_0_object->SetMessage(528433); //@t
+				var_0_object->ClearReplies(); //@t
+				var_0_object->AddReply(521182, 22396, 22384); //@t
+				return 0;
+			}
+			if(var_6_int == 22396) {
+				func_157(var_7_bool, "Neutral");
+				var_0_object->SetMessage(521199); //@t
+				var_0_object->ClearReplies(); //@t
+				var_0_object->AddReply(521200, -1, 22397); //@t
+				return 0;
+			}
+			var_3_string = true;
+			bool var_127_bool;
+			func_817(var_127_bool);
+			if(var_127_bool != 0)
+				@lshStopAnimation();
+			else
+				@StopAnimation();
 			return 0;
 		}
-		var_83_bool = var_6_int == (int)29819;
-		if(var_83_bool != 0) {
-			var_84_string = "";
-			func_157(var_7_bool, "Neutral");
-			@@@var_0_object:SetMessage((int)528435);
-			@@@var_0_object:ClearReplies();
-			@@@var_0_object:AddReply((int)528436, (int)29821, (int)29820);
-			return 0;
-		}
-		var_90_bool = var_6_int == (int)29821;
-		if(var_90_bool != 0) {
-			var_91_string = "";
-			func_157(var_7_bool, "Neutral");
-			@@@var_0_object:SetMessage((int)528437);
-			@@@var_0_object:ClearReplies();
-			@@@var_0_object:AddReply((int)528438, (int)29815, (int)29822);
-			return 0;
-		}
-		var_97_bool = var_6_int == (int)29813;
-		if(var_97_bool != 0) {
-			var_98_string = "";
-			func_157(var_7_bool, "Neutral");
-			@@@var_0_object:SetMessage((int)528429);
-			@@@var_0_object:ClearReplies();
-			@@@var_0_object:AddReply((int)528430, (int)29815, (int)29814);
-			return 0;
-		}
-		var_104_bool = var_6_int == (int)29815;
-		if(var_104_bool != 0) {
-			var_105_string = "";
-			func_157(var_7_bool, "Neutral");
-			@@@var_0_object:SetMessage((int)528431);
-			@@@var_0_object:ClearReplies();
-			@@@var_0_object:AddReply((int)528432, (int)29817, (int)29816);
-			@@@var_0_object:AddReply((int)528439, (int)29817, (int)29824);
-			return 0;
-		}
-		var_114_bool = var_6_int == (int)29817;
-		if(var_114_bool != 0) {
-			var_115_string = "";
-			func_157(var_7_bool, "Neutral");
-			@@@var_0_object:SetMessage((int)528433);
-			@@@var_0_object:ClearReplies();
-			@@@var_0_object:AddReply((int)521182, (int)22396, (int)22384);
-			return 0;
-		}
-		var_121_bool = var_6_int == (int)22396;
-		if(var_121_bool != 0) {
-			var_122_string = "";
-			func_157(var_7_bool, "Neutral");
-			@@@var_0_object:SetMessage((int)521199);
-			@@@var_0_object:ClearReplies();
-			@@@var_0_object:AddReply((int)521200, (int)-1, (int)22397);
-			return 0;
-		}
-		var_3_string = true;
-		var_127_bool = 0;
-		func_817(var_127_bool);
-		if(var_127_bool != 0) {
-			lshStopAnimation();
-		} else {
-			StopAnimation();
-	}
 		return 0;
-	}
-	return 0;
-EMIT "GOTO 0xb4";
+	EMIT "GOTO 0xb4";
 	
-}
-
-
-task_2_event_0(var_0_object, var_1_object, var_2_object, var_3_string, var_4_bool, var_5_bool, var_6_object)
-{
-	func_531();
-	var_7_int = 0; var_8_object = Obj();
-	var_6_object = var_8_object;
-	TaskCall(0);
-	func_0(var_9_object, var_7_int, var_8_object);
-	TaskReturn();
-	return 0;
-}
-
-
-task_2_event_26(var_0_object, var_1_object, var_2_object, var_3_string, var_4_bool, var_5_bool, var_6_string)
-{
-	var_8_bool = var_6_string == "cleanup";
-	if(var_8_bool != 0) {
-		func_399(var_6_string);
 	}
-	return 0;
+
 }
 
 
-task_2_event_5(var_0_object, var_1_object, var_2_object, var_3_string, var_4_bool, var_5_bool)
+maintask task_2
 {
-	StopGroup0();
-	sync();
-	return 0;
-}
-
-
-task_2_event_6(var_0_object, var_1_object, var_2_object, var_3_string, var_4_bool, var_5_bool)
-{
-	var_6_bool = 0;
-	var_6_bool = 0;
-	var_7_object = var_0_object;
-	if(var_7_object != 0) {
-		var_8_bool = 0;
-		func_448(var_8_bool);
-		if(var_8_bool != 0) {
-			var_6_bool = 1;
+	void init(object var_0_object, object var_1_object, object var_2_object, string var_3_string, bool var_4_bool, bool var_5_bool)
+	{
+	
+	Label_379:
+		for(;;) {
+			bool var_8_bool;
+			func_536(var_8_bool);
+			var_11_bool = !var_8_bool; //@nz
+			if(var_11_bool == 0) goto Label_387;
+			@Hold();
 		}
-	}
-	if(var_6_bool != 0) {
-		var_9_object = Obj();
-		func_666(var_9_object);
-		RemoveActor(var_9_object);
-	}
-	return 0;
-}
-
-
-main(var_0_object, var_1_object, var_2_object, var_3_string, var_4_bool, var_5_bool)
-{
-	var_6_float = 0; var_7_float = 0;
 	
-Label_379:
-	var_8_bool = 0;
-	func_536(var_8_bool);
-	var_11_bool = var_8_bool == 0; //@nz
-	if(var_11_bool != 0) {
-		Hold();
+	Label_387:
+		float var_7_float;
+		@rand(var_7_float, 3);
+		@Sleep(var_7_float + 3);
+		func_450();
 		goto Label_379;
 	}
-	rand(var_7_float, (int)3);
-	var_14_int = var_7_float + (int)3;
-	Sleep(var_14_int);
-	func_450();
-	goto Label_379;
+	EMIT "Return(); Pop(2)";
+
+	// @pe
+	void OnUse(object actor, object var_1_object, object var_2_object, string var_3_string, bool var_4_bool, bool var_5_bool, object var_6_object)
+	{
+		func_531();
+		int var_7_int; object var_8_object;
+		var_6_object = var_8_object;
+		TaskCall(0);
+		func_0(var_9_object, var_7_int, var_8_object);
+		TaskReturn();
+	}
+
+	// @pe
+	void OnTrigger(object var_0_object, object var_1_object, object var_2_object, string var_3_string, bool var_4_bool, bool var_5_bool, string var_6_string)
+	{
+		if(var_6_string == "cleanup")
+			func_399(var_6_string);
+	}
+
+	void OnLoad(object var_0_object, object var_1_object, object var_2_object, string var_3_string, bool var_4_bool, bool var_5_bool)
+	{
+		@StopGroup0();
+		@sync();
+	}
+
+	void OnUnload(object var_0_object, object var_1_object, object var_2_object, string var_3_string, bool var_4_bool, bool var_5_bool)
+	{
+		bool var_6_bool = false;
+		if(var_0_object != 0) {
+			bool var_8_bool;
+			func_448(var_8_bool);
+			if(var_8_bool != 0)
+				var_6_bool = true;
+		}
+		if(var_6_bool != 0) {
+			object var_9_object;
+			func_666(var_9_object);
+			@RemoveActor(var_9_object);
+		}
+	}
+
 }
-EMIT "Return(); Pop(2)";
 
 
-func_0(var_0_object, var_7_int, var_8_object)
+void func_0(object var_0_object, int var_7_int, object var_8_object)
 {
-	var_10_object = Obj(); var_11_bool = 0; var_12_int = 0; var_13_bool = 0; var_14_object = Obj(); var_15_bool = 0; var_16_int = 0; var_17_bool = 0;
 	var_0_object = var_8_object;
-	var_18_bool = 0; var_19_object = Obj(); var_20_float = 0;
+	bool var_18_bool; object var_19_object;
 	var_8_object = var_19_object;
-	func_541(var_18_bool, var_19_object, (float)70.0);
-	var_65_bool = var_18_bool == 0; //@nz
-	if(var_65_bool != 0) {
+	func_541(var_18_bool, var_19_object, 70.0);
+	if(!var_18_bool) { //@nz
 		var_7_int = -2;
 		return 8;
 	}
-	CreateDialog(var_14_object);
-	var_66_int = 0;
+	object var_14_object;
+	@CreateDialog(var_14_object);
+	int var_66_int;
 	func_811(var_66_int);
-	@@var_14_object:SetNPCName(var_66_int);
-	var_67_int = 0;
+	var_14_object->SetNPCName(var_66_int);
+	int var_67_int;
 	func_809(var_67_int);
-	@@var_14_object:SetNPCDescription(var_67_int);
-	var_68_string = "";
+	var_14_object->SetNPCDescription(var_67_int);
+	string var_68_string;
 	func_813(var_68_string);
-	@@var_14_object:SetPhoto(var_68_string);
-	var_69_string = "";
+	var_14_object->SetPhoto(var_68_string);
+	string var_69_string;
 	func_815(var_69_string);
-	@@var_14_object:SetPhoto2(var_69_string);
-	var_70_int = 0;
+	var_14_object->SetPhoto2(var_69_string);
+	int var_70_int;
 	func_792(var_70_int);
-	@@var_14_object:SetPlayerName(var_70_int);
-	IsOverrideActive(var_15_bool);
-	var_78_bool = var_15_bool;
-	if(var_78_bool != 0) {
+	var_14_object->SetPlayerName(var_70_int);
+	bool var_15_bool;
+	@IsOverrideActive(var_15_bool);
+	if(var_15_bool != 0) {
 		var_7_int = -2;
 		return 8;
 	}
-	DoDialog(var_14_object);
-	var_79_object = Obj(); var_80_object = Obj();
+	@DoDialog(var_14_object);
+	object var_79_object; object var_80_object;
 	var_8_object = var_79_object;
 	var_14_object = var_80_object;
 	TaskCall(1);
 	func_74(var_81_object, var_82_object, var_83_string, var_84_bool, var_79_object, var_80_object);
 	TaskReturn();
-	@@var_14_object:IsDialogEnd(var_17_bool);
+	bool var_17_bool;
+	var_14_object->IsDialogEnd(var_17_bool);
 	
-Label_56:
-	var_145_bool = var_17_bool == 0; //@nz
-	if(var_145_bool != 0) {
-		sync();
-		@@var_14_object:IsDialogEnd(var_17_bool);
-		goto Label_56;
+	for(;;) {
+		var_145_bool = !var_17_bool; //@nz
+		if(var_145_bool == 0) goto Label_63;
+		@sync();
+		var_14_object->IsDialogEnd(var_17_bool);
 	}
-	var_8_object = Obj();
+	
+Label_63:
+	object var_146_object;
+	var_8_object = var_146_object;
 	func_610();
-	StopDialog(var_14_object);
-	@@var_14_object:GetReturnValue((int)-1);
-	var_16_int = var_7_int;
-	return 8;
+	@StopDialog(var_14_object);
+	var_14_object->GetReturnValue(-1);
+	int var_16_int = var_7_int;
 }
 EMIT "Stack[-4] = 0";
 
 
-func_448(var_8_bool)
+void func_448(bool var_8_bool)
 {
-	var_8_bool = 1;
-	return 0;
+	var_8_bool = true;
 }
 
 
-func_450()
+void func_450(void)
 {
-	var_15_int = 0; var_16_int = 0; var_17_int = 0; var_18_int = 0; var_19_bool = 0; var_20_float = 0; var_21_bool = 0; var_22_int = 0; var_23_int = 0; var_24_int = 0; var_25_int = 0; var_26_bool = 0; var_27_float = 0; var_28_bool = 0;
-	WaitForAnimEnd();
-	var_29_bool = 0;
+	int var_24_int; int var_25_int; bool var_26_bool; float var_27_float; bool var_28_bool;
+	@WaitForAnimEnd();
+	bool var_29_bool;
 	func_536(var_29_bool);
-	var_30_bool = var_29_bool == 0; //@nz
-	if(var_30_bool != 0) {
+	if(!var_29_bool) //@nz
 		return 14;
-	}
-	func_694((int)0);
+	int var_31_int;
+	func_694(var_31_int);
+	int var_22_int;
 	var_31_int = var_22_int;
-	var_23_int = 0;
+	int var_23_int = 0;
 	
-Label_464:
-	var_44_bool = 0;
-	var_44_bool = 0;
-	var_46_bool = var_23_int < (int)5;
-	if(var_46_bool != 0) {
-		var_47_bool = 0;
-		func_536(var_47_bool);
-		if(var_47_bool != 0) {
-			var_44_bool = 1;
+	for(;;) {
+		bool var_44_bool = false;
+		if(var_23_int < 5) {
+			bool var_47_bool;
+			func_536(var_47_bool);
+			if(var_47_bool != 0)
+				var_44_bool = true;
 		}
-	}
-	if(var_44_bool != 0) {
-		irand(var_24_int, (int)3);
-		var_50_bool = var_24_int == (int)0;
-		if(var_50_bool != 0) {
-			var_51_int = var_22_int;
-			if(var_51_int == 0) goto Label_497;
-			irand(var_25_int, var_22_int);
-			var_53_string = ""; var_54_int = 0;
-			var_25_int = var_54_int;
-			func_687(var_53_string, var_54_int);
-			PlayAnimation("all", var_53_string);
-			WaitForAnimEnd(var_26_bool);
-			var_55_bool = var_26_bool == 0; //@nz
-			if(var_55_bool != 0) {
+		if(var_44_bool != 0) {
+			@irand(var_24_int, 3);
+			if(var_24_int == 0) {
+				if(var_22_int == 0) goto Label_497;
+				@irand(var_25_int, var_22_int);
+				string var_53_string; int var_54_int;
+				var_25_int = var_54_int;
+				func_687(var_53_string, var_54_int);
+				@PlayAnimation("all", var_53_string);
+				@WaitForAnimEnd(var_26_bool);
+				if(!var_26_bool) { //@nz
+				} else {
 			} else {
-		} else {
-				var_60_bool = var_24_int == (int)1;
-				if(var_60_bool != 0) {
-					rand(var_27_float, (int)4);
-					var_63_int = var_27_float + (int)1;
-					Sleep(var_63_int, var_28_bool);
-					var_64_bool = var_28_bool == 0; //@nz
-					if(var_64_bool != 0) {
-						goto Label_526;
-					}
-					goto Label_515;
+			if(var_24_int == 1) {
+				@rand(var_27_float, 4);
+				@Sleep((var_27_float + 1), var_28_bool);
+				if(!var_28_bool) { //@nz
+					goto Label_526;
 				}
-				var_65_int = var_23_int;
-				if(var_65_int == 0) goto Label_515;
-				goto Label_526;
-		}
-		Label_515:
-			var_56_bool = 0;
-			func_529(var_56_bool);
-			var_57_bool = var_56_bool == 0; //@nz
-			if(var_57_bool != 0) {
+			} else if(var_23_int != 0) {
 				goto Label_526;
 			}
-			ResetAAS();
-			var_23_int = var_23_int + (int)1;
-			goto Label_464;
+			}
+					bool var_56_bool;
+					func_529(var_56_bool);
+					var_57_bool = !var_56_bool; //@nz
+					if(var_57_bool == 0) goto Label_521;
+			}
+		}
+	Label_526:
+		for(;;) {
+			@ResetAAS();
+			return 14;
 
 		}
+
+	Label_521:
+		@ResetAAS();
+		var_23_int += 1;
 	}
-Label_526:
-	ResetAAS();
-	return 14;
 	
 }
 
 
-func_644(var_102_string, var_103_bool)
+void func_644(string var_102_string, bool var_103_bool)
 {
-	var_106_bool = 0; var_107_float = 0; var_108_float = 0; var_109_bool = 0; var_110_float = 0; var_111_float = 0;
-	lshHasAnimation(var_109_bool, var_102_string);
-	var_112_bool = var_109_bool;
-	if(var_112_bool != 0) {
-		lshGetAnimTimes(var_102_string, var_110_float, var_111_float);
-		lshPlayAnimation(var_110_float, var_111_float, var_103_bool);
+	bool var_109_bool; float var_110_float; float var_111_float;
+	@lshHasAnimation(var_109_bool, var_102_string);
+	if(var_109_bool != 0) {
+		@lshGetAnimTimes(var_102_string, var_110_float, var_111_float);
+		@lshPlayAnimation(var_110_float, var_111_float, var_103_bool);
 	} else {
-		var_114_int = "Can't find lsh animation : " + var_102_string;
-		Trace(var_114_int);
+		@Trace("Can't find lsh animation : " + var_102_string);
 	}
-	return 6;
 	
 }
 
 
-func_711()
+// @pe
+void func_711(void)
 {
-	SetVariable("b6q02", (int)2);
+	@SetVariable("b6q02", 2);
 	func_738();
-	return 0;
 }
 
 
-func_74(var_0_object, var_1_object, var_2_object, var_3_string, var_79_object, var_80_object)
+// @pe
+void func_74(object var_0_object, object var_1_object, object var_2_object, string var_3_string, object var_79_object, object var_80_object)
 {
 	var_0_object = var_80_object;
 	var_1_object = var_79_object;
 	var_3_string = false;
-	if((int)1 != 0) {
-		var_86_bool = 0; var_87_object = Obj();
-		var_87_object = var_1_object;
-		func_726(var_87_object);
+	if(1 != 0) {
+		bool var_86_bool;
+		func_726(var_1_object);
 		if(var_86_bool != 0) {
-			var_94_object = Obj(); var_95_object = Obj();
+			object var_94_object; object var_95_object;
 			var_94_object = var_1_object;
 			var_95_object = var_0_object;
 			func_720();
-			var_98_string = "";
 			func_157(var_80_object, "Neutral");
-			@@@var_0_object:SetMessage((int)521181);
-			@@@var_0_object:ClearReplies();
-			@@@var_0_object:AddReply((int)528428, (int)29813, (int)29812);
-			@@@var_0_object:AddReply((int)528434, (int)29819, (int)29818);
+			var_0_object->SetMessage(521181); //@t
+			var_0_object->ClearReplies(); //@t
+			var_0_object->AddReply(528428, 29813, 29812); //@t
+			var_0_object->AddReply(528434, 29819, 29818); //@t
 		} else {
-				var_140_string = "";
-				func_157(var_80_object, "Neutral");
-				@@@var_0_object:SetMessage((int)521197);
-				@@@var_0_object:ClearReplies();
-				@@@var_0_object:AddReply((int)521198, (int)-1, (int)22395);
-				goto Label_127;
+					func_157(var_80_object, "Neutral");
+					var_0_object->SetMessage(521197); //@t
+					var_0_object->ClearReplies(); //@t
+					var_0_object->AddReply(521198, -1, 22395); //@t
 		}
 	}
-Label_127:
-	var_122_bool = 0;
-	func_817(var_122_bool);
-	if(var_122_bool != 0) {
+	for(;;) {
+		bool var_122_bool;
+		func_817(var_122_bool);
+		if(var_122_bool != 0) {
 
-	Label_131:
-		lshWaitForAnimEnd();
-		var_123_string = var_3_string;
-		if(var_123_string != 0) {
+			for(;;) {
+				@lshWaitForAnimEnd();
+				if(var_3_string != 0) {
+				} else {
+					func_628(var_2_object);
+				}
 		} else {
-			var_124_string = "";
-			var_124_string = var_2_object;
-			func_628(var_124_string);
-			goto Label_131;
-	}
-		PlayAnimation("all", "idle");
+			@PlayAnimation("all", "idle");
 
-	Label_146:
-		WaitForAnimEnd();
-		var_137_string = var_3_string;
-		if(var_137_string != 0) {
-			goto Label_156;
+			for(;;) {
+				@WaitForAnimEnd();
+				if(var_3_string != 0) {
+					goto Label_156;
+				}
+				@PlayAnimation("all", "idle");
+			}
+
 		}
-		PlayAnimation("all", "idle");
-		goto Label_146;
+		Label_156:
+			return 0;
+
+		}
 
 	}
-	goto Label_156;
-	
-Label_156:
-	return 0;
-	
 }
 EMIT "Return(); Pop(0)";
 EMIT "GOTO 0x4e";
 
 
-func_399(var_0_object)
+void func_399(object var_0_object)
 {
-	var_9_bool = 0; var_10_bool = 0;
 	var_0_object = true;
-	IsLoaded(var_10_bool);
-	var_11_bool = 0;
-	var_11_bool = 0;
-	var_12_bool = var_10_bool == 0; //@nz
-	if(var_12_bool != 0) {
-		var_13_bool = 0;
+	bool var_10_bool;
+	@IsLoaded(var_10_bool);
+	bool var_11_bool = false;
+	if(!var_10_bool) { //@nz
+		bool var_13_bool;
 		func_448(var_13_bool);
-		if(var_13_bool != 0) {
-			var_11_bool = 1;
-		}
+		if(var_13_bool != 0)
+			var_11_bool = true;
 	}
 	if(var_11_bool != 0) {
-		var_14_object = Obj();
+		object var_14_object;
 		func_666(var_14_object);
-		RemoveActor(var_14_object);
+		@RemoveActor(var_14_object);
 	}
-	return 2;
 }
 
 
-func_720()
+// @pe
+void func_720(void)
 {
-	SetVariable("oob6Prophet1", (int)1);
-	return 0;
+	@SetVariable("oob6Prophet1", 1);
 }
 
 
-func_529(var_56_bool)
+void func_529(bool var_56_bool)
 {
-	var_56_bool = 1;
-	return 0;
+	var_56_bool = true;
 }
 
 
-func_659()
+void func_659(void)
 {
-	var_9_bool = 0;
+	bool var_9_bool;
 	func_817(var_9_bool);
-	if(var_9_bool != 0) {
-		lshStopSpeech();
-	}
-	return 0;
+	if(var_9_bool != 0)
+		@lshStopSpeech();
 }
 
 
-func_531()
+void func_531(void)
 {
-	StopAnimation();
-	StopGroup0();
-	return 0;
+	@StopAnimation();
+	@StopGroup0();
 }
 
 
-func_726(var_86_bool)
+// @pe
+void func_726(bool var_86_bool)
 {
-	var_88_int = 0; var_89_string = "";
+	int var_88_int;
 	func_682(var_88_int, "oob6Prophet1");
-	var_93_bool = var_88_int == (int)0;
-	if(var_93_bool != 0) {
-		var_86_bool = 1;
+	if(var_88_int == 0) {
+		var_86_bool = true;
 		return 0;
 	}
-	var_86_bool = 0;
-	return 0;
+	var_86_bool = false;
 }
 
 
-func_792(var_70_int)
+void func_792(int var_70_int)
 {
-	var_71_int = 0; var_72_int = 0;
-	GetVariable("branch", var_72_int);
-	var_75_bool = var_72_int == (int)0;
-	if(var_75_bool != 0) {
+	int var_72_int;
+	@GetVariable("branch", var_72_int);
+	if(var_72_int == 0) {
 		var_70_int = 1;
 		return 2;
 	EMIT "GOTO 0x327";
 	}
-	var_77_bool = var_72_int == (int)1;
-	if(var_77_bool != 0) {
+	if(var_72_int == 1) {
 		var_70_int = 2;
 		return 2;
 	}
 	var_70_int = 3;
-	return 2;
 }
 
 
-func_536(var_8_bool)
+void func_536(bool var_8_bool)
 {
-	var_9_bool = 0; var_10_bool = 0;
-	IsLoaded(var_10_bool);
+	bool var_10_bool;
+	@IsLoaded(var_10_bool);
 	var_10_bool = var_8_bool;
-	return 2;
 }
 
 
-func_666(var_9_object)
+void func_666(object var_9_object)
 {
-	var_10_object = Obj(); var_11_object = Obj();
-	self(var_11_object);
+	object var_11_object;
+	@self(var_11_object);
 	var_11_object = var_9_object;
-	return 2;
 }
 EMIT "Stack[-1] = 0";
 
 
-func_541(var_18_bool, var_19_object, var_20_float)
+void func_541(bool var_18_bool, object var_19_object, float var_20_float)
 {
-	var_21_float = 0; var_22_cvector = CVector(0,0,0); var_23_cvector = CVector(0,0,0); var_24_cvector = CVector(0,0,0); var_25_cvector = CVector(0,0,0); var_26_cvector = CVector(0,0,0); var_27_cvector = CVector(0,0,0); var_28_bool = 0; var_29_bool = 0; var_30_float = 0; var_31_cvector = CVector(0,0,0); var_32_cvector = CVector(0,0,0); var_33_cvector = CVector(0,0,0); var_34_cvector = CVector(0,0,0); var_35_cvector = CVector(0,0,0); var_36_cvector = CVector(0,0,0); var_37_bool = 0; var_38_bool = 0;
-	@@var_19_object:GetPosition(var_31_cvector);
-	@@var_19_object:GetEyesHeight(var_30_float);
+	cvector var_31_cvector; bool var_38_bool;
+	var_19_object->GetPosition(var_31_cvector);
+	float var_30_float;
+	var_19_object->GetEyesHeight(var_30_float);
 	var_39_float = GetByIndex(var_31_cvector, 1);
-	var_39_float = var_39_float + var_30_float;
-	SetByIndex(var_31_cvector, 1) = var_39_float;
-	GetPosition(var_32_cvector);
-	GetEyesHeight(var_30_float);
+	SetByIndex(var_31_cvector, 1) = (var_39_float + var_30_float);
+	cvector var_32_cvector;
+	@GetPosition(var_32_cvector);
+	@GetEyesHeight(var_30_float);
 	var_40_float = GetByIndex(var_32_cvector, 1);
-	var_40_float = var_40_float + var_30_float;
-	SetByIndex(var_32_cvector, 1) = var_40_float;
-	var_33_cvector = var_31_cvector - var_32_cvector;
+	SetByIndex(var_32_cvector, 1) = (var_40_float + var_30_float);
+	cvector var_33_cvector = var_31_cvector - var_32_cvector;
 	var_41_float = GetByIndex(var_33_cvector, 1);
 	SetByIndex(var_33_cvector, 1) = (float)0;
-	var_42_int = var_33_cvector | var_33_cvector;
-	var_43_float = sqrt(var_42_int);
-	var_33_cvector = var_33_cvector / var_43_float;
-	var_34_cvector = -var_33_cvector;
-	var_44_float = var_33_cvector * var_20_float;
-	var_45_cvector = CVector(0,0,0); var_46_cvector = CVector(0,0,0);
-	var_46_cvector = var_34_cvector ^ CVector(0.0, 1.0, 0.0);
-	func_672(var_45_cvector, var_46_cvector);
-	var_54_float = var_45_cvector * (int)25;
-	var_55_int = var_44_float + var_54_float;
-	var_35_cvector = var_55_int - CVector(0.0, 10.0, 0.0);
-	var_36_cvector = var_32_cvector + var_35_cvector;
-	IsOverrideActive(var_37_bool);
-	var_57_bool = var_37_bool;
-	if(var_57_bool != 0) {
-		var_18_bool = 0;
-		return 18;
-	}
-	StopWorld();
-	CameraTransit(var_36_cvector, var_34_cvector, (bool)1);
+	var_43_float = sqrt(var_33_cvector | var_33_cvector);
+	var_33_cvector /= var_43_float;
+	cvector var_34_cvector = -var_33_cvector;
+	cvector var_45_cvector;
+	func_672(var_45_cvector, (var_34_cvector ^ [0.0, 1.0, 0.0]));
+	cvector var_35_cvector = ((var_33_cvector * var_20_float) + (var_45_cvector * 25)) - [0.0, 10.0, 0.0];
+	bool var_37_bool;
+	@IsOverrideActive(var_37_bool);
+	if(var_37_bool != 0)
+		var_18_bool = false;
+	@StopWorld();
+	@CameraTransit((var_32_cvector + var_35_cvector), var_34_cvector, true);
 	var_59_float = GetByIndex(var_35_cvector, 0);
 	var_60_float = GetByIndex(var_35_cvector, 2);
-	Rotate(var_59_float, var_60_float);
-	var_61_bool = 0;
+	@Rotate(var_59_float, var_60_float);
+	bool var_61_bool;
 	func_817(var_61_bool);
 	if(var_61_bool != 0) {
 	} else {
-		HasAnimationTrack(var_38_bool, "head");
-		var_63_bool = var_38_bool;
-		if(var_63_bool == 0) goto Label_604;
-		LookAsyncCamera("head");
+		@HasAnimationTrack(var_38_bool, "head");
+		if(var_38_bool == 0) goto Label_604;
+		@LookAsyncCamera("head");
 	}
 Label_604:
-	CameraWaitForPlayFinish();
-	ResumeWorld();
-	var_18_bool = 1;
-	return 18;
+	@CameraWaitForPlayFinish();
+	@ResumeWorld();
+	var_18_bool = true;
 	
 }
 
 
-func_157(var_2_object, var_98_string)
+// @pe
+void func_157(object var_2_object, string var_98_string)
 {
-	var_99_bool = 0;
+	bool var_99_bool;
 	func_817(var_99_bool);
-	var_100_bool = var_99_bool == 0; //@nz
-	if(var_100_bool != 0) {
+	if(!var_99_bool) //@nz
 		return 0;
-	}
-	var_101_bool = var_98_string == var_2_object;
-	if(var_101_bool != 0) {
+	if(var_98_string == var_2_object)
 		return 0;
-	}
-	var_102_string = ""; var_103_bool = 0;
+	string var_102_string; bool var_103_bool;
 	var_98_string = var_102_string;
-	var_105_bool = var_98_string == "";
-	if(var_105_bool != 0) {
-		var_103_bool = 0;
-	} else {
-		var_103_bool = 1;
-	}
+	if(var_98_string == "")
+		var_103_bool = false;
+	else
+		var_103_bool = true;
 	func_644(var_102_string, var_103_bool);
 	var_2_object = var_98_string;
-	return 0;
 	
 }
 
 
-func_672(var_45_cvector, var_46_cvector)
+void func_672(cvector var_45_cvector, cvector var_46_cvector)
 {
-	var_48_float = 0; var_49_float = 0;
-	var_50_int = var_46_cvector | var_46_cvector;
-	var_49_float = sqrt(var_50_int);
-	var_51_float = 9.999999974752427e-07;
-	var_52_bool = var_49_float < var_51_float;
-	if(var_52_bool != 0) {
-		var_45_cvector = CVector(0.0, 0.0, 0.0);
-		return 2;
-	}
+	float var_49_float = sqrt(var_46_cvector | var_46_cvector);
+	if(var_49_float < 0.000001)
+		var_45_cvector = [0.0, 0.0, 0.0];
 	var_45_cvector = var_46_cvector / var_49_float;
-	return 2;
 }
 
 
-func_610()
+void func_610(void)
 {
-	var_147_bool = 0; var_148_bool = 0;
-	CameraSwitchToNormal((bool)1);
-	var_150_bool = 0;
+	bool var_148_bool;
+	@CameraSwitchToNormal(true);
+	bool var_150_bool;
 	func_817(var_150_bool);
 	if(var_150_bool != 0) {
 	} else {
-		HasAnimationTrack(var_148_bool, "head");
-		var_152_bool = var_148_bool;
-		if(var_152_bool == 0) goto Label_627;
-		UnlookAsync("head");
+		@HasAnimationTrack(var_148_bool, "head");
+		if(var_148_bool == 0) goto Label_627;
+		@UnlookAsync("head");
 	}
 Label_627:
-	return 2;
 	
 }
 
 
-func_738()
+void func_738(void)
 {
-	var_16_object = Obj(); var_17_object = Obj();
-	CreateDiaryEntry(var_17_object, (int)268, (int)2, (int)521195);
-	var_21_bool = 0; var_22_object = Obj(); var_23_int = 0;
+	object var_17_object;
+	@CreateDiaryEntry(var_17_object, 268, 2, 521195);
+	bool var_21_bool; object var_22_object;
 	var_17_object = var_22_object;
-	func_764(var_21_bool, var_22_object, (int)266);
-	return 2;
+	func_764(var_21_bool, var_22_object, 266);
 }
 EMIT "Stack[-1] = 0";
 
 
-func_809(var_67_int)
+void func_809(int var_67_int)
 {
 	var_67_int = 518716;
-	return 0;
 }
 
 
-func_682(var_88_int, var_89_string)
+void func_682(int var_88_int, string var_89_string)
 {
-	var_90_int = 0; var_91_int = 0;
-	GetVariable(var_89_string, var_91_int);
+	int var_91_int;
+	@GetVariable(var_89_string, var_91_int);
 	var_91_int = var_88_int;
-	return 2;
 }
 
 
-func_811(var_66_int)
+void func_811(int var_66_int)
 {
 	var_66_int = 518715;
-	return 0;
 }
 
 
-func_813(var_68_string)
+void func_813(string var_68_string)
 {
 	var_68_string = "ui/NPC_Prophet.png";
-	return 0;
 }
 
 
-func_815(var_69_string)
+void func_815(string var_69_string)
 {
 	var_69_string = "ui/NPC_Prophet_b.png";
-	return 0;
 }
 
 
-func_687(var_37_string, var_38_int)
+void func_687(string var_37_string, int var_38_int)
 {
-	var_39_string = ""; var_40_string = "";
-	var_41_int = var_38_int;
-	if(var_41_int != 0) {
-		"idle" = "idle" + var_38_int;
-	}
+	string var_40_string = "idle";
+	if(var_38_int != 0)
+		var_40_string += var_38_int;
 	var_40_string = var_37_string;
-	return 2;
 }
 
 
-func_817(var_61_bool)
+void func_817(bool var_61_bool)
 {
-	var_61_bool = 0;
-	return 0;
+	var_61_bool = false;
 }
 
 
-func_751(var_30_object)
+void func_751(object var_30_object)
 {
-	var_31_object = Obj(); var_32_object = Obj();
-	GetDiaryRoot(var_32_object);
-	var_33_bool = var_32_object == 0; //@nz
-	if(var_33_bool != 0) {
-		Trace("Can't retrieve diary root");
-		var_30_object = 0;
-		return 2;
+	object var_32_object;
+	@GetDiaryRoot(var_32_object);
+	if(!var_32_object) { //@nz
+		@Trace("Can't retrieve diary root");
+		var_30_object = false;
 	}
 	var_32_object = var_30_object;
-	return 2;
 }
 EMIT "Stack[-1] = 0";
 
 
-func_628(var_124_string)
+void func_628(string var_124_string)
 {
-	var_125_bool = 0; var_126_float = 0; var_127_float = 0; var_128_bool = 0; var_129_float = 0; var_130_float = 0;
-	lshHasAnimation(var_128_bool, var_124_string);
-	var_131_bool = var_128_bool;
-	if(var_131_bool != 0) {
-		lshGetAnimTimes(var_124_string, var_129_float, var_130_float);
-		lshPlayAnimation(var_129_float, var_130_float, (bool)0);
+	bool var_128_bool; float var_129_float; float var_130_float;
+	@lshHasAnimation(var_128_bool, var_124_string);
+	if(var_128_bool != 0) {
+		@lshGetAnimTimes(var_124_string, var_129_float, var_130_float);
+		@lshPlayAnimation(var_129_float, var_130_float, false);
 	} else {
-		var_134_int = "Can't find lsh animation : " + var_124_string;
-		Trace(var_134_int);
+		@Trace("Can't find lsh animation : " + var_124_string);
 	}
-	return 6;
 	
 }
 
 
-func_694(var_31_int)
+void func_694(int var_31_int)
 {
-	var_32_int = 0; var_33_bool = 0; var_34_int = 0; var_35_bool = 0;
+	int var_34_int; bool var_35_bool;
 	var_34_int = 0;
 	
-Label_696:
-	var_37_string = ""; var_38_int = 0;
-	var_34_int = var_38_int;
-	func_687(var_37_string, var_38_int);
-	HasAnimation(var_35_bool, "all", var_37_string);
-	var_42_bool = var_35_bool == 0; //@nz
-	if(var_42_bool != 0) {
-	} else {
-		var_34_int = var_34_int + (int)1;
-		goto Label_696;
+	for(;;) {
+		string var_37_string; int var_38_int;
+		var_34_int = var_38_int;
+		func_687(var_37_string, var_38_int);
+		@HasAnimation(var_35_bool, "all", var_37_string);
+		if(!var_35_bool) //@nz
+			break;
+		var_34_int += 1;
 	}
 	var_34_int = var_31_int;
-	return 4;
-	
 }
 
 
-func_764(var_21_bool, var_22_object, var_23_int)
+void func_764(bool var_21_bool, object var_22_object, int var_23_int)
 {
-	var_24_object = Obj(); var_25_object = Obj(); var_26_int = 0; var_27_object = Obj(); var_28_object = Obj(); var_29_int = 0;
-	func_751(Obj());
+	object var_30_object;
+	func_751(var_30_object);
+	object var_27_object;
 	var_30_object = var_27_object;
-	@@var_27_object:Find(var_23_int, var_28_object);
-	var_35_bool = var_28_object == 0; //@nz
-	if(var_35_bool != 0) {
-		var_37_int = "Can't find diary parent with id: " + var_23_int;
-		Trace(var_37_int);
-		var_21_bool = 0;
-		return 6;
+	object var_28_object;
+	var_27_object->Find(var_23_int, var_28_object);
+	if(!var_28_object) { //@nz
+		@Trace("Can't find diary parent with id: " + var_23_int);
+		var_21_bool = false;
 	}
-	@@var_28_object:AddChild(var_22_object);
-	SendWorldWndMessage((int)7);
-	@@var_22_object:GetCategory(var_29_int);
-	SetDiarySection(var_29_int);
-	var_21_bool = 0;
-	return 6;
+	var_28_object->AddChild(var_22_object);
+	@SendWorldWndMessage(7);
+	int var_29_int;
+	var_22_object->GetCategory(var_29_int);
+	@SetDiarySection(var_29_int);
+	var_21_bool = false;
 }
 EMIT "Stack[-2] = 0";
 EMIT "Stack[-3] = 0";

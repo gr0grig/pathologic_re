@@ -1,103 +1,83 @@
-// @IMPORTS: GetWindowSize/2,EnableClipping/1,SetOwnerDraw/1,ProcessEvents/0,GetDiaryRoot/1,GetStringByID/2,PrintInWidth/9
-// @STRINGS: A:ChildCount|A:Child|A:GetCategory|A:GetTextID|W:default|W:scrollbar
-// @RUN_OP: 0x0
-// @RUN_TASK: 0
-// @TASK_0: vars=bool,int,int,int,int,int,int params=0
-// @EVENT_0: op=0xd vars=
-// @EVENT_200: op=0x56 vars=int,string,object
-// @PE: 0x56
-
-task_0_event_0(var_0_bool, var_1_int, var_2_int, var_3_int, var_4_int, var_5_int, var_6_int)
+maintask task_0
 {
-	var_7_object = Obj(); var_8_int = 0; var_9_int = 0; var_10_object = Obj(); var_11_object = Obj(); var_12_int = 0; var_13_int = 0; var_14_object = Obj();
-	GetDiaryRoot(var_11_object);
-	@@var_11_object:ChildCount(var_12_int);
-	var_13_int = 0;
+	void init(bool var_0_bool, int var_1_int, int var_2_int, int var_3_int, int var_4_int, int var_5_int, int var_6_int)
+	{
+		var_5_int = 0;
+		var_1_int = 0;
+		@GetWindowSize(var_3_int, var_4_int);
+		@EnableClipping(true);
+		@SetOwnerDraw(true);
+		@ProcessEvents();
+	}
+
+	void OnUse(bool var_0_bool, int var_1_int, int var_2_int, int var_3_int, int var_4_int, int var_5_int, int var_6_int)
+	{
+		object var_11_object; object var_14_object;
+		@GetDiaryRoot(var_11_object);
+		var_6_int = 0;
+		int var_12_int;
+		var_11_object->ChildCount(var_12_int);
+		int var_13_int = 0;
 	
-Label_20:
-	var_15_bool = var_13_int < var_12_int;
-	if(var_15_bool != 0) {
-		@@var_11_object:Child(var_14_object, var_13_int);
-		var_16_object = Obj(); var_17_int = 0;
-		var_14_object = var_16_object;
-		func_42(var_11_object, var_12_int, var_13_int, var_14_object, var_16_object, (int)0);
-		(int)0 = (int)0 + (int)15;
-		var_14_object = 0;
-		var_13_int = var_13_int + (int)1;
-		goto Label_20;
+		while(var_13_int < var_12_int) {
+			var_11_object->Child(var_14_object, var_13_int);
+			object var_16_object;
+			func_42(var_11_object, var_12_int, var_13_int, var_16_object, var_16_object, 0);
+			var_6_int += 15;
+			var_14_object = null;
+			var_13_int += 1;
+		}
+	
+		if((var_6_int - var_4_int) < 0)
+			var_2_int = 0;
 	}
-	var_2_int = var_6_int - var_4_int;
-	var_51_bool = var_2_int < (int)0;
-	if(var_51_bool != 0) {
-		var_2_int = 0;
-	}
-	return 8;
-}
-EMIT "Stack[-4] = 0";
+	EMIT "Stack[-4] = 0";
 
-
-task_0_event_200(var_0_bool, var_1_int, var_2_int, var_3_int, var_4_int, var_5_int, var_6_int, var_7_int, var_8_string, var_9_object)
-{
-	var_11_bool = var_8_string == "scrollbar";
-	if(var_11_bool != 0) {
-		var_12_int = -var_2_int;
-		var_13_float = var_12_int * var_7_int;
-		var_1_int = var_13_float / (int)100;
-		return 0;
+	// @pe
+	void event_200(bool var_0_bool, int var_1_int, int var_2_int, int var_3_int, int var_4_int, int var_5_int, int var_6_int, int var_7_int, string var_8_string, object var_9_object)
+	{
+		if(var_8_string == "scrollbar") {
+			var_12_int = -var_2_int;
+			var_1_int = (var_12_int * var_7_int) / 100;
+		}
+		var_5_int = var_7_int;
 	}
-	var_5_int = var_7_int;
-	return 0;
+
 }
 
 
-main(var_0_bool, var_1_int, var_2_int, var_3_int, var_4_int, var_5_int, var_6_int)
+void func_42(int var_1_int, int var_3_int, int var_5_int, int var_6_int, object var_16_object, int var_17_int)
 {
-	var_5_int = 0;
-	var_1_int = 0;
-	GetWindowSize(var_3_int, var_4_int);
-	EnableClipping((bool)1);
-	SetOwnerDraw((bool)1);
-	ProcessEvents();
-	return 0;
-}
-
-
-func_42(var_1_int, var_3_int, var_5_int, var_6_int, var_16_object, var_17_int)
-{
-	var_18_int = 0; var_19_int = 0; var_20_string = ""; var_21_int = 0; var_22_int = 0; var_23_int = 0; var_24_object = Obj(); var_25_int = 0; var_26_int = 0; var_27_int = 0; var_28_string = ""; var_29_int = 0; var_30_int = 0; var_31_int = 0; var_32_object = Obj(); var_33_int = 0;
-	@@var_16_object:GetCategory(var_26_int);
-	var_34_bool = var_26_int != var_5_int;
-	if(var_34_bool != 0) {
+	int var_26_int; object var_32_object; int var_33_int;
+	var_16_object->GetCategory(var_26_int);
+	if(var_26_int != var_5_int)
 		return 16;
-	}
-	@@var_16_object:GetTextID(var_27_int);
-	GetStringByID(var_28_string, var_27_int);
-	var_36_int = var_1_int + var_6_int;
-	var_37_int = var_3_int + var_17_int;
-	PrintInWidth(var_29_int, "default", var_17_int, var_36_int, var_37_int, var_28_string, (float)1.0, (float)1.0, (float)1.0);
-	var_6_int = var_6_int + var_29_int;
-	@@var_16_object:ChildCount(var_30_int);
-	var_31_int = 0;
+	int var_27_int;
+	var_16_object->GetTextID(var_27_int);
+	string var_28_string;
+	@GetStringByID(var_28_string, var_27_int);
+	int var_29_int;
+	@PrintInWidth(var_29_int, "default", var_17_int, (var_1_int + var_6_int), (var_3_int + var_17_int), var_28_string, 1.0, 1.0, 1.0);
+	var_6_int += var_29_int;
+	int var_30_int;
+	var_16_object->ChildCount(var_30_int);
+	int var_31_int = 0;
 	
-Label_64:
-	var_41_bool = var_31_int < var_30_int;
-	if(var_41_bool != 0) {
-		@@var_16_object:Child(var_32_object, var_31_int);
-		@@var_32_object:GetCategory(var_33_int);
-		var_42_bool = var_33_int != var_5_int;
-		if(var_42_bool != 0) {
-		} else {
-			var_6_int = var_6_int + (int)10;
-			var_45_object = Obj(); var_46_int = 0;
-			var_32_object = var_45_object;
-			var_46_int = var_17_int + (int)20;
-			func_42(var_30_int, var_31_int, var_32_object, var_33_int, var_45_object, var_46_int);
-			var_32_object = 0;
+	for(;;) {
+		if(var_31_int < var_30_int) {
+			var_16_object->Child(var_32_object, var_31_int);
+			var_32_object->GetCategory(var_33_int);
+			if(var_33_int != var_5_int) {
+			} else {
+			var_6_int += 10;
+			object var_45_object;
+			func_42(var_30_int, var_31_int, var_45_object, var_33_int, var_45_object, (var_17_int + 20));
+			var_32_object = null;
+		}
+		return 16;
+		}
+		var_31_int += 1;
 	}
-		var_31_int = var_31_int + (int)1;
-		goto Label_64;
-	}
-	return 16;
 	
 }
 

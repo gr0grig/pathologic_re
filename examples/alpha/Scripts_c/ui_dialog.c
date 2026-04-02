@@ -1,15 +1,12 @@
-// @IMPORTS: ShowCursor/0,SetCursor/1,ProcessEvents/0
-// @STRINGS: W:default
-// @RUN_OP: 0x0
-// @RUN_TASK: 0
-// @TASK_0: vars= params=0
-
-main()
+maintask task_0
 {
-	ShowCursor();
-	SetCursor("default");
-	ProcessEvents();
-	return 0;
+	void init(void)
+	{
+		@ShowCursor();
+		@SetCursor("default");
+		@ProcessEvents();
+	}
+
 }
 
 

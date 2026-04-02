@@ -1,47 +1,36 @@
-// @IMPORTS: Hold/0,FindActor/2,Trigger/2
-// @STRINGS: W:quest_d2_02|W:driver_unload
-// @RUN_OP: 0x0
-// @RUN_TASK: 0
-// @TASK_0: vars= params=0
-// @EVENT_0: op=0x4 vars=
-// @STANDALONE_EVENT_6: op=0x11 vars=
-
-task_0_event_0()
+maintask task_0
 {
-	return 0;
-}
-
-
-event_6()
-{
-	var_0_bool = 0; var_1_string = ""; var_2_string = "";
-	func_5(var_0_bool, "quest_d2_02", "driver_unload");
-	return 0;
-}
-
-
-main()
-{
+	void init(void)
+	{
 	
-Label_0:
-	Hold();
-	goto Label_0;
-}
-EMIT "Return(); Pop(0)";
-
-
-func_5(var_0_bool, var_1_string, var_2_string)
-{
-	var_3_object = Obj(); var_4_object = Obj();
-	FindActor(var_4_object, var_1_string);
-	var_5_bool = var_4_object == 0; //@ne
-	if(var_5_bool != 0) {
-		var_0_bool = 0;
-		return 2;
+		for(;;) {
+			@Hold();
+		}
 	}
-	Trigger(var_4_object, var_2_string);
-	var_0_bool = 1;
-	return 2;
+	EMIT "Return(); Pop(0)";
+
+	void OnUse(void)
+	{
+	}
+
+}
+
+
+void OnUnload(void)
+{
+	bool var_0_bool;
+	func_5(var_0_bool, "quest_d2_02", "driver_unload");
+}
+
+
+void func_5(bool var_0_bool, string var_1_string, string var_2_string)
+{
+	object var_4_object;
+	@FindActor(var_4_object, var_1_string);
+	if(var_4_object == null)
+		var_0_bool = false;
+	@Trigger(var_4_object, var_2_string);
+	var_0_bool = true;
 }
 EMIT "Stack[-1] = 0";
 

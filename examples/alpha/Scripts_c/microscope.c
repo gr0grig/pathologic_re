@@ -1,32 +1,26 @@
-// @IMPORTS: SetVisibility/1,Hold/0,IsOverrideActive/1,ShowWindow/2
-// @STRINGS: W:microscope.xml
-// @RUN_OP: 0x0
-// @RUN_TASK: 0
-// @TASK_0: vars= params=0
-// @EVENT_0: op=0x7 vars=object
-
-task_0_event_0(var_0_object)
+maintask task_0
 {
-	var_1_bool = 0; var_2_bool = 0;
-	EventDisable(0);
-	IsOverrideActive(var_2_bool);
-	var_3_bool = var_2_bool == 0; //@nz
-	if(var_3_bool != 0) {
-		ShowWindow("microscope.xml", (bool)0);
-		EventEnable(0);
-	}
-	return 2;
-}
-
-
-main()
-{
-	SetVisibility((bool)1);
+	void init(void)
+	{
+		@SetVisibility(true);
 	
-Label_3:
-	Hold();
-	goto Label_3;
+		for(;;) {
+			@Hold();
+		}
+	}
+	EMIT "Return(); Pop(0)";
+
+	void OnUse(object actor)
+	{
+		bool var_2_bool;
+		disable OnUse;
+		@IsOverrideActive(var_2_bool);
+		if(!var_2_bool) { //@nz
+			@ShowWindow("microscope.xml", false);
+			enable OnUse;
+		}
+	}
+
 }
-EMIT "Return(); Pop(0)";
 
 

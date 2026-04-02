@@ -1,13 +1,10 @@
-// @IMPORTS: SetProperty/2
-// @STRINGS: W:disease
-// @RUN_OP: 0x0
-// @RUN_TASK: 0
-// @TASK_0: vars= params=0
-
-main()
+maintask task_0
 {
-	SetProperty("disease", (int)0);
-	return 0;
+	void init(void)
+	{
+		@SetProperty("disease", 0);
+	}
+
 }
 
 

@@ -1,231 +1,200 @@
-// @IMPORTS: RemoveActor/1,IsLoaded/1,FindGeometry/2,Hold/0,GetItem/2,GetItemAmount/2,SetDeathStateAndRemove/0,GetScene/1,self/1,GetInvItemProperty/3,FindActor/2,Trigger/2
-// @STRINGS: W:cleanup|W:quest_d10_01|W:soldier_fight|W:object|A:Enable|W:HasProperty|A:HasProperty|A:IsDead|W:IsDead|A:GetScene|W:noaccess|A:GetProperty|A:GetItemID|W:Category|A:AddItem
-// @RUN_OP: 0x0
-// @RUN_TASK: 0
-// @TASK_0: vars=bool params=0
-// @EVENT_26: op=0xd vars=string
-// @EVENT_6: op=0x1c vars=
-// @EVENT_0: op=0x33 vars=object
-// @PE: 0x20
-
-task_0_event_26(var_0_bool, var_1_string)
+maintask task_0
 {
-	var_2_bool = 0; var_3_bool = 0;
-	var_5_bool = var_1_string == "cleanup";
-	if(var_5_bool != 0) {
-		var_0_bool = true;
-		IsLoaded(var_3_bool);
-		var_6_bool = var_3_bool == 0; //@nz
-		if(var_6_bool != 0) {
-			var_7_object = Obj();
-			func_157(var_7_object);
-			RemoveActor(var_7_object);
+	void init(bool var_0_bool)
+	{
+		var_0_bool = false;
+		func_39();
+	}
+
+	void OnTrigger(bool var_0_bool, string var_1_string)
+	{
+		bool var_3_bool;
+		if(var_1_string == "cleanup") {
+			var_0_bool = true;
+			@IsLoaded(var_3_bool);
+			if(!var_3_bool) { //@nz
+				object var_7_object;
+				func_157(var_7_object);
+				@RemoveActor(var_7_object);
+			}
 		}
 	}
-	return 2;
-}
 
-
-task_0_event_6(var_0_bool)
-{
-	func_5();
-	return 0;
-}
-
-
-task_0_event_0(var_0_bool, var_1_object)
-{
-	var_2_object = Obj(); var_3_int = 0; var_4_object = Obj(); var_5_int = 0;
-	var_6_bool = 0; var_7_object = Obj();
-	var_1_object = var_7_object;
-	func_133(var_6_bool, var_7_object);
-	var_40_bool = var_6_bool == 0; //@nz
-	if(var_40_bool != 0) {
-		return 4;
+	void OnUnload(bool var_0_bool)
+	{
+		func_5();
 	}
-	GetItem(var_4_object, (int)0);
-	GetItemAmount(var_5_int, (int)0);
-	var_43_bool = 0; var_44_object = Obj(); var_45_object = Obj(); var_46_int = 0;
-	var_1_object = var_44_object;
-	var_4_object = var_45_object;
-	var_5_int = var_46_int;
-	func_163(var_43_bool, var_44_object, var_45_object, var_46_int);
-	if(var_43_bool != 0) {
-		var_1_object = Obj();
-		func_32();
-		SetDeathStateAndRemove();
+
+	void OnUse(bool var_0_bool, object var_1_object)
+	{
+		object var_7_object;
+		var_1_object = var_7_object;
+		bool var_6_bool;
+		func_133(var_6_bool, var_7_object);
+		if(!var_6_bool) { //@nz
+		}
+		object var_4_object;
+		@GetItem(var_4_object, 0);
+		int var_5_int;
+		@GetItemAmount(var_5_int, 0);
+		bool var_43_bool; object var_44_object; object var_45_object; int var_46_int;
+		var_1_object = var_44_object;
+		var_4_object = var_45_object;
+		var_5_int = var_46_int;
+		func_163(var_43_bool, var_44_object, var_45_object, var_46_int);
+		if(var_43_bool != 0) {
+			object var_54_object;
+			var_1_object = var_54_object;
+			func_32();
+			@SetDeathStateAndRemove();
+		}
 	}
-	return 4;
-}
-EMIT "Stack[-2] = 0";
+	EMIT "Stack[-2] = 0";
 
-
-main(var_0_bool)
-{
-	var_0_bool = false;
-	func_39();
-	return 0;
 }
 
 
-func_32()
+// @pe
+void func_32(void)
 {
-	var_55_bool = 0; var_56_string = ""; var_57_string = "";
+	bool var_55_bool;
 	func_173(var_55_bool, "quest_d10_01", "soldier_fight");
-	return 0;
 }
 
 
-func_97(var_10_bool, var_11_object)
+void func_97(bool var_10_bool, object var_11_object)
 {
-	var_12_object = Obj(); var_13_object = Obj(); var_14_object = Obj(); var_15_object = Obj();
-	var_16_bool = var_11_object == 0; //@ne
-	if(var_16_bool != 0) {
-		var_10_bool = 0;
+	if(var_11_object == null) {
+		var_10_bool = false;
 		return 4;
 	}
-	var_17_bool = 0;
-	var_17_bool = 0;
-	var_20_bool = IsFuncExist(var_11_object, "IsDead", (int)1);
+	bool var_17_bool = false;
+	var_20_bool = IsFuncExist(var_11_object, "IsDead", 1);
 	if(var_20_bool != 0) {
-		var_21_bool = 0; var_22_object = Obj();
+		bool var_21_bool; object var_22_object;
 		var_11_object = var_22_object;
 		func_92(var_21_bool, var_22_object);
-		if(var_21_bool != 0) {
-			var_17_bool = 1;
-		}
+		if(var_21_bool != 0)
+			var_17_bool = true;
 	}
 	if(var_17_bool != 0) {
-		var_10_bool = 0;
+		var_10_bool = false;
 		return 4;
 	}
-	GetScene(var_14_object);
-	var_25_bool = var_14_object == 0; //@ne
-	if(var_25_bool != 0) {
-		var_10_bool = 0;
+	object var_14_object;
+	@GetScene(var_14_object);
+	if(var_14_object == null) {
+		var_10_bool = false;
 		return 4;
 	}
-	@@var_11_object:GetScene(var_15_object);
-	var_26_bool = var_14_object != var_15_object;
-	if(var_26_bool != 0) {
-		var_10_bool = 0;
+	object var_15_object;
+	var_11_object->GetScene(var_15_object);
+	if(var_14_object != var_15_object) {
+		var_10_bool = false;
 		return 4;
 	}
-	var_10_bool = 1;
-	return 4;
+	var_10_bool = true;
 }
 EMIT "Stack[-1] = 0";
 EMIT "Stack[-2] = 0";
 
 
-func_163(var_43_bool, var_44_object, var_45_object, var_46_int)
+void func_163(bool var_43_bool, object var_44_object, object var_45_object, int var_46_int)
 {
-	var_47_int = 0; var_48_int = 0; var_49_bool = 0; var_50_int = 0; var_51_int = 0; var_52_bool = 0;
-	@@var_45_object:GetItemID(var_50_int);
-	GetInvItemProperty(var_51_int, var_50_int, "Category");
-	@@var_44_object:AddItem(var_52_bool, var_45_object, var_51_int, var_46_int);
+	int var_50_int;
+	var_45_object->GetItemID(var_50_int);
+	int var_51_int;
+	@GetInvItemProperty(var_51_int, var_50_int, "Category");
+	bool var_52_bool;
+	var_44_object->AddItem(var_52_bool, var_45_object, var_51_int, var_46_int);
 	var_52_bool = var_43_bool;
-	return 6;
 }
 
 
-func_5()
+void func_5(void)
 {
-	var_1_bool = var_0_bool;
-	if(var_1_bool != 0) {
-		var_2_object = Obj();
+	if(var_0_bool != 0) {
+		object var_2_object;
 		func_157(var_2_object);
-		RemoveActor(var_2_object);
+		@RemoveActor(var_2_object);
 	}
-	return 0;
 }
 
 
-func_133(var_6_bool, var_7_object)
+void func_133(bool var_6_bool, object var_7_object)
 {
-	var_8_int = 0; var_9_int = 0;
-	var_10_bool = 0; var_11_object = Obj();
+	object var_11_object;
 	var_7_object = var_11_object;
+	bool var_10_bool;
 	func_97(var_10_bool, var_11_object);
-	var_27_bool = var_10_bool == 0; //@nz
-	if(var_27_bool != 0) {
-		var_6_bool = 0;
+	if(!var_10_bool) { //@nz
+		var_6_bool = false;
 		return 2;
 	}
-	var_28_bool = 0; var_29_object = Obj(); var_30_string = "";
-	var_7_object = var_29_object;
+	bool var_28_bool; object var_29_object;
 	func_80(var_28_bool, var_29_object, "noaccess");
-	var_37_bool = var_28_bool == 0; //@nz
-	if(var_37_bool != 0) {
-		var_6_bool = 1;
+	if(!var_28_bool) { //@nz
+		var_6_bool = true;
 		return 2;
 	}
-	@@var_7_object:GetProperty("noaccess", var_9_int);
-	var_6_bool = var_9_int == (int)0;
-	return 2;
+	int var_9_int;
+	var_29_object->GetProperty("noaccess", var_9_int);
+	var_6_bool = var_9_int == 0;
 }
 
 
-func_39()
+void func_39(void)
 {
-	var_1_object = Obj(); var_2_object = Obj();
-	FindGeometry("object", var_2_object);
-	@@var_2_object:Enable((bool)1);
+	object var_2_object;
+	@FindGeometry("object", var_2_object);
+	var_2_object->Enable(true);
 	
-Label_46:
-	Hold();
-	goto Label_46;
+	for(;;) {
+		@Hold();
+	}
 }
 EMIT "Return(); Pop(2)";
 EMIT "Stack[-1] = 0";
 
 
-func_173(var_55_bool, var_56_string, var_57_string)
+void func_173(bool var_55_bool, string var_56_string, string var_57_string)
 {
-	var_58_object = Obj(); var_59_object = Obj();
-	FindActor(var_59_object, var_56_string);
-	var_60_bool = var_59_object == 0; //@ne
-	if(var_60_bool != 0) {
-		var_55_bool = 0;
-		return 2;
-	}
-	Trigger(var_59_object, var_57_string);
-	var_55_bool = 1;
-	return 2;
+	object var_59_object;
+	@FindActor(var_59_object, var_56_string);
+	if(var_59_object == null)
+		var_55_bool = false;
+	@Trigger(var_59_object, var_57_string);
+	var_55_bool = true;
 }
 EMIT "Stack[-1] = 0";
 
 
-func_80(var_28_bool, var_29_object, var_30_string)
+void func_80(bool var_28_bool, object var_29_object, string var_30_string)
 {
-	var_31_bool = 0; var_32_bool = 0;
-	var_35_bool = IsFuncExist(var_29_object, "HasProperty", (int)2);
-	var_36_bool = var_35_bool == 0; //@nz
-	if(var_36_bool != 0) {
-		var_28_bool = 0;
+	var_35_bool = IsFuncExist(var_29_object, "HasProperty", 2);
+	if(!var_35_bool) { //@nz
+		var_28_bool = false;
 		return 2;
 	}
-	@@var_29_object:HasProperty(var_30_string, var_32_bool);
+	bool var_32_bool;
+	var_29_object->HasProperty(var_30_string, var_32_bool);
 	var_32_bool = var_28_bool;
-	return 2;
 }
 
 
-func_92(var_21_bool, var_22_object)
+void func_92(bool var_21_bool, object var_22_object)
 {
-	var_23_bool = 0; var_24_bool = 0;
-	@@var_22_object:IsDead(var_24_bool);
+	bool var_24_bool;
+	var_22_object->IsDead(var_24_bool);
 	var_24_bool = var_21_bool;
-	return 2;
 }
 
 
-func_157(var_2_object)
+void func_157(object var_2_object)
 {
-	var_3_object = Obj(); var_4_object = Obj();
-	self(var_4_object);
+	object var_4_object;
+	@self(var_4_object);
 	var_4_object = var_2_object;
-	return 2;
 }
 EMIT "Stack[-1] = 0";
 

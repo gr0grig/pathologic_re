@@ -1,219 +1,175 @@
-// @IMPORTS: Hold/0,SetVariable/2,AddActor/6,CameraPlay/1,PlayGlobalMusic/1,CameraWaitForPlayFinish/0,CameraSwitchToNormal/0,RemoveActor/1,PlayMovie/1,GetStat/2,Trace/1,shift/3,SetStat/2,UnlockAchievement/1,FindActor/2,self/1,Trigger/2,GetGameTime/1,GetVariable/2
-// @STRINGS: W:quest_k7_01|W:theater_load|W:quest_k12_01|W:theater_unload|W:Performance|W:cs_mask_klara|W:cs_mask_klara.xml|A:ForceGeometryLoad|W:.mot|W:nightmask|W:.ogg|W:NightMasks|W:.wmv|W:STAT_LOOK|W:Day: |W:Before stat |W:After stat |W:ACHIEVEMENT_LOOK|W:Achievement Unlocked!!!|W:player|W:noaccess|A:HasProperty|A:GetProperty|A:SetProperty|A:RemoveProperty
-// @RUN_OP: 0x14
-// @RUN_TASK: 0
-// @TASK_0: vars= params=0
-// @EVENT_5: op=0x0 vars=
-// @EVENT_6: op=0xe vars=
-// @PE: 0x0
-
-task_0_event_5()
+maintask task_0
 {
-	func_24();
-	var_111_bool = 0; var_112_string = ""; var_113_string = "";
-	func_186(var_111_bool, "quest_k7_01", "theater_load");
-	var_117_bool = 0; var_118_string = ""; var_119_string = "";
-	func_186(var_117_bool, "quest_k12_01", "theater_load");
-	return 0;
-}
-
-
-task_0_event_6()
-{
-	var_0_bool = 0; var_1_string = ""; var_2_string = "";
-	func_186(var_0_bool, "quest_k12_01", "theater_unload");
-	return 0;
-}
-
-
-main()
-{
+	void init(void)
+	{
 	
-Label_20:
-	Hold();
-	goto Label_20;
-}
-EMIT "Return(); Pop(0)";
-
-
-func_160(var_79_object)
-{
-	var_80_int = 0; var_81_int = 0;
-	var_82_bool = var_79_object == 0; //@nz
-	if(var_82_bool != 0) {
-		return 2;
-	}
-	@@var_79_object:GetProperty("noaccess", var_81_int);
-	var_85_bool = var_81_int > (int)1;
-	if(var_85_bool != 0) {
-		var_88_int = var_81_int - (int)1;
-		@@var_79_object:SetProperty("noaccess", var_88_int);
-	} else {
-		@@var_79_object:RemoveProperty("noaccess");
-	}
-	return 2;
-	
-}
-
-
-func_130(var_48_object)
-{
-	var_49_object = Obj(); var_50_object = Obj();
-	FindActor(var_50_object, "player");
-	var_50_object = var_48_object;
-	return 2;
-}
-EMIT "Stack[-1] = 0";
-
-
-func_198(var_26_int)
-{
-	var_27_float = 0; var_28_float = 0;
-	GetGameTime(var_28_float);
-	var_30_int = 0;
-	var_30_int = var_28_float / (int)24;
-	var_26_int = (int)1 + var_30_int;
-	return 2;
-}
-
-
-func_137(var_52_object)
-{
-	var_53_bool = 0; var_54_int = 0; var_55_bool = 0; var_56_int = 0;
-	var_57_bool = var_52_object == 0; //@nz
-	if(var_57_bool != 0) {
-		return 4;
-	}
-	@@var_52_object:HasProperty("noaccess", var_55_bool);
-	var_59_bool = var_55_bool;
-	if(var_59_bool != 0) {
-		@@var_52_object:GetProperty("noaccess", var_56_int);
-		var_63_int = var_56_int + (int)1;
-		@@var_52_object:SetProperty("noaccess", var_63_int);
-	} else {
-		@@var_52_object:SetProperty("noaccess", (int)1);
-	}
-	return 4;
-	
-}
-
-
-func_207(var_19_int)
-{
-	var_20_float = 0; var_21_float = 0;
-	GetGameTime(var_21_float);
-	var_22_int = 0;
-	var_21_float = var_22_int;
-	var_19_int = var_22_int % (int)24;
-	return 2;
-}
-
-
-func_180(var_42_object)
-{
-	var_43_object = Obj(); var_44_object = Obj();
-	self(var_44_object);
-	var_44_object = var_42_object;
-	return 2;
-}
-EMIT "Stack[-1] = 0";
-
-
-func_215(var_12_bool)
-{
-	var_13_int = 0; var_14_int = 0; var_15_int = 0; var_16_int = 0; var_17_int = 0; var_18_int = 0;
-	func_207((int)0);
-	var_19_int = var_16_int;
-	var_25_bool = var_16_int < (int)7;
-	if(var_25_bool != 0) {
-		func_198((int)0);
-		var_26_int = var_17_int;
-		var_33_bool = var_17_int > (int)1;
-		if(var_33_bool != 0) {
-			var_35_int = "Performance" + var_17_int;
-			GetVariable(var_35_int, var_18_int);
-			var_12_bool = var_18_int == (int)0;
-			return 6;
+		for(;;) {
+			@Hold();
 		}
 	}
-	var_12_bool = 0;
-	return 6;
+	EMIT "Return(); Pop(0)";
+
+	// @pe
+	void OnLoad(void)
+	{
+		func_24();
+		bool var_111_bool;
+		func_186(var_111_bool, "quest_k7_01", "theater_load");
+		bool var_117_bool;
+		func_186(var_117_bool, "quest_k12_01", "theater_load");
+	}
+
+	void OnUnload(void)
+	{
+		bool var_0_bool;
+		func_186(var_0_bool, "quest_k12_01", "theater_unload");
+	}
+
 }
 
 
-func_24()
+void func_160(object var_79_object)
 {
-	var_0_int = 0; var_1_int = 0; var_2_object = Obj(); var_3_object = Obj(); var_4_int = 0; var_5_int = 0; var_6_int = 0; var_7_int = 0; var_8_object = Obj(); var_9_object = Obj(); var_10_int = 0; var_11_int = 0;
-	var_12_bool = 0;
+	if(!var_79_object) { //@nz
+	}
+	int var_81_int;
+	var_79_object->GetProperty("noaccess", var_81_int);
+	if(var_81_int > 1)
+		var_79_object->SetProperty("noaccess", (var_81_int - 1));
+	else
+		var_79_object->RemoveProperty("noaccess");
+	
+}
+
+
+void func_130(object var_48_object)
+{
+	object var_50_object;
+	@FindActor(var_50_object, "player");
+	var_50_object = var_48_object;
+}
+EMIT "Stack[-1] = 0";
+
+
+void func_198(int var_26_int)
+{
+	float var_28_float;
+	@GetGameTime(var_28_float);
+	var_26_int = 1 + (var_28_float / 24);
+}
+
+
+void func_137(object var_52_object)
+{
+	int var_56_int;
+	if(!var_52_object) { //@nz
+	}
+	bool var_55_bool;
+	var_52_object->HasProperty("noaccess", var_55_bool);
+	if(var_55_bool != 0) {
+		var_52_object->GetProperty("noaccess", var_56_int);
+		var_52_object->SetProperty("noaccess", (var_56_int + 1));
+	} else {
+		var_52_object->SetProperty("noaccess", 1);
+	}
+	
+}
+
+
+void func_207(int var_19_int)
+{
+	float var_21_float;
+	@GetGameTime(var_21_float);
+	int var_22_int;
+	var_21_float = var_22_int;
+	var_19_int = var_22_int % 24;
+}
+
+
+void func_180(object var_42_object)
+{
+	object var_44_object;
+	@self(var_44_object);
+	var_44_object = var_42_object;
+}
+EMIT "Stack[-1] = 0";
+
+
+void func_215(bool var_12_bool)
+{
+	int var_17_int; int var_18_int;
+	int var_19_int;
+	func_207(var_19_int);
+	int var_16_int;
+	var_19_int = var_16_int;
+	if(var_16_int < 7) {
+		int var_26_int;
+		func_198(var_26_int);
+		var_26_int = var_17_int;
+		if(var_17_int > 1) {
+			@GetVariable(("Performance" + var_17_int), var_18_int);
+			var_12_bool = var_18_int == 0;
+		}
+	}
+	var_12_bool = false;
+}
+
+
+void func_24(void)
+{
+	int var_6_int; object var_8_object; object var_9_object; int var_10_int; int var_11_int;
+	bool var_12_bool;
 	func_215(var_12_bool);
 	if(var_12_bool != 0) {
-		func_198((int)0);
+		int var_37_int;
+		func_198(var_37_int);
 		var_37_int = var_6_int;
-		var_39_int = "Performance" + var_6_int;
-		SetVariable(var_39_int, (int)1);
-		var_42_object = Obj();
+		@SetVariable(("Performance" + var_6_int), 1);
+		object var_42_object;
 		func_180(var_42_object);
-		AddActor(var_8_object, "cs_mask_klara", var_42_object, CVector(0.0, 0.0, 0.0), CVector(0.0, 0.0, 1.0), "cs_mask_klara.xml");
-		@@var_8_object:ForceGeometryLoad();
-		func_130(Obj());
+		@AddActor(var_8_object, "cs_mask_klara", var_42_object, [0.0, 0.0, 0.0], [0.0, 0.0, 1.0], "cs_mask_klara.xml");
+		var_8_object->ForceGeometryLoad();
+		object var_48_object;
+		func_130(var_48_object);
 		var_48_object = var_9_object;
-		var_52_object = Obj();
+		object var_52_object;
 		var_9_object = var_52_object;
 		func_137(var_52_object);
-		var_68_int = var_6_int - (int)1;
-		var_69_int = "cs_mask_klara" + var_68_int;
-		var_71_int = var_69_int + ".mot";
-		CameraPlay(var_71_int);
-		var_74_int = var_6_int - (int)1;
-		var_75_int = "nightmask" + var_74_int;
-		var_77_int = var_75_int + ".ogg";
-		PlayGlobalMusic(var_77_int);
-		CameraWaitForPlayFinish();
-		PlayGlobalMusic("");
-		var_79_object = Obj();
+		@CameraPlay(("cs_mask_klara" + (var_6_int - 1)) + ".mot");
+		@PlayGlobalMusic(("nightmask" + (var_6_int - 1)) + ".ogg");
+		@CameraWaitForPlayFinish();
+		@PlayGlobalMusic("");
+		object var_79_object;
 		var_9_object = var_79_object;
 		func_160(var_79_object);
-		CameraSwitchToNormal();
-		RemoveActor(var_8_object);
-		var_92_int = var_6_int - (int)1;
-		var_93_int = "NightMasks" + var_92_int;
-		var_95_int = var_93_int + ".wmv";
-		PlayMovie(var_95_int);
-		GetStat("STAT_LOOK", var_10_int);
-		var_98_int = "Day: " + var_6_int;
-		Trace(var_98_int);
-		var_100_int = "Before stat " + var_10_int;
-		Trace(var_100_int);
-		var_103_int = var_6_int - (int)1;
-		shift(var_11_int, (int)1, var_103_int);
+		@CameraSwitchToNormal();
+		@RemoveActor(var_8_object);
+		@PlayMovie(("NightMasks" + (var_6_int - 1)) + ".wmv");
+		@GetStat("STAT_LOOK", var_10_int);
+		@Trace("Day: " + var_6_int);
+		@Trace("Before stat " + var_10_int);
+		@shift(var_11_int, 1, (var_6_int - 1));
 		var_10_int = var_10_int | var_11_int;
-		SetStat("STAT_LOOK", var_10_int);
-		var_106_int = "After stat " + var_10_int;
-		Trace(var_106_int);
-		var_108_bool = var_10_int == (int)4095;
-		if(var_108_bool != 0) {
-			UnlockAchievement("ACHIEVEMENT_LOOK");
-			Trace("Achievement Unlocked!!!");
+		@SetStat("STAT_LOOK", var_10_int);
+		@Trace("After stat " + var_10_int);
+		if(var_10_int == 4095) {
+			@UnlockAchievement("ACHIEVEMENT_LOOK");
+			@Trace("Achievement Unlocked!!!");
 		}
-		var_9_object = 0;
-		var_8_object = 0;
+		var_9_object = null;
+		var_8_object = null;
 	}
-	return 12;
 }
 
 
-func_186(var_0_bool, var_1_string, var_2_string)
+void func_186(bool var_0_bool, string var_1_string, string var_2_string)
 {
-	var_3_object = Obj(); var_4_object = Obj();
-	FindActor(var_4_object, var_1_string);
-	var_5_bool = var_4_object == 0; //@ne
-	if(var_5_bool != 0) {
-		var_0_bool = 0;
-		return 2;
-	}
-	Trigger(var_4_object, var_2_string);
-	var_0_bool = 1;
-	return 2;
+	object var_4_object;
+	@FindActor(var_4_object, var_1_string);
+	if(var_4_object == null)
+		var_0_bool = false;
+	@Trigger(var_4_object, var_2_string);
+	var_0_bool = true;
 }
 EMIT "Stack[-1] = 0";
 

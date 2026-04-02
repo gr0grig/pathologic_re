@@ -1,107 +1,82 @@
-// @IMPORTS: SetVariable/2,Trace/1,GetVariable/2,RemoveActor/1,GetGameTime/1,SetTimeEvent/2,Hold/0,self/1
-// @STRINGS: W:d9q02|W:fail|W:completed
-// @RUN_OP: 0x0
-// @RUN_TASK: 0
-// @TASK_0: vars= params=0
-// @EVENT_26: op=0x9 vars=string
-// @EVENT_9: op=0x4f vars=int,float
-// @PE: 0x9,0x4f
-
-task_0_event_26(var_0_string)
+maintask task_0
 {
-	Trace(var_0_string);
-	var_2_bool = var_0_string == "fail";
-	if(var_2_bool != 0) {
-		func_37();
-	} else {
-		var_9_bool = var_0_string == "completed";
-		if(var_9_bool == 0) goto Label_25;
-		func_45();
+	void init(void)
+	{
+		@SetVariable("d9q02", 1);
+		func_60(9);
 	}
-Label_25:
-	return 0;
+
+	// @pe
+	void OnTrigger(string name)
+	{
+		@Trace(name);
+		if(name == "fail") {
+			func_37();
+		} else if(name == "completed") {
+			func_45();
+		}
 	
+	}
+
+	// @pe
+	void OnGameTime(int iID, float fTime)
+	{
+		func_26();
+	}
+
 }
 
 
-task_0_event_9(var_0_int, var_1_float)
+void func_37(void)
 {
-	func_26();
-	return 0;
-}
-
-
-main()
-{
-	SetVariable("d9q02", (int)1);
-	var_2_int = 0;
-	func_60((int)9);
-	return 0;
-}
-
-
-func_37()
-{
-	SetVariable("d9q02", (int)-1);
+	@SetVariable("d9q02", -1);
 	func_53();
-	return 0;
 }
 
 
-func_45()
+void func_45(void)
 {
-	SetVariable("d9q02", (int)1000);
+	@SetVariable("d9q02", 1000);
 	func_53();
-	return 0;
 }
 
 
-func_84(var_8_object)
+void func_84(object var_8_object)
 {
-	var_9_object = Obj(); var_10_object = Obj();
-	self(var_10_object);
+	object var_10_object;
+	@self(var_10_object);
 	var_10_object = var_8_object;
-	return 2;
 }
 EMIT "Stack[-1] = 0";
 
 
-func_53()
+void func_53(void)
 {
-	EventDisable(26);
-	var_8_object = Obj();
+	object var_8_object;
 	func_84(var_8_object);
-	RemoveActor(var_8_object);
-	return 0;
+	@RemoveActor(var_8_object);
 }
 
 
-func_26()
+void func_26(void)
 {
-	var_2_int = 0; var_3_int = 0;
-	GetVariable("d9q02", var_3_int);
-	var_6_bool = var_3_int != (int)1000;
-	if(var_6_bool != 0) {
+	int var_3_int;
+	@GetVariable("d9q02", var_3_int);
+	if(var_3_int != 1000)
 		func_37();
-	}
-	return 2;
 }
 
 
-func_60(var_2_int)
+void func_60(int var_2_int)
 {
-	var_3_float = 0; var_4_float = 0;
-	GetGameTime(var_4_float);
-	var_6_float = var_2_int * (int)24;
-	var_7_bool = var_4_float >= var_6_float;
-	if(var_7_bool != 0) {
+	float var_4_float;
+	@GetGameTime(var_4_float);
+	if(var_4_float >= (var_2_int * 24)) {
 		func_53();
 	} else {
-		var_13_float = var_2_int * (int)24;
-		SetTimeEvent((int)0, var_13_float);
-		Hold();
+		@SetTimeEvent(0, (var_2_int * 24));
+		@Hold();
 	}
-	return 2;
 	
 }
 

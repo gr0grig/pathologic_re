@@ -1,118 +1,96 @@
-// @IMPORTS: SetVisibility/1,SetTimeEvent/2,RemoveActor/1,Hold/0,IsOverrideActive/1,Barter/1,IsLoaded/1,self/1,GetVariable/2
-// @STRINGS: A:IsOnGround|W:nouse_container
-// @RUN_OP: 0x0
-// @RUN_TASK: 0
-// @TASK_0: vars=bool params=0
-// @EVENT_9: op=0xc vars=int,float
-// @EVENT_6: op=0x1a vars=
-// @EVENT_0: op=0x26 vars=object
-// @PE: 0xc
-
-task_0_event_9(var_0_bool, var_1_int, var_2_float)
+maintask task_0
 {
-	var_3_bool = 0;
-	func_64(var_3_bool);
-	var_6_bool = var_3_bool == 0; //@nz
-	if(var_6_bool != 0) {
-		var_7_object = Obj();
-		func_69(var_7_object);
-		RemoveActor(var_7_object);
-	} else {
-		var_0_bool = true;
+	void init(bool var_0_bool)
+	{
+		@SetVisibility(true);
+		var_0_bool = false;
+		@SetTimeEvent(0, 24);
+		func_34();
 	}
-	return 0;
+
+	// @pe
+	void OnGameTime(bool var_0_bool, int var_1_int, float var_2_float)
+	{
+		bool var_3_bool;
+		func_64(var_3_bool);
+		if(!var_3_bool) { //@nz
+			object var_7_object;
+			func_69(var_7_object);
+			@RemoveActor(var_7_object);
+		} else {
+			var_0_bool = true;
+		}
 	
-}
-
-
-task_0_event_6(var_0_bool)
-{
-	var_1_bool = var_0_bool;
-	if(var_1_bool != 0) {
-		var_2_object = Obj();
-		func_69(var_2_object);
-		RemoveActor(var_2_object);
 	}
-	return 0;
-}
 
-
-task_0_event_0(var_0_bool, var_1_object)
-{
-	var_2_bool = 0; var_3_bool = 0; var_4_bool = 0; var_5_bool = 0;
-	var_6_bool = 0;
-	var_6_bool = 1;
-	var_7_bool = var_1_object == 0; //@nz
-	if(var_7_bool != 1) {
-		var_8_bool = 0;
-		func_75(var_8_bool);
-		var_12_bool = var_8_bool == 0; //@nz
-		if(var_12_bool != 1) {
-			var_6_bool = 0;
+	void OnUnload(bool var_0_bool)
+	{
+		if(var_0_bool != 0) {
+			object var_2_object;
+			func_69(var_2_object);
+			@RemoveActor(var_2_object);
 		}
 	}
-	if(var_6_bool != 0) {
-		return 4;
-	}
-	@@var_1_object:IsOnGround(var_4_bool);
-	var_13_bool = var_4_bool;
-	if(var_13_bool != 0) {
-		EventDisable(0);
-		IsOverrideActive(var_5_bool);
-		var_14_bool = var_5_bool == 0; //@nz
-		if(var_14_bool != 0) {
-			Barter(var_1_object);
+
+	void OnUse(bool var_0_bool, object var_1_object)
+	{
+		bool var_5_bool;
+		bool var_6_bool = true;
+		var_7_bool = !var_1_object; //@nz
+		if(var_7_bool != 1) {
+			bool var_8_bool;
+			func_75(var_8_bool);
+			var_12_bool = !var_8_bool; //@nz
+			if(var_12_bool != 1)
+				var_6_bool = false;
 		}
-		EventEnable(0);
+		if(var_6_bool != 0) {
+		}
+		bool var_4_bool;
+		var_1_object->IsOnGround(var_4_bool);
+		if(var_4_bool != 0) {
+			disable OnUse;
+			@IsOverrideActive(var_5_bool);
+			if(!var_5_bool) //@nz
+				@Barter(var_1_object);
+			enable OnUse;
+		}
 	}
-	return 4;
+
 }
 
 
-main(var_0_bool)
+void func_64(bool var_3_bool)
 {
-	SetVisibility((bool)1);
-	var_0_bool = false;
-	SetTimeEvent((int)0, (int)24);
-	func_34();
-	return 0;
-}
-
-
-func_64(var_3_bool)
-{
-	var_4_bool = 0; var_5_bool = 0;
-	IsLoaded(var_5_bool);
+	bool var_5_bool;
+	@IsLoaded(var_5_bool);
 	var_5_bool = var_3_bool;
-	return 2;
 }
 
 
-func_34()
+void func_34(void)
 {
 	
-Label_34:
-	Hold();
-	goto Label_34;
+	for(;;) {
+		@Hold();
+	}
 }
 EMIT "Return(); Pop(0)";
 
 
-func_75(var_8_bool)
+void func_75(bool var_8_bool)
 {
-	var_9_int = 0; var_10_int = 0;
-	GetVariable("nouse_container", var_10_int);
+	int var_10_int;
+	@GetVariable("nouse_container", var_10_int);
 	var_8_bool = !var_10_int;
-	return 2;
 }
 
 
-func_69(var_2_object)
+void func_69(object var_2_object)
 {
-	var_3_object = Obj(); var_4_object = Obj();
-	self(var_4_object);
+	object var_4_object;
+	@self(var_4_object);
 	var_4_object = var_2_object;
-	return 2;
 }
 EMIT "Stack[-1] = 0";
 

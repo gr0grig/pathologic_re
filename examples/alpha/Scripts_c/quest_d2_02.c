@@ -1,403 +1,310 @@
-// @IMPORTS: SetVariable/2,Trace/1,GetMainOutdoorScene/1,Trigger/2,GetVariable/2,RemoveActor/1,GetGameTime/1,SetTimeEvent/2,Hold/0,self/1,GetDiaryRoot/1,SetDiarySection/1,CreateDiaryEntry/4
-// @STRINGS: W:d2q02|W:mpatrol_unload|A:Remove|W:patrol1_unload|W:patrol2_unload|W:put_patrol|W:pt_d2q02_driver|W:pers_birdmask|W:d2q02_driver.xml|W:pt_d2q02_mpatrol|W:pers_patrool|W:d2q02_mpatrol.xml|W:pt_d2q02_patrol1|W:d2q02_patrol1.xml|W:pt_d2q02_patrol2|W:d2q02_patrol2.xml|W:player_attack|A:GetActor|W:kill_player|W:completed|W:driver_unload|A:GetLocator|W:Locator |W: doesn't exist|A:AddStationaryActor|W:Can't retrieve diary root|A:Find|W:Can't find diary parent with id: |A:AddChild|W:player_diary|A:GetCategory|W:Adding diary entry
 // @GLOBALS: 0:object:
-// @RUN_OP: 0x0
-// @RUN_TASK: 0
-// @TASK_0: vars=object,object,object,object,bool,bool params=0
-// @EVENT_26: op=0xb vars=string
-// @EVENT_9: op=0x135 vars=int,float
-// @PE: 0xc4,0x135
 
-task_0_event_26(var_0_object, var_1_object, var_2_object, var_3_object, var_4_bool, var_5_bool, var_6_string)
+maintask task_0
 {
-	var_7_object = Obj(); var_8_object = Obj(); var_9_object = Obj(); var_10_object = Obj();
-	Trace(var_6_string);
-	var_11_bool = var_5_bool;
-	if(var_11_bool != 0) {
-		var_13_bool = var_6_string == "mpatrol_unload";
-		if(var_13_bool != 0) {
-			@@@var_1_object:Remove();
-			var_1_object = 0;
-		} else {
-				var_139_bool = var_6_string == "patrol1_unload";
-				if(var_139_bool != 0) {
-					@@@var_2_object:Remove();
-					var_2_object = 0;
-					goto Label_36;
-				}
-				var_141_bool = var_6_string == "patrol2_unload";
-				if(var_141_bool == 0) goto Label_36;
-				@@@var_3_object:Remove();
-				var_3_object = 0;
-		}
+	void init(object var_0_object, object var_1_object, object var_2_object, object var_3_object, bool var_4_bool, bool var_5_bool)
+	{
+		var_4_bool = false;
+		var_5_bool = false;
+		@SetVariable("d2q02", 1);
+		func_290(2);
 	}
-Label_36:
-	var_14_bool = var_4_bool == 0; //@nz
-	if(var_14_bool != 0) {
-		var_16_bool = var_6_string == "put_patrol";
-		if(var_16_bool != 0) {
-			GetMainOutdoorScene(var_9_object);
-			var_17_object = Obj(); var_18_object = Obj(); var_19_string = ""; var_20_string = ""; var_21_string = "";
-			var_9_object = var_18_object;
-			func_320(var_17_object, var_18_object, "pt_d2q02_driver", "pers_birdmask", "d2q02_driver.xml");
-			var_0_object = var_17_object;
-			var_35_object = Obj(); var_36_object = Obj(); var_37_string = ""; var_38_string = ""; var_39_string = "";
-			var_9_object = var_36_object;
-			func_320(var_35_object, var_36_object, "pt_d2q02_mpatrol", "pers_patrool", "d2q02_mpatrol.xml");
-			var_1_object = var_35_object;
-			var_40_object = Obj(); var_41_object = Obj(); var_42_string = ""; var_43_string = ""; var_44_string = "";
-			var_9_object = var_41_object;
-			func_320(var_40_object, var_41_object, "pt_d2q02_patrol1", "pers_patrool", "d2q02_patrol1.xml");
-			var_2_object = var_40_object;
-			var_45_object = Obj(); var_46_object = Obj(); var_47_string = ""; var_48_string = ""; var_49_string = "";
-			var_9_object = var_46_object;
-			func_320(var_45_object, var_46_object, "pt_d2q02_patrol2", "pers_patrool", "d2q02_patrol2.xml");
-			var_3_object = var_45_object;
-			var_9_object = 0;
-		} else {
-			var_51_bool = var_6_string == "player_attack";
-			if(var_51_bool != 0) {
-				@@@var_1_object:GetActor(var_10_object);
-				Trigger(var_10_object, "kill_player");
-				@@@var_2_object:GetActor(var_10_object);
-				Trigger(var_10_object, "kill_player");
-				@@@var_3_object:GetActor(var_10_object);
-				Trigger(var_10_object, "kill_player");
-				var_5_bool = true;
-				func_162();
-				var_10_object = 0;
-				goto Label_107;
+
+	void OnTrigger(object var_0_object, object var_1_object, object var_2_object, object var_3_object, bool var_4_bool, bool var_5_bool, string var_6_string)
+	{
+		object var_7_object; object var_8_object; object var_9_object; object var_10_object;
+		@Trace(var_6_string);
+		if(var_5_bool != 0) {
+			if(var_6_string == "mpatrol_unload") {
+				var_1_object->Remove(); //@t
+				var_1_object = null;
+			} else if(var_6_string == "patrol1_unload") {
+						var_2_object->Remove(); //@t
+						var_2_object = null;
 			}
-			var_125_bool = var_6_string == "completed";
-			if(var_125_bool == 0) goto Label_107;
-			func_162();
-	}
-		var_127_bool = var_6_string == "driver_unload";
-		if(var_127_bool != 0) {
-			var_128_int = 0;
-			func_196(var_7_object, var_8_object, var_9_object, var_10_object, (int)0);
-			goto Label_139;
 		}
-		var_130_bool = var_6_string == "mpatrol_unload";
-		if(var_130_bool != 0) {
-			var_131_int = 0;
-			func_196(var_7_object, var_8_object, var_9_object, var_10_object, (int)1);
-			goto Label_139;
-		}
-		var_133_bool = var_6_string == "patrol1_unload";
-		if(var_133_bool != 0) {
-			var_134_int = 0;
-			func_196(var_7_object, var_8_object, var_9_object, var_10_object, (int)2);
-			goto Label_139;
-		}
-		var_136_bool = var_6_string == "patrol2_unload";
-		if(var_136_bool == 0) goto Label_139;
-		var_137_int = 0;
-		func_196(var_7_object, var_8_object, var_9_object, var_10_object, (int)3);
+	Label_36:
+		for(;;) {
+			if(!var_4_bool) { //@nz
+				if(var_6_string == "put_patrol") {
+					@GetMainOutdoorScene(var_9_object);
+					object var_17_object; object var_18_object;
+					var_9_object = var_18_object;
+					func_320(var_17_object, var_18_object, "pt_d2q02_driver", "pers_birdmask", "d2q02_driver.xml");
+					var_0_object = var_17_object;
+					object var_35_object; object var_36_object;
+					var_9_object = var_36_object;
+					func_320(var_35_object, var_36_object, "pt_d2q02_mpatrol", "pers_patrool", "d2q02_mpatrol.xml");
+					object var_40_object; object var_41_object;
+					var_9_object = var_41_object;
+					func_320(var_40_object, var_41_object, "pt_d2q02_patrol1", "pers_patrool", "d2q02_patrol1.xml");
+					object var_45_object; object var_46_object;
+					var_9_object = var_46_object;
+					func_320(var_45_object, var_46_object, "pt_d2q02_patrol2", "pers_patrool", "d2q02_patrol2.xml");
+					var_3_object = var_45_object;
+					var_9_object = null;
+				} else {
+						if(var_6_string == "player_attack") {
+							var_35_object->GetActor(var_10_object); //@t
+							@Trigger(var_10_object, "kill_player");
+							var_40_object->GetActor(var_10_object); //@t
+							@Trigger(var_10_object, "kill_player");
+							var_3_object->GetActor(var_10_object); //@t
+							@Trigger(var_10_object, "kill_player");
+							var_5_bool = true;
+							func_162();
+							var_10_object = null;
+					}
+					for(;;) {
+						} else if(var_6_string == "completed") {
+					func_162();
+			}
+				if(var_6_string == "driver_unload") {
+					func_196(var_7_object, var_8_object, var_9_object, var_10_object, 0);
+				} else if(var_6_string == "mpatrol_unload") {
+					func_196(var_7_object, var_8_object, var_9_object, var_10_object, 1);
+				} else if(var_6_string == "patrol1_unload") {
+					func_196(var_7_object, var_8_object, var_9_object, var_10_object, 2);
+				} else if(var_6_string == "patrol2_unload") {
+					func_196(var_7_object, var_8_object, var_9_object, var_10_object, 3);
 
-	}
-Label_107:
-	goto Label_139;
+					}
+				}
+
+			}
+
+		}
 	
-Label_139:
-	return 4;
-	
-}
-
-
-task_0_event_9(var_0_object, var_1_object, var_2_object, var_3_object, var_4_bool, var_5_bool, var_6_int, var_7_float)
-{
-	func_140();
-	return 0;
-}
-
-
-main(var_0_object, var_1_object, var_2_object, var_3_object, var_4_bool, var_5_bool)
-{
-	var_4_bool = false;
-	var_5_bool = false;
-	SetVariable("d2q02", (int)1);
-	var_8_int = 0;
-	func_290((int)2);
-	return 0;
-}
-
-
-func_320(var_17_object, var_18_object, var_19_string, var_20_string, var_21_string)
-{
-	var_22_bool = 0; var_23_cvector = CVector(0,0,0); var_24_cvector = CVector(0,0,0); var_25_object = Obj(); var_26_bool = 0; var_27_cvector = CVector(0,0,0); var_28_cvector = CVector(0,0,0); var_29_object = Obj();
-	@@var_18_object:GetLocator(var_19_string, var_26_bool, var_27_cvector, var_28_cvector);
-	var_30_bool = var_26_bool == 0; //@nz
-	if(var_30_bool != 0) {
-		var_32_int = "Locator " + var_19_string;
-		var_34_int = var_32_int + " doesn't exist";
-		Trace(var_34_int);
-	} else {
-		@@var_18_object:AddStationaryActor(Obj(), var_27_cvector, var_28_cvector, var_20_string, var_21_string);
+		if(!(var_6_string == "patrol2_unload")) goto Label_36;
+		var_3_object->Remove(); //@t
+		var_3_object = null;
 	}
-	var_29_object = var_17_object;
-	return 8;
+
+	// @pe
+	void OnGameTime(object var_0_object, object var_1_object, object var_2_object, object var_3_object, bool var_4_bool, bool var_5_bool, int var_6_int, float var_7_float)
+	{
+		func_140();
+	}
+
+}
+
+
+void func_320(object var_17_object, object var_18_object, string var_19_string, string var_20_string, string var_21_string)
+{
+	bool var_26_bool; cvector var_27_cvector; cvector var_28_cvector;
+	var_18_object->GetLocator(var_19_string, var_26_bool, var_27_cvector, var_28_cvector);
+	if(!var_26_bool) //@nz
+		@Trace(("Locator " + var_19_string) + " doesn't exist");
+	else
+		var_18_object->AddStationaryActor(Obj(), var_27_cvector, var_28_cvector, var_20_string, var_21_string);
+	object var_29_object = var_17_object;
 	
 }
 EMIT "Stack[-1] = 0";
 
 
-func_162()
+void func_162(void)
 {
-	var_55_int = 0; var_56_int = 0;
-	GetVariable("d2q02", var_56_int);
-	var_58_bool = 0;
-	var_58_bool = 0;
-	var_60_bool = var_56_int != (int)1000;
-	if(var_60_bool != 0) {
-		var_62_bool = var_56_int != (int)-1;
-		if(var_62_bool != 0) {
-			var_58_bool = 1;
-		}
+	int var_56_int;
+	@GetVariable("d2q02", var_56_int);
+	bool var_58_bool = false;
+	if(var_56_int != 1000) {
+		if(var_56_int != -1)
+			var_58_bool = true;
 	}
 	if(var_58_bool != 0) {
-		SetVariable("d2q02", (int)1000);
+		@SetVariable("d2q02", 1000);
 		func_380();
 		func_187(var_56_int);
 	}
-	return 2;
 }
 
 
-func_290(var_8_int)
+void func_290(int var_8_int)
 {
-	var_9_float = 0; var_10_float = 0;
-	GetGameTime(var_10_float);
-	var_12_float = var_8_int * (int)24;
-	var_13_bool = var_10_float >= var_12_float;
-	if(var_13_bool != 0) {
+	float var_10_float;
+	@GetGameTime(var_10_float);
+	if(var_10_float >= (var_8_int * 24)) {
 		func_187(var_10_float);
 	} else {
-		var_50_float = var_8_int * (int)24;
-		SetTimeEvent((int)0, var_50_float);
-		Hold();
+		@SetTimeEvent(0, (var_8_int * 24));
+		@Hold();
 	}
-	return 2;
 	
 }
 
 
-func_196(var_0_object, var_1_object, var_2_object, var_3_object, var_14_int)
+// @pe
+void func_196(object var_0_object, object var_1_object, object var_2_object, object var_3_object, int var_14_int)
 {
-	var_15_bool = 0;
-	var_15_bool = 0;
-	var_16_bool = 0;
-	var_16_bool = 0;
-	var_17_bool = 0;
-	var_17_bool = 0;
-	var_18_bool = 0;
-	var_18_bool = 1;
-	var_20_bool = var_14_int == (int)0;
+	bool var_15_bool = false;
+	bool var_16_bool = false;
+	bool var_17_bool = false;
+	bool var_18_bool = true;
+	var_20_bool = var_14_int == 0;
 	if(var_20_bool != 1) {
-		var_21_bool = 0; var_22_object = Obj();
-		var_22_object = var_0_object;
-		func_280(var_21_bool, var_22_object);
-		if(var_21_bool != 1) {
-			var_18_bool = 0;
-		}
+		bool var_21_bool;
+		func_280(var_21_bool, var_0_object);
+		if(var_21_bool != 1)
+			var_18_bool = false;
 	}
 	if(var_18_bool != 0) {
-		var_26_bool = 0;
-		var_26_bool = 1;
-		var_28_bool = var_14_int == (int)1;
+		bool var_26_bool = true;
+		var_28_bool = var_14_int == 1;
 		if(var_28_bool != 1) {
-			var_29_bool = 0; var_30_object = Obj();
-			var_30_object = var_1_object;
-			func_280(var_29_bool, var_30_object);
-			if(var_29_bool != 1) {
-				var_26_bool = 0;
-			}
+			bool var_29_bool;
+			func_280(var_29_bool, var_1_object);
+			if(var_29_bool != 1)
+				var_26_bool = false;
 		}
-		if(var_26_bool != 0) {
-			var_17_bool = 1;
-		}
+		if(var_26_bool != 0)
+			var_17_bool = true;
 	}
 	if(var_17_bool != 0) {
-		var_31_bool = 0;
-		var_31_bool = 1;
-		var_33_bool = var_14_int == (int)2;
+		bool var_31_bool = true;
+		var_33_bool = var_14_int == 2;
 		if(var_33_bool != 1) {
-			var_34_bool = 0; var_35_object = Obj();
-			var_35_object = var_2_object;
-			func_280(var_34_bool, var_35_object);
-			if(var_34_bool != 1) {
-				var_31_bool = 0;
-			}
+			bool var_34_bool;
+			func_280(var_34_bool, var_2_object);
+			if(var_34_bool != 1)
+				var_31_bool = false;
 		}
-		if(var_31_bool != 0) {
-			var_16_bool = 1;
-		}
+		if(var_31_bool != 0)
+			var_16_bool = true;
 	}
 	if(var_16_bool != 0) {
-		var_36_bool = 0;
-		var_36_bool = 1;
-		var_38_bool = var_14_int == (int)3;
+		bool var_36_bool = true;
+		var_38_bool = var_14_int == 3;
 		if(var_38_bool != 1) {
-			var_39_bool = 0; var_40_object = Obj();
-			var_40_object = var_3_object;
-			func_280(var_39_bool, var_40_object);
-			if(var_39_bool != 1) {
-				var_36_bool = 0;
-			}
+			bool var_39_bool;
+			func_280(var_39_bool, var_3_object);
+			if(var_39_bool != 1)
+				var_36_bool = false;
 		}
-		if(var_36_bool != 0) {
-			var_15_bool = 1;
-		}
+		if(var_36_bool != 0)
+			var_15_bool = true;
 	}
 	if(var_15_bool != 0) {
-		EventDisable(26);
-		var_41_object = var_0_object;
-		if(var_41_object != 0) {
-			@@@var_0_object:Remove();
-		}
-		var_42_object = var_1_object;
-		if(var_42_object != 0) {
-			@@@var_1_object:Remove();
-		}
-		var_43_object = var_2_object;
-		if(var_43_object != 0) {
-			@@@var_2_object:Remove();
-		}
-		var_44_object = var_3_object;
-		if(var_44_object != 0) {
-			@@@var_3_object:Remove();
-		}
-		var_45_object = Obj();
+		if(var_0_object != 0)
+			var_0_object->Remove(); //@t
+		if(var_1_object != 0)
+			var_1_object->Remove(); //@t
+		if(var_2_object != 0)
+			var_2_object->Remove(); //@t
+		if(var_3_object != 0)
+			var_3_object->Remove(); //@t
+		object var_45_object;
 		func_314(var_45_object);
-		RemoveActor(var_45_object);
+		@RemoveActor(var_45_object);
 	}
-	return 0;
 }
 
 
-func_396()
+void func_396(void)
 {
-	var_13_object = Obj(); var_14_object = Obj();
-	Trace("Adding diary entry");
-	CreateDiaryEntry(var_14_object, (int)62, (int)2, (int)12144);
-	var_19_bool = 0; var_20_object = Obj(); var_21_int = 0;
+	@Trace("Adding diary entry");
+	object var_14_object;
+	@CreateDiaryEntry(var_14_object, 62, 2, 12144);
+	bool var_19_bool; object var_20_object;
 	var_14_object = var_20_object;
-	func_351(var_19_bool, var_20_object, (int)11);
-	return 2;
+	func_351(var_19_bool, var_20_object, 11);
 }
 EMIT "Stack[-1] = 0";
 
 
-func_140()
+void func_140(void)
 {
-	var_8_int = 0; var_9_int = 0;
-	GetVariable("d2q02", var_9_int);
-	var_12_bool = var_9_int != (int)1000;
-	if(var_12_bool != 0) {
+	int var_9_int;
+	@GetVariable("d2q02", var_9_int);
+	if(var_9_int != 1000)
 		func_151();
-	}
-	return 2;
 }
 
 
-func_338(var_28_object)
+void func_338(object var_28_object)
 {
-	var_29_object = Obj(); var_30_object = Obj();
-	GetDiaryRoot(var_30_object);
-	var_31_bool = var_30_object == 0; //@nz
-	if(var_31_bool != 0) {
-		Trace("Can't retrieve diary root");
-		var_28_object = 0;
-		return 2;
+	object var_30_object;
+	@GetDiaryRoot(var_30_object);
+	if(!var_30_object) { //@nz
+		@Trace("Can't retrieve diary root");
+		var_28_object = false;
 	}
 	var_30_object = var_28_object;
-	return 2;
 }
 EMIT "Stack[-1] = 0";
 
 
-func_151()
+void func_151(void)
 {
 	func_396();
-	SetVariable("d2q02", (int)-1);
+	@SetVariable("d2q02", -1);
 	func_187(var_9_int);
-	return 0;
 }
 
 
-func_280(var_21_bool, var_22_object)
+void func_280(bool var_21_bool, object var_22_object)
 {
-	var_23_object = Obj(); var_24_object = Obj();
-	var_25_bool = var_22_object == 0; //@nz
-	if(var_25_bool != 0) {
-		var_21_bool = 1;
-		return 2;
-	}
-	@@var_22_object:GetActor(var_24_object);
+	if(!var_22_object) //@nz
+		var_21_bool = true;
+	object var_24_object;
+	var_22_object->GetActor(var_24_object);
 	var_21_bool = !var_24_object;
-	return 2;
 }
 EMIT "Stack[-1] = 0";
 
 
-func_412()
+void func_412(void)
 {
-	return 0;
 }
 
 
-func_314(var_45_object)
+void func_314(object var_45_object)
 {
-	var_46_object = Obj(); var_47_object = Obj();
-	self(var_47_object);
+	object var_47_object;
+	@self(var_47_object);
 	var_47_object = var_45_object;
-	return 2;
 }
 EMIT "Stack[-1] = 0";
 
 
-func_187(var_4_bool)
+void func_187(bool var_4_bool)
 {
 	func_412();
 	var_4_bool = true;
-	var_14_int = 0;
-	func_196(var_5_bool, var_8_int, var_9_float, var_10_float, (int)-1);
-	return 0;
+	func_196(var_5_bool, var_8_int, var_9_float, var_10_float, -1);
 }
 
 
-func_380()
+void func_380(void)
 {
-	var_65_object = Obj(); var_66_object = Obj();
-	Trace("Adding diary entry");
-	CreateDiaryEntry(var_66_object, (int)61, (int)2, (int)12143);
-	var_71_bool = 0; var_72_object = Obj(); var_73_int = 0;
+	@Trace("Adding diary entry");
+	object var_66_object;
+	@CreateDiaryEntry(var_66_object, 61, 2, 12143);
+	bool var_71_bool; object var_72_object;
 	var_66_object = var_72_object;
-	func_351(var_71_bool, var_72_object, (int)11);
-	return 2;
+	func_351(var_71_bool, var_72_object, 11);
 }
 EMIT "Stack[-1] = 0";
 
 
-func_351(var_19_bool, var_20_object, var_21_int)
+void func_351(bool var_19_bool, object var_20_object, int var_21_int)
 {
-	var_22_object = Obj(); var_23_object = Obj(); var_24_int = 0; var_25_object = Obj(); var_26_object = Obj(); var_27_int = 0;
-	func_338(Obj());
+	object var_28_object;
+	func_338(var_28_object);
+	object var_25_object;
 	var_28_object = var_25_object;
-	@@var_25_object:Find(var_21_int, var_26_object);
-	var_33_bool = var_26_object == 0; //@nz
-	if(var_33_bool != 0) {
-		var_35_int = "Can't find diary parent with id: " + var_21_int;
-		Trace(var_35_int);
-		var_19_bool = 0;
-		return 6;
+	object var_26_object;
+	var_25_object->Find(var_21_int, var_26_object);
+	if(!var_26_object) { //@nz
+		@Trace("Can't find diary parent with id: " + var_21_int);
+		var_19_bool = false;
 	}
-	@@var_26_object:AddChild(var_20_object);
-	SetVariable("player_diary", (int)1);
-	@@var_20_object:GetCategory(var_27_int);
-	SetDiarySection(var_27_int);
-	var_19_bool = 0;
-	return 6;
+	var_26_object->AddChild(var_20_object);
+	@SetVariable("player_diary", 1);
+	int var_27_int;
+	var_20_object->GetCategory(var_27_int);
+	@SetDiarySection(var_27_int);
+	var_19_bool = false;
 }
 EMIT "Stack[-2] = 0";
 EMIT "Stack[-3] = 0";

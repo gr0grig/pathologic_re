@@ -1,192 +1,153 @@
-// @IMPORTS: SetVariable/2,Trace/1,GetSceneByName/2,GetVariable/2,FindActor/2,Trigger/2,RemoveActor/1,GetGameTime/1,SetTimeEvent/2,Hold/0,self/1,AddActor/6,GetDiaryRoot/1
-// @STRINGS: W:d2q03|W:birdmask|W:r4_house_2_02|W:pt_d2q03_birdmask|W:pers_birdmask|W:d2q03_birdmask.xml|W:completed|W:icot_lara_supply|W:enabled|A:SetProperty|W:cleanup|A:GetLocator|W:Locator |W: doesn't exist|W:Can't retrieve diary root|A:Find|A:Remove
 // @GLOBALS: 0:object:
-// @RUN_OP: 0x0
-// @RUN_TASK: 0
-// @TASK_0: vars=object params=0
-// @EVENT_26: op=0x9 vars=string
-// @EVENT_9: op=0x69 vars=int,float
-// @PE: 0x69
 
-task_0_event_26(var_0_object, var_1_string)
+maintask task_0
 {
-	var_2_object = Obj(); var_3_object = Obj();
-	Trace(var_1_string);
-	var_5_bool = var_1_string == "birdmask";
-	if(var_5_bool != 0) {
-		GetSceneByName(var_3_object, "r4_house_2_02");
-		var_7_object = Obj(); var_8_object = Obj(); var_9_string = ""; var_10_string = ""; var_11_string = "";
-		var_3_object = var_8_object;
-		func_116(var_7_object, var_8_object, "pt_d2q03_birdmask", "pers_birdmask", "d2q03_birdmask.xml");
-		var_0_object = var_7_object;
-		var_3_object = 0;
-	} else {
-		var_26_bool = var_1_string == "completed";
-		if(var_26_bool == 0) goto Label_34;
-		func_54();
+	void init(object var_0_object)
+	{
+		@SetVariable("d2q03", 1);
+		func_86(2);
 	}
-Label_34:
-	return 2;
+
+	void OnTrigger(object var_0_object, string var_1_string)
+	{
+		object var_3_object;
+		@Trace(var_1_string);
+		if(var_1_string == "birdmask") {
+			@GetSceneByName(var_3_object, "r4_house_2_02");
+			object var_7_object; object var_8_object;
+			var_3_object = var_8_object;
+			func_116(var_7_object, var_8_object, "pt_d2q03_birdmask", "pers_birdmask", "d2q03_birdmask.xml");
+			var_0_object = var_7_object;
+			var_3_object = null;
+		} else if(var_1_string == "completed") {
+			func_54();
+		}
 	
-}
-
-
-task_0_event_9(var_0_object, var_1_int, var_2_float)
-{
-	func_35();
-	return 0;
-}
-
-
-main(var_0_object)
-{
-	SetVariable("d2q03", (int)1);
-	var_3_int = 0;
-	func_86((int)2);
-	return 0;
-}
-
-
-func_35()
-{
-	var_3_int = 0; var_4_int = 0;
-	GetVariable("d2q03", var_4_int);
-	var_7_bool = var_4_int != (int)1000;
-	if(var_7_bool != 0) {
-		func_46();
 	}
-	return 2;
+
+	// @pe
+	void OnGameTime(object var_0_object, int var_1_int, float var_2_float)
+	{
+		func_35();
+	}
+
 }
 
 
-func_164()
+void func_35(void)
 {
-	var_9_bool = 0; var_10_int = 0;
-	func_147(var_9_bool, (int)37);
-	return 0;
+	int var_4_int;
+	@GetVariable("d2q03", var_4_int);
+	if(var_4_int != 1000)
+		func_46();
 }
 
 
-func_134(var_15_object)
+void func_164(void)
 {
-	var_16_object = Obj(); var_17_object = Obj();
-	GetDiaryRoot(var_17_object);
-	var_18_bool = var_17_object == 0; //@nz
-	if(var_18_bool != 0) {
-		Trace("Can't retrieve diary root");
-		var_15_object = 0;
-		return 2;
+	bool var_9_bool;
+	func_147(var_9_bool, 37);
+}
+
+
+void func_134(object var_15_object)
+{
+	object var_17_object;
+	@GetDiaryRoot(var_17_object);
+	if(!var_17_object) { //@nz
+		@Trace("Can't retrieve diary root");
+		var_15_object = false;
 	}
 	var_17_object = var_15_object;
-	return 2;
 }
 EMIT "Stack[-1] = 0";
 
 
-func_71(var_0_object)
+void func_71(object var_0_object)
 {
-	EventDisable(26);
 	func_169();
-	var_21_object = var_0_object;
-	if(var_21_object != 0) {
-		Trigger(var_0_object, "cleanup");
-	}
-	var_23_object = Obj();
+	if(var_0_object != 0)
+		@Trigger(var_0_object, "cleanup");
+	object var_23_object;
 	func_110(var_23_object);
-	RemoveActor(var_23_object);
-	return 0;
+	@RemoveActor(var_23_object);
 }
 
 
-func_169()
+void func_169(void)
 {
 	func_164();
-	return 0;
 }
 
 
-func_46()
+void func_46(void)
 {
-	SetVariable("d2q03", (int)-1);
+	@SetVariable("d2q03", -1);
 	func_71(var_4_int);
-	return 0;
 }
 
 
-func_110(var_23_object)
+void func_110(object var_23_object)
 {
-	var_24_object = Obj(); var_25_object = Obj();
-	self(var_25_object);
+	object var_25_object;
+	@self(var_25_object);
 	var_25_object = var_23_object;
-	return 2;
 }
 EMIT "Stack[-1] = 0";
 
 
-func_147(var_9_bool, var_10_int)
+void func_147(bool var_9_bool, int var_10_int)
 {
-	var_11_object = Obj(); var_12_object = Obj(); var_13_object = Obj(); var_14_object = Obj();
-	func_134(Obj());
+	object var_15_object;
+	func_134(var_15_object);
+	object var_13_object;
 	var_15_object = var_13_object;
-	@@var_13_object:Find(var_10_int, var_14_object);
-	var_20_bool = var_14_object == 0; //@nz
-	if(var_20_bool != 0) {
-		var_9_bool = 0;
-		return 4;
-	}
-	@@var_14_object:Remove();
-	var_9_bool = 1;
-	return 4;
+	object var_14_object;
+	var_13_object->Find(var_10_int, var_14_object);
+	if(!var_14_object) //@nz
+		var_9_bool = false;
+	var_14_object->Remove();
+	var_9_bool = true;
 }
 EMIT "Stack[-1] = 0";
 EMIT "Stack[-2] = 0";
 
 
-func_116(var_7_object, var_8_object, var_9_string, var_10_string, var_11_string)
+void func_116(object var_7_object, object var_8_object, string var_9_string, string var_10_string, string var_11_string)
 {
-	var_12_bool = 0; var_13_cvector = CVector(0,0,0); var_14_cvector = CVector(0,0,0); var_15_object = Obj(); var_16_bool = 0; var_17_cvector = CVector(0,0,0); var_18_cvector = CVector(0,0,0); var_19_object = Obj();
-	@@var_8_object:GetLocator(var_9_string, var_16_bool, var_17_cvector, var_18_cvector);
-	var_20_bool = var_16_bool == 0; //@nz
-	if(var_20_bool != 0) {
-		var_22_int = "Locator " + var_9_string;
-		var_24_int = var_22_int + " doesn't exist";
-		Trace(var_24_int);
-	} else {
-		AddActor(Obj(), var_10_string, var_8_object, var_17_cvector, var_18_cvector, var_11_string);
-	}
-	var_19_object = var_7_object;
-	return 8;
+	bool var_16_bool; cvector var_17_cvector; cvector var_18_cvector;
+	var_8_object->GetLocator(var_9_string, var_16_bool, var_17_cvector, var_18_cvector);
+	if(!var_16_bool) //@nz
+		@Trace(("Locator " + var_9_string) + " doesn't exist");
+	else
+		@AddActor(Obj(), var_10_string, var_8_object, var_17_cvector, var_18_cvector, var_11_string);
+	object var_19_object = var_7_object;
 	
 }
 EMIT "Stack[-1] = 0";
 
 
-func_54()
+void func_54(void)
 {
-	var_27_object = Obj(); var_28_object = Obj();
-	FindActor(var_28_object, "icot_lara_supply");
-	@@var_28_object:SetProperty("enabled", (bool)1);
-	SetVariable("d2q03", (int)1000);
+	object var_28_object;
+	@FindActor(var_28_object, "icot_lara_supply");
+	var_28_object->SetProperty("enabled", true);
+	@SetVariable("d2q03", 1000);
 	func_71(var_28_object);
-	return 2;
 }
 EMIT "Stack[-1] = 0";
 
 
-func_86(var_3_int)
+void func_86(int var_3_int)
 {
-	var_4_float = 0; var_5_float = 0;
-	GetGameTime(var_5_float);
-	var_7_float = var_3_int * (int)24;
-	var_8_bool = var_5_float >= var_7_float;
-	if(var_8_bool != 0) {
+	float var_5_float;
+	@GetGameTime(var_5_float);
+	if(var_5_float >= (var_3_int * 24)) {
 		func_71(var_5_float);
 	} else {
-		var_28_float = var_3_int * (int)24;
-		SetTimeEvent((int)0, var_28_float);
-		Hold();
+		@SetTimeEvent(0, (var_3_int * 24));
+		@Hold();
 	}
-	return 2;
 	
 }
 

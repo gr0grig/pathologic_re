@@ -1,182 +1,127 @@
-// @IMPORTS: SendMessage/2,ShowCursor/0,SetCursor/1,CaptureKeyboard/0,ProcessEvents/0,DestroyWindow/0,GetGameTime/1
-// @STRINGS: W:text|W:default|W:button_day
-// @RUN_OP: 0x0
-// @RUN_TASK: 0
-// @TASK_0: vars=int params=0
-// @EVENT_100: op=0x25 vars=int
-// @EVENT_101: op=0x29 vars=int
-// @EVENT_102: op=0x58 vars=int
-// @EVENT_200: op=0x69 vars=int,string,object
-// @PE: 0x25,0x29,0x58
-
-task_0_event_100(var_0_int, var_1_int)
+maintask task_0
 {
-	DestroyWindow();
-	return 0;
-}
-
-
-task_0_event_101(var_0_int, var_1_int)
-{
-	var_3_bool = var_1_int == (int)266;
-	if(var_3_bool != 0) {
-		var_5_bool = var_0_int < (int)11;
-		if(var_5_bool != 0) {
-			var_0_int = var_0_int + (int)1;
-		} else {
-			var_0_int = 0;
+	void init(int var_0_int)
+	{
+		int var_1_int;
+		func_155(var_1_int);
+		var_0_int = var_1_int - 1;
+		bool var_8_bool = false;
+		int var_9_int;
+		func_164(var_9_int);
+		if(var_9_int < 7) {
+			if(var_0_int > 0)
+				var_8_bool = true;
+		}
+		if(var_8_bool != 0)
+			var_0_int += -1;
+		@SendMessage(var_0_int, "text");
+		@ShowCursor();
+		@SetCursor("default");
+		func_126(var_0_int);
+		@CaptureKeyboard();
+		@ProcessEvents();
 	}
-		var_26_bool = var_1_int == (int)265;
-		if(var_26_bool != 0) {
-			var_28_bool = var_0_int > (int)0;
-			if(var_28_bool != 0) {
-				var_0_int = var_0_int + (int)-1;
-			} else {
-				var_0_int = 11;
+
+	// @pe
+	void event_100(int var_0_int, int var_1_int)
+	{
+		@DestroyWindow();
+	}
+
+	// @pe
+	void event_101(int var_0_int, int var_1_int)
+	{
+		if(var_1_int == 266) {
+			if(var_0_int < 11)
+				var_0_int += 1;
+			else
+				var_0_int = 0;
+				if(var_1_int == 265) {
+					if(var_0_int > 0)
+						var_0_int += -1;
+					else
+						var_0_int = 11;
+				if(var_1_int == 267) {
+					@SendMessage(1001, "text");
+				} else if(var_1_int == 268) {
+					@SendMessage(1000, "text");
+				}
+				}
+				func_126(var_0_int);
 		}
-			var_32_bool = var_1_int == (int)267;
-			if(var_32_bool != 0) {
-				SendMessage((int)1001, "text");
-				goto Label_87;
-			}
-			var_36_bool = var_1_int == (int)268;
-			if(var_36_bool == 0) goto Label_87;
-			SendMessage((int)1000, "text");
-		}
-		var_30_int = 0;
-		var_30_int = var_0_int;
-		func_126(var_30_int);
+		func_126(var_0_int);
 		goto Label_87;
+	
+	Label_87:
+		for(;;) {
+			return 0;
+
+		}
+	
 	}
-	var_7_int = 0;
-	var_7_int = var_0_int;
-	func_126(var_7_int);
-	goto Label_87;
-	
-Label_87:
-	return 0;
-	
-}
 
-
-task_0_event_102(var_0_int, var_1_int)
-{
-	var_3_bool = var_1_int == (int)272;
-	if(var_3_bool != 0) {
-		SendMessage((int)1001, "text");
-	} else {
-		var_7_bool = var_1_int == (int)274;
-		if(var_7_bool == 0) goto Label_104;
-		SendMessage((int)1000, "text");
+	// @pe
+	void event_102(int var_0_int, int var_1_int)
+	{
+		if(var_1_int == 272) {
+			@SendMessage(1001, "text");
+		} else if(var_1_int == 274) {
+			@SendMessage(1000, "text");
+		}
+	
 	}
-Label_104:
-	return 0;
-	
-}
 
-
-task_0_event_200(var_0_int, var_1_int, var_2_string, var_3_object)
-{
-	var_4_int = 0; var_5_int = 0;
-	var_5_int = 0;
+	void event_200(int var_0_int, int var_1_int, string var_2_string, object var_3_object)
+	{
+		int var_5_int = 0;
 	
-Label_107:
-	var_7_bool = var_5_int < (int)12;
-	if(var_7_bool != 0) {
-		var_10_int = var_5_int + (int)1;
-		var_11_int = "button_day" + var_10_int;
-		var_12_bool = var_2_string == var_11_int;
-		if(var_12_bool != 0) {
-			var_0_int = var_5_int;
-		} else {
-			var_5_int = var_5_int + (int)1;
-			goto Label_107;
+		for(;;) {
+			if(var_5_int < 12) {
+				if(var_2_string == ("button_day" + (var_5_int + 1)))
+					var_0_int = var_5_int;
+				else
+					var_5_int += 1;
+			}
+			func_126(var_0_int);
+
 		}
 	}
-	var_13_int = 0;
-	var_13_int = var_0_int;
-	func_126(var_13_int);
-	return 2;
-	
+
 }
 
 
-main(var_0_int)
+void func_155(int var_1_int)
 {
-	var_1_int = 0;
-	func_155(var_1_int);
-	var_0_int = var_1_int - (int)1;
-	var_8_bool = 0;
-	var_8_bool = 0;
-	var_9_int = 0;
-	func_164(var_9_int);
-	var_15_bool = var_9_int < (int)7;
-	if(var_15_bool != 0) {
-		var_17_bool = var_0_int > (int)0;
-		if(var_17_bool != 0) {
-			var_8_bool = 1;
-		}
-	}
-	if(var_8_bool != 0) {
-		var_0_int = var_0_int + (int)-1;
-	}
-	SendMessage(var_0_int, "text");
-	ShowCursor();
-	SetCursor("default");
-	var_21_int = 0;
-	var_21_int = var_0_int;
-	func_126(var_21_int);
-	CaptureKeyboard();
-	ProcessEvents();
-	return 0;
+	float var_3_float;
+	@GetGameTime(var_3_float);
+	var_1_int = 1 + (var_3_float / 24);
 }
 
 
-func_155(var_1_int)
+void func_164(int var_9_int)
 {
-	var_2_float = 0; var_3_float = 0;
-	GetGameTime(var_3_float);
-	var_5_int = 0;
-	var_5_int = var_3_float / (int)24;
-	var_1_int = (int)1 + var_5_int;
-	return 2;
-}
-
-
-func_164(var_9_int)
-{
-	var_10_float = 0; var_11_float = 0;
-	GetGameTime(var_11_float);
-	var_12_int = 0;
+	float var_11_float;
+	@GetGameTime(var_11_float);
+	int var_12_int;
 	var_11_float = var_12_int;
-	var_9_int = var_12_int % (int)24;
-	return 2;
+	var_9_int = var_12_int % 24;
 }
 
 
-func_126(var_21_int)
+void func_126(int var_21_int)
 {
-	var_22_int = 0; var_23_int = 0;
-	var_23_int = 0;
+	int var_23_int = 0;
 	
-Label_128:
-	var_25_bool = var_23_int < (int)12;
-	if(var_25_bool != 0) {
-		var_26_bool = var_23_int == var_21_int;
-		if(var_26_bool != 0) {
-			var_30_int = var_23_int + (int)1;
-			var_31_int = "button_day" + var_30_int;
-			SendMessage((int)1, var_31_int);
-		} else {
-			var_36_int = var_23_int + (int)1;
-			var_37_int = "button_day" + var_36_int;
-			SendMessage((int)0, var_37_int);
+	for(;;) {
+		if(var_23_int < 12) {
+			if(var_23_int == var_21_int)
+				@SendMessage(1, ("button_day" + (var_23_int + 1)));
+			else
+				@SendMessage(0, ("button_day" + (var_23_int + 1)));
+		@SendMessage(var_21_int, "text");
+		}
+		var_23_int += 1;
 	}
-		SendMessage(var_21_int, "text");
-		var_23_int = var_23_int + (int)1;
-		goto Label_128;
-	}
-	return 2;
 	
 }
 

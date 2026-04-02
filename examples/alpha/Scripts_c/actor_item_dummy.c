@@ -1,16 +1,13 @@
-// @IMPORTS: FindGeometry/2
-// @STRINGS: W:object|A:Enable
-// @RUN_OP: 0x0
-// @RUN_TASK: 0
-// @TASK_0: vars= params=0
-
-main()
+maintask task_0
 {
-	var_0_object = Obj(); var_1_object = Obj();
-	FindGeometry("object", var_1_object);
-	@@var_1_object:Enable((bool)1);
-	return 2;
+	void init(void)
+	{
+		object var_1_object;
+		@FindGeometry("object", var_1_object);
+		var_1_object->Enable(true);
+	}
+	EMIT "Stack[-1] = 0";
+
 }
-EMIT "Stack[-1] = 0";
 
 

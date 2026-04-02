@@ -1,21 +1,20 @@
-// @IMPORTS: Switch/1,rand/3,Sleep/1
-// @RUN_OP: 0x0
-// @RUN_TASK: 0
-// @TASK_0: vars=float,float params=0
-
-main(var_0_float, var_1_float)
+maintask task_0
 {
-	var_2_float = 0; var_3_float = 0;
+	void init(float var_0_float, float var_1_float)
+	{
+		float var_3_float;
 	
-Label_1:
-	Switch((bool)1);
-	rand(var_3_float, (float)0.05000000074505806, (float)1.0);
-	Sleep(var_3_float);
-	Switch((bool)0);
-	rand(var_3_float, (float)0.05000000074505806, (float)1.0);
-	Sleep(var_3_float);
-	goto Label_1;
+		for(;;) {
+			@Switch(true);
+			@rand(var_3_float, 0.05, 1.0);
+			@Sleep(var_3_float);
+			@Switch(false);
+			@rand(var_3_float, 0.05, 1.0);
+			@Sleep(var_3_float);
+		}
+	}
+	EMIT "Return(); Pop(2)";
+
 }
-EMIT "Return(); Pop(2)";
 
 

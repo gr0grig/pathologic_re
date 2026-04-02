@@ -1,144 +1,115 @@
-// @IMPORTS: GetProperty/2,FindActor/2,SetVisibility/1,GetScene/1,RemoveActor/1,Hold/0,IsLoaded/1,self/1,Trace/1,AddActorByType/6
-// @STRINGS: W:light|A:Switch|W:fire_loc|W:scripted|W:bonfire.xml|W:cleanup|W:restore|A:GetLocator|W:Locator |W: doesn't exist
-// @RUN_OP: 0x0
-// @RUN_TASK: 0
-// @TASK_0: vars=bool,object,object params=0
-// @EVENT_32: op=0x23 vars=
-// @EVENT_26: op=0x2d vars=string
-// @EVENT_6: op=0x49 vars=
-
-task_0_event_32(var_0_bool, var_1_object, var_2_object)
+maintask task_0
 {
-	RemoveActor(var_2_object);
-	@@@var_1_object:Switch((bool)0);
-	return 0;
-}
+	void init(bool var_0_bool, object var_1_object, object var_2_object)
+	{
+		string var_4_string;
+		@GetProperty("light", var_4_string);
+		@FindActor(var_1_object, var_4_string);
+		var_1_object->Switch(true); //@t
+		@SetVisibility(true);
+		func_19(var_4_string);
+		func_41();
+	}
 
+	void OnDispose(bool var_0_bool, object var_1_object, object var_2_object)
+	{
+		@RemoveActor(var_2_object);
+		var_1_object->Switch(false); //@t
+	}
 
-task_0_event_26(var_0_bool, var_1_object, var_2_object, var_3_string)
-{
-	var_4_bool = 0; var_5_bool = 0;
-	var_7_bool = var_3_string == "cleanup";
-	if(var_7_bool != 0) {
-		var_0_bool = true;
-		IsLoaded(var_5_bool);
-		var_8_bool = 0;
-		var_8_bool = 0;
-		var_9_bool = var_5_bool == 0; //@nz
-		if(var_9_bool != 0) {
-			var_10_bool = 0;
-			func_89(var_10_bool);
-			if(var_10_bool != 0) {
-				var_8_bool = 1;
+	void OnTrigger(bool var_0_bool, object var_1_object, object var_2_object, string var_3_string)
+	{
+		bool var_5_bool;
+		if(var_3_string == "cleanup") {
+			var_0_bool = true;
+			@IsLoaded(var_5_bool);
+			bool var_8_bool = false;
+			if(!var_5_bool) { //@nz
+				bool var_10_bool;
+				func_89(var_10_bool);
+				if(var_10_bool != 0)
+					var_8_bool = true;
 			}
+			if(var_8_bool != 0) {
+				object var_11_object;
+				func_91(var_11_object);
+				@RemoveActor(var_11_object);
+			}
+		} else if(var_3_string == "restore") {
+			var_0_bool = false;
 		}
-		if(var_8_bool != 0) {
-			var_11_object = Obj();
-			func_91(var_11_object);
-			RemoveActor(var_11_object);
-		}
-	} else {
-		var_15_bool = var_3_string == "restore";
-		if(var_15_bool == 0) goto Label_72;
-		var_0_bool = false;
-	}
-Label_72:
-	return 2;
 	
-}
+	}
 
-
-task_0_event_6(var_0_bool, var_1_object, var_2_object)
-{
-	var_3_bool = 0;
-	var_3_bool = 0;
-	var_4_bool = var_0_bool;
-	if(var_4_bool != 0) {
-		var_5_bool = 0;
-		func_89(var_5_bool);
-		if(var_5_bool != 0) {
-			var_3_bool = 1;
+	void OnUnload(bool var_0_bool, object var_1_object, object var_2_object)
+	{
+		bool var_3_bool = false;
+		if(var_0_bool != 0) {
+			bool var_5_bool;
+			func_89(var_5_bool);
+			if(var_5_bool != 0)
+				var_3_bool = true;
+		}
+		if(var_3_bool != 0) {
+			object var_6_object;
+			func_91(var_6_object);
+			@RemoveActor(var_6_object);
 		}
 	}
-	if(var_3_bool != 0) {
-		var_6_object = Obj();
-		func_91(var_6_object);
-		RemoveActor(var_6_object);
-	}
-	return 0;
+
 }
 
 
-main(var_0_bool, var_1_object, var_2_object)
+void func_97(object var_13_object, object var_14_object, string var_15_string, string var_16_string, string var_17_string)
 {
-	var_3_string = ""; var_4_string = "";
-	GetProperty("light", var_4_string);
-	FindActor(var_1_object, var_4_string);
-	@@@var_1_object:Switch((bool)1);
-	SetVisibility((bool)1);
-	func_19(var_4_string);
-	func_41();
-	return 2;
-}
-
-
-func_97(var_13_object, var_14_object, var_15_string, var_16_string, var_17_string)
-{
-	var_18_bool = 0; var_19_cvector = CVector(0,0,0); var_20_cvector = CVector(0,0,0); var_21_object = Obj(); var_22_bool = 0; var_23_cvector = CVector(0,0,0); var_24_cvector = CVector(0,0,0); var_25_object = Obj();
-	@@var_14_object:GetLocator(var_15_string, var_22_bool, var_23_cvector, var_24_cvector);
-	var_26_bool = var_22_bool == 0; //@nz
-	if(var_26_bool != 0) {
-		var_28_int = "Locator " + var_15_string;
-		var_30_int = var_28_int + " doesn't exist";
-		Trace(var_30_int);
-	} else {
-		AddActorByType(Obj(), var_16_string, var_14_object, var_23_cvector, var_24_cvector, var_17_string);
-	}
-	var_25_object = var_13_object;
-	return 8;
+	bool var_22_bool; cvector var_23_cvector; cvector var_24_cvector;
+	var_14_object->GetLocator(var_15_string, var_22_bool, var_23_cvector, var_24_cvector);
+	if(!var_22_bool) //@nz
+		@Trace(("Locator " + var_15_string) + " doesn't exist");
+	else
+		@AddActorByType(Obj(), var_16_string, var_14_object, var_23_cvector, var_24_cvector, var_17_string);
+	object var_25_object = var_13_object;
 	
 }
 EMIT "Stack[-1] = 0";
 
 
-func_41()
+void func_41(void)
 {
 	
-Label_41:
-	Hold();
-	goto Label_41;
+	for(;;) {
+		@Hold();
+	}
 }
 EMIT "Return(); Pop(0)";
 
 
-func_19(var_2_object)
+void func_19(object var_2_object)
 {
-	var_8_object = Obj(); var_9_string = ""; var_10_object = Obj(); var_11_string = "";
-	GetScene(var_10_object);
-	GetProperty("fire_loc", var_11_string);
-	var_13_object = Obj(); var_14_object = Obj(); var_15_string = ""; var_16_string = ""; var_17_string = "";
+	object var_10_object;
+	@GetScene(var_10_object);
+	string var_11_string;
+	@GetProperty("fire_loc", var_11_string);
+	object var_13_object; object var_14_object; string var_15_string;
 	var_10_object = var_14_object;
 	var_11_string = var_15_string;
 	func_97(var_13_object, var_14_object, var_15_string, "scripted", "bonfire.xml");
 	var_2_object = var_13_object;
-	return 4;
 }
 EMIT "Stack[-2] = 0";
 
 
-func_89(var_5_bool)
+void func_89(bool var_5_bool)
 {
-	var_5_bool = 1;
-	return 0;
+	var_5_bool = true;
 }
 
 
-func_91(var_6_object)
+void func_91(object var_6_object)
 {
-	var_7_object = Obj(); var_8_object = Obj();
-	self(var_8_object);
+	object var_8_object;
+	@self(var_8_object);
 	var_8_object = var_6_object;
-	return 2;
 }
 EMIT "Stack[-1] = 0";
 

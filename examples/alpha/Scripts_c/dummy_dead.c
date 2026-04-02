@@ -1,22 +1,20 @@
-// @IMPORTS: RemoveRTEnvelope/0,RemoveEnvelope/0,SetDeathState/0,GetProperty/2,LockAnimationEnd/2,Hold/0
-// @STRINGS: W:animation|W:all
-// @RUN_OP: 0x0
-// @RUN_TASK: 0
-// @TASK_0: vars= params=0
-
-main()
+maintask task_0
 {
-	var_0_string = ""; var_1_string = "";
-	RemoveRTEnvelope();
-	RemoveEnvelope();
-	SetDeathState();
-	GetProperty("animation", var_1_string);
-	LockAnimationEnd("all", var_1_string);
+	void init(void)
+	{
+		@RemoveRTEnvelope();
+		@RemoveEnvelope();
+		@SetDeathState();
+		string var_1_string;
+		@GetProperty("animation", var_1_string);
+		@LockAnimationEnd("all", var_1_string);
 	
-Label_13:
-	Hold();
-	goto Label_13;
+		for(;;) {
+			@Hold();
+		}
+	}
+	EMIT "Return(); Pop(2)";
+
 }
-EMIT "Return(); Pop(2)";
 
 

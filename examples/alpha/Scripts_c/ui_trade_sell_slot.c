@@ -1,114 +1,83 @@
-// @IMPORTS: SetBackground/1,SetOwnerDraw/1,ProcessEvents/0,Blit/3,Print/4,StretchBlit/5,SendMessageToParent/1,SetTooltip/2,GetItemImage/2,LoadImage/1,GetItemMaxStackSize/2,SetTooltip/3
-// @STRINGS: W:default|W:disabled|W:selected|A:GetItemID
-// @RUN_OP: 0x0
-// @RUN_TASK: 0
-// @TASK_0: vars=int,int,object,bool,string params=0
-// @EVENT_0: op=0xc vars=
-// @EVENT_2: op=0x25 vars=int,int
-// @EVENT_6: op=0x2a vars=int,int
-// @EVENT_3: op=0x2f vars=int,int
-// @EVENT_200: op=0x31 vars=int,string,object
-// @PE: 0x25,0x2a,0x2f
-
-task_0_event_0(var_0_int, var_1_int, var_2_object, var_3_bool, var_4_string)
+maintask task_0
 {
-	var_5_bool = var_2_object == 0; //@nz
-	if(var_5_bool != 0) {
-		return 0;
+	void init(int var_0_int, int var_1_int, object var_2_object, bool var_3_bool, string var_4_string)
+	{
+		var_2_object = null;
+		var_0_int = 0;
+		var_3_bool = false;
+		@SetBackground("default");
+		@SetOwnerDraw(true);
+		@ProcessEvents();
 	}
-	Blit(var_4_string, (int)1, (int)1);
-	var_9_bool = var_1_int > (int)1;
-	if(var_9_bool != 0) {
-		Print("default", (int)2, (int)35, var_0_int);
+
+	void OnUse(int var_0_int, int var_1_int, object var_2_object, bool var_3_bool, string var_4_string)
+	{
+		if(!var_2_object) //@nz
+			return 0;
+		@Blit(var_4_string, 1, 1);
+		if(var_1_int > 1)
+			@Print("default", 2, 35, var_0_int);
+		if(var_3_bool != 0)
+			@StretchBlit("disabled", 0, 0, 50, 50);
 	}
-	var_13_bool = var_3_bool;
-	if(var_13_bool != 0) {
-		StretchBlit("disabled", (int)0, (int)0, (int)50, (int)50);
+
+	// @pe
+	void OnStopSee(int var_0_int, int var_1_int, object var_2_object, bool var_3_bool, string var_4_string, int var_5_int, int var_6_int)
+	{
+		@SendMessageToParent(0);
 	}
-	return 0;
-}
 
-
-task_0_event_2(var_0_int, var_1_int, var_2_object, var_3_bool, var_4_string, var_5_int, var_6_int)
-{
-	SendMessageToParent((int)0);
-	return 0;
-}
-
-
-task_0_event_6(var_0_int, var_1_int, var_2_object, var_3_bool, var_4_string, var_5_int, var_6_int)
-{
-	SendMessageToParent((int)1);
-	return 0;
-}
-
-
-task_0_event_3(var_0_int, var_1_int, var_2_object, var_3_bool, var_4_string, var_5_int, var_6_int)
-{
-	return 0;
-}
-
-
-task_0_event_200(var_0_int, var_1_int, var_2_object, var_3_bool, var_4_string, var_5_int, var_6_string, var_7_object)
-{
-	var_8_int = 0; var_9_int = 0;
-	var_11_int = var_5_int & (int)65536;
-	if(var_11_int != 0) {
-		var_0_int = var_5_int & (int)16383;
-		return 2;
+	// @pe
+	void OnUnload(int var_0_int, int var_1_int, object var_2_object, bool var_3_bool, string var_4_string, int var_5_int, int var_6_int)
+	{
+		@SendMessageToParent(1);
 	}
-	var_14_int = var_5_int & (int)16384;
-	if(var_14_int != 0) {
-		SetBackground("selected");
-	} else {
-				SetBackground("default");
+
+	// @pe
+	void OnHear(int var_0_int, int var_1_int, object var_2_object, bool var_3_bool, string var_4_string, int var_5_int, int var_6_int)
+	{
 	}
-	var_17_int = var_5_int & (int)32768;
-	if(var_17_int != 0) {
-		var_2_object = 0;
-		SetTooltip((int)-1, "");
-		return 2;
-	}
-	var_21_int = var_5_int & (int)131072;
-	if(var_21_int != 0) {
-		var_3_bool = true;
-	} else {
+
+	void event_200(int var_0_int, int var_1_int, object var_2_object, bool var_3_bool, string var_4_string, int var_5_int, string var_6_string, object var_7_object)
+	{
+		int var_9_int;
+		if((var_5_int & 65536) != 0) {
+			var_0_int = var_5_int & 16383;
+			return 2;
+		}
+		if((var_5_int & 16384) != 0)
+			@SetBackground("selected");
+		else
+			@SetBackground("default");
+		if((var_5_int & 32768) != 0) {
+			var_2_object = null;
+			@SetTooltip(-1, "");
+			return 2;
+		}
+		if((var_5_int & 131072) != 0)
+			var_3_bool = true;
+		else
 			var_3_bool = false;
 
-	}
-	var_2_object = var_7_object;
-	var_22_object = var_2_object;
-	if(var_22_object != 0) {
-		@@@var_2_object:GetItemID(var_9_int);
-		GetItemImage(var_9_int, var_4_string);
-		LoadImage(var_4_string);
-		GetItemMaxStackSize(var_9_int, var_1_int);
-		var_23_bool = var_3_bool;
-		if(var_23_bool != 0) {
-			SetTooltip((int)-1, "");
-		} else {
-			SetTooltip((int)3, "", var_2_object);
-	}
-		SetTooltip((int)-1, "");
+		var_2_object = var_7_object;
+		if(var_2_object != 0) {
+			var_2_object->GetItemID(var_9_int); //@t
+			@GetItemImage(var_9_int, var_4_string);
+			@LoadImage(var_4_string);
+			@GetItemMaxStackSize(var_9_int, var_1_int);
+			if(var_3_bool != 0)
+				@SetTooltip(-1, "");
+			else
+				@SetTooltip(3, "", var_2_object);
+			@SetTooltip(-1, "");
 
-	}
-	goto Label_108;
+		}
+		goto Label_108;
 	
-Label_108:
-	return 2;
+	Label_108:
 	
-}
+	}
 
-
-main(var_0_int, var_1_int, var_2_object, var_3_bool, var_4_string)
-{
-	var_2_object = 0;
-	var_0_int = 0;
-	var_3_bool = false;
-	SetBackground("default");
-	SetOwnerDraw((bool)1);
-	ProcessEvents();
-	return 0;
 }
 
 

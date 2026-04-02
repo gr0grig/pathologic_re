@@ -1,167 +1,131 @@
-// @IMPORTS: SetVariable/2,IsOverrideActive/1,WorkWithCorpse/1,GetItemCountOfType/2,GetVariable/2,sync/0,SetVisibility/1,Hold/0,IsLoaded/1,RemoveActor/1,self/1
-// @STRINGS: W:d5q02KnowNudeIsDead|W:d5q01_heart|W:d5q01|W:cleanup|W:restore
-// @RUN_OP: 0x1d
-// @RUN_TASK: 0
-// @TASK_0: vars=bool,bool params=0
-// @EVENT_0: op=0x0 vars=object
-// @EVENT_6: op=0x2e vars=
-// @EVENT_26: op=0x3c vars=string
-// @PE: 0x73
-
-task_0_event_0(var_0_bool, var_1_bool, var_2_object)
+maintask task_0
 {
-	var_3_bool = 0; var_4_bool = 0;
-	SetVariable("d5q02KnowNudeIsDead", (int)1);
-	IsOverrideActive(var_4_bool);
-	var_7_bool = var_4_bool == 0; //@nz
-	if(var_7_bool != 0) {
-		WorkWithCorpse(var_2_object);
+	void init(bool var_0_bool, bool var_1_bool)
+	{
+		@sync();
+		bool var_2_bool;
+		func_104(var_2_bool);
+		if(!var_2_bool) { //@nz
+			@SetVisibility(true);
+			var_1_bool = true;
+		} else {
+			var_1_bool = false;
+		}
+		func_56();
+	
 	}
-	return 2;
-}
 
-
-task_0_event_6(var_0_bool, var_1_bool)
-{
-	var_2_bool = var_1_bool == 0; //@nz
-	if(var_2_bool != 0) {
-		SetVisibility((bool)1);
-		var_1_bool = true;
+	void OnUse(bool var_0_bool, bool var_1_bool, object var_2_object)
+	{
+		@SetVariable("d5q02KnowNudeIsDead", 1);
+		bool var_4_bool;
+		@IsOverrideActive(var_4_bool);
+		if(!var_4_bool) //@nz
+			@WorkWithCorpse(var_2_object);
 	}
-	func_88();
-	return 0;
-}
 
+	void OnUnload(bool var_0_bool, bool var_1_bool)
+	{
+		if(!var_1_bool) { //@nz
+			@SetVisibility(true);
+			var_1_bool = true;
+		}
+		func_88();
+	}
 
-task_0_event_26(var_0_bool, var_1_bool, var_2_string)
-{
-	var_3_bool = 0; var_4_bool = 0;
-	var_6_bool = var_2_string == "cleanup";
-	if(var_6_bool != 0) {
-		var_0_bool = true;
-		IsLoaded(var_4_bool);
-		var_7_bool = 0;
-		var_7_bool = 0;
-		var_8_bool = var_4_bool == 0; //@nz
-		if(var_8_bool != 0) {
-			var_9_bool = 0;
-			func_12(var_9_bool);
-			if(var_9_bool != 0) {
-				var_7_bool = 1;
+	void OnTrigger(bool var_0_bool, bool var_1_bool, string var_2_string)
+	{
+		bool var_4_bool;
+		if(var_2_string == "cleanup") {
+			var_0_bool = true;
+			@IsLoaded(var_4_bool);
+			bool var_7_bool = false;
+			if(!var_4_bool) { //@nz
+				bool var_9_bool;
+				func_12(var_9_bool);
+				if(var_9_bool != 0)
+					var_7_bool = true;
 			}
+			if(var_7_bool != 0) {
+				object var_23_object;
+				func_109(var_23_object);
+				@RemoveActor(var_23_object);
+			}
+		} else if(var_2_string == "restore") {
+			var_0_bool = false;
 		}
-		if(var_7_bool != 0) {
-			var_23_object = Obj();
-			func_109(var_23_object);
-			RemoveActor(var_23_object);
-		}
-	} else {
-		var_27_bool = var_2_string == "restore";
-		if(var_27_bool == 0) goto Label_87;
-		var_0_bool = false;
-	}
-Label_87:
-	return 2;
 	
+	}
+
 }
 
 
-main(var_0_bool, var_1_bool)
+void func_104(bool var_2_bool)
 {
-	sync();
-	var_2_bool = 0;
-	func_104(var_2_bool);
-	var_5_bool = var_2_bool == 0; //@nz
-	if(var_5_bool != 0) {
-		SetVisibility((bool)1);
-		var_1_bool = true;
-	} else {
-		var_1_bool = false;
-	}
-	func_56();
-	return 0;
-	
-}
-
-
-func_104(var_2_bool)
-{
-	var_3_bool = 0; var_4_bool = 0;
-	IsLoaded(var_4_bool);
+	bool var_4_bool;
+	@IsLoaded(var_4_bool);
 	var_4_bool = var_2_bool;
-	return 2;
 }
 
 
-func_12(var_9_bool)
+void func_12(bool var_9_bool)
 {
-	var_10_int = 0; var_11_int = 0; var_12_int = 0; var_13_int = 0;
-	GetItemCountOfType(var_12_int, "d5q01_heart");
-	var_15_bool = var_12_int == 0; //@nz
-	if(var_15_bool != 0) {
-		var_9_bool = 1;
-		return 4;
-	}
-	GetVariable("d5q01", var_13_int);
-	var_17_bool = 0; var_18_int = 0;
+	int var_12_int;
+	@GetItemCountOfType(var_12_int, "d5q01_heart");
+	if(!var_12_int) //@nz
+		var_9_bool = true;
+	int var_13_int;
+	@GetVariable("d5q01", var_13_int);
+	bool var_17_bool; int var_18_int;
 	var_13_int = var_18_int;
 	func_115(var_17_bool, var_18_int);
 	var_9_bool = !var_17_bool;
-	return 4;
 }
 
 
-func_109(var_23_object)
+void func_109(object var_23_object)
 {
-	var_24_object = Obj(); var_25_object = Obj();
-	self(var_25_object);
+	object var_25_object;
+	@self(var_25_object);
 	var_25_object = var_23_object;
-	return 2;
 }
 EMIT "Stack[-1] = 0";
 
 
-func_115(var_17_bool, var_18_int)
+// @pe
+void func_115(bool var_17_bool, int var_18_int)
 {
-	var_17_bool = 0;
-	var_20_bool = var_18_int >= (int)1;
-	if(var_20_bool != 0) {
-		var_22_bool = var_18_int < (int)1000;
-		if(var_22_bool != 0) {
-			var_17_bool = 1;
-		}
+	var_17_bool = false;
+	if(var_18_int >= 1) {
+		if(var_18_int < 1000)
+			var_17_bool = true;
 	}
-	return 0;
 }
 
 
-func_88()
+void func_88(void)
 {
-	var_4_bool = 0;
-	var_4_bool = 0;
-	var_5_bool = var_0_bool;
-	if(var_5_bool != 0) {
-		var_6_bool = 0;
+	bool var_4_bool = false;
+	if(var_0_bool != 0) {
+		bool var_6_bool;
 		func_12(var_6_bool);
-		if(var_6_bool != 0) {
-			var_4_bool = 1;
-		}
+		if(var_6_bool != 0)
+			var_4_bool = true;
 	}
 	if(var_4_bool != 0) {
-		var_20_object = Obj();
+		object var_20_object;
 		func_109(var_20_object);
-		RemoveActor(var_20_object);
+		@RemoveActor(var_20_object);
 	}
-	return 0;
 }
 
 
-func_56()
+void func_56(void)
 {
 	
-Label_56:
-	Hold();
-	goto Label_56;
+	for(;;) {
+		@Hold();
+	}
 }
 EMIT "Return(); Pop(0)";
 

@@ -1,360 +1,248 @@
-// @IMPORTS: SetBackground/1,SetOwnerDraw/1,ProcessEvents/0,SendToParent/0,Blit/3,Print/4,StretchBlit/5,SendMessageToParent/1,ClientToScreen/2,GetWindowSize/2,SetMousePos/2,SendMessage/2,GetCursorPos/2,SetTooltip/2,GetItemImage/2,LoadImage/1,SetTooltip/3
-// @STRINGS: W:default|W:/|W:disabled|W:$parent|A:get|W:selected|A:GetItemID|W:l_slot0|W:l_slot|W:r_slot0|W:r_slot
-// @RUN_OP: 0x0
-// @RUN_TASK: 0
-// @TASK_0: vars=int,int,object,bool,string,bool,bool,string,string,string,string,int params=0
-// @EVENT_15: op=0xf vars=int,int,float
-// @EVENT_0: op=0x13 vars=
-// @EVENT_2: op=0x36 vars=int,int
-// @EVENT_6: op=0x3b vars=int,int
-// @EVENT_3: op=0x40 vars=int,int
-// @EVENT_9: op=0x54 vars=
-// @EVENT_200: op=0xa7 vars=int,string,object
-// @PE: 0xf,0x36,0x3b,0x40,0x149,0x159
-
-task_0_event_15(var_0_int, var_1_int, var_2_object, var_3_bool, var_4_string, var_5_bool, var_6_bool, var_7_string, var_8_string, var_9_string, var_10_string, var_11_int, var_12_int, var_13_int, var_14_float)
+maintask task_0
 {
-	SendToParent();
-	return 0;
-}
-
-
-task_0_event_0(var_0_int, var_1_int, var_2_object, var_3_bool, var_4_string, var_5_bool, var_6_bool, var_7_string, var_8_string, var_9_string, var_10_string, var_11_int)
-{
-	var_12_string = ""; var_13_string = "";
-	var_14_bool = var_2_object == 0; //@nz
-	if(var_14_bool != 0) {
-		return 2;
+	void init(int var_0_int, int var_1_int, object var_2_object, bool var_3_bool, string var_4_string, bool var_5_bool, bool var_6_bool, string var_7_string, string var_8_string, string var_9_string, string var_10_string, int var_11_int)
+	{
+		var_2_object = null;
+		var_0_int = 0;
+		var_1_int = 1;
+		var_3_bool = false;
+		var_5_bool = false;
+		var_11_int = 0;
+		@SetBackground("default");
+		@SetOwnerDraw(true);
+		@ProcessEvents();
 	}
-	Blit(var_4_string, (int)1, (int)1);
-	var_17_bool = 0;
-	var_17_bool = 0;
-	var_19_bool = var_1_int > (int)1;
-	if(var_19_bool != 0) {
-		var_20_bool = var_3_bool == 0; //@nz
-		if(var_20_bool != 0) {
-			var_17_bool = 1;
+
+	// @pe
+	void OnPlayerHolsterWeapon(int var_0_int, int var_1_int, object var_2_object, bool var_3_bool, string var_4_string, bool var_5_bool, bool var_6_bool, string var_7_string, string var_8_string, string var_9_string, string var_10_string, int var_11_int, int var_12_int, int var_13_int, float var_14_float)
+	{
+		@SendToParent();
+	}
+
+	void OnUse(int var_0_int, int var_1_int, object var_2_object, bool var_3_bool, string var_4_string, bool var_5_bool, bool var_6_bool, string var_7_string, string var_8_string, string var_9_string, string var_10_string, int var_11_int)
+	{
+		if(!var_2_object) //@nz
+			return 2;
+		@Blit(var_4_string, 1, 1);
+		bool var_17_bool = false;
+		if(var_1_int > 1) {
+			if(!var_3_bool) //@nz
+				var_17_bool = true;
+		}
+		if(var_17_bool != 0)
+			@Print("default", 2, 35, ((var_0_int + "/") + var_1_int));
+		if(var_3_bool != 0)
+			@StretchBlit("disabled", 1, 1, 50, 50);
+	}
+
+	// @pe
+	void OnStopSee(int var_0_int, int var_1_int, object var_2_object, bool var_3_bool, string var_4_string, bool var_5_bool, bool var_6_bool, string var_7_string, string var_8_string, string var_9_string, string var_10_string, int var_11_int, int var_12_int, int var_13_int)
+	{
+		@SendMessageToParent(0);
+	}
+
+	// @pe
+	void OnUnload(int var_0_int, int var_1_int, object var_2_object, bool var_3_bool, string var_4_string, bool var_5_bool, bool var_6_bool, string var_7_string, string var_8_string, string var_9_string, string var_10_string, int var_11_int, int var_12_int, int var_13_int)
+	{
+		@SendMessageToParent(1);
+	}
+
+	// @pe
+	void OnHear(int var_0_int, int var_1_int, object var_2_object, bool var_3_bool, string var_4_string, bool var_5_bool, bool var_6_bool, string var_7_string, string var_8_string, string var_9_string, string var_10_string, int var_11_int, int var_12_int, int var_13_int)
+	{
+	}
+
+	void OnGameTime(int iID, int var_1_int, object var_2_object, bool var_3_bool, string var_4_string, bool var_5_bool, bool var_6_bool, string var_7_string, string var_8_string, string var_9_string, string var_10_string, int var_11_int)
+	{
+		int var_13_int;
+		if(!var_5_bool) { //@nz
+			var_6_bool = true;
+			@SendMessageToParent(-20);
+
+			while(0 < var_11_int) {
+				string var_18_string; int var_19_int;
+				var_13_int = var_19_int;
+				func_329(var_18_string, var_19_int);
+				@SendMessage(-5, var_18_string);
+				string var_31_string; int var_32_int;
+				var_13_int = var_32_int;
+				func_345(var_31_string, var_32_int);
+				@SendMessage(-5, var_31_string);
+				var_13_int += 1;
+			}
+
+			var_5_bool = true;
 		}
 	}
-	if(var_17_bool != 0) {
-		var_22_int = var_0_int + "/";
-		var_13_string = var_22_int + var_1_int;
-		Print("default", (int)2, (int)35, var_13_string);
-	}
-	var_26_bool = var_3_bool;
-	if(var_26_bool != 0) {
-		StretchBlit("disabled", (int)1, (int)1, (int)50, (int)50);
-	}
-	return 2;
-}
 
-
-task_0_event_2(var_0_int, var_1_int, var_2_object, var_3_bool, var_4_string, var_5_bool, var_6_bool, var_7_string, var_8_string, var_9_string, var_10_string, var_11_int, var_12_int, var_13_int)
-{
-	SendMessageToParent((int)0);
-	return 0;
-}
-
-
-task_0_event_6(var_0_int, var_1_int, var_2_object, var_3_bool, var_4_string, var_5_bool, var_6_bool, var_7_string, var_8_string, var_9_string, var_10_string, var_11_int, var_12_int, var_13_int)
-{
-	SendMessageToParent((int)1);
-	return 0;
-}
-
-
-task_0_event_3(var_0_int, var_1_int, var_2_object, var_3_bool, var_4_string, var_5_bool, var_6_bool, var_7_string, var_8_string, var_9_string, var_10_string, var_11_int, var_12_int, var_13_int)
-{
-	return 0;
-}
-
-
-task_0_event_9(var_0_int, var_1_int, var_2_object, var_3_bool, var_4_string, var_5_bool, var_6_bool, var_7_string, var_8_string, var_9_string, var_10_string, var_11_int)
-{
-	var_12_int = 0; var_13_int = 0;
-	var_14_bool = var_5_bool == 0; //@nz
-	if(var_14_bool != 0) {
-		var_6_bool = true;
-		SendMessageToParent((int)-20);
-
-	Label_92:
-		var_16_bool = (int)0 < var_11_int;
-		if(var_16_bool != 0) {
-			var_18_string = ""; var_19_int = 0;
-			var_13_int = var_19_int;
-			func_329(var_18_string, var_19_int);
-			SendMessage((int)-5, var_18_string);
-			var_31_string = ""; var_32_int = 0;
-			var_13_int = var_32_int;
-			func_345(var_31_string, var_32_int);
-			SendMessage((int)-5, var_31_string);
-			var_13_int = var_13_int + (int)1;
-			goto Label_92;
+	void event_200(int var_0_int, int var_1_int, object var_2_object, bool var_3_bool, string var_4_string, bool var_5_bool, bool var_6_bool, string var_7_string, string var_8_string, string var_9_string, string var_10_string, int var_11_int, int var_12_int, string var_13_string, object var_14_object)
+	{
+		int var_16_int;
+		if(var_12_int == -1) {
+			if(var_14_object != null) {
+				var_14_object->get(var_7_string, 0);
+				var_14_object->get(var_8_string, 1);
+				var_14_object->get(var_9_string, 2);
+				var_14_object->get(var_10_string, 3);
+			}
+			return 2;
 		}
-		var_5_bool = true;
-	}
-	return 2;
-}
-
-
-task_0_event_200(var_0_int, var_1_int, var_2_object, var_3_bool, var_4_string, var_5_bool, var_6_bool, var_7_string, var_8_string, var_9_string, var_10_string, var_11_int, var_12_int, var_13_string, var_14_object)
-{
-	var_15_int = 0; var_16_int = 0;
-	var_18_bool = var_12_int == (int)-1;
-	if(var_18_bool != 0) {
-		var_19_bool = var_14_object != 0; //@nn
-		if(var_19_bool != 0) {
-			@@var_14_object:get(var_7_string, (int)0);
-			@@var_14_object:get(var_8_string, (int)1);
-			@@var_14_object:get(var_9_string, (int)2);
-			@@var_14_object:get(var_10_string, (int)3);
+		if(var_12_int == -19) {
+			var_14_object->get(var_11_int, 0);
+			return 2;
 		}
-		return 2;
-	}
-	var_25_bool = var_12_int == (int)-19;
-	if(var_25_bool != 0) {
-		@@var_14_object:get(var_11_int, (int)0);
-		return 2;
-	}
-	var_28_bool = var_12_int == (int)-7;
-	if(var_28_bool != 0) {
-		var_29_bool = var_5_bool;
-		if(var_29_bool != 0) {
+		if(var_12_int == -7) {
+			if(var_5_bool != 0)
+				func_66();
+			return 2;
+		}
+		if(var_12_int == -6) {
+			var_5_bool = true;
+			return 2;
+		}
+		if(var_12_int == -13) {
+			if(var_5_bool != 0)
+				func_113(var_16_int, var_7_string);
+			return 2;
+		}
+		if(var_12_int == -14) {
+			if(var_5_bool != 0)
+				func_113(var_16_int, var_8_string);
+			return 2;
+		}
+		if(var_12_int == -15) {
+			if(var_5_bool != 0)
+				func_113(var_16_int, var_9_string);
+			return 2;
+		}
+		if(var_12_int == -16) {
+			if(var_5_bool != 0)
+				func_113(var_16_int, var_10_string);
+			return 2;
+		}
+		if(var_12_int == -4) {
+			var_5_bool = true;
 			func_66();
-		}
-		return 2;
-	}
-	var_45_bool = var_12_int == (int)-6;
-	if(var_45_bool != 0) {
-		var_5_bool = true;
-		return 2;
-	}
-	var_47_bool = var_12_int == (int)-13;
-	if(var_47_bool != 0) {
-		var_48_bool = var_5_bool;
-		if(var_48_bool != 0) {
-			var_49_string = "";
-			var_49_string = var_7_string;
-			func_113(var_16_int, var_49_string);
-		}
-		return 2;
-	}
-	var_78_bool = var_12_int == (int)-14;
-	if(var_78_bool != 0) {
-		var_79_bool = var_5_bool;
-		if(var_79_bool != 0) {
-			var_80_string = "";
-			var_80_string = var_8_string;
-			func_113(var_16_int, var_80_string);
-		}
-		return 2;
-	}
-	var_82_bool = var_12_int == (int)-15;
-	if(var_82_bool != 0) {
-		var_83_bool = var_5_bool;
-		if(var_83_bool != 0) {
-			var_84_string = "";
-			var_84_string = var_9_string;
-			func_113(var_16_int, var_84_string);
-		}
-		return 2;
-	}
-	var_86_bool = var_12_int == (int)-16;
-	if(var_86_bool != 0) {
-		var_87_bool = var_5_bool;
-		if(var_87_bool != 0) {
-			var_88_string = "";
-			var_88_string = var_10_string;
-			func_113(var_16_int, var_88_string);
-		}
-		return 2;
-	}
-	var_90_bool = var_12_int == (int)-4;
-	if(var_90_bool != 0) {
-		var_5_bool = true;
-		func_66();
-		return 2;
-	}
-	var_92_bool = var_12_int == (int)-5;
-	if(var_92_bool != 0) {
-		var_93_bool = var_6_bool;
-		if(var_93_bool != 0) {
-			var_6_bool = false;
-		} else {
-			var_5_bool = false;
-	}
-		var_95_bool = var_12_int < (int)0;
-		if(var_95_bool != 0) {
 			return 2;
 		}
-		var_97_int = var_12_int & (int)65536;
-		if(var_97_int != 0) {
-			@@var_14_object:get(var_0_int, (int)0);
-			@@var_14_object:get(var_1_int, (int)1);
-			return 2;
-		}
-		var_101_int = var_12_int & (int)16384;
-		if(var_101_int != 0) {
-			SetBackground("selected");
-		} else {
-					SetBackground("default");
-		}
-		var_104_int = var_12_int & (int)32768;
-		if(var_104_int != 0) {
-			var_2_object = 0;
-			SetTooltip((int)-1, "");
-			return 2;
-		}
-		var_108_int = var_12_int & (int)131072;
-		if(var_108_int != 0) {
-			var_3_bool = true;
-		} else {
+		if(var_12_int == -5) {
+			if(var_6_bool != 0)
+				var_6_bool = false;
+			else
+				var_5_bool = false;
+			if(var_12_int < 0)
+				return 2;
+			if((var_12_int & 65536) != 0) {
+				var_14_object->get(var_0_int, 0);
+				var_14_object->get(var_1_int, 1);
+				return 2;
+			}
+			if((var_12_int & 16384) != 0)
+				@SetBackground("selected");
+			else
+				@SetBackground("default");
+			if((var_12_int & 32768) != 0) {
+				var_2_object = null;
+				@SetTooltip(-1, "");
+				return 2;
+			}
+			if((var_12_int & 131072) != 0)
+				var_3_bool = true;
+			else
 				var_3_bool = false;
 
-		}
-		var_2_object = var_14_object;
-		var_109_object = var_2_object;
-		if(var_109_object != 0) {
-			@@@var_2_object:GetItemID(var_16_int);
-			GetItemImage(var_16_int, var_4_string);
-			LoadImage(var_4_string);
-			var_110_bool = var_3_bool;
-			if(var_110_bool != 0) {
-				SetTooltip((int)-1, "");
-			} else {
-				SetTooltip((int)4, "", var_2_object);
-		}
-			SetTooltip((int)-1, "");
+			var_2_object = var_14_object;
+			if(var_2_object != 0) {
+				var_2_object->GetItemID(var_16_int); //@t
+				@GetItemImage(var_16_int, var_4_string);
+				@LoadImage(var_4_string);
+				if(var_3_bool != 0)
+					@SetTooltip(-1, "");
+				else
+					@SetTooltip(4, "", var_2_object);
+				@SetTooltip(-1, "");
 
-		}
-		goto Label_328;
+			}
+			goto Label_328;
 
-	Label_328:
-		return 2;
-	}
-	return 2;
+		Label_328:
+			return 2;
+		}
 	
-}
-
-
-main(var_0_int, var_1_int, var_2_object, var_3_bool, var_4_string, var_5_bool, var_6_bool, var_7_string, var_8_string, var_9_string, var_10_string, var_11_int)
-{
-	var_2_object = 0;
-	var_0_int = 0;
-	var_1_int = 1;
-	var_3_bool = false;
-	var_5_bool = false;
-	var_11_int = 0;
-	SetBackground("default");
-	SetOwnerDraw((bool)1);
-	ProcessEvents();
-	return 0;
-}
-
-
-func_345(var_31_string, var_32_int)
-{
-	var_34_int = var_32_int + (int)1;
-	var_36_bool = var_34_int < (int)10;
-	if(var_36_bool != 0) {
-		var_39_int = var_32_int + (int)1;
-		var_31_string = "r_slot0" + var_39_int;
-		return 0;
 	}
-	var_42_int = var_32_int + (int)1;
-	var_31_string = "r_slot" + var_42_int;
-	return 0;
+
 }
 
 
-func_329(var_18_string, var_19_int)
+// @pe
+void func_345(string var_31_string, int var_32_int)
 {
-	var_21_int = var_19_int + (int)1;
-	var_23_bool = var_21_int < (int)10;
-	if(var_23_bool != 0) {
-		var_26_int = var_19_int + (int)1;
-		var_18_string = "l_slot0" + var_26_int;
-		return 0;
-	}
-	var_29_int = var_19_int + (int)1;
-	var_18_string = "l_slot" + var_29_int;
-	return 0;
+	if((var_32_int + 1) < 10)
+		var_31_string = "r_slot0" + (var_32_int + 1);
+	var_31_string = "r_slot" + (var_32_int + 1);
 }
 
 
-func_66()
+// @pe
+void func_329(string var_18_string, int var_19_int)
 {
-	var_30_int = 0; var_31_int = 0; var_32_int = 0; var_33_int = 0; var_34_int = 0; var_35_int = 0; var_36_int = 0; var_37_int = 0;
-	var_34_int = 0;
-	var_35_int = 0;
-	var_36_int = 0;
-	var_37_int = 0;
-	ClientToScreen(var_34_int, var_35_int);
-	GetWindowSize(var_36_int, var_37_int);
-	var_39_float = var_36_int / (int)2;
-	var_40_int = var_34_int + var_39_float;
-	var_42_float = var_37_int / (int)2;
-	var_43_int = var_35_int + var_42_float;
-	SetMousePos(var_40_int, var_43_int);
-	return 8;
+	if((var_19_int + 1) < 10)
+		var_18_string = "l_slot0" + (var_19_int + 1);
+	var_18_string = "l_slot" + (var_19_int + 1);
 }
 
 
-func_113(var_5_bool, var_49_string)
+void func_66(void)
 {
-	var_50_int = 0; var_51_int = 0; var_52_int = 0; var_53_int = 0; var_54_int = 0; var_55_int = 0; var_56_int = 0; var_57_int = 0; var_58_int = 0; var_59_int = 0; var_60_int = 0; var_61_int = 0;
-	var_63_bool = var_49_string != "";
-	if(var_63_bool != 0) {
+	int var_34_int = 0;
+	int var_35_int = 0;
+	int var_36_int = 0;
+	int var_37_int = 0;
+	@ClientToScreen(var_34_int, var_35_int);
+	@GetWindowSize(var_36_int, var_37_int);
+	@SetMousePos((var_34_int + (var_36_int / 2)), (var_35_int + (var_37_int / 2)));
+}
+
+
+void func_113(bool var_5_bool, string var_49_string)
+{
+	int var_56_int; int var_57_int; int var_58_int; int var_59_int; int var_60_int; int var_61_int;
+	if(var_49_string != "") {
 		var_56_int = 0;
 		var_57_int = 0;
 		var_58_int = 0;
 		var_59_int = 0;
-		ClientToScreen(var_56_int, var_57_int);
-		GetWindowSize(var_58_int, var_59_int);
+		@ClientToScreen(var_56_int, var_57_int);
+		@GetWindowSize(var_58_int, var_59_int);
 		var_60_int = 0;
 		var_61_int = 0;
-		GetCursorPos(var_60_int, var_61_int);
-		var_64_bool = 0;
-		var_64_bool = 0;
-		var_65_bool = 0;
-		var_65_bool = 0;
-		var_66_bool = 0;
-		var_66_bool = 0;
-		var_67_bool = var_60_int > var_56_int;
-		if(var_67_bool != 0) {
-			var_68_bool = var_61_int > var_57_int;
-			if(var_68_bool != 0) {
-				var_66_bool = 1;
-			}
+		@GetCursorPos(var_60_int, var_61_int);
+		bool var_64_bool = false;
+		bool var_65_bool = false;
+		bool var_66_bool = false;
+		if(var_60_int > var_56_int) {
+			if(var_61_int > var_57_int)
+				var_66_bool = true;
 		}
 		if(var_66_bool != 0) {
-			var_69_int = var_56_int + var_58_int;
-			var_70_bool = var_60_int < var_69_int;
-			if(var_70_bool != 0) {
-				var_65_bool = 1;
-			}
+			if(var_60_int < (var_56_int + var_58_int))
+				var_65_bool = true;
 		}
 		if(var_65_bool != 0) {
-			var_71_int = var_57_int + var_59_int;
-			var_72_bool = var_61_int < var_71_int;
-			if(var_72_bool != 0) {
-				var_64_bool = 1;
-			}
+			if(var_61_int < (var_57_int + var_59_int))
+				var_64_bool = true;
 		}
 		if(var_64_bool != 0) {
 			var_5_bool = false;
-			var_74_bool = var_49_string == "$parent";
-			if(var_74_bool != 0) {
-				SendMessageToParent((int)-4);
-			} else {
-				SendMessage((int)-4, var_49_string);
-		}
+			if(var_49_string == "$parent")
+				@SendMessageToParent(-4);
+			else
+				@SendMessage(-4, var_49_string);
 			func_66();
 		}
 		goto Label_166;
 	}
 Label_166:
-	return 12;
 	
 }
 

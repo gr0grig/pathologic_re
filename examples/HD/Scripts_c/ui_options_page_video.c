@@ -1,216 +1,174 @@
-// @IMPORTS: GetTextWidth/3,GetResolution/3,GetCurrentResolution/1,GetCurrentAnisotropic/1,GetGammaCorrection/1,GetPlayerFOV/1,SetOwnerDraw/1,ProcessEvents/0,Print/4,PrintInWidth/9,GetStringByID/2
-// @STRINGS: W:default|W:x|A:get
-// @RUN_OP: 0x51
-// @RUN_TASK: 0
-// @TASK_0: vars=string,string,string,string,bool,bool,bool,int,int,int,int params=0
-// @EVENT_0: op=0x5a vars=
-// @EVENT_200: op=0xea vars=int,string,object
-
-task_0_event_0(var_0_string, var_1_string, var_2_string, var_3_string, var_4_bool, var_5_bool, var_6_bool, var_7_int, var_8_int, var_9_int, var_10_int)
+maintask task_0
 {
-	var_14_string = ""; var_15_int = 0;
-	func_285(var_14_string, (int)110);
-	Print("default", (int)15, (int)12, var_14_string);
-	Print("default", var_7_int, (int)29, var_1_string);
-	var_23_string = ""; var_24_int = 0;
-	func_285(var_23_string, (int)112);
-	Print("default", (int)15, (int)62, var_23_string);
-	Print("default", var_9_int, (int)62, var_2_string);
-	var_30_string = ""; var_31_int = 0;
-	func_285(var_30_string, (int)103);
-	Print("default", (int)15, (int)112, var_30_string);
-	Print("default", var_10_int, (int)112, var_0_string);
-	var_37_string = ""; var_38_int = 0;
-	func_285(var_37_string, (int)113);
-	Print("default", (int)15, (int)162, var_37_string);
-	Print("default", var_8_int, (int)162, var_3_string);
-	var_44_string = ""; var_45_int = 0;
-	func_285(var_44_string, (int)114);
-	Print("default", (int)15, (int)223, var_44_string);
-	var_49_string = ""; var_50_int = 0;
-	func_285(var_49_string, (int)102);
-	Print("default", (int)15, (int)249, var_49_string);
-	var_54_string = ""; var_55_int = 0;
-	func_285(var_54_string, (int)111);
-	Print("default", (int)15, (int)275, var_54_string);
-	var_59_string = ""; var_60_int = 0;
-	func_285(var_59_string, (int)115);
-	Print("default", (int)15, (int)300, var_59_string);
-	var_64_string = ""; var_65_int = 0;
-	func_285(var_64_string, (int)116);
-	Print("default", (int)15, (int)325, var_64_string);
-	var_69_string = ""; var_70_int = 0;
-	func_285(var_69_string, (int)117);
-	Print("default", (int)15, (int)351, var_69_string);
-	var_74_string = ""; var_75_int = 0;
-	func_285(var_74_string, (int)118);
-	Print("default", (int)15, (int)375, var_74_string);
-	var_76_bool = 0;
-	var_76_bool = 1;
-	var_77_bool = 0;
-	var_77_bool = 1;
-	var_78_bool = var_6_bool;
-	if(var_78_bool != 1) {
-		var_79_bool = var_4_bool;
-		if(var_79_bool != 1) {
-			var_77_bool = 0;
-		}
+	void init(string var_0_string, string var_1_string, string var_2_string, string var_3_string, bool var_4_bool, bool var_5_bool, bool var_6_bool, int var_7_int, int var_8_int, int var_9_int, int var_10_int)
+	{
+		@SetOwnerDraw(true);
+		func_55();
+		@ProcessEvents();
 	}
-	if(var_77_bool != 1) {
-		var_80_bool = var_5_bool;
-		if(var_80_bool != 1) {
-			var_76_bool = 0;
-		}
-	}
-	if(var_76_bool != 0) {
-		var_86_string = ""; var_87_int = 0;
-		func_285(var_86_string, (int)119);
-		PrintInWidth((int)50, "default", (int)15, (int)410, (int)300, var_86_string, (float)0.8999999761581421, (float)0.0, (float)0.0);
-	}
-	return 0;
-}
 
-
-task_0_event_200(var_0_string, var_1_string, var_2_string, var_3_string, var_4_bool, var_5_bool, var_6_bool, var_7_int, var_8_int, var_9_int, var_10_int, var_11_int, var_12_string, var_13_object)
-{
-	var_14_float = 0; var_15_float = 0;
-	var_16_bool = var_13_object != 0; //@nn
-	if(var_16_bool != 0) {
-		@@var_13_object:get(var_15_float, (int)0);
-		var_19_bool = var_11_int == (int)100;
-		if(var_19_bool != 0) {
-			var_20_float = 0;
-			var_15_float = var_20_float;
-			func_11(var_14_float, var_15_float, var_20_float);
-		} else {
-			var_28_bool = var_11_int == (int)101;
-			if(var_28_bool != 0) {
-				var_29_float = 0;
-				var_15_float = var_29_float;
-				func_21(var_14_float, var_15_float, var_29_float);
-				@@var_13_object:get(var_4_bool, (int)1);
-				goto Label_284;
-			}
-			var_44_bool = var_11_int == (int)103;
-			if(var_44_bool != 0) {
-				var_45_float = 0;
-				var_15_float = var_45_float;
-				func_35(var_14_float, var_15_float, var_45_float);
-				@@var_13_object:get(var_5_bool, (int)1);
-				goto Label_284;
-			}
-			var_62_bool = var_11_int == (int)104;
-			if(var_62_bool != 0) {
-				var_63_float = 0;
-				var_15_float = var_63_float;
-				func_0(var_14_float, var_15_float, var_63_float);
-				goto Label_284;
-			}
-			var_73_bool = var_11_int == (int)112;
-			if(var_73_bool == 0) goto Label_284;
-			@@var_13_object:get(var_6_bool, (int)1);
+	void OnUse(string var_0_string, string var_1_string, string var_2_string, string var_3_string, bool var_4_bool, bool var_5_bool, bool var_6_bool, int var_7_int, int var_8_int, int var_9_int, int var_10_int)
+	{
+		string var_14_string;
+		func_285(var_14_string, 110);
+		@Print("default", 15, 12, var_14_string);
+		@Print("default", var_7_int, 29, var_1_string);
+		string var_23_string;
+		func_285(var_23_string, 112);
+		@Print("default", 15, 62, var_23_string);
+		@Print("default", var_9_int, 62, var_2_string);
+		string var_30_string;
+		func_285(var_30_string, 103);
+		@Print("default", 15, 112, var_30_string);
+		@Print("default", var_10_int, 112, var_0_string);
+		string var_37_string;
+		func_285(var_37_string, 113);
+		@Print("default", 15, 162, var_37_string);
+		@Print("default", var_8_int, 162, var_3_string);
+		string var_44_string;
+		func_285(var_44_string, 114);
+		@Print("default", 15, 223, var_44_string);
+		string var_49_string;
+		func_285(var_49_string, 102);
+		@Print("default", 15, 249, var_49_string);
+		string var_54_string;
+		func_285(var_54_string, 111);
+		@Print("default", 15, 275, var_54_string);
+		string var_59_string;
+		func_285(var_59_string, 115);
+		@Print("default", 15, 300, var_59_string);
+		string var_64_string;
+		func_285(var_64_string, 116);
+		@Print("default", 15, 325, var_64_string);
+		string var_69_string;
+		func_285(var_69_string, 117);
+		@Print("default", 15, 351, var_69_string);
+		string var_74_string;
+		func_285(var_74_string, 118);
+		@Print("default", 15, 375, var_74_string);
+		bool var_76_bool = true;
+		bool var_77_bool = true;
+		if(var_6_bool != 1) {
+			if(var_4_bool != 1)
+				var_77_bool = false;
+		}
+		if(var_77_bool != 1) {
+			if(var_5_bool != 1)
+				var_76_bool = false;
+		}
+		if(var_76_bool != 0) {
+			string var_86_string;
+			func_285(var_86_string, 119);
+			@PrintInWidth(50, "default", 15, 410, 300, var_86_string, 0.9, 0.0, 0.0);
 		}
 	}
-Label_284:
-	return 2;
+
+	void event_200(string var_0_string, string var_1_string, string var_2_string, string var_3_string, bool var_4_bool, bool var_5_bool, bool var_6_bool, int var_7_int, int var_8_int, int var_9_int, int var_10_int, int var_11_int, string var_12_string, object var_13_object)
+	{
+		float var_14_float; float var_15_float;
+		if(var_13_object != null) {
+			var_13_object->get(var_15_float, 0);
+			if(var_11_int == 100) {
+				float var_20_float;
+				func_11(var_14_float, var_20_float, var_20_float);
+			} else if(var_11_int == 101) {
+					float var_29_float;
+					func_21(var_14_float, var_29_float, var_29_float);
+					var_13_object->get(var_4_bool, 1);
+			}
+		}
+
 	
+		if(var_11_int == 103) {
+			float var_45_float;
+			func_35(var_14_float, var_45_float, var_45_float);
+			var_13_object->get(var_5_bool, 1);
+		} else if(var_11_int == 104) {
+			float var_63_float;
+			func_0(var_14_float, var_63_float, var_63_float);
+		} else if(var_11_int == 112) {
+			var_13_object->get(var_6_bool, 1);
+		}
+	}
+
 }
 
 
-main(var_0_string, var_1_string, var_2_string, var_3_string, var_4_bool, var_5_bool, var_6_bool, var_7_int, var_8_int, var_9_int, var_10_int)
+void func_0(string var_3_string, int var_8_int, float var_55_float)
 {
-	SetOwnerDraw((bool)1);
-	func_55();
-	ProcessEvents();
-	return 0;
-}
-
-
-func_0(var_3_string, var_8_int, var_55_float)
-{
-	var_56_int = 0; var_57_int = 0; var_58_int = 0; var_59_int = 0;
+	int var_59_int;
 	var_55_float = var_59_int;
-	var_3_string = var_59_int;
-	GetTextWidth(var_58_int, "default", var_3_string);
-	var_63_float = var_58_int / (int)2;
-	var_8_int = (int)305 - var_63_float;
-	return 4;
+	int var_58_int;
+	@GetTextWidth(var_58_int, "default", var_59_int);
+	var_8_int = 305 - (var_58_int / 2);
 }
 
 
-func_35(var_2_string, var_9_int, var_33_float)
+void func_35(string var_2_string, int var_9_int, float var_33_float)
 {
-	var_34_int = 0; var_35_int = 0; var_36_int = 0; var_37_int = 0;
+	int var_37_int;
 	var_33_float = var_37_int;
-	var_39_bool = var_37_int == (int)0;
-	if(var_39_bool != 0) {
-		var_40_string = ""; var_41_int = 0;
-		func_285(var_40_string, (int)124);
+	if(var_37_int == 0) {
+		string var_40_string;
+		func_285(var_40_string, 124);
 		var_2_string = var_40_string;
 	} else {
 		var_2_string = var_37_int;
 	}
-	GetTextWidth(var_36_int, "default", var_2_string);
-	var_47_float = var_36_int / (int)2;
-	var_9_int = (int)305 - var_47_float;
-	return 4;
+	int var_36_int;
+	@GetTextWidth(var_36_int, "default", var_2_string);
+	var_9_int = 305 - (var_36_int / 2);
 	
 }
 
 
-func_11(var_0_string, var_10_int, var_48_float)
+void func_11(string var_0_string, int var_10_int, float var_48_float)
 {
-	var_49_int = 0; var_50_int = 0;
-	var_0_string = var_48_float;
-	GetTextWidth(var_50_int, "default", var_0_string);
-	var_54_float = var_50_int / (int)2;
-	var_10_int = (int)305 - var_54_float;
-	return 2;
+	int var_50_int;
+	@GetTextWidth(var_50_int, "default", var_48_float);
+	var_10_int = 305 - (var_50_int / 2);
 }
 
 
-func_21(var_1_string, var_7_int, var_20_float)
+void func_21(string var_1_string, int var_7_int, float var_20_float)
 {
-	var_21_int = 0; var_22_int = 0; var_23_int = 0; var_24_int = 0; var_25_int = 0; var_26_int = 0;
-	GetResolution(var_20_float, var_24_int, var_25_int);
-	var_28_int = var_24_int + "x";
-	var_1_string = var_28_int + var_25_int;
-	GetTextWidth(var_26_int, "default", var_1_string);
-	var_31_int = (int)332 - var_26_int;
-	var_7_int = var_31_int / (int)2;
-	return 6;
+	int var_24_int; int var_25_int;
+	@GetResolution(var_20_float, var_24_int, var_25_int);
+	int var_26_int;
+	@GetTextWidth(var_26_int, "default", ((var_24_int + "x") + var_25_int));
+	var_7_int = (332 - var_26_int) / 2;
 }
 
 
-func_55()
+void func_55(void)
 {
-	var_12_float = 0; var_13_float = 0; var_14_float = 0; var_15_float = 0; var_16_float = 0; var_17_float = 0; var_18_float = 0; var_19_float = 0;
-	GetCurrentResolution(var_16_float);
-	var_20_float = 0;
+	float var_16_float;
+	@GetCurrentResolution(var_16_float);
+	float var_20_float;
 	var_16_float = var_20_float;
+	float var_18_float;
+	float var_19_float;
 	func_21(var_18_float, var_19_float, var_20_float);
-	GetCurrentAnisotropic(var_17_float);
-	var_33_float = 0;
+	float var_17_float;
+	@GetCurrentAnisotropic(var_17_float);
+	float var_33_float;
 	var_17_float = var_33_float;
 	func_35(var_18_float, var_19_float, var_33_float);
-	GetGammaCorrection(var_18_float);
-	var_48_float = 0;
+	@GetGammaCorrection(var_18_float);
+	float var_48_float;
 	var_18_float = var_48_float;
 	func_11(var_18_float, var_19_float, var_48_float);
-	GetPlayerFOV(var_19_float);
-	var_55_float = 0;
-	var_19_float = var_55_float;
-	func_0(var_18_float, var_19_float, var_55_float);
-	return 8;
+	@GetPlayerFOV(var_19_float);
+	float var_55_float;
+	func_0(var_18_float, var_55_float, var_55_float);
 }
 
 
-func_285(var_40_string, var_41_int)
+void func_285(string var_40_string, int var_41_int)
 {
-	var_42_string = ""; var_43_string = "";
-	GetStringByID(var_43_string, var_41_int);
+	string var_43_string;
+	@GetStringByID(var_43_string, var_41_int);
 	var_43_string = var_40_string;
-	return 2;
 }
 
 

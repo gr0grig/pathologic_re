@@ -4100,22 +4100,13 @@ class PathologicPseudoC:
 
 
 	def _build_metadata_header(self):
-		"""Build metadata header with info the compiler needs for round-trip."""
+		"""Build minimal metadata header — only what the compiler cannot derive from code.
+		Most metadata (imports, strings, run_op, run_task, event op=) is now derived
+		by the compiler from declaration order, maintask keyword, and code analysis."""
 		script = self.phl.script
 		lines = []
 
-		# Import order with arg counts (original binary order, supports duplicates)
-		import_parts = [f'{f.name}/{f.arg_count}' for f in script.gfunc.funcs]
-		if import_parts:
-			lines.append(f'// @IMPORTS: {",".join(import_parts)}')
-
-		# String pool order (original binary order) with encoding prefix
-		if script.pool.strings:
-			# Use | as separator since strings may contain commas
-			# Each entry: "E:string" where E is A (ASCII) or W (UTF-16LE)
-			lines.append(f'// @STRINGS: {"|".join(f"{enc}:{s}" for enc, s in script.pool.strings)}')
-
-		# Global variables with types and names
+		# Global variables with types and names (compiler cannot reliably infer all types)
 		if script.gvar.GlobalVarCount > 0:
 			gvar_parts = []
 			for gv in script.gvar.GvarTypes:
@@ -4123,36 +4114,6 @@ class PathologicPseudoC:
 				var_name = gv.str if gv.flag else ''
 				gvar_parts.append(f'{gv.index}:{type_str}:{var_name}')
 			lines.append(f'// @GLOBALS: {",".join(gvar_parts)}')
-
-		# RunOp and RunTask (main function starting address and task in original binary)
-		lines.append(f'// @RUN_OP: {hex(script.gtasks.RunOp)}')
-		lines.append(f'// @RUN_TASK: {script.gtasks.RunTask}')
-
-		# Task structure (task vars, params, events with their actual vars and Op addresses)
-		for task in script.gtasks.tasks:
-			task_types = [var_type_name(x) for x in task.VarTypes]
-			task_types_str = ','.join(task_types) if task_types else ''
-			lines.append(f'// @TASK_{task.index}: vars={task_types_str} params={task.ParmCount}')
-			for ev in task.events:
-				ev_types = [var_type_name(x) for x in ev.pVarTypes]
-				ev_types_str = ','.join(ev_types) if ev_types else ''
-				lines.append(f'// @EVENT_{ev.ulEventID}: op={hex(ev.ulOp)} vars={ev_types_str}')
-
-		# Standalone events (not part of any task) — GlobEvents section
-		if script.gevents.EventCount > 0:
-			for ev in script.gevents.events:
-				ev_types = [var_type_name(x) for x in ev.pVarTypes]
-				ev_types_str = ','.join(ev_types) if ev_types else ''
-				lines.append(f'// @STANDALONE_EVENT_{ev.ulEventID}: op={hex(ev.ulOp)} vars={ev_types_str}')
-
-		# Dead code is now emitted via EMIT statements (computed in _compute_dead_code)
-		# Keep @DEAD in header for backward compat only if no EMIT is used
-		# (currently always using EMIT, so no @DEAD lines emitted)
-
-		# PushEmpty annotation: list function addresses that start with PushV
-		pe_addrs = self._find_pushempty_funcs()
-		if pe_addrs:
-			lines.append(f'// @PE: {",".join(hex(a) for a in pe_addrs)}')
 
 		if lines:
 			return '\n'.join(lines) + '\n\n'
@@ -4301,6 +4262,11 @@ class PathologicPseudoC:
 
 	def _print_func_block(self, node, trailing_dead, indent=''):
 		"""Print a single function block with optional indentation."""
+		# Emit @pe annotation if this function needs a bare PushEmpty
+		pe_addrs = getattr(self, '_pe_addrs', set())
+		if node.addr in pe_addrs:
+			self.printed += f'{indent}// @pe\n'
+
 		# Capture printed output for this function
 		saved = self.printed
 		self.printed = ''
@@ -4328,6 +4294,9 @@ class PathologicPseudoC:
 
 		# Emit metadata header for compiler round-trip
 		self.printed += self._build_metadata_header()
+
+		# Pre-compute PE addresses for per-function @pe annotations
+		self._pe_addrs = set(self._find_pushempty_funcs())
 
 		# Compute dead code: inline (mid-function) and trailing (boundary)
 		inline_dead, trailing_dead = self._compute_dead_code()

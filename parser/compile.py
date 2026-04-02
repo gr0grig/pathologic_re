@@ -410,7 +410,7 @@ def is_default_value(vtype: str, expr) -> bool:
 
 
 class Parser:
-    def __init__(self, tokens: List[Token], pi_lines: set = None, ne_lines: set = None, nz_lines: set = None, nn_lines: set = None, t_lines: set = None):
+    def __init__(self, tokens: List[Token], pi_lines: set = None, ne_lines: set = None, nz_lines: set = None, nn_lines: set = None, t_lines: set = None, pe_lines: set = None):
         self.tokens = tokens
         self.pos = 0
         self.pi_lines = pi_lines or set()
@@ -418,6 +418,7 @@ class Parser:
         self.nz_lines = nz_lines or set()
         self.nn_lines = nn_lines or set()
         self.tobjfunc_lines = t_lines or set()
+        self.pe_lines = pe_lines or set()  # lines with // @pe (PushEmpty annotation)
 
     def error(self, msg):
         t = self.tokens[min(self.pos, len(self.tokens)-1)]
@@ -480,6 +481,8 @@ class Parser:
 
     def parse_program(self) -> Program:
         funcs = []
+        maintask_id = None
+        decl_order = 0
         while not self.at(TT.EOF):
             if self.at(TT.EMIT):
                 # Top-level EMIT: attach as trailing dead code to preceding function
@@ -492,12 +495,15 @@ class Parser:
                     funcs[-1].trailing_emits.append(text)
             elif self.at(TT.IDENT) and self.cur().value in ('maintask', 'task'):
                 # Task block: maintask task_N { ... } or task task_N { ... }
+                is_maintask = self.cur().value == 'maintask'
                 self.advance()  # skip maintask/task
                 task_name = self.expect(TT.IDENT).value  # task_N
                 self.expect(TT.LBRACE)
                 # Extract task index from name
                 m = re.match(r'task_(\d+)', task_name)
                 task_prefix = task_name + '_' if m else ''
+                if is_maintask and m:
+                    maintask_id = int(m.group(1))
                 # Parse function definitions inside task block
                 while not self.at(TT.RBRACE, TT.EOF):
                     if self.at(TT.EMIT):
@@ -513,18 +519,29 @@ class Parser:
                         # Prefix event names with task_N_ for internal naming
                         if fn.name != 'init' and fn.name != 'main':
                             fn.name = task_prefix + fn.name
+                        fn._decl_order = decl_order
+                        decl_order += 1
                         funcs.append(fn)
                     else:
                         self.advance()
                 if self.at(TT.RBRACE):
                     self.advance()
             elif self._is_func_def():
-                funcs.append(self.parse_func_def())
+                fn = self.parse_func_def()
+                fn._decl_order = decl_order
+                decl_order += 1
+                funcs.append(fn)
             else:
                 self.advance()
-        return Program(funcs)
+        prog = Program(funcs)
+        prog.maintask_id = maintask_id
+        return prog
 
     def parse_func_def(self) -> FuncDef:
+        # Check if this function has a // @pe annotation on the preceding line(s)
+        func_first_line = self.cur().line
+        has_pe = any(l in self.pe_lines for l in range(max(1, func_first_line - 3), func_first_line))
+
         # Skip optional return type (void, int, etc.)
         if self.at(TT.IDENT) and self.cur().value in (TYPE_NAMES | {'void'}):
             next_tok = self.peek(1)
@@ -548,7 +565,10 @@ class Parser:
         # Consume closing brace; tolerate its absence due to decompiler brace mismatch
         if self.at(TT.RBRACE):
             self.advance()
-        return FuncDef(name, params, body)
+        fn = FuncDef(name, params, body)
+        if has_pe:
+            fn._has_pe = True
+        return fn
 
     def _parse_param(self):
         """Parse a single function parameter: 'type name' or 'name'."""
@@ -1700,6 +1720,7 @@ class CodeGen:
         self.import_order: List[str] = []
         self.strings_used: List[str] = []
         self.string_set: Set[str] = set()
+        self.string_encoding: Dict[str, str] = {}  # string → 'A' (ASCII) or 'W' (Wide)
         self.subroutine_names: Set[str] = set()  # func_N names
         self.subroutine_defs: Dict[str, FuncDef] = {}
         self.tasks: Dict[int, Dict] = {}  # task_id → {params: int, events: {event_id: {op, vars}}}
@@ -1743,10 +1764,11 @@ class CodeGen:
         self._temp_counter += 1
         return f'__tmp_{self._temp_counter}_{vtype}'
 
-    def _add_string(self, s: str):
+    def _add_string(self, s: str, encoding: str = 'W'):
         if s not in self.string_set:
             self.string_set.add(s)
             self.strings_used.append(s)
+            self.string_encoding[s] = encoding
 
     def _add_import(self, name: str, argc: int):
         key = f'{name}_{argc}'
@@ -1792,17 +1814,29 @@ class CodeGen:
         if tid is None:
             return None
         # For run_task (main function), use accumulated vars from all child tasks
-        run_task = self.metadata.get('run_task')
+        run_task = getattr(self, 'run_task', self.metadata.get('run_task'))
         if tid == run_task:
             acc = self.metadata.get('_accumulated_task_vars', [])
-            if idx < len(acc):
+            if acc and idx < len(acc):
                 return acc[idx]
+            # Fallback: use main task vars
+            if idx < len(self._main_task_vars):
+                return self._main_task_vars[idx]
             return None
         meta_tasks = self.metadata.get('tasks', {})
         tinfo = meta_tasks.get(tid, {})
         tvars = tinfo.get('vars', [])
-        if idx < len(tvars):
+        if tvars and idx < len(tvars):
             return tvars[idx]
+        # Fallback: use task_var_counts to derive types
+        tvc = self._task_var_counts.get(tid, 0) if hasattr(self, '_task_var_counts') else 0
+        if idx < tvc:
+            # Try to get from any event handler's param types
+            task_info = self.tasks.get(tid, {})
+            for eid, ev in task_info.get('events', {}).items():
+                all_vars = ev.get('vars', [])
+                if idx < len(all_vars):
+                    return all_vars[idx]
         return None
 
     def _capture_caller_stack(self, captured: list = None) -> list:
@@ -1841,19 +1875,23 @@ class CodeGen:
                 tid = int(m_task_event.group(1))
                 eid = int(m_task_event.group(2))
                 if tid not in self.tasks:
-                    self.tasks[tid] = {'params': 0, 'vars': [], 'events': {}}
+                    self.tasks[tid] = {'params': 0, 'vars': [], 'events': {}, 'event_order': []}
                 self.tasks[tid]['events'][eid] = {
                     'vars': [extract_var_type(p[0]) for p in fn.params]
                 }
+                if eid not in self.tasks[tid].get('event_order', []):
+                    self.tasks[tid].setdefault('event_order', []).append(eid)
             elif m_standalone_event:
                 # Standalone event_N — belongs to RunTask
                 eid = int(m_standalone_event.group(1))
                 # Defer task assignment until RunTask is known; use -1 as placeholder
                 if -1 not in self.tasks:
-                    self.tasks[-1] = {'params': 0, 'vars': [], 'events': {}}
+                    self.tasks[-1] = {'params': 0, 'vars': [], 'events': {}, 'event_order': []}
                 self.tasks[-1]['events'][eid] = {
                     'vars': [extract_var_type(p[0]) for p in fn.params]
                 }
+                if eid not in self.tasks[-1].get('event_order', []):
+                    self.tasks[-1].setdefault('event_order', []).append(eid)
             elif fn.name == 'main':
                 # Store task vars from main's params
                 self._main_task_vars = [extract_var_type(p[0]) for p in fn.params]
@@ -1918,10 +1956,11 @@ class CodeGen:
                     and not re.match(r'(task_\d+_)?event_\d+$', e.name) \
                     and e.name not in MATH_FUNCS:
                 if e.name in OBJFUNC_ONLY:
-                    self._add_string(e.name)  # ObjFunc uses string dispatch
+                    self._add_string(e.name, encoding='A')  # ObjFunc uses string dispatch (ASCII)
                 else:
                     self._add_import(e.name, len(e.args))
         elif isinstance(e, ObjMethodCall):
+            self._add_string(e.method, encoding='A')  # Method names are ASCII
             self._collect_expr(e.obj)
             for a in e.args:
                 self._collect_expr(a)
@@ -1973,9 +2012,12 @@ class CodeGen:
             if tid not in self.tasks:
                 self.tasks[tid] = {'params': mt.get('params', 0), 'vars': mt.get('vars', []), 'events': {}}
 
-        # Determine RunTask: prefer metadata, fallback to heuristic
+        # Determine RunTask: prefer maintask keyword from parser, then metadata, then heuristic
+        parsed_maintask = getattr(self.program, 'maintask_id', None)
         meta_run_task = self.metadata.get('run_task')
-        if meta_run_task is not None:
+        if parsed_maintask is not None:
+            self.run_task = parsed_maintask
+        elif meta_run_task is not None:
             self.run_task = meta_run_task
         else:
             task_ids_with_events = sorted(k for k in self.tasks.keys() if k >= 0)
@@ -1987,57 +2029,75 @@ class CodeGen:
             self.standalone_events = self.tasks[-1].get('events', {})
             del self.tasks[-1]
 
-        # Build function ordering using original binary addresses from metadata.
-        # Each function gets its original address for sorting:
-        #   - subroutines: from func_NN name
-        #   - main: from metadata @RUN_OP
-        #   - events: from metadata @EVENT_N: op=0xNN
+        # Build function ordering.
+        # Prefer declaration order from C file (matches binary order when decompiler
+        # emits in binary order). Fall back to metadata addresses for legacy C files.
         meta_run_op = self.metadata.get('run_op')
         meta_events = self.metadata.get('events', {})
-
-        all_funcs = []
-        for fn in subroutines:
-            m = re.match(r'func_(\d+)', fn.name)
-            addr = int(m.group(1)) if m else 0
-            all_funcs.append((addr, fn))
-
-        if main_fn:
-            main_addr = meta_run_op if meta_run_op is not None else 0
-            all_funcs.append((main_addr, main_fn))
-
         meta_task_events = self.metadata.get('task_events', {})
         meta_standalone = self.metadata.get('standalone_events', {})
 
-        for fn in events:
-            # Try to get Op address from metadata
-            m_evt = re.match(r'task_(\d+)_event_(\d+)', fn.name)
-            m_se = re.match(r'event_(\d+)', fn.name)
-            eid = None
-            tid = None
-            if m_evt:
-                tid = int(m_evt.group(1))
-                eid = int(m_evt.group(2))
-            elif m_se:
-                eid = int(m_se.group(1))
-            # Look up per-task event metadata first (avoids overwrite when multiple
-            # tasks share the same event ID), then fall back to global events dict
-            ev_meta = {}
-            if tid is not None and tid in meta_task_events:
-                ev_meta = meta_task_events[tid].get(eid, {})
-            if not ev_meta and eid is not None and eid in meta_standalone:
-                ev_meta = meta_standalone[eid]
-            if not ev_meta:
-                ev_meta = meta_events.get(eid, {}) if eid is not None else {}
-            op_addr = ev_meta.get('op')
-            if op_addr is not None:
-                all_funcs.append((op_addr, fn))
-            else:
-                # Fallback: place events after main and subroutines
-                all_funcs.append((999999 + (eid or 0), fn))
+        # Check if declaration order is available (new-style C files)
+        has_decl_order = any(hasattr(fn, '_decl_order') for fn in self.program.functions)
+
+        all_funcs = []
+        if has_decl_order:
+            # Use declaration order from C file (decompiler emits in binary order)
+            all_fn_list = subroutines + ([main_fn] if main_fn else []) + events
+            for fn in all_fn_list:
+                decl_idx = getattr(fn, '_decl_order', 999999)
+                all_funcs.append((decl_idx, fn))
+        else:
+            # Legacy: use metadata addresses for ordering
+            for fn in subroutines:
+                m = re.match(r'func_(\d+)', fn.name)
+                addr = int(m.group(1)) if m else 0
+                all_funcs.append((addr, fn))
+
+            if main_fn:
+                main_addr = meta_run_op if meta_run_op is not None else 0
+                all_funcs.append((main_addr, main_fn))
+
+            for fn in events:
+                m_evt = re.match(r'task_(\d+)_event_(\d+)', fn.name)
+                m_se = re.match(r'event_(\d+)', fn.name)
+                eid = None
+                tid = None
+                if m_evt:
+                    tid = int(m_evt.group(1))
+                    eid = int(m_evt.group(2))
+                elif m_se:
+                    eid = int(m_se.group(1))
+                ev_meta = {}
+                if tid is not None and tid in meta_task_events:
+                    ev_meta = meta_task_events[tid].get(eid, {})
+                if not ev_meta and eid is not None and eid in meta_standalone:
+                    ev_meta = meta_standalone[eid]
+                if not ev_meta:
+                    ev_meta = meta_events.get(eid, {}) if eid is not None else {}
+                op_addr = ev_meta.get('op')
+                if op_addr is not None:
+                    all_funcs.append((op_addr, fn))
+                else:
+                    all_funcs.append((999999 + (eid or 0), fn))
 
         # Sort all functions by their original binary addresses
         all_funcs.sort(key=lambda x: x[0])
         ordered = [fn for _, fn in all_funcs]
+
+        # Pre-compute task var counts for metadata-free derivation
+        self._task_var_counts = {}
+        if self._main_task_vars:
+            self._task_var_counts[self.run_task] = len(self._main_task_vars)
+        task_handler_params = {}
+        for fn in ordered:
+            m_te = re.match(r'task_(\d+)_event_(\d+)', fn.name)
+            if m_te:
+                tid = int(m_te.group(1))
+                task_handler_params.setdefault(tid, []).append(len(fn.params))
+        for tid, counts in task_handler_params.items():
+            if tid not in self._task_var_counts:
+                self._task_var_counts[tid] = min(counts) if counts else 0
 
         # Pre-pass: build _caller_task_var_maps from AST before compilation.
         # This ensures subroutines compiled BEFORE their callers still get
@@ -2049,6 +2109,7 @@ class CodeGen:
         self.import_order = []
         self.strings_used = []
         self.string_set = set()
+        self.string_encoding = {}
 
         # Build list of original addresses for dead code insertion
         orig_addrs = [addr for addr, _ in all_funcs]
@@ -2452,6 +2513,23 @@ class CodeGen:
         task_events_meta = self.metadata.get('task_events', {})
         events_meta = self.metadata.get('events', {})
 
+        # Pre-compute task var counts for each task (for metadata-free derivation).
+        # For run_task: use main/init param count.
+        # For child tasks: use minimum event handler param count across all handlers.
+        task_var_counts = {}
+        if self._main_task_vars:
+            task_var_counts[self.run_task] = len(self._main_task_vars)
+        # Build per-task min param count from event handlers
+        task_handler_params = {}  # tid -> [param_count, ...]
+        for fn in ordered:
+            m_te = re.match(r'task_(\d+)_event_(\d+)', fn.name)
+            if m_te:
+                tid = int(m_te.group(1))
+                task_handler_params.setdefault(tid, []).append(len(fn.params))
+        for tid, counts in task_handler_params.items():
+            if tid not in task_var_counts:
+                task_var_counts[tid] = min(counts) if counts else 0
+
         def get_task_var_map(fn):
             """Compute task_var_map for a function."""
             tvm = {}
@@ -2463,12 +2541,17 @@ class CodeGen:
                 if m_te and fn.params:
                     tid = int(m_te.group(1))
                     eid = int(m_te.group(2))
+                    # Try metadata first for event vars
                     event_vars = []
                     if tid in task_events_meta and eid in task_events_meta[tid]:
                         event_vars = task_events_meta[tid][eid].get('vars', [])
                     elif eid in events_meta:
                         event_vars = events_meta[eid].get('vars', [])
-                    tvc = len(fn.params) - len(event_vars)
+                    if event_vars:
+                        tvc = len(fn.params) - len(event_vars)
+                    else:
+                        # Derive: task var count from pre-computed map
+                        tvc = task_var_counts.get(tid, 0)
                     for i, (pname, _) in enumerate(fn.params):
                         if i < tvc:
                             tvm[pname] = i
@@ -2607,13 +2690,17 @@ class CodeGen:
             self._current_task_id = tid
             # Get event-specific var count from per-task event metadata
             event_vars = []
-            task_events = self.metadata.get('task_events', {})
-            if tid in task_events and eid in task_events[tid]:
-                event_vars = task_events[tid][eid].get('vars', [])
+            task_events_meta = self.metadata.get('task_events', {})
+            if tid in task_events_meta and eid in task_events_meta[tid]:
+                event_vars = task_events_meta[tid][eid].get('vars', [])
             elif eid in self.metadata.get('events', {}):
                 event_vars = self.metadata['events'][eid].get('vars', [])
-            # Task var count = total params minus event-specific vars
-            task_var_count = len(fn.params) - len(event_vars) if fn.params else 0
+            if event_vars:
+                # Task var count = total params minus event-specific vars
+                task_var_count = len(fn.params) - len(event_vars) if fn.params else 0
+            else:
+                # Derive: use pre-computed task var counts
+                task_var_count = self._task_var_counts.get(tid, 0) if hasattr(self, '_task_var_counts') else 0
         elif fn.name == 'main':
             # Main runs on RunTask — its params ARE the task vars
             task_var_count = len(fn.params) if fn.params else 0
@@ -2725,6 +2812,9 @@ class CodeGen:
         pe_addrs = self.metadata.get('pe_addrs', set())
         orig_addr = getattr(fn, '_orig_addr', None)
         has_pe_in_orig = orig_addr is not None and orig_addr in pe_addrs
+        # Also check for per-function @pe annotation from parser
+        if getattr(fn, '_has_pe', False):
+            has_pe_in_orig = True
         needs_pushempty = has_params or has_event_params or has_pe_in_orig
         body_starts_with_vardecl = fn.body and isinstance(fn.body[0], VarDeclStmt)
         if has_pe_in_orig and body_starts_with_vardecl:
@@ -3899,7 +3989,7 @@ class CodeGen:
         obj_var = getattr(call, 'obj_var', 0)
         obj_var_name = getattr(call, 'obj_var_name', '')
         if is_objfunc:
-            self._add_string(name)
+            self._add_string(name, encoding='A')  # Method names are ASCII
         else:
             self._add_import(name, len(args))
 
@@ -4773,7 +4863,8 @@ class CodeGen:
                         emitted.add(s)
         else:
             for s in self.strings_used:
-                lines.append(f'\tW:{s}')
+                enc = self.string_encoding.get(s, 'W')
+                lines.append(f'\t{enc}:{s}')
         lines.append('')
 
         # Imports — use metadata order if available (supports duplicates with arg counts)
@@ -4838,18 +4929,25 @@ class CodeGen:
                 lines.append(f'\tGTASK_{tid} Vars = ({types_str}) Params = {params}')
             else:
                 lines.append(f'\tGTASK_{tid}  Params = {params}')
-            # Use metadata event order if available, else sorted
+            # Use metadata event order if available, then declaration order, else sorted
             meta_order = meta.get('task_event_order', {}).get(tid, [])
+            decl_order = task.get('event_order', [])
             event_keys = task.get('events', {}).keys()
             if meta_order:
                 ordered_eids = list(meta_order)
-                # Add any events not in metadata order
+                for eid in event_keys:
+                    if eid not in ordered_eids:
+                        ordered_eids.append(eid)
+            elif decl_order:
+                ordered_eids = list(decl_order)
                 for eid in event_keys:
                     if eid not in ordered_eids:
                         ordered_eids.append(eid)
             else:
                 ordered_eids = sorted(event_keys)
             meta_task_ev = meta.get('task_events', {}).get(tid, {})
+            # Task var count for deriving event-specific vars
+            tvc = len(task_vars) if task_vars else 0
             for eid in ordered_eids:
                 ev = task.get('events', {}).get(eid, {})
                 op = hex(ev.get('op', 0))
@@ -4860,7 +4958,9 @@ class CodeGen:
                 elif eid in meta_events:
                     vtypes = meta_events[eid]['vars']
                 else:
-                    vtypes = ev.get('vars', [])
+                    # Derive: event vars = all params minus task vars
+                    all_vars = ev.get('vars', [])
+                    vtypes = all_vars[tvc:] if tvc <= len(all_vars) else all_vars
                 types_str = ', '.join(vtypes)
                 lines.append(f'\t\tEVENT_{eid} Op = {op} Vars = ({types_str})')
         lines.append('')
@@ -5020,12 +5120,13 @@ def _parse_metadata(c_source: str) -> dict:
                     pi_addrs.add(int(part, 16) if part.startswith('0x') else int(part))
             meta['pi_addrs'] = pi_addrs
 
-    # Scan source lines for //@pi, //@ne, //@nz, //@nn, //@t annotations
+    # Scan source lines for //@pi, //@ne, //@nz, //@nn, //@t, // @pe annotations
     pi_lines = set()
     ne_lines = set()
     nz_lines = set()
     nn_lines = set()
     t_lines = set()
+    pe_lines = set()  # lines with // @pe annotation (next function gets PE flag)
     for line_no, line in enumerate(c_source.splitlines(), 1):
         if '//@pi' in line:
             pi_lines.add(line_no)
@@ -5037,6 +5138,9 @@ def _parse_metadata(c_source: str) -> dict:
             nn_lines.add(line_no)
         if '//@t' in line and '//@to' not in line:
             t_lines.add(line_no)
+        stripped = line.strip()
+        if stripped == '// @pe':
+            pe_lines.add(line_no)
     if pi_lines:
         meta['pi_lines'] = pi_lines
     if ne_lines:
@@ -5047,6 +5151,8 @@ def _parse_metadata(c_source: str) -> dict:
         meta['nn_lines'] = nn_lines
     if t_lines:
         meta['t_lines'] = t_lines
+    if pe_lines:
+        meta['pe_lines'] = pe_lines
 
     # Build accumulated task var type list for the run_task
     # The run_task's vars are the concatenation of all child tasks' vars in task_id order
@@ -5373,7 +5479,8 @@ def compile_c_to_asm(c_source: str, reference_asm: str = None) -> str:
     nz_lines = metadata.get('nz_lines', set())
     nn_lines = metadata.get('nn_lines', set())
     t_lines = metadata.get('t_lines', set())
-    parser = Parser(tokens, pi_lines, ne_lines, nz_lines, nn_lines, t_lines)
+    pe_lines = metadata.get('pe_lines', set())
+    parser = Parser(tokens, pi_lines, ne_lines, nz_lines, nn_lines, t_lines, pe_lines)
     program = parser.parse_program()
 
     # Normalize function names: new format -> internal format

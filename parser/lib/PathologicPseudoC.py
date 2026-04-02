@@ -1,6 +1,70 @@
 import re
+import struct
 from PathologicScript import *
 from PathologicHL import *
+
+
+def fmt_float32(val):
+	"""Format a float as the shortest decimal that round-trips through 32-bit float."""
+	f32 = struct.unpack('f', struct.pack('f', val))[0]
+	for prec in range(1, 20):
+		s = f'{f32:.{prec}f}'.rstrip('0').rstrip('.')
+		if '.' not in s:
+			s += '.0'
+		reparsed = struct.unpack('f', struct.pack('f', float(s)))[0]
+		if reparsed == f32:
+			return s
+	return str(f32)
+
+
+# Event ID → Name map (from std.sci)
+EVENT_NAMES = {
+	0: 'OnUse', 1: 'OnSee', 2: 'OnStopSee', 3: 'OnHear', 4: 'OnStopHear',
+	5: 'OnLoad', 6: 'OnUnload', 7: 'OnTimer', 8: 'OnRegionChange',
+	9: 'OnGameTime', 10: 'OnCollision', 12: 'OnMusicChange',
+	13: 'OnPlayerStartShooting', 14: 'OnPlayerStopShooting',
+	15: 'OnPlayerHolsterWeapon', 16: 'OnPropertyChange', 17: 'OnAttacked',
+	18: 'OnAction', 19: 'OnPlayerLand', 20: 'OnPlayerStartWalking',
+	21: 'OnPlayerStopWalking', 22: 'OnHit', 23: 'OnIntersection',
+	24: 'OnKeyDown', 25: 'OnKeyUp', 26: 'OnTrigger', 27: 'OnStopIntersection',
+	28: 'OnActorStuck', 30: 'OnPlayerDamage', 31: 'OnReputationChange',
+	32: 'OnDispose', 33: 'OnInventoryAddItem', 34: 'OnInventoryRemoveItem',
+	35: 'OnInventorySelChange', 36: 'OnPlayerStartAltShooting',
+	37: 'OnPlayerStopAltShooting', 38: 'OnClearPath', 39: 'OnFallDamage',
+	40: 'OnSteal', 41: 'OnDeath', 42: 'OnMessage', 43: 'OnHit2',
+	44: 'OnPlayerEnemy', 45: 'OnLSHAnimationEnd', 1000: 'OnConsole',
+}
+EVENT_IDS = {v: k for k, v in EVENT_NAMES.items()}
+
+# Heuristic event parameter names (from original sources)
+# Maps event_id → list of (type, name) for each parameter
+EVENT_PARAM_NAMES = {
+	0:  [('object', 'actor')],                                    # OnUse
+	1:  [('object', 'actor')],                                    # OnSee
+	2:  [('object', 'actor')],                                    # OnStopSee
+	3:  [('object', 'actor')],                                    # OnHear
+	4:  [('object', 'actor')],                                    # OnStopHear
+	7:  [('int', 'iID'), ('float', 'fTime')],                     # OnTimer
+	9:  [('int', 'iID'), ('float', 'fTime')],                     # OnGameTime
+	10: [('object', 'actor')],                                    # OnCollision
+	16: [('string', 'strProp')],                                  # OnPropertyChange
+	17: [('object', 'actor'), ('int', 'iDamageType'), ('float', 'fDamage')],  # OnAttacked
+	22: [('object', 'actor'), ('int', 'iHitType'), ('float', 'fDamage')],     # OnHit
+	23: [('object', 'actor')],                                    # OnIntersection
+	24: [('int', 'iKey')],                                        # OnKeyDown
+	25: [('int', 'iKey')],                                        # OnKeyUp
+	26: [('string', 'name')],                                     # OnTrigger
+	27: [('object', 'actor')],                                    # OnStopIntersection
+	30: [('object', 'actor'), ('int', 'iDamageType'), ('float', 'fDamage')],  # OnPlayerDamage
+	31: [('string', 'name'), ('float', 'fValue')],                # OnReputationChange
+	38: [('object', 'actor')],                                    # OnClearPath
+	39: [('float', 'fDamage')],                                   # OnFallDamage
+	40: [('object', 'actor')],                                    # OnSteal
+	41: [('object', 'actor')],                                    # OnDeath
+	42: [('string', 'name'), ('int', 'iParam')],                  # OnMessage
+	43: [('object', 'actor'), ('int', 'iHitType'), ('float', 'fDamage')],     # OnHit2
+	45: [('bool', 'bCycled')],                                    # OnLSHAnimationEnd
+}
 
 
 class FakeNode(BasicNode):
@@ -25,12 +89,48 @@ class FakeInstr(INSTRUCTION):
 
 class HLInstructionProlog:
 
-	def __init__(self, name, args):
+	def __init__(self, name, args, event_id=None):
 		self.name = name
 		self.args = args
+		self.event_id = event_id
+		# Build rename map from event heuristics
+		self.rename_map = {}
+		if event_id is not None and event_id in EVENT_PARAM_NAMES:
+			heuristic = EVENT_PARAM_NAMES[event_id]
+			if args:
+				params = [a.strip() for a in args.split(', ') if a.strip()]
+				for idx, param in enumerate(params):
+					if idx < len(heuristic):
+						expected_type, heur_name = heuristic[idx]
+						# Only rename if types match
+						m = re.match(r'var_\d+_(\w+)', param)
+						if m and m.group(1) == expected_type:
+							self.rename_map[param] = heur_name
 
 	def __repr__(self):
-		return f'{self.name}({self.args})'
+		# Add type annotations to parameters
+		if self.args:
+			typed_args = []
+			for arg in self.args.split(', '):
+				arg = arg.strip()
+				if not arg:
+					continue
+				# Check if this param has a heuristic name
+				if arg in self.rename_map:
+					m = re.match(r'var_\d+_(\w+)', arg)
+					type_name = m.group(1) if m else 'object'
+					typed_args.append(f'{type_name} {self.rename_map[arg]}')
+				else:
+					# Extract type from var_N_type naming
+					m = re.match(r'var_\d+_(\w+)', arg)
+					if m:
+						typed_args.append(f'{m.group(1)} {arg}')
+					else:
+						typed_args.append(arg)
+			args_str = ', '.join(typed_args)
+		else:
+			args_str = 'void'
+		return f'void {self.name}({args_str})'
 
 class HLInstructionBlockStart:
 
@@ -81,7 +181,7 @@ class HLInstructionMovB:
 		self.Used = [self.VarOut]
 
 	def __repr__(self):
-		return f'{self.VarOut} = {self.bVal};'
+		return f'{self.VarOut} = {"true" if self.bVal else "false"};'
 
 class HLInstructionMovI:
 
@@ -106,7 +206,7 @@ class HLInstructionMovF:
 		self.Used = [self.VarOut]
 
 	def __repr__(self):
-		return f'{self.VarOut} = {self.fVal};'
+		return f'{self.VarOut} = {fmt_float32(self.fVal)};'
 
 class HLInstructionMovS:
 
@@ -130,7 +230,8 @@ class HLInstructionMovV:
 		self.Used = [self.VarOut]
 
 	def __repr__(self):
-		return f'{self.VarOut} = {str(self.CVector)};'
+		v = self.CVector
+		return f'{self.VarOut} = [{fmt_float32(v.x)}, {fmt_float32(v.y)}, {fmt_float32(v.z)}];'
 
 class HLInstructionMovT:
 
@@ -190,7 +291,7 @@ class HLInstructionTMovF:
 		self.Used = [self.VarOut]
 
 	def __repr__(self):
-		return f'{self.VarOut} = {self.fVal};'
+		return f'{self.VarOut} = {fmt_float32(self.fVal)};'
 
 class HLInstructionTMovS:
 
@@ -214,7 +315,8 @@ class HLInstructionTMovV:
 		self.Used = [self.VarOut]
 
 	def __repr__(self):
-		return f'{self.VarOut} = {str(self.CVector)};'
+		v = self.CVector
+		return f'{self.VarOut} = [{fmt_float32(v.x)}, {fmt_float32(v.y)}, {fmt_float32(v.z)}];'
 
 class HLInstructionTMovT:
 
@@ -278,7 +380,7 @@ class HLInstructionPushB:
 
 	def __repr__(self):
 		suffix = ' //@pi' if self.VarIn == 0 else ''
-		return f'{self.VarOut} = {self.VarIn};{suffix}'
+		return f'{self.VarOut} = {"true" if self.VarIn else "false"};{suffix}'
 
 class HLInstructionPushI:
 
@@ -305,7 +407,7 @@ class HLInstructionPushF:
 
 	def __repr__(self):
 		suffix = ' //@pi' if self.VarIn == 0 or self.VarIn == 0.0 else ''
-		return f'{self.VarOut} = {self.VarIn};{suffix}'
+		return f'{self.VarOut} = {fmt_float32(self.VarIn)};{suffix}'
 
 class HLInstructionPushS:
 
@@ -344,9 +446,9 @@ class HLInstructionPushVec:
 		self.Created = [self.VarOut]
 
 	def __repr__(self):
-		vec = self.CVector
-		suffix = ' //@pi' if vec.x == 0 and vec.y == 0 and vec.z == 0 else ''
-		return f'{self.VarOut} = {str(vec)};{suffix}'
+		v = self.CVector
+		suffix = ' //@pi' if v.x == 0 and v.y == 0 and v.z == 0 else ''
+		return f'{self.VarOut} = [{fmt_float32(v.x)}, {fmt_float32(v.y)}, {fmt_float32(v.z)}];{suffix}'
 
 class HLInstructionPushV:
 
@@ -361,19 +463,7 @@ class HLInstructionPushV:
 			type = var_type_name(var.type)
 			self.Created += [var]
 
-			if type == 'bool' or type == 'int' or type == 'float':
-				value = '0'
-
-			if type == 'string':
-				value = '""'
-
-			if type == 'object':
-				value = 'Obj()'
-
-			if type == 'cvector':
-				value = 'CVector(0,0,0)'
-
-			var_str =  f'{var} = {value};'
+			var_str = f'{type} {var};'
 			self.var_list.append(var_str)
 
 	def __repr__(self):
@@ -453,7 +543,7 @@ class HLInstructionSetNull:
 		self.Used = [self.VarIn]
 
 	def __repr__(self):
-		return f'{self.VarIn} = 0;'
+		return f'{self.VarIn} = null;'
 
 class HLInstructionSetNullT:
 
@@ -464,7 +554,7 @@ class HLInstructionSetNullT:
 		self.Used = [self.VarIn]
 
 	def __repr__(self):
-		return f'{self.VarIn} = 0;'
+		return f'{self.VarIn} = null;'
 
 
 class HLInstructionAdd:
@@ -823,7 +913,7 @@ class HLInstructionNullEq:
 		self.Used = [self.Var]
 
 	def __repr__(self):
-		return f'{self.VarOut} = {self.Var} == 0; //@ne'
+		return f'{self.VarOut} = {self.Var} == null; //@ne'
 
 class HLInstructionNullNeq:
 
@@ -842,7 +932,7 @@ class HLInstructionNullNeq:
 		self.Used = [self.Var]
 
 	def __repr__(self):
-		return f'{self.VarOut} = {self.Var} != 0; //@nn'
+		return f'{self.VarOut} = {self.Var} != null; //@nn'
 
 class HLInstructionNeg:
 
@@ -880,7 +970,7 @@ class HLInstructionNot:
 		self.Used = [self.Var1]
 
 	def __repr__(self):
-		return f'{self.VarOut} = {self.Var1} == 0; //@nz'
+		return f'{self.VarOut} = !{self.Var1}; //@nz'
 
 
 class HLInstructionAdd2:
@@ -1267,7 +1357,7 @@ class HLInstructionNullEq2:
 		self.Used = [self.Var1, self.VarOut]
 
 	def __repr__(self):
-		return f'{self.VarOut} = {self.Var1} == 0; //@ne'
+		return f'{self.VarOut} = {self.Var1} == null; //@ne'
 
 class HLInstructionNullNeq2:
 
@@ -1607,7 +1697,7 @@ class HLInstructionFunc:
 		self.args_str = ', '.join(self.args)
 
 	def __repr__(self):
-		return f'{self.func_name}({self.args_str});'
+		return f'@{self.func_name}({self.args_str});'
 
 
 class HLInstructionObjFunc:
@@ -1631,7 +1721,7 @@ class HLInstructionObjFunc:
 		self.args_str = ', '.join(self.args)
 
 	def __repr__(self):
-		return f'@@{self.obj_var}:{self.func_name}({self.args_str});'
+		return f'{self.obj_var}->{self.func_name}({self.args_str});'
 
 
 class HLInstructionTObjFunc:
@@ -1655,7 +1745,7 @@ class HLInstructionTObjFunc:
 		self.args_str = ', '.join(self.args)
 
 	def __repr__(self):
-		return f'@@@{self.obj_var}:{self.func_name}({self.args_str});'
+		return f'{self.obj_var}->{self.func_name}({self.args_str}); //@t'
 
 
 class HLInstructionEventEnable:
@@ -1665,7 +1755,8 @@ class HLInstructionEventEnable:
 		self.VarIn = opcode.VarIn
 
 	def __repr__(self):
-		return f'EventEnable({self.VarIn});'
+		name = EVENT_NAMES.get(self.VarIn, f'event_{self.VarIn}')
+		return f'enable {name};'
 
 class HLInstructionEventDisable:
 
@@ -1674,7 +1765,8 @@ class HLInstructionEventDisable:
 		self.VarIn = opcode.VarIn
 
 	def __repr__(self):
-		return f'EventDisable({self.VarIn});'
+		name = EVENT_NAMES.get(self.VarIn, f'event_{self.VarIn}')
+		return f'disable {name};'
 
 class HLInstructionFuncExist:
 
@@ -1930,7 +2022,7 @@ class PathologicPseudoC:
 					refs = label_refs.get(target, 0) - 1  # minus this goto
 					if refs > 0:
 						new_lines.append(lines[label_line])  # keep label
-					new_lines.append(f'{indent}while(true) {{')
+					new_lines.append(f'{indent}for(;;) {{')
 					for j in range(label_line + 1, i):
 						if j in exclude_lines:
 							continue
@@ -1971,8 +2063,53 @@ class PathologicPseudoC:
 				return True
 		return False
 
+	@staticmethod
+	def _negate_condition(cond):
+		"""Negate a boolean condition for if-goto → if-else inversion."""
+		cond = cond.strip()
+		# !(expr) → expr
+		if cond.startswith('!('):
+			depth = 0
+			for i in range(1, len(cond)):
+				if cond[i] == '(': depth += 1
+				elif cond[i] == ')': depth -= 1
+				if depth == 0:
+					if i == len(cond) - 1:
+						return cond[2:-1]
+					break
+		# !var → var
+		if cond.startswith('!'):
+			return cond[1:]
+		# Find rightmost top-level comparison operator
+		NEG = {'==': '!=', '!=': '==', '<': '>=', '>': '<=',
+		       '<=': '>', '>=': '<'}
+		depth = 0
+		best_pos = -1
+		best_op = None
+		i = 0
+		while i < len(cond):
+			ch = cond[i]
+			if ch == '(': depth += 1
+			elif ch == ')': depth -= 1
+			elif depth == 0:
+				if i + 1 < len(cond) and cond[i:i+2] in NEG:
+					best_pos = i
+					best_op = cond[i:i+2]
+					i += 2
+					continue
+				if ch in ('<', '>') and (i + 1 >= len(cond) or cond[i+1] != '='):
+					best_pos = i
+					best_op = ch
+			i += 1
+		if best_pos >= 0:
+			lhs = cond[:best_pos].rstrip()
+			rhs = cond[best_pos + len(best_op):].lstrip()
+			return f'{lhs} {NEG[best_op]} {rhs}'
+		# Fallback
+		return f'!({cond})'
+
 	def pass_StructureIfGoto(self, text):
-		RE_IF_GOTO = re.compile(r'^(\s*)if\((.+?) == (\d+)\) goto (Label_\w+);')
+		RE_IF_GOTO = re.compile(r'^(\s*)if\((.+?)\) goto (Label_\w+);')
 		RE_LABEL = re.compile(r'^(\s*)(Label_\w+):')
 		RE_GOTO = re.compile(r'^(\s*)goto (Label_\w+);')
 
@@ -1985,7 +2122,7 @@ class PathologicPseudoC:
 			# Build indexes
 			label_pos = {}       # label_name -> line_index
 			label_refs = {}      # label_name -> count of goto/if-goto refs
-			if_gotos = []        # (line_index, indent, var, val, target_label)
+			if_gotos = []        # (line_index, indent, cond, target_label)
 
 			for i, line in enumerate(lines):
 				m = RE_LABEL.match(line)
@@ -2000,12 +2137,12 @@ class PathologicPseudoC:
 
 				m_if = RE_IF_GOTO.match(line)
 				if m_if:
-					lbl = m_if.group(4)
+					lbl = m_if.group(3)
 					label_refs[lbl] = label_refs.get(lbl, 0) + 1
-					if_gotos.append((i, m_if.group(1), m_if.group(2), m_if.group(3), lbl))
+					if_gotos.append((i, m_if.group(1), m_if.group(2), lbl))
 
 			# Process if-gotos bottom-to-top
-			for if_line, indent, var, val, target_label in reversed(if_gotos):
+			for if_line, indent, cond, target_label in reversed(if_gotos):
 				if target_label not in label_pos:
 					continue
 				target_line = label_pos[target_label]
@@ -2086,11 +2223,10 @@ class PathologicPseudoC:
 
 					if then_empty and else_empty and rest_lines_content:
 						# Degenerate Pattern B: both branches empty, rest has content.
-						# Convert to simple if with rest as body:
-						#   if(cond != val) { rest_content; }
-						inv_val = '1' if val == '0' else '0'
+						# Convert to simple if with negated condition as body.
+						neg_cond = self._negate_condition(cond)
 						new_lines = []
-						new_lines.append(f'{indent}if({var} != {val}) {{')
+						new_lines.append(f'{indent}if({neg_cond}) {{')
 						for j in range(end_label_line + 1, target_line):
 							line_content = lines[j]
 							if line_content.strip():
@@ -2112,13 +2248,13 @@ class PathologicPseudoC:
 						changed = True
 						break
 
-					# Invert condition
-					inv_val = '1' if val == '0' else '0'
+					# Invert condition for if-else
+					neg_cond = self._negate_condition(cond)
 
 					# Build new lines
 					new_lines = []
 					# if header
-					new_lines.append(f'{indent}if({var} != {val}) {{')
+					new_lines.append(f'{indent}if({neg_cond}) {{')
 
 					# then body (if_line+1 to goto_end_line-1, indented)
 					for j in range(body_start, goto_end_line):
@@ -2176,10 +2312,10 @@ class PathologicPseudoC:
 					if not body_ok:
 						continue
 
-					inv_val = '1' if val == '0' else '0'
+					neg_cond = self._negate_condition(cond)
 
 					new_lines = []
-					new_lines.append(f'{indent}if({var} != {val}) {{')
+					new_lines.append(f'{indent}if({neg_cond}) {{')
 
 					# body (if_line+1 to target_line-1, indented)
 					for j in range(body_start, body_end):
@@ -2206,6 +2342,611 @@ class PathologicPseudoC:
 					break
 
 		return '\n'.join(lines)
+
+	def pass_SimplifyAlwaysTrue(self, text):
+		"""Convert always-true conditional gotos to unconditional gotos.
+		if(!false) goto Label; → goto Label;
+		if(false == 0) goto Label; → goto Label;
+		Also remove always-false gotos: if(false) goto Label; → (remove)"""
+		lines = text.split('\n')
+		result = []
+		for line in lines:
+			stripped = line.strip()
+			# Always-true: if(!false) goto Label; or if(false == 0) goto Label;
+			m = re.match(r'^(\s*)if\(!false\) goto (Label_\w+);(.*)', stripped)
+			if not m:
+				m2 = re.match(r'^(\s*)if\(false == 0\) goto (Label_\w+);(.*)', stripped)
+				if m2:
+					m = m2
+			if m:
+				indent = re.match(r'^(\s*)', line).group(1)
+				result.append(f'{indent}goto {m.group(2)};{m.group(3)}')
+				continue
+			# Always-false: if(false) goto Label; → skip
+			if re.match(r'^if\(false\) goto Label_\w+;', stripped):
+				continue
+			result.append(line)
+		return '\n'.join(result)
+
+	def pass_LoopBreak(self, text):
+		"""Convert if-goto at top of for(;;) to break when target is after loop.
+
+		Detects:
+		  for(;;) {
+		      if(COND) goto Label_N;
+		      ... body ...
+		  }
+		  Label_N:
+
+		Converts to:
+		  for(;;) {
+		      if(COND) break;
+		      ... body ...
+		  }
+		"""
+		RE_FOR = re.compile(r'^(\s*)for\(;;\) \{')
+		RE_IF_GOTO = re.compile(r'^(\s*)if\((.+?)\) goto (Label_\w+);')
+		RE_LABEL = re.compile(r'^(\s*)(Label_\w+):')
+
+		lines = text.split('\n')
+		changed = True
+
+		while changed:
+			changed = False
+
+			# Build label ref counts
+			label_refs = {}
+			for line in lines:
+				for m in re.finditer(r'goto (Label_\w+)', line):
+					lbl = m.group(1)
+					label_refs[lbl] = label_refs.get(lbl, 0) + 1
+
+			for i, line in enumerate(lines):
+				m_for = RE_FOR.match(line)
+				if not m_for:
+					continue
+				indent = m_for.group(1)
+
+				# Find first non-empty line inside loop
+				j = i + 1
+				while j < len(lines) and not lines[j].strip():
+					j += 1
+				if j >= len(lines):
+					continue
+				m_ig = RE_IF_GOTO.match(lines[j])
+				if not m_ig:
+					continue
+				ig_indent = m_ig.group(1)
+				cond = m_ig.group(2)
+				target = m_ig.group(3)
+
+				# Find closing brace of for loop
+				depth = 1
+				k = i + 1
+				while k < len(lines) and depth > 0:
+					for ch in lines[k]:
+						if ch == '{': depth += 1
+						elif ch == '}': depth -= 1
+					if depth == 0:
+						break
+					k += 1
+				if depth != 0:
+					continue
+
+				# Check if target label is right after closing brace
+				after = k + 1
+				while after < len(lines) and not lines[after].strip():
+					after += 1
+				if after >= len(lines):
+					continue
+				m_lbl = RE_LABEL.match(lines[after])
+				if not m_lbl or m_lbl.group(2) != target:
+					continue
+
+				# Convert: replace if-goto with break (same condition)
+				lines[j] = f'{ig_indent}if({cond}) break;'
+
+				# Remove label if no longer referenced
+				refs = label_refs.get(target, 0) - 1
+				if refs <= 0:
+					lines[after] = None
+
+				changed = True
+				break
+
+			lines = [l for l in lines if l is not None]
+
+		return '\n'.join(lines)
+
+	def pass_ForToWhile(self, text):
+		"""Convert for(;;) { if(COND) break; ... } to while(!COND) { ... }
+
+		Only converts when the break is the first statement in the loop body.
+		"""
+		RE_FOR = re.compile(r'^(\s*)for\(;;\) \{')
+		RE_IF_BREAK = re.compile(r'^(\s*)if\((.+?)\) break;')
+
+		lines = text.split('\n')
+		changed = True
+
+		while changed:
+			changed = False
+			for i, line in enumerate(lines):
+				m_for = RE_FOR.match(line)
+				if not m_for:
+					continue
+				indent = m_for.group(1)
+				# Find first non-empty line
+				j = i + 1
+				while j < len(lines) and not lines[j].strip():
+					j += 1
+				if j >= len(lines):
+					continue
+				m_brk = RE_IF_BREAK.match(lines[j])
+				if not m_brk:
+					continue
+				cond = m_brk.group(2)
+				neg_cond = self._negate_condition(cond)
+				# Replace for(;;) with while(neg_cond) and remove the break line
+				lines[i] = f'{indent}while({neg_cond}) {{'
+				lines[j] = None
+				changed = True
+				break
+			lines = [l for l in lines if l is not None]
+
+		return '\n'.join(lines)
+
+	def pass_RemoveEmptyForLoops(self, text):
+		"""Remove empty for(;;) {} loops that are truly dead code.
+
+		Only removes empty for(;;) loops whose preceding label (if any) is NOT
+		referenced by any goto in the code. Loops at goto targets are shared
+		return points and must be preserved for correct round-trip.
+		"""
+		RE_FOR = re.compile(r'^(\s*)for\(;;\) \{')
+		RE_CLOSE = re.compile(r'^(\s*)\}')
+		RE_LABEL = re.compile(r'^(\s*)Label_(\d+):')
+
+		lines = text.split('\n')
+
+		# Collect all goto targets
+		goto_targets = set()
+		for line in lines:
+			m = re.search(r'goto Label_(\d+);', line)
+			if m:
+				goto_targets.add(m.group(1))
+
+		changed = True
+		while changed:
+			changed = False
+			i = 0
+			while i < len(lines):
+				m_for = RE_FOR.match(lines[i])
+				if not m_for:
+					i += 1
+					continue
+				indent = m_for.group(1)
+				# Check if the loop body is empty (only blank lines before closing brace)
+				j = i + 1
+				while j < len(lines) and not lines[j].strip():
+					j += 1
+				if j < len(lines):
+					m_close = RE_CLOSE.match(lines[j])
+					if m_close and len(m_close.group(1)) <= len(indent):
+						# Check if preceding line is a label that is a goto target
+						prev = i - 1
+						while prev >= 0 and not lines[prev].strip():
+							prev -= 1
+						if prev >= 0:
+							m_label = RE_LABEL.match(lines[prev])
+							if m_label and m_label.group(2) in goto_targets:
+								# This loop is a goto target — keep it
+								i += 1
+								continue
+						# Safe to remove
+						for k in range(i, j + 1):
+							lines[k] = None
+						changed = True
+						i = j + 1
+						continue
+				i += 1
+			lines = [l for l in lines if l is not None]
+
+		return '\n'.join(lines)
+
+	def pass_RemoveUnusedLabels(self, text):
+		"""Remove labels that are not referenced by any goto or if-goto."""
+		RE_LABEL = re.compile(r'^(\s*)(Label_\w+):')
+		RE_GOTO = re.compile(r'goto (Label_\w+)')
+		lines = text.split('\n')
+
+		# Count references to each label
+		label_refs = {}
+		for line in lines:
+			for m in RE_GOTO.finditer(line):
+				lbl = m.group(1)
+				label_refs[lbl] = label_refs.get(lbl, 0) + 1
+
+		# Remove unreferenced labels
+		result = []
+		for line in lines:
+			m = RE_LABEL.match(line)
+			if m and label_refs.get(m.group(2), 0) == 0:
+				continue  # Skip unreferenced label
+			result.append(line)
+
+		return '\n'.join(result)
+
+	def pass_ElseToElseIf(self, text):
+		"""Convert else { if(!(COND)) goto LABEL; BODY; } to else if(COND) { BODY; }.
+
+		Detects:
+		  } else {
+		      if(!(COND)) goto LABEL;
+		      BODY;
+		  }
+		  LABEL:
+
+		Converts to:
+		  } else if(COND) {
+		      BODY;
+		  }
+		  LABEL:
+		"""
+		RE_ELSE_OPEN = re.compile(r'^(\s*)\} else \{$')
+		RE_IF_GOTO = re.compile(r'^(\s*)if\((.+?)\) goto (Label_\w+);')
+		RE_CLOSE = re.compile(r'^(\s*)\}$')
+		RE_LABEL = re.compile(r'^(\s*)(Label_\w+):')
+
+		lines = text.split('\n')
+		changed = True
+
+		while changed:
+			changed = False
+			for i in range(len(lines)):
+				m_else = RE_ELSE_OPEN.match(lines[i])
+				if not m_else:
+					continue
+				indent = m_else.group(1)
+
+				# Next non-empty line should be if-goto
+				j = i + 1
+				while j < len(lines) and not lines[j].strip():
+					j += 1
+				if j >= len(lines):
+					continue
+
+				m_ig = RE_IF_GOTO.match(lines[j])
+				if not m_ig:
+					continue
+
+				goto_label = m_ig.group(3)
+				cond = m_ig.group(2)
+				ig_line = j
+
+				# Find the closing brace of the else block
+				# Track depth from the else open brace
+				depth = 1
+				k = i + 1
+				close_line = None
+				while k < len(lines):
+					for ch in lines[k]:
+						if ch == '{':
+							depth += 1
+						elif ch == '}':
+							depth -= 1
+					if depth == 0:
+						close_line = k
+						break
+					k += 1
+
+				if close_line is None:
+					continue
+
+				# Check that there are no other gotos in the body
+				body_has_other_goto = False
+				for bi in range(ig_line + 1, close_line):
+					if re.match(r'^\s*goto ', lines[bi]):
+						body_has_other_goto = True
+						break
+					if re.match(r'^\s*if\(.+\) goto ', lines[bi]):
+						body_has_other_goto = True
+						break
+				if body_has_other_goto:
+					continue
+
+				# Convert: negate the condition and merge into else if
+				neg_cond = self._negate_condition(cond)
+				lines[i] = f'{indent}}} else if({neg_cond}) {{'
+
+				# Remove the if-goto line
+				lines[ig_line] = None
+
+				# Re-indent body lines to match else level
+				# (they may have extra indentation from being inside the else)
+
+				lines = [l for l in lines if l is not None]
+				changed = True
+				break
+
+		return '\n'.join(lines)
+
+	def pass_IfElseChain(self, text):
+		"""Convert consecutive if-goto-exit blocks into if/else-if chains.
+
+		Detects sequences of:
+		  if(COND1) {
+		      BODY1;
+		      goto EXIT;
+		  }
+		  if(COND2) {
+		      BODY2;
+		      goto EXIT;
+		  }
+		  ...
+		  EXIT:
+
+		And converts to:
+		  if(COND1) {
+		      BODY1;
+		  } else if(COND2) {
+		      BODY2;
+		  } ...
+
+		Also handles the last-case patterns:
+		  if(!(COND)) goto EXIT;
+		  BODY;                   → } else if(COND) { BODY; }
+		"""
+		RE_IF_OPEN = re.compile(r'^(\s*)if\((.+)\) \{')
+		RE_GOTO = re.compile(r'^(\s*)goto (Label_\w+);')
+		RE_CLOSE = re.compile(r'^(\s*)\}$')
+		RE_LABEL = re.compile(r'^(\s*)(Label_\w+):')
+		RE_IF_GOTO = re.compile(r'^(\s*)if\((.+?)\) goto (Label_\w+);')
+
+		lines = text.split('\n')
+		changed = True
+
+		while changed:
+			changed = False
+
+			# Build label reference counts (each goto/if-goto counts once)
+			label_refs = {}
+			for line in lines:
+				# Count each line once: if-goto or standalone goto
+				m_ig = RE_IF_GOTO.match(line)
+				if m_ig:
+					lbl = m_ig.group(3)
+					label_refs[lbl] = label_refs.get(lbl, 0) + 1
+				else:
+					m_g = RE_GOTO.match(line)
+					if m_g:
+						lbl = m_g.group(2)
+						label_refs[lbl] = label_refs.get(lbl, 0) + 1
+
+			# Build label positions
+			label_pos = {}
+			for i, line in enumerate(lines):
+				m = RE_LABEL.match(line)
+				if m:
+					label_pos[m.group(2)] = i
+
+			# Scan for chains of if-blocks that goto the same exit
+			i = 0
+			while i < len(lines):
+				m_if = RE_IF_OPEN.match(lines[i])
+				if not m_if:
+					i += 1
+					continue
+
+				base_indent = m_if.group(1)
+
+				# Try to find an if-block: if(COND) { BODY; goto EXIT; }
+				block = self._parse_if_goto_block(lines, i, base_indent)
+				if not block:
+					i += 1
+					continue
+
+				# Found first block. Now collect consecutive blocks with same exit.
+				chain = [block]
+				exit_label = block['goto_target']
+				pos = block['end'] + 1
+
+				while pos < len(lines):
+					# Skip blank lines between blocks
+					while pos < len(lines) and not lines[pos].strip():
+						pos += 1
+					if pos >= len(lines):
+						break
+
+					# Try another if-block with same exit
+					next_block = self._parse_if_goto_block(lines, pos, base_indent)
+					if next_block and next_block['goto_target'] == exit_label:
+						chain.append(next_block)
+						pos = next_block['end'] + 1
+						continue
+
+					# Try last-case: if(!(COND)) goto EXIT; BODY...
+					m_last = RE_IF_GOTO.match(lines[pos])
+					if m_last and m_last.group(3) == exit_label:
+						last_cond = m_last.group(2)
+						# Body: from pos+1 until end of scope
+						body_end_pos = pos + 1
+						while body_end_pos < len(lines):
+							ln = lines[body_end_pos]
+							stripped = ln.strip()
+							if not stripped:
+								body_end_pos += 1
+								continue
+							if RE_LABEL.match(ln):
+								break
+							m_cl = RE_CLOSE.match(ln)
+							if m_cl and len(m_cl.group(1)) <= len(base_indent):
+								break
+							body_end_pos += 1
+						body_lines = [lines[j] for j in range(pos + 1, body_end_pos)
+						              if lines[j].strip()]
+						if body_lines:
+							chain.append({
+								'start': pos,
+								'end': body_end_pos - 1,
+								'cond': self._negate_condition(last_cond),
+								'body_start': pos + 1,
+								'body_end': body_end_pos,
+								'goto_target': exit_label,
+								'is_negated_goto': True,
+							})
+						break
+
+					break
+
+				# Need at least 2 blocks to form a chain
+				if len(chain) < 2:
+					i += 1
+					continue
+
+				# Check that exit label exists
+				if exit_label not in label_pos:
+					i += 1
+					continue
+
+				# Build the if/else-if chain
+				new_lines = []
+				for ci, blk in enumerate(chain):
+					if ci == 0:
+						# First: if(COND) {
+						new_lines.append(f'{base_indent}if({blk["cond"]}) {{')
+					else:
+						# Subsequent: } else if(COND) {
+						new_lines.append(f'{base_indent}}} else if({blk["cond"]}) {{')
+
+					# Body (without the goto line)
+					if blk.get('is_negated_goto'):
+						for j in range(blk['body_start'], blk['body_end']):
+							line = lines[j]
+							if line.strip():
+								# Re-indent: keep relative indent
+								stripped = line.lstrip()
+								new_lines.append(base_indent + '\t' + stripped)
+							else:
+								new_lines.append('')
+					else:
+						for j in range(blk['start'] + 1, blk['end']):
+							line = lines[j]
+							stripped = line.strip()
+							if not stripped:
+								new_lines.append('')
+								continue
+							# Skip the goto EXIT; line
+							m_g = RE_GOTO.match(line)
+							if m_g and m_g.group(2) == exit_label:
+								continue
+							new_lines.append(line)
+
+				# Close the chain
+				new_lines.append(f'{base_indent}}}')
+
+				# Determine replacement range
+				chain_start = chain[0]['start']
+				chain_end = chain[-1]['end']
+				if chain[-1].get('is_negated_goto'):
+					chain_end = chain[-1]['body_end'] - 1
+
+				# Check if exit label still has references after removing chain gotos
+				gotos_removed = sum(1 for b in chain if not b.get('is_negated_goto'))
+				negated_gotos_removed = sum(1 for b in chain if b.get('is_negated_goto'))
+				total_removed = gotos_removed + negated_gotos_removed
+				remaining_refs = label_refs.get(exit_label, 0) - total_removed
+
+				exit_pos = label_pos.get(exit_label)
+
+				if remaining_refs <= 0 and exit_pos is not None:
+					if exit_pos > chain_end:
+						# Forward exit: extend replacement to include exit label
+						if exit_pos == chain_end + 1 or all(
+							not lines[j].strip() for j in range(chain_end + 1, exit_pos)):
+							chain_end = exit_pos
+					else:
+						# Backward exit: remove exit label line separately
+						lines[exit_pos] = ''
+
+				lines[chain_start:chain_end + 1] = new_lines
+				changed = True
+				break
+
+			if not changed:
+				i += 1
+
+		return '\n'.join(lines)
+
+	def _parse_if_goto_block(self, lines, start, expected_indent):
+		"""Parse an if(COND) { BODY; goto EXIT; } block starting at line `start`.
+
+		Returns dict with start, end, cond, body_start, body_end, goto_target
+		or None if the pattern doesn't match.
+		"""
+		RE_IF_OPEN = re.compile(r'^(\s*)if\((.+)\) \{')
+		RE_GOTO = re.compile(r'^(\s*)goto (Label_\w+);')
+		RE_CLOSE = re.compile(r'^(\s*)\}$')
+
+		if start >= len(lines):
+			return None
+
+		m_if = RE_IF_OPEN.match(lines[start])
+		if not m_if or m_if.group(1) != expected_indent:
+			return None
+
+		cond = m_if.group(2)
+		indent = m_if.group(1)
+
+		# Find matching close brace by tracking depth
+		depth = 1
+		j = start + 1
+		goto_target = None
+		last_stmt_line = None
+
+		while j < len(lines) and depth > 0:
+			line = lines[j]
+			for ch in line:
+				if ch == '{':
+					depth += 1
+				elif ch == '}':
+					depth -= 1
+					if depth == 0:
+						break
+			if depth == 0:
+				# j is the closing brace
+				break
+			# Track last non-empty line for goto check
+			if line.strip():
+				last_stmt_line = j
+				m_g = RE_GOTO.match(line)
+				if m_g:
+					goto_target = m_g.group(2)
+					goto_line = j
+			j += 1
+
+		if depth != 0:
+			return None
+
+		close_line = j
+		# Verify close brace is at same indent
+		m_close = RE_CLOSE.match(lines[close_line])
+		if not m_close or m_close.group(1) != indent:
+			return None
+
+		# Check that the last statement is a goto
+		if goto_target is None or last_stmt_line != goto_line:
+			return None
+
+		return {
+			'start': start,
+			'end': close_line,
+			'cond': cond,
+			'body_start': start + 1,
+			'body_end': close_line,
+			'goto_target': goto_target,
+			'goto_line': goto_line,
+		}
 
 	def pass_FixLoopReturn(self, text):
 		"""Fix misplaced return inside loop body.
@@ -2387,11 +3128,16 @@ class PathologicPseudoC:
 		# String literal
 		if len(value) >= 2 and value[0] == '"' and value[-1] == '"':
 			return True
-		# CVector literal
+		# CVector literal (old or new format)
 		if value.startswith('CVector(') and value.endswith(')'):
+			return True
+		if value.startswith('[') and value.endswith(']'):
 			return True
 		# Null object literal
 		if value == 'Obj()':
+			return True
+		# Boolean / null keywords
+		if value in ('true', 'false', 'null'):
 			return True
 		# Numeric literal (int or float, possibly negative)
 		if re.match(r'^-?\d+(\.\d+)?$', value):
@@ -2403,14 +3149,16 @@ class PathologicPseudoC:
 		ranges = []
 		i = 0
 		while i < len(lines):
-			line = lines[i]
-			# Function header: non-empty, no leading whitespace, has parentheses
-			if (line.strip() and
-				not line[0:1].isspace() and
-				'(' in line and ')' in line and
-				line.strip() != '{' and line.strip() != '}'):
+			stripped = lines[i].strip()
+			# Function header: "void funcname(...)" or "funcname(...)"
+			# Must have parens, not be a lone brace, and look like a function def
+			if (stripped and
+				'(' in stripped and ')' in stripped and
+				stripped not in ('{', '}') and
+				re.match(r'^(?:void\s+)?\w+\(', stripped)):
 				# Check for opening brace on next line
 				if i + 1 < len(lines) and lines[i + 1].strip() == '{':
+					base_indent = len(lines[i]) - len(lines[i].lstrip())
 					depth = 0
 					for j in range(i + 1, len(lines)):
 						depth += lines[j].count('{') - lines[j].count('}')
@@ -2442,23 +3190,34 @@ class PathologicPseudoC:
 		# Obj() / Obj(x) don't need casts
 		if value.startswith('Obj('):
 			return value
-		# CVector doesn't need cast
-		if value.startswith('CVector('):
+		# CVector doesn't need cast (old or new format)
+		if value.startswith('CVector(') or value.startswith('['):
 			return value
 		# Object null: 0 assigned to object var -> Obj() (null object literal)
-		if var_type == 'object' and value == '0':
+		if var_type == 'object' and value in ('0', 'null'):
 			return 'Obj()'
+		# true/false don't need cast
+		if value in ('true', 'false'):
+			return value
+		# null doesn't need cast
+		if value == 'null':
+			return value
 		# Type-specific casts
+		# Bare integers are naturally int in the compiler, no cast needed
 		if var_type == 'int' and re.match(r'^-?\d+$', value):
-			return f'(int){value}'
+			return value
 		if var_type == 'float' and re.match(r'^-?\d+(\.\d+)?$', value):
+			# Values with decimal point are naturally float, no cast needed
+			if '.' in value:
+				return value
+			# Integer values assigned to float vars need (float) cast
 			return f'(float){value}'
-		if var_type == 'bool' and value in ('0', '1', 'true', 'false'):
+		if var_type == 'bool' and value in ('0', '1'):
 			return f'(bool){value}'
 		if var_type == 'string' and value == '""':
 			return value
-		# Default: add cast for known types
-		if var_type in ('int', 'float', 'bool'):
+		# Default: add cast for float/bool
+		if var_type in ('float', 'bool'):
 			return f'({var_type}){value}'
 		return value
 
@@ -2516,11 +3275,14 @@ class PathologicPseudoC:
 						is_used = bool(var_pattern.search(jline))
 
 						if is_reassigned:
-							# If also used on the right side, count as use
+							# If also used on the right side, it's a compound
+							# assignment (e.g., x = x + y). Don't inline — the
+							# variable is mutated, not just consumed.
 							if is_used:
 								parts = jstripped.split(var_name + ' = ', 1)
 								if len(parts) > 1 and var_pattern.search(parts[1]):
 									use_lines.append(j)
+									use_lines.append(j)  # force >1 to block inline
 							break  # value is dead after reassignment
 
 						if is_used:
@@ -2555,6 +3317,784 @@ class PathologicPseudoC:
 
 		# Final cleanup: remove None lines
 		lines = [l for l in lines if l is not None]
+
+		return '\n'.join(lines)
+
+
+	def _is_simple_expr(self, value):
+		"""Check if value is a simple expression suitable for inlining.
+		Includes binary ops, string concat, field access, but NOT function calls."""
+		# Already a literal
+		if self._is_literal(value):
+			return True
+		# Variable reference
+		if re.match(r'^(?:var_\d+_\w+|m_var_\d+_\w+|\w+)$', value):
+			return True
+		# Negation
+		if value.startswith('!') and self._is_simple_expr(value[1:]):
+			return True
+		# Binary expression: A OP B
+		# Match: expr OP expr where OP is +, -, *, /, &, |, ^, ==, !=, <, >, <=, >=
+		m = re.match(r'^(.+?)\s*([+\-*/&|^]|==|!=|<=?|>=?)\s*(.+)$', value)
+		if m:
+			return True
+		# String concatenation with "..."
+		if '+' in value and '"' in value:
+			return True
+		return False
+
+	def pass_InlineExpressions(self, text):
+		"""Inline single-use temporary variables whose values are simple expressions.
+		E.g.: var_8 = A & B; @Func(var_8); → @Func(A & B);"""
+		lines = text.split('\n')
+
+		changed = True
+		while changed:
+			changed = False
+			lines = [l for l in lines if l is not None]
+			func_ranges = self._find_function_ranges(lines)
+
+			for (func_start, func_end) in func_ranges:
+				for i in range(func_start, func_end):
+					line_stripped = lines[i].strip()
+
+					# Match: var_X = EXPR; (no annotation except //@nz which is handled elsewhere)
+					m = re.match(r'^(var_\d+_\w+) = (.+);\s*$', line_stripped)
+					if not m:
+						continue
+
+					var_name = m.group(1)
+					value = m.group(2)
+
+					# Skip multi-assignment lines
+					if line_stripped.count(' = ') > 1:
+						continue
+
+					# Skip if already a literal (handled by pass_InlineConstants)
+					if self._is_literal(value):
+						continue
+
+					# Must be a simple expression (no function calls, no method calls)
+					if '@' in value or '->' in value:
+						continue
+					# Skip function calls: word( pattern (but allow (expr) grouping)
+					if re.search(r'\w\(', value):
+						continue
+					# Skip comparison expressions — pass_InlineIfCondition handles those
+					if re.search(r'==|!=|>=?|<=?', value):
+						continue
+					if not self._is_simple_expr(value):
+						continue
+
+					# Same single-use scan as pass_InlineConstants
+					assign_indent = len(lines[i]) - len(lines[i].lstrip())
+					var_pattern = re.compile(r'\b' + re.escape(var_name) + r'\b')
+					reassign_pattern = re.compile(
+						r'(?:^|; )' + re.escape(var_name) + r' = (?!=)')
+					use_lines = []
+					for j in range(i + 1, func_end):
+						jline = lines[j]
+						if jline is None:
+							continue
+						jstripped = jline.strip()
+						if not jstripped:
+							continue
+
+						is_reassigned = bool(reassign_pattern.search(jstripped))
+						is_used = bool(var_pattern.search(jline))
+
+						if is_reassigned:
+							if is_used:
+								parts = jstripped.split(var_name + ' = ', 1)
+								if len(parts) > 1 and var_pattern.search(parts[1]):
+									use_lines.append(j)
+									use_lines.append(j)  # force >1 to block inline
+							break
+						if is_used:
+							use_lines.append(j)
+
+					if len(use_lines) != 1:
+						continue
+
+					use_line_idx = use_lines[0]
+					use_indent = len(lines[use_line_idx]) - len(lines[use_line_idx].lstrip())
+					if assign_indent > use_indent:
+						continue
+
+					# Wrap in parentheses if the expression is compound and used
+					# in a larger expression (not just as a function argument)
+					inline_value = value
+					if ' ' in value and not (value.startswith('"') and value.endswith('"')):
+						inline_value = f'({value})'
+
+					lines[use_line_idx] = var_pattern.sub(
+						lambda m: inline_value, lines[use_line_idx])
+					lines[i] = None
+					changed = True
+					break
+
+				if changed:
+					break
+
+		lines = [l for l in lines if l is not None]
+		return '\n'.join(lines)
+
+
+	def pass_StripTrailingReturn(self, text):
+		"""Remove 'return N;' at the very end of function bodies.
+		The compiler can infer the pop count from variable declarations."""
+		lines = text.split('\n')
+		func_ranges = self._find_function_ranges(lines)
+
+		# Process in reverse so line indices stay valid
+		for (func_start, func_end) in reversed(func_ranges):
+			# Find last non-empty line before closing brace
+			last_stmt = None
+			for k in range(func_end - 2, func_start, -1):
+				if lines[k].strip():
+					last_stmt = k
+					break
+
+			if last_stmt is None:
+				continue
+
+			# Check if it's a plain return N;
+			m = re.match(r'^(\s*)return \d+;\s*$', lines[last_stmt])
+			if m:
+				lines[last_stmt] = None
+
+		lines = [l for l in lines if l is not None]
+		return '\n'.join(lines)
+
+
+	def pass_InlineNot(self, text):
+		"""Merge 'var = !other; if(var != 0)' into 'if (!other)'.
+		Also handles 'var = !other; if(var == 1)' → 'if (!other)'.
+		Preserves //@nz annotation on the if-line for round-trip."""
+		lines = text.split('\n')
+		func_ranges = self._find_function_ranges(lines)
+
+		changed = True
+		while changed:
+			changed = False
+			lines = [l for l in lines if l is not None]
+			func_ranges = self._find_function_ranges(lines)
+
+			for (func_start, func_end) in func_ranges:
+				for i in range(func_start, func_end):
+					stripped = lines[i].strip()
+
+					# Match: var_X = !other_var; //@nz
+					m = re.match(
+						r'^(var_\d+_\w+) = !(\w+);\s*(//@nz)?$',
+						stripped)
+					if not m:
+						continue
+
+					result_var = m.group(1)
+					source_var = m.group(2)
+
+					# Find next non-empty line
+					next_idx = None
+					for j in range(i + 1, func_end):
+						if lines[j].strip():
+							next_idx = j
+							break
+					if next_idx is None:
+						continue
+
+					next_stripped = lines[next_idx].strip()
+
+					# Match: if(result_var != 0) or if(result_var == 1)
+					if_match = re.match(
+						r'^if\s*\(' + re.escape(result_var) +
+						r'\s*(?:!=\s*0|==\s*1)\)\s*(.*)$',
+						next_stripped)
+					if not if_match:
+						continue
+
+					# Check result_var is not used elsewhere in function
+					var_pat = re.compile(r'\b' + re.escape(result_var) + r'\b')
+					used_elsewhere = False
+					for k in range(func_start, func_end):
+						if k == i or k == next_idx:
+							continue
+						if lines[k] is not None and var_pat.search(lines[k]):
+							used_elsewhere = True
+							break
+					if used_elsewhere:
+						continue
+
+					rest = if_match.group(1)
+					indent = lines[next_idx][:len(lines[next_idx]) - len(lines[next_idx].lstrip())]
+					lines[next_idx] = f'{indent}if(!{source_var}) {rest} //@nz'
+					lines[i] = None
+					changed = True
+					break
+
+				if changed:
+					break
+
+		lines = [l for l in lines if l is not None]
+		return '\n'.join(lines)
+
+
+	def pass_InlineIfCondition(self, text):
+		"""Inline comparison expressions into if-conditions.
+		Pattern: var_X = A OP B; if(var_X != 0) → if(A OP B)
+		Also handles: var_X = A == null; if(var_X != 0) → if(A == null)"""
+		CMP_OPS = ('==', '!=', '>', '<', '>=', '<=')
+		lines = text.split('\n')
+
+		changed = True
+		while changed:
+			changed = False
+			lines = [l for l in lines if l is not None]
+			func_ranges = self._find_function_ranges(lines)
+
+			for (func_start, func_end) in func_ranges:
+				for i in range(func_start, func_end):
+					stripped = lines[i].strip()
+
+					# Match: var_X = EXPR; (where EXPR contains a comparison op)
+					m = re.match(
+						r'^(var_\d+_\w+) = (.+);\s*(?://@\w+)?$',
+						stripped)
+					if not m:
+						continue
+
+					result_var = m.group(1)
+					expr = m.group(2)
+
+					# Check expr is a comparison (A OP B) or null check
+					is_comparison = False
+					for op in CMP_OPS:
+						if f' {op} ' in expr:
+							is_comparison = True
+							break
+					if not is_comparison:
+						continue
+
+					# Find next non-empty line
+					next_idx = None
+					for j in range(i + 1, func_end):
+						if lines[j].strip():
+							next_idx = j
+							break
+					if next_idx is None:
+						continue
+
+					next_stripped = lines[next_idx].strip()
+
+					# Match: if(var_X != 0) or if(var_X == 0)
+					if_nz = re.match(
+						r'^if\s*\(' + re.escape(result_var) + r'\s*!=\s*0\)\s*(.*)$',
+						next_stripped)
+					if_ez = re.match(
+						r'^if\s*\(' + re.escape(result_var) + r'\s*==\s*0\)\s*(.*)$',
+						next_stripped)
+
+					if not if_nz and not if_ez:
+						continue
+
+					# Check result_var is not used elsewhere
+					var_pat = re.compile(r'\b' + re.escape(result_var) + r'\b')
+					used_elsewhere = False
+					for k in range(func_start, func_end):
+						if k == i or k == next_idx:
+							continue
+						if lines[k] is not None and var_pat.search(lines[k]):
+							used_elsewhere = True
+							break
+					if used_elsewhere:
+						continue
+
+					indent = lines[next_idx][:len(lines[next_idx]) - len(lines[next_idx].lstrip())]
+
+					if if_nz:
+						rest = if_nz.group(1)
+						lines[next_idx] = f'{indent}if({expr}) {rest}'
+					else:
+						# == 0 means inverted condition
+						# Negate the comparison for readability
+						rest = if_ez.group(1)
+						# For now keep as-is (inverted comparisons are complex)
+						# Just inline the expression
+						lines[next_idx] = f'{indent}if(!({expr})) {rest}'
+
+					lines[i] = None
+					changed = True
+					break
+
+				if changed:
+					break
+
+		lines = [l for l in lines if l is not None]
+		return '\n'.join(lines)
+
+
+	def pass_RenameEventParams(self, text):
+		"""Rename event handler parameters from var_N_TYPE to heuristic names.
+		E.g. var_0_object → actor in OnUse, var_0_string → name in OnTrigger.
+		Handles both cases: header already renamed by Prolog, or not yet renamed."""
+		lines = text.split('\n')
+		func_ranges = self._find_function_ranges(lines)
+
+		for (func_start, func_end) in func_ranges:
+			header = lines[func_start].strip()
+			# Extract function name and params from header
+			hdr_m = re.match(r'void\s+(\w+)\((.+)\)', header)
+			if not hdr_m:
+				continue
+			func_name = hdr_m.group(1)
+			params_str = hdr_m.group(2)
+			if params_str == 'void':
+				continue
+
+			# Get event_id from name
+			event_id = EVENT_IDS.get(func_name)
+			if event_id is None or event_id not in EVENT_PARAM_NAMES:
+				continue
+
+			heuristic = EVENT_PARAM_NAMES[event_id]
+			params = [p.strip() for p in params_str.split(',')]
+
+			# Build rename map from event metadata
+			# The header may already have renamed params (by Prolog), so we need to
+			# figure out the original var_N_TYPE names from the parameter index
+			rename_map = {}
+			for idx, param in enumerate(params):
+				if idx >= len(heuristic):
+					break
+				expected_type, heur_name = heuristic[idx]
+				# Case 1: param still has var_N_TYPE form
+				pm = re.match(r'(\w+)\s+(var_(\d+)_\w+)', param)
+				if pm:
+					ptype = pm.group(1)
+					pvar = pm.group(2)
+					if ptype == expected_type:
+						rename_map[pvar] = heur_name
+					continue
+				# Case 2: header already renamed by Prolog — "type heur_name"
+				pm2 = re.match(r'(\w+)\s+(\w+)', param)
+				if pm2:
+					ptype = pm2.group(1)
+					pname = pm2.group(2)
+					if ptype == expected_type and pname == heur_name:
+						# Already renamed in header — figure out original var name
+						# It was var_{idx}_{type}
+						old_var = f'var_{idx}_{expected_type}'
+						rename_map[old_var] = heur_name
+
+			if not rename_map:
+				continue
+
+			# Rename in function header (only if not already renamed)
+			new_header = header
+			for old_name, new_name in rename_map.items():
+				if old_name in new_header:
+					m = re.match(r'var_\d+_(\w+)', old_name)
+					type_str = m.group(1) if m else 'object'
+					new_header = new_header.replace(f'{type_str} {old_name}', f'{type_str} {new_name}')
+			if new_header != header:
+				lines[func_start] = lines[func_start].replace(header, new_header)
+
+			# Rename in function body
+			for i in range(func_start + 1, func_end):
+				for old_name, new_name in rename_map.items():
+					if old_name in lines[i]:
+						lines[i] = re.sub(r'\b' + re.escape(old_name) + r'\b',
+										  new_name, lines[i])
+
+		return '\n'.join(lines)
+
+
+	def pass_RemoveUnusedDecls(self, text):
+		"""Remove variable declarations for variables that are never used in the function body.
+		Handles multi-decl lines like 'bool var_1_bool; bool var_2_bool;' by removing
+		only the unused individual declarations. Keeps //@pi tag if any decl remains."""
+		lines = text.split('\n')
+		func_ranges = self._find_function_ranges(lines)
+
+		for (func_start, func_end) in reversed(func_ranges):
+			# Find all declaration lines in this function (lines with TYPE var_N; pattern)
+			for i in range(func_start + 1, func_end):
+				if lines[i] is None:
+					continue
+				stripped = lines[i].strip()
+				if not stripped:
+					continue
+
+				# Match declaration line: "type var_N_type; type var_M_type; ..."
+				# or with //@pi tag
+				decl_part = re.sub(r'\s*//.*$', '', stripped).rstrip()
+				if not decl_part:
+					continue
+
+				# Split into individual declarations
+				# Pattern: "type varname;" repeated
+				decls = re.findall(r'(\w+)\s+((?:var_\d+_\w+|m_var_\d+_\w+|\w+))(?=;)', decl_part)
+				if not decls:
+					continue
+
+				# Verify this is a pure declaration line (no assignments, no function calls)
+				# Remove all "type name;" pairs and check if anything remains
+				test = decl_part
+				for dtype, dname in decls:
+					test = test.replace(f'{dtype} {dname};', '', 1)
+				if test.strip():
+					continue  # Not a pure declaration line
+
+				# Check which variables are used in the function body (excluding this line)
+				indent = lines[i][:len(lines[i]) - len(lines[i].lstrip())]
+				keep_decls = []
+				for dtype, dname in decls:
+					# Check if variable name appears anywhere else in the function
+					used = False
+					for j in range(func_start, func_end):
+						if j == i or lines[j] is None:
+							continue
+						if re.search(r'\b' + re.escape(dname) + r'\b', lines[j]):
+							used = True
+							break
+					if used:
+						keep_decls.append((dtype, dname))
+
+				if len(keep_decls) == len(decls):
+					continue  # All vars are used, no change
+
+				if not keep_decls:
+					# All vars unused — remove the entire line
+					lines[i] = None
+				else:
+					# Rebuild with only used vars
+					new_decl = ' '.join(f'{dtype} {dname};' for dtype, dname in keep_decls)
+					# Preserve //@pi tag if present
+					tag = ''
+					tag_m = re.search(r'\s*(//.*)', stripped)
+					if tag_m:
+						tag = ' ' + tag_m.group(1)
+					lines[i] = indent + new_decl + tag
+
+		lines = [l for l in lines if l is not None]
+		return '\n'.join(lines)
+
+
+	def pass_MoveDecls(self, text):
+		"""Move variable declarations closer to their first use.
+		Only moves when the variable is first used at the same scope level (not inside
+		a nested block). Splits multi-var declarations as needed."""
+		lines = text.split('\n')
+		func_ranges = self._find_function_ranges(lines)
+
+		for (func_start, func_end) in reversed(func_ranges):
+			body_start = func_start + 2  # skip header + opening brace
+			if body_start >= func_end:
+				continue
+			base_indent = len(lines[func_start]) - len(lines[func_start].lstrip())
+			body_indent = base_indent + 1  # one tab deeper
+
+			# Find declaration lines at the start of the function body
+			decl_lines = []
+			first_non_decl = None
+			for i in range(body_start, func_end):
+				stripped = lines[i].strip()
+				if not stripped:
+					continue
+				# Check if it's a declaration line
+				decl_part = re.sub(r'\s*//.*$', '', stripped).rstrip()
+				decls = re.findall(r'(\w+)\s+((?:var_\d+_\w+|m_var_\d+_\w+|\w+))(?=;)', decl_part)
+				if decls:
+					# Verify pure declaration
+					test = decl_part
+					for dt, dn in decls:
+						test = test.replace(f'{dt} {dn};', '', 1)
+					if not test.strip():
+						decl_lines.append((i, decls))
+						continue
+				first_non_decl = i
+				break
+
+			if not decl_lines or first_non_decl is None:
+				continue
+
+			# For each declared variable, find its first use in the function body
+			# Only move if first use is at the same scope depth
+			indent_str = '\t' * (body_indent)
+			for decl_idx, (decl_line, decls) in enumerate(decl_lines):
+				for dtype, dname in decls:
+					# Find first use
+					first_use = None
+					for j in range(first_non_decl, func_end):
+						if lines[j] is None:
+							continue
+						if re.search(r'\b' + re.escape(dname) + r'\b', lines[j]):
+							first_use = j
+							break
+
+					if first_use is None:
+						continue
+					if first_use == first_non_decl:
+						continue  # Already at the first statement — don't move
+
+					# Check scope: count brace depth from body_start to first_use
+					depth = 0
+					for j in range(first_non_decl, first_use):
+						if lines[j] is None:
+							continue
+						depth += lines[j].count('{') - lines[j].count('}')
+
+					if depth != 0:
+						continue  # First use is inside a nested block — don't move
+
+					# Insert declaration just before first_use
+					new_decl_line = f'{indent_str}{dtype} {dname};'
+					lines.insert(first_use, new_decl_line)
+					# Adjust func_end and all subsequent indices
+					func_end += 1
+					# Remove from original declaration line
+					self._remove_var_from_decl_line(lines, decl_line, dtype, dname)
+
+		lines = [l for l in lines if l is not None]
+		return '\n'.join(lines)
+
+	def _remove_var_from_decl_line(self, lines, idx, dtype, dname):
+		"""Remove a single variable from a declaration line. If it's the last one, remove the line."""
+		if lines[idx] is None:
+			return
+		stripped = lines[idx].strip()
+		decl_part = re.sub(r'\s*//.*$', '', stripped).rstrip()
+		decls = re.findall(r'(\w+)\s+((?:var_\d+_\w+|m_var_\d+_\w+|\w+))(?=;)', decl_part)
+		remaining = [(dt, dn) for dt, dn in decls if not (dt == dtype and dn == dname)]
+		if not remaining:
+			lines[idx] = None
+		else:
+			indent = lines[idx][:len(lines[idx]) - len(lines[idx].lstrip())]
+			tag = ''
+			tag_m = re.search(r'\s*(//.*)', stripped)
+			if tag_m:
+				tag = ' ' + tag_m.group(1)
+			lines[idx] = indent + ' '.join(f'{dt} {dn};' for dt, dn in remaining) + tag
+
+
+	def pass_MergeDeclAssign(self, text):
+		"""Merge declaration + immediate assignment into one line.
+		E.g.: float var_8; \\n var_8 = 1; → float var_8 = 1;
+		Only for single-var declarations immediately followed by assignment."""
+		lines = text.split('\n')
+		func_ranges = self._find_function_ranges(lines)
+
+		for (func_start, func_end) in reversed(func_ranges):
+			i = func_start + 1
+			while i < func_end - 1:
+				if lines[i] is None:
+					i += 1
+					continue
+				stripped = lines[i].strip()
+				# Match single-var declaration: type varname;
+				dm = re.match(r'^(\w+)\s+((?:var_\d+_\w+|m_var_\d+_\w+|\w+));$', stripped)
+				if not dm:
+					i += 1
+					continue
+				dtype = dm.group(1)
+				dname = dm.group(2)
+				# Must be a known type
+				if dtype not in ('bool', 'int', 'float', 'string', 'object', 'cvector'):
+					i += 1
+					continue
+				# Find next non-empty line
+				j = i + 1
+				while j < func_end and (lines[j] is None or not lines[j].strip()):
+					j += 1
+				if j >= func_end:
+					i += 1
+					continue
+				nxt = lines[j].strip()
+				# Match assignment: varname = VALUE;
+				am = re.match(r'^' + re.escape(dname) + r' = (.+);$', nxt)
+				if not am:
+					i += 1
+					continue
+				value = am.group(1)
+				# Merge
+				indent = lines[i][:len(lines[i]) - len(lines[i].lstrip())]
+				lines[i] = f'{indent}{dtype} {dname} = {value};'
+				lines[j] = None
+				i += 1
+
+		lines = [l for l in lines if l is not None]
+		return '\n'.join(lines)
+
+	def pass_CompoundAssign(self, text):
+		"""Convert x = x OP y; → x OP= y; for +=, -=, *=, /="""
+		lines = text.split('\n')
+		for i, line in enumerate(lines):
+			stripped = line.strip()
+			# Match: var = var OP expr;
+			m = re.match(
+				r'^((?:var_\d+_\w+|m_var_\d+_\w+|\w+)) = \1 ([+\-*/]) (.+);$',
+				stripped)
+			if m:
+				var = m.group(1)
+				op = m.group(2)
+				rhs = m.group(3)
+				indent = line[:len(line) - len(line.lstrip())]
+				lines[i] = f'{indent}{var} {op}= {rhs};'
+		return '\n'.join(lines)
+
+	def pass_StripRedundantParens(self, text):
+		"""Remove redundant double parentheses: ((expr)) → (expr).
+		Also removes parens around single function arguments: func((expr)) → func(expr)."""
+		# Strip ((expr)) → (expr) — only when balanced
+		def strip_double(s):
+			changed = True
+			while changed:
+				changed = False
+				# Match ((...)): find positions of double-open
+				i = 0
+				while i < len(s) - 1:
+					if s[i] == '(' and s[i+1] == '(':
+						# Find matching close for inner paren
+						depth = 0
+						j = i + 1
+						while j < len(s):
+							if s[j] == '(':
+								depth += 1
+							elif s[j] == ')':
+								depth -= 1
+								if depth == 0:
+									# j is closing inner, check j+1 is closing outer
+									if j + 1 < len(s) and s[j+1] == ')':
+										# Remove outer pair
+										s = s[:i] + s[i+1:j+1] + s[j+2:]
+										changed = True
+										break
+									else:
+										break
+							j += 1
+					i += 1
+			return s
+
+		lines = text.split('\n')
+		for i, line in enumerate(lines):
+			if '((' in line:
+				lines[i] = strip_double(line)
+		return '\n'.join(lines)
+
+	def pass_BracelessSingleIf(self, text):
+		"""Remove braces from if/else blocks that contain exactly one statement.
+		Transforms: if(cond) { stmt; } → if(cond)\n\tstmt;
+		Does NOT remove braces when the single stmt is an if (dangling else problem)."""
+		lines = text.split('\n')
+		changed = True
+		while changed:
+			changed = False
+			i = 0
+			while i < len(lines):
+				stripped = lines[i].rstrip()
+				sline = stripped.lstrip()
+
+				# Match: if(...) { or if(...) { //@nz etc
+				# Also match: } else {
+				m_if = re.match(r'^(\s*)(if\s*\(.+\))\s*\{\s*(//.*)?$', stripped)
+				m_else = re.match(r'^(\s*)\}\s*else\s*\{\s*$', stripped)
+
+				if m_if:
+					indent = m_if.group(1)
+					cond_part = m_if.group(2)
+					tag = m_if.group(3) or ''
+					body_indent = indent + '\t'
+
+					# Look for the body: should be exactly one statement, then closing }
+					# Find next non-empty line
+					j = i + 1
+					while j < len(lines) and not lines[j].strip():
+						j += 1
+					if j >= len(lines):
+						i += 1
+						continue
+
+					body_line = lines[j]
+					body_stripped = body_line.strip()
+
+					# Skip if body is a brace or starts with closing brace
+					if body_stripped in ('{', '}') or body_stripped.startswith('}'):
+						i += 1
+						continue
+
+					# Skip if body is another if (dangling else)
+					if re.match(r'^if\s*\(', body_stripped):
+						i += 1
+						continue
+
+					# Skip labels, gotos, EMIT
+					if body_stripped.startswith('Label_') or body_stripped.startswith('goto ') or body_stripped.startswith('EMIT '):
+						i += 1
+						continue
+
+					# Next non-empty should be closing brace (possibly with else)
+					k = j + 1
+					while k < len(lines) and not lines[k].strip():
+						k += 1
+					if k >= len(lines):
+						i += 1
+						continue
+
+					close_stripped = lines[k].strip()
+
+					if close_stripped == '}':
+						# Simple case: if(cond) { stmt; }
+						# Check there's no else after
+						next_k = k + 1
+						while next_k < len(lines) and not lines[next_k].strip():
+							next_k += 1
+						if next_k < len(lines) and lines[next_k].strip().startswith('else'):
+							i += 1
+							continue
+
+						# Transform: remove braces
+						tag_suffix = f' {tag}' if tag else ''
+						lines[i] = f'{indent}{cond_part}{tag_suffix}'
+						lines[j] = f'{body_indent}{body_stripped}'
+						lines[k] = None
+						changed = True
+						i = k + 1
+						continue
+
+					elif close_stripped == '} else {':
+						# if(cond) { stmt; } else { stmt2; }
+						# Check the else body is also single-statement
+						ej = k + 1
+						while ej < len(lines) and not lines[ej].strip():
+							ej += 1
+						if ej >= len(lines):
+							i += 1
+							continue
+						else_body = lines[ej].strip()
+						# Skip if else body is an if
+						if else_body.startswith('if') or else_body.startswith('if('):
+							i += 1
+							continue
+						ek = ej + 1
+						while ek < len(lines) and not lines[ek].strip():
+							ek += 1
+						if ek >= len(lines) or lines[ek].strip() != '}':
+							i += 1
+							continue
+
+						# Both branches are single-statement — remove braces from both
+						tag_suffix = f' {tag}' if tag else ''
+						lines[i] = f'{indent}{cond_part}{tag_suffix}'
+						lines[j] = f'{body_indent}{body_stripped}'
+						lines[k] = f'{indent}else'
+						lines[ej] = f'{body_indent}{else_body}'
+						lines[ek] = None
+						changed = True
+						i = ek + 1
+						continue
+
+				i += 1
+			lines = [l for l in lines if l is not None]
 
 		return '\n'.join(lines)
 
@@ -2733,6 +4273,56 @@ class PathologicPseudoC:
 				i += 1
 		return inline_dead, trailing_dead
 
+	def _build_task_groups(self):
+		"""Build a mapping of task_id -> {main_addr, event_addrs, is_maintask}."""
+		script = self.phl.script
+		run_task = script.gtasks.RunTask
+		main_addr = self.phl.entry_main
+
+		# Map each address to its task
+		addr_to_task = {}
+		tasks = {}
+		for task in script.gtasks.tasks:
+			tid = task.index
+			tasks[tid] = {
+				'is_maintask': (tid == run_task),
+				'event_addrs': [],
+				'main_addr': None,
+			}
+			for ev in task.events:
+				addr_to_task[ev.ulOp] = tid
+				tasks[tid]['event_addrs'].append(ev.ulOp)
+		# Main function belongs to RunTask
+		if run_task in tasks:
+			tasks[run_task]['main_addr'] = main_addr
+			addr_to_task[main_addr] = run_task
+
+		return tasks, addr_to_task
+
+	def _print_func_block(self, node, trailing_dead, indent=''):
+		"""Print a single function block with optional indentation."""
+		# Capture printed output for this function
+		saved = self.printed
+		self.printed = ''
+		self.print_tree(node, [])
+		for instr_str in trailing_dead.get(node.addr, []):
+			escaped = instr_str.replace('"', '\\"')
+			self.fake_print(f'EMIT "{escaped}";')
+		func_text = self.printed
+		self.printed = saved
+
+		# Apply indentation if inside a task block
+		if indent:
+			indented_lines = []
+			for line in func_text.split('\n'):
+				if line.strip():
+					indented_lines.append(indent + line)
+				else:
+					indented_lines.append(line)
+			func_text = '\n'.join(indented_lines)
+
+		self.printed += func_text
+
 	def __repr__(self):
 		self.printed = ''
 
@@ -2743,24 +4333,77 @@ class PathologicPseudoC:
 		inline_dead, trailing_dead = self._compute_dead_code()
 		self._inline_dead = inline_dead  # Store for print_tree access
 
+		# Build task grouping
+		tasks, addr_to_task = self._build_task_groups()
+
+		# Collect all nodes by address
+		ep_nodes = {n.addr: n for n in self.phl.get_ep_nodes()}
+		func_nodes = {n.addr: n for n in self.phl.get_func_nodes()}
+		all_nodes = {**ep_nodes, **func_nodes}
+
+		# Track which addresses have been printed
+		printed_addrs = set()
+
+		# Print task blocks
+		for tid in sorted(tasks.keys()):
+			tinfo = tasks[tid]
+			keyword = 'maintask' if tinfo['is_maintask'] else 'task'
+			self.fake_print(f'{keyword} task_{tid}')
+			self.fake_print('{')
+
+			# Print init (main) function first if in this task
+			if tinfo['main_addr'] is not None and tinfo['main_addr'] in all_nodes:
+				self._print_func_block(all_nodes[tinfo['main_addr']], trailing_dead, indent='\t')
+				printed_addrs.add(tinfo['main_addr'])
+				self.fake_print('')
+
+			# Print event handlers
+			for ev_addr in tinfo['event_addrs']:
+				if ev_addr in all_nodes and ev_addr not in printed_addrs:
+					self._print_func_block(all_nodes[ev_addr], trailing_dead, indent='\t')
+					printed_addrs.add(ev_addr)
+					self.fake_print('')
+
+			self.fake_print('}')
+			self.fake_print('\n')
+
+		# Print standalone events (not in any task)
 		for node in self.phl.get_ep_nodes():
-			self.print_tree(node, [])
-			for instr_str in trailing_dead.get(node.addr, []):
-				escaped = instr_str.replace('"', '\\"')
-				self.fake_print(f'EMIT "{escaped}";')
-			self.fake_print('\n')
+			if node.addr not in printed_addrs:
+				self._print_func_block(node, trailing_dead)
+				printed_addrs.add(node.addr)
+				self.fake_print('\n')
 
+		# Print subroutine functions
 		for node in self.phl.get_func_nodes():
-			self.print_tree(node, [])
-			for instr_str in trailing_dead.get(node.addr, []):
-				escaped = instr_str.replace('"', '\\"')
-				self.fake_print(f'EMIT "{escaped}";')
-			self.fake_print('\n')
+			if node.addr not in printed_addrs:
+				self._print_func_block(node, trailing_dead)
+				printed_addrs.add(node.addr)
+				self.fake_print('\n')
 
-		#self.printed = self.pass_WhileTrue(self.printed)
+		self.printed = self.pass_WhileTrue(self.printed)
 		self.printed = self.pass_StructureIfGoto(self.printed)
 		self.printed = self.pass_FixLoopReturn(self.printed)
 		self.printed = self.pass_InlineConstants(self.printed)
+		self.printed = self.pass_InlineExpressions(self.printed)
+		self.printed = self.pass_StripTrailingReturn(self.printed)
+		self.printed = self.pass_InlineNot(self.printed)
+		self.printed = self.pass_InlineIfCondition(self.printed)
+		# Second pass: catch if-goto patterns that only appear after inlining
+		self.printed = self.pass_StructureIfGoto(self.printed)
+		self.printed = self.pass_ElseToElseIf(self.printed)
+		self.printed = self.pass_IfElseChain(self.printed)
+		self.printed = self.pass_LoopBreak(self.printed)
+		self.printed = self.pass_ForToWhile(self.printed)
+		self.printed = self.pass_RenameEventParams(self.printed)
+		self.printed = self.pass_RemoveUnusedDecls(self.printed)
+		self.printed = self.pass_MoveDecls(self.printed)
+		self.printed = self.pass_MergeDeclAssign(self.printed)
+		self.printed = self.pass_CompoundAssign(self.printed)
+		self.printed = self.pass_StripRedundantParens(self.printed)
+		self.printed = self.pass_BracelessSingleIf(self.printed)
+		self.printed = self.pass_RemoveEmptyForLoops(self.printed)
+		self.printed = self.pass_RemoveUnusedLabels(self.printed)
 		return self.printed
 
 	def fake_print(self, string):
@@ -2945,9 +4588,22 @@ class PathologicPseudoC:
 		temp.hl = hl
 		return temp
 
+	def get_func_event_id(self, addr):
+		"""Return event_id for a function address, or None if not an event handler."""
+		gtasks = self.phl.script.gtasks
+		for task in gtasks.tasks:
+			for ev in task.events:
+				if addr == ev.ulOp:
+					return ev.ulEventID
+		gevents = self.phl.script.gevents
+		for ev in gevents.events:
+			if addr == ev.ulOp:
+				return ev.ulEventID
+		return None
+
 	def get_func_name(self, addr):
 		if addr == self.phl.entry_main:
-			return 'main'
+			return 'init'
 
 		gtasks = self.phl.script.gtasks
 		for i in gtasks.tasks:
@@ -2955,13 +4611,16 @@ class PathologicPseudoC:
 			for i2 in i.events:
 				event_id = i2.ulEventID
 				if addr == i2.ulOp:
-					return f'task_{task_index}_event_{event_id}'
+					event_name = EVENT_NAMES.get(event_id, f'event_{event_id}')
+					# Inside task block, use just event name (no task prefix)
+					return event_name
 
 		gevents = self.phl.script.gevents
 		for i in gevents.events:
 			event_id = i.ulEventID
 			if addr == i.ulOp:
-				return f'event_{event_id}'
+				event_name = EVENT_NAMES.get(event_id, f'event_{event_id}')
+				return f'{event_name}'
 
 		return f'func_{addr}'
 
@@ -2998,7 +4657,8 @@ class PathologicPseudoC:
 		else:
 			task_args_str = self.get_func_args_from_stack(node)
 
-		prolog = self.make_instr(HLInstructionProlog(func_name, task_args_str), node.addr)
+		event_id = self.get_func_event_id(func_addr)
+		prolog = self.make_instr(HLInstructionProlog(func_name, task_args_str, event_id), node.addr)
 		node.instructions.insert(0, prolog)
 
 		b_start = self.make_instr(HLInstructionBlockStart(), node.addr)

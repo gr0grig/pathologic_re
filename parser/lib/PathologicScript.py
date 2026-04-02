@@ -319,7 +319,7 @@ class CVector:
 		self.z = r.float()	
 
 	def __repr__(self):
-		return f'CVector({self.x}, {self.y}, {self.z})'
+		return f'[{self.x}, {self.y}, {self.z}]'
 
 class CInstructionMovV:
 	def __init__(self, r):

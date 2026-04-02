@@ -29,7 +29,7 @@ class TT(Enum):
     STRING = auto()
     IDENT = auto()
     # Keywords
-    IF = auto(); ELSE = auto(); WHILE = auto()
+    IF = auto(); ELSE = auto(); WHILE = auto(); FOR = auto()
     TRUE = auto(); FALSE = auto()
     RETURN = auto(); BREAK = auto(); GOTO = auto(); NULL = auto()
     EMIT = auto()
@@ -38,19 +38,42 @@ class TT(Enum):
     EQ = auto(); NEQ = auto(); LT = auto(); GT = auto(); LE = auto(); GE = auto()
     AND = auto(); OR = auto(); BAND = auto(); BOR = auto(); BXOR = auto(); NOT = auto()
     ASSIGN = auto()
+    PLUS_ASSIGN = auto(); MINUS_ASSIGN = auto()
+    STAR_ASSIGN = auto(); SLASH_ASSIGN = auto()
     # Delimiters
     LPAREN = auto(); RPAREN = auto(); LBRACE = auto(); RBRACE = auto()
     LBRACKET = auto(); RBRACKET = auto()
     SEMI = auto(); COMMA = auto(); COLON = auto(); DOT = auto()
+    ARROW = auto()  # ->
     EOF = auto()
 
 KEYWORDS = {
-    'if': TT.IF, 'else': TT.ELSE, 'while': TT.WHILE,
+    'if': TT.IF, 'else': TT.ELSE, 'while': TT.WHILE, 'for': TT.FOR,
     'true': TT.TRUE, 'false': TT.FALSE,
     'return': TT.RETURN, 'break': TT.BREAK,
     'goto': TT.GOTO, 'null': TT.NULL,
     'EMIT': TT.EMIT,
+    'enable': TT.IDENT, 'disable': TT.IDENT,
 }
+
+# Event ID <-> Name map (from std.sci)
+EVENT_NAMES_TO_ID = {
+    'OnUse': 0, 'OnSee': 1, 'OnStopSee': 2, 'OnHear': 3, 'OnStopHear': 4,
+    'OnLoad': 5, 'OnUnload': 6, 'OnTimer': 7, 'OnRegionChange': 8,
+    'OnGameTime': 9, 'OnCollision': 10, 'OnMusicChange': 12,
+    'OnPlayerStartShooting': 13, 'OnPlayerStopShooting': 14,
+    'OnPlayerHolsterWeapon': 15, 'OnPropertyChange': 16, 'OnAttacked': 17,
+    'OnAction': 18, 'OnPlayerLand': 19, 'OnPlayerStartWalking': 20,
+    'OnPlayerStopWalking': 21, 'OnHit': 22, 'OnIntersection': 23,
+    'OnKeyDown': 24, 'OnKeyUp': 25, 'OnTrigger': 26, 'OnStopIntersection': 27,
+    'OnActorStuck': 28, 'OnPlayerDamage': 30, 'OnReputationChange': 31,
+    'OnDispose': 32, 'OnInventoryAddItem': 33, 'OnInventoryRemoveItem': 34,
+    'OnInventorySelChange': 35, 'OnPlayerStartAltShooting': 36,
+    'OnPlayerStopAltShooting': 37, 'OnClearPath': 38, 'OnFallDamage': 39,
+    'OnSteal': 40, 'OnDeath': 41, 'OnMessage': 42, 'OnHit2': 43,
+    'OnPlayerEnemy': 44, 'OnLSHAnimationEnd': 45, 'OnConsole': 1000,
+}
+EVENT_ID_TO_NAME = {v: k for k, v in EVENT_NAMES_TO_ID.items()}
 
 @dataclass
 class Token:
@@ -157,7 +180,9 @@ class Lexer:
     def tokenize(self) -> List[Token]:
         tokens = []
         TWO_CHAR = {'==': TT.EQ, '!=': TT.NEQ, '<=': TT.LE, '>=': TT.GE,
-                     '&&': TT.AND, '||': TT.OR}
+                     '&&': TT.AND, '||': TT.OR, '->': TT.ARROW,
+                     '+=': TT.PLUS_ASSIGN, '-=': TT.MINUS_ASSIGN,
+                     '*=': TT.STAR_ASSIGN, '/=': TT.SLASH_ASSIGN}
         ONE_CHAR = {'+': TT.PLUS, '-': TT.MINUS, '*': TT.STAR, '/': TT.SLASH,
                     '%': TT.PERCENT, '<': TT.LT, '>': TT.GT, '&': TT.BAND,
                     '|': TT.BOR, '^': TT.BXOR, '!': TT.NOT, '=': TT.ASSIGN,
@@ -189,8 +214,9 @@ class Lexer:
                     self._advance()
                     tokens.append(Token(ONE_CHAR[ch], ch, ln, co))
                 elif ch == '@':
-                    # @@@ prefix marks TObjFunc, @@ marks ObjFunc calls from decompiler
+                    # @@@ prefix marks TObjFunc, @@ marks ObjFunc calls from decompiler (legacy)
                     # Format: @@N:Name or @@@N:Name (N = obj var index)
+                    # New format: @FuncName for native calls
                     if self.pos + 2 < len(self.src) and self.src[self.pos+1] == '@' and self.src[self.pos+2] == '@':
                         self._advance(); self._advance(); self._advance()  # skip @@@
                         # Read optional obj ref (number or var name) + colon
@@ -225,7 +251,12 @@ class Lexer:
                             tokens.append(Token(TT.IDENT, ident, ln, co))
                         # else: skip stray @@
                     else:
-                        self._advance()  # skip single @
+                        self._advance()  # skip @
+                        # @FuncName -> native function call, emit as IDENT with @ prefix
+                        if self.pos < len(self.src) and (self._ch().isalpha() or self._ch() == '_'):
+                            ident = '@' + self._read_ident()
+                            tokens.append(Token(TT.IDENT, ident, ln, co))
+                        # else: stray @ (skip)
                 else:
                     self.error(f"Unexpected char: {ch!r}")
 
@@ -347,6 +378,8 @@ class Program:
 # 4. PARSER
 # ════════════════════════════════════════════════════════════════
 
+TYPE_NAMES = {'bool', 'int', 'float', 'string', 'object', 'cvector'}
+
 def extract_var_type(name: str) -> str:
     """Extract type from var_N_type naming."""
     m = re.match(r'var_(\d+)_(\w+)', name)
@@ -377,13 +410,14 @@ def is_default_value(vtype: str, expr) -> bool:
 
 
 class Parser:
-    def __init__(self, tokens: List[Token], pi_lines: set = None, ne_lines: set = None, nz_lines: set = None, nn_lines: set = None):
+    def __init__(self, tokens: List[Token], pi_lines: set = None, ne_lines: set = None, nz_lines: set = None, nn_lines: set = None, t_lines: set = None):
         self.tokens = tokens
         self.pos = 0
         self.pi_lines = pi_lines or set()
         self.ne_lines = ne_lines or set()
         self.nz_lines = nz_lines or set()
         self.nn_lines = nn_lines or set()
+        self.tobjfunc_lines = t_lines or set()
 
     def error(self, msg):
         t = self.tokens[min(self.pos, len(self.tokens)-1)]
@@ -415,12 +449,19 @@ class Parser:
     # ─── Program ───
 
     def _is_func_def(self) -> bool:
-        """Check if current position is a function definition (not a call)."""
-        if not self.at(TT.IDENT) or self.peek(1).type != TT.LPAREN:
-            return False
+        """Check if current position is a function definition (not a call).
+        Handles both 'name(...)' and 'void name(...)' signatures."""
+        # Check for optional return type: 'void name(' or 'type name('
+        start = 0
+        if self.at(TT.IDENT) and self.cur().value in (TYPE_NAMES | {'void'}):
+            if self.peek(1).type == TT.IDENT and self.peek(2).type == TT.LPAREN:
+                start = 1  # skip return type
+        if start == 0:
+            if not self.at(TT.IDENT) or self.peek(1).type != TT.LPAREN:
+                return False
         # Scan ahead to find matching ) and check if { follows
         depth = 0
-        i = 1
+        i = start + 1
         while True:
             t = self.peek(i)
             if t.type == TT.EOF:
@@ -449,6 +490,34 @@ class Parser:
                     if not hasattr(funcs[-1], 'trailing_emits'):
                         funcs[-1].trailing_emits = []
                     funcs[-1].trailing_emits.append(text)
+            elif self.at(TT.IDENT) and self.cur().value in ('maintask', 'task'):
+                # Task block: maintask task_N { ... } or task task_N { ... }
+                self.advance()  # skip maintask/task
+                task_name = self.expect(TT.IDENT).value  # task_N
+                self.expect(TT.LBRACE)
+                # Extract task index from name
+                m = re.match(r'task_(\d+)', task_name)
+                task_prefix = task_name + '_' if m else ''
+                # Parse function definitions inside task block
+                while not self.at(TT.RBRACE, TT.EOF):
+                    if self.at(TT.EMIT):
+                        self.advance()
+                        text = self.expect(TT.STRING).value
+                        self.expect(TT.SEMI)
+                        if funcs:
+                            if not hasattr(funcs[-1], 'trailing_emits'):
+                                funcs[-1].trailing_emits = []
+                            funcs[-1].trailing_emits.append(text)
+                    elif self._is_func_def():
+                        fn = self.parse_func_def()
+                        # Prefix event names with task_N_ for internal naming
+                        if fn.name != 'init' and fn.name != 'main':
+                            fn.name = task_prefix + fn.name
+                        funcs.append(fn)
+                    else:
+                        self.advance()
+                if self.at(TT.RBRACE):
+                    self.advance()
             elif self._is_func_def():
                 funcs.append(self.parse_func_def())
             else:
@@ -456,15 +525,23 @@ class Parser:
         return Program(funcs)
 
     def parse_func_def(self) -> FuncDef:
+        # Skip optional return type (void, int, etc.)
+        if self.at(TT.IDENT) and self.cur().value in (TYPE_NAMES | {'void'}):
+            next_tok = self.peek(1)
+            if next_tok.type == TT.IDENT and self.peek(2).type == TT.LPAREN:
+                self.advance()  # skip return type
         name = self.expect(TT.IDENT).value
         self.expect(TT.LPAREN)
         params = []
         if not self.at(TT.RPAREN):
-            p = self.expect(TT.IDENT).value
-            params.append((p, extract_var_type(p)))
-            while self.match(TT.COMMA):
-                p = self.expect(TT.IDENT).value
-                params.append((p, extract_var_type(p)))
+            # Handle 'void' as empty params: func(void)
+            if self.at(TT.IDENT) and self.cur().value == 'void' and self.peek(1).type == TT.RPAREN:
+                self.advance()  # skip 'void'
+            else:
+                # Parse typed or untyped params
+                params.append(self._parse_param())
+                while self.match(TT.COMMA):
+                    params.append(self._parse_param())
         self.expect(TT.RPAREN)
         self.expect(TT.LBRACE)
         body = self.parse_stmts()
@@ -473,6 +550,16 @@ class Parser:
             self.advance()
         return FuncDef(name, params, body)
 
+    def _parse_param(self):
+        """Parse a single function parameter: 'type name' or 'name'."""
+        if (self.at(TT.IDENT) and self.cur().value in TYPE_NAMES
+                and self.peek(1).type == TT.IDENT):
+            self.advance()  # skip type (it's already encoded in the var name)
+            p = self.expect(TT.IDENT).value
+        else:
+            p = self.expect(TT.IDENT).value
+        return (p, extract_var_type(p))
+
     # ─── Statements ───
 
     def parse_stmts(self) -> list:
@@ -480,7 +567,10 @@ class Parser:
         while not self.at(TT.RBRACE, TT.EOF, TT.ELSE):
             s = self.parse_stmt()
             if s is not None:
-                stmts.append(s)
+                if isinstance(s, list):
+                    stmts.extend(s)
+                else:
+                    stmts.append(s)
         return stmts
 
     def parse_stmt(self):
@@ -491,6 +581,7 @@ class Parser:
             return EmitStmt(text)
         if self.at(TT.IF):     return self.parse_if()
         if self.at(TT.WHILE):  return self.parse_while()
+        if self.at(TT.FOR):   return self.parse_for()
         if self.at(TT.RETURN): return self.parse_return()
         if self.at(TT.BREAK):  self.advance(); self.expect(TT.SEMI); return BreakStmt()
         if self.at(TT.GOTO):
@@ -520,6 +611,25 @@ class Parser:
             if n == 'TaskReturn':   return self._parse_void_call(TaskReturnStmt)
             if n == 'EventEnable':  return self._parse_simple_int_call(EventEnableStmt)
             if n == 'EventDisable': return self._parse_simple_int_call(EventDisableStmt)
+            # New syntax: enable OnEventName; / disable OnEventName;
+            if n == 'enable':
+                self.advance()
+                event_name = self.expect(TT.IDENT).value
+                self.expect(TT.SEMI)
+                event_id = EVENT_NAMES_TO_ID.get(event_name)
+                if event_id is None:
+                    m = re.match(r'event_(\d+)', event_name)
+                    event_id = int(m.group(1)) if m else 0
+                return EventEnableStmt(event_id)
+            if n == 'disable':
+                self.advance()
+                event_name = self.expect(TT.IDENT).value
+                self.expect(TT.SEMI)
+                event_id = EVENT_NAMES_TO_ID.get(event_name)
+                if event_id is None:
+                    m = re.match(r'event_(\d+)', event_name)
+                    event_id = int(m.group(1)) if m else 0
+                return EventDisableStmt(event_id)
 
         # GlobalVars[N] = expr;
         if self.at(TT.IDENT) and self.cur().value == 'GlobalVars' and self.peek(1).type == TT.LBRACKET:
@@ -555,6 +665,25 @@ class Parser:
 
     def _parse_assign_or_expr(self):
         """Parse assignment chain (var_N = val; var_M = val; ...) or expression stmt."""
+        # Check for typed variable declaration: type name; type name; ...
+        # e.g. "bool var_1_bool; int var_2_int;"
+        if (self.at(TT.IDENT) and self.cur().value in TYPE_NAMES
+                and self.peek(1).type == TT.IDENT and is_var_name(self.peek(1).value)):
+            return self._parse_typed_decl_chain()
+
+        # Check for compound assignment: var_X OP= expr;
+        COMPOUND_OPS = {TT.PLUS_ASSIGN: '+', TT.MINUS_ASSIGN: '-',
+                        TT.STAR_ASSIGN: '*', TT.SLASH_ASSIGN: '/'}
+        if (self.at(TT.IDENT) and is_var_name(self.cur().value)
+                and self.peek(1).type in COMPOUND_OPS):
+            name = self.advance().value
+            op_char = COMPOUND_OPS[self.advance().type]
+            rhs = self.parse_expr()
+            self.expect(TT.SEMI)
+            # Desugar: var OP= expr → var = var OP expr
+            binop = BinOp(op_char, VarRef(name), rhs)
+            return AssignStmt(VarRef(name), binop)
+
         # Check for multi-var declaration: multiple var_X = val; on same line
         if (self.at(TT.IDENT) and is_var_name(self.cur().value)
                 and self.peek(1).type == TT.ASSIGN):
@@ -614,6 +743,71 @@ class Parser:
             return stmt
         return VarDeclStmt(assignments)
 
+    def _parse_typed_decl_chain(self):
+        """Parse typed variable declarations: type name; type name; ...
+        e.g. 'bool var_1_bool; int var_2_int;' → VarDeclStmt
+        Also handles: type name = value; (declaration with initializer)"""
+        declarations = []
+        init_assigns = []  # (name, value_expr) pairs for initialized decls
+        first_line = self.cur().line
+        while (self.at(TT.IDENT) and self.cur().value in TYPE_NAMES
+               and self.peek(1).type == TT.IDENT and is_var_name(self.peek(1).value)):
+            if declarations and self.cur().line != first_line:
+                break
+            declared_type = self.advance().value  # type name
+            name = self.advance().value  # variable name
+            vtype = extract_var_type(name)
+            # Check for initializer: type name = value;
+            if self.at(TT.ASSIGN):
+                self.advance()  # consume '='
+                init_expr = self.parse_expr()
+                self.expect(TT.SEMI)
+                # Create default init value for the PushEmpty
+                if vtype in ('bool', 'int', 'float'):
+                    init_val = IntLit(0)
+                elif vtype == 'string':
+                    init_val = StrLit('')
+                elif vtype == 'cvector':
+                    init_val = VectorLit(0, 0, 0)
+                else:
+                    init_val = IntLit(0)
+                declarations.append((name, vtype, init_val))
+                init_assigns.append((name, init_expr, first_line))
+            else:
+                self.expect(TT.SEMI)
+                # Create default init value based on type
+                if vtype in ('bool', 'int', 'float'):
+                    init_val = IntLit(0)
+                elif vtype == 'string':
+                    init_val = StrLit('')
+                elif vtype == 'cvector':
+                    init_val = VectorLit(0, 0, 0)
+                else:
+                    init_val = IntLit(0)
+                declarations.append((name, vtype, init_val))
+        if len(declarations) == 1 and not init_assigns:
+            n, t, v = declarations[0]
+            stmt = AssignStmt(VarRef(n), v)
+            if first_line in self.pi_lines:
+                stmt.pushi_default = True
+            if first_line in self.ne_lines:
+                stmt.nulleq = True
+            if first_line in self.nz_lines:
+                stmt.notzero = True
+            if first_line in self.nn_lines:
+                stmt.nullneq = True
+            return stmt
+        # If there are init_assigns, return a list: VarDeclStmt + AssignStmts
+        if init_assigns:
+            result = [VarDeclStmt(declarations)]
+            for iname, iexpr, iline in init_assigns:
+                astmt = AssignStmt(VarRef(iname), iexpr)
+                if iline in self.pi_lines:
+                    astmt.pushi_default = True
+                result.append(astmt)
+            return result
+        return VarDeclStmt(declarations)
+
     def parse_if(self) -> IfStmt:
         self.expect(TT.IF)
         self.expect(TT.LPAREN)
@@ -648,11 +842,31 @@ class Parser:
     def parse_while(self) -> WhileStmt:
         self.expect(TT.WHILE)
         self.expect(TT.LPAREN)
-        self.expect(TT.TRUE)
+        if self.at(TT.TRUE) and self.peek(1).type == TT.RPAREN:
+            self.advance()
+            cond_expr = None
+        else:
+            cond_expr = self.parse_expr()
         self.expect(TT.RPAREN)
         self.expect(TT.LBRACE)
         body = self.parse_stmts()
         # Closing } may have been consumed by inner construct (decompiler brace merge)
+        if self.at(TT.RBRACE):
+            self.advance()
+        if cond_expr is not None:
+            # Desugar: while(COND) { body } → for(;;) { if(!COND) break; body }
+            neg = UnaryOp('!', cond_expr)
+            body = [IfStmt(neg, [BreakStmt()], None)] + body
+        return WhileStmt(body)
+
+    def parse_for(self) -> WhileStmt:
+        self.expect(TT.FOR)
+        self.expect(TT.LPAREN)
+        self.expect(TT.SEMI)
+        self.expect(TT.SEMI)
+        self.expect(TT.RPAREN)
+        self.expect(TT.LBRACE)
+        body = self.parse_stmts()
         if self.at(TT.RBRACE):
             self.advance()
         return WhileStmt(body)
@@ -747,9 +961,23 @@ class Parser:
         if t.type == TT.LPAREN:
             self.advance(); e = self.parse_expr(); self.expect(TT.RPAREN); return e
 
+        # Vector literal: [x, y, z]
+        if t.type == TT.LBRACKET:
+            self.advance()
+            x = self.parse_expr(); self.expect(TT.COMMA)
+            y = self.parse_expr(); self.expect(TT.COMMA)
+            z = self.parse_expr(); self.expect(TT.RBRACKET)
+            def _fval_bracket(e):
+                if isinstance(e, IntLit): return float(e.value)
+                if isinstance(e, FloatLit): return e.value
+                if isinstance(e, UnaryOp) and e.op == '-':
+                    return -_fval_bracket(e.operand)
+                return 0.0
+            return VectorLit(_fval_bracket(x), _fval_bracket(y), _fval_bracket(z))
+
         if t.type == TT.IDENT:
             name = t.value
-            # CVector(x,y,z)
+            # CVector(x,y,z) (legacy format)
             if name == 'CVector':
                 self.advance(); self.expect(TT.LPAREN)
                 x = self.parse_expr(); self.expect(TT.COMMA)
@@ -785,14 +1013,17 @@ class Parser:
                     args.append(self.parse_expr())
                 self.expect(TT.RPAREN)
                 return FuncCall(name, args)
-            # Function call: name(...) or @@name(...) or @@N:name(...) or @@@N:name(...)
+            # Function call: name(...) or @name(...) or @@name(...) or @@N:name(...) or @@@N:name(...)
             if self.peek(1).type == TT.LPAREN:
                 is_tobjfunc = name.startswith('@@@')
                 is_objfunc = name.startswith('@@')
+                is_native = name.startswith('@') and not is_objfunc and not is_tobjfunc
                 if is_tobjfunc:
                     rest = name[3:]  # strip @@@
                 elif is_objfunc:
                     rest = name[2:]  # strip @@
+                elif is_native:
+                    rest = name[1:]  # strip @ (native call prefix)
                 else:
                     rest = name
                 # Parse optional obj ref: prefix (number or variable name)
@@ -819,7 +1050,22 @@ class Parser:
                 return FuncCall(real_name, args, is_objfunc=is_objfunc, obj_var=obj_var, obj_var_name=obj_var_name, is_tobjfunc=is_tobjfunc)
             # Variable reference
             self.advance()
-            # Check for .method()
+            # Check for ->Method() (new object method call syntax)
+            if self.at(TT.ARROW):
+                self.advance()  # skip ->
+                method = self.expect(TT.IDENT).value
+                if self.at(TT.LPAREN):
+                    self.expect(TT.LPAREN)
+                    args = []
+                    if not self.at(TT.RPAREN):
+                        args.append(self.parse_expr())
+                        while self.match(TT.COMMA):
+                            args.append(self.parse_expr())
+                    self.expect(TT.RPAREN)
+                    # Check for //@t annotation (task-addressed obj func)
+                    is_tobjfunc = self.cur().line in getattr(self, 'tobjfunc_lines', set())
+                    return FuncCall(method, args, is_objfunc=True, obj_var=0, obj_var_name=name, is_tobjfunc=is_tobjfunc)
+            # Check for .method() (legacy)
             if self.match(TT.DOT):
                 method = self.expect(TT.IDENT).value
                 if self.at(TT.LPAREN):
@@ -3138,7 +3384,7 @@ class CodeGen:
             left_type = self.global_vars.get(left.index, self.pre_gvar_types.get(left.index, 'object'))
         else:
             left_type = None  # unknown type — skip NullEq/Not optimization
-        if left_type is not None and expr.op == '==' and isinstance(right, IntLit) and right.value == 0 and (self._current_nulleq or self._current_nz):
+        if left_type is not None and expr.op == '==' and ((isinstance(right, IntLit) and right.value == 0) or isinstance(right, NullLit)) and (self._current_nulleq or self._current_nz):
             # Annotation-driven: //@ne → PushNull, //@nz → Push
             if self._current_nulleq:
                 null_kw = 'PushNull'
@@ -3173,7 +3419,7 @@ class CodeGen:
 
         # Special case: != 0 → NullNeq instruction (compact form, opcode 0x2E)
         # //@nn annotation → Pop(N); Push(( V != 0 )
-        if left_type is not None and expr.op == '!=' and isinstance(right, IntLit) and right.value == 0 and self._current_nn:
+        if left_type is not None and expr.op == '!=' and ((isinstance(right, IntLit) and right.value == 0) or isinstance(right, NullLit)) and self._current_nn:
             if isinstance(left, VarRef):
                 tv_idx = self._is_task_var(left.name)
                 if tv_idx is not None:
@@ -4605,7 +4851,7 @@ class CodeGen:
                 ordered_eids = sorted(event_keys)
             meta_task_ev = meta.get('task_events', {}).get(tid, {})
             for eid in ordered_eids:
-                ev = task['events'][eid]
+                ev = task.get('events', {}).get(eid, {})
                 op = hex(ev.get('op', 0))
                 # Use per-task metadata for event vars (not global meta_events
                 # which is last-writer-wins when multiple tasks share an event ID)
@@ -4774,11 +5020,12 @@ def _parse_metadata(c_source: str) -> dict:
                     pi_addrs.add(int(part, 16) if part.startswith('0x') else int(part))
             meta['pi_addrs'] = pi_addrs
 
-    # Scan source lines for //@pi, //@ne, //@nz, //@nn annotations
+    # Scan source lines for //@pi, //@ne, //@nz, //@nn, //@t annotations
     pi_lines = set()
     ne_lines = set()
     nz_lines = set()
     nn_lines = set()
+    t_lines = set()
     for line_no, line in enumerate(c_source.splitlines(), 1):
         if '//@pi' in line:
             pi_lines.add(line_no)
@@ -4788,6 +5035,8 @@ def _parse_metadata(c_source: str) -> dict:
             nz_lines.add(line_no)
         if '//@nn' in line:
             nn_lines.add(line_no)
+        if '//@t' in line and '//@to' not in line:
+            t_lines.add(line_no)
     if pi_lines:
         meta['pi_lines'] = pi_lines
     if ne_lines:
@@ -4796,6 +5045,8 @@ def _parse_metadata(c_source: str) -> dict:
         meta['nz_lines'] = nz_lines
     if nn_lines:
         meta['nn_lines'] = nn_lines
+    if t_lines:
+        meta['t_lines'] = t_lines
 
     # Build accumulated task var type list for the run_task
     # The run_task's vars are the concatenation of all child tasks' vars in task_id order
@@ -5121,8 +5372,34 @@ def compile_c_to_asm(c_source: str, reference_asm: str = None) -> str:
     ne_lines = metadata.get('ne_lines', set())
     nz_lines = metadata.get('nz_lines', set())
     nn_lines = metadata.get('nn_lines', set())
-    parser = Parser(tokens, pi_lines, ne_lines, nz_lines, nn_lines)
+    t_lines = metadata.get('t_lines', set())
+    parser = Parser(tokens, pi_lines, ne_lines, nz_lines, nn_lines, t_lines)
     program = parser.parse_program()
+
+    # Normalize function names: new format -> internal format
+    # init() -> main(), task_N_OnEventName() -> task_N_event_ID()
+    # OnEventName() -> event_ID() (standalone events)
+    for fn in program.functions:
+        if fn.name == 'init':
+            fn.name = 'main'
+        else:
+            # task_N_OnEventName -> task_N_event_ID
+            m = re.match(r'task_(\d+)_(On\w+)', fn.name)
+            if m:
+                tid, ename = m.group(1), m.group(2)
+                eid = EVENT_NAMES_TO_ID.get(ename)
+                if eid is not None:
+                    fn.name = f'task_{tid}_event_{eid}'
+                else:
+                    # Try event_N fallback
+                    m2 = re.match(r'event_(\d+)', ename)
+                    if m2:
+                        fn.name = f'task_{tid}_event_{m2.group(1)}'
+            else:
+                # Standalone: OnEventName -> event_ID
+                eid = EVENT_NAMES_TO_ID.get(fn.name)
+                if eid is not None:
+                    fn.name = f'event_{eid}'
 
     # Pre-inlining: infer global var types (before inlining removes assignments)
     gvar_types = infer_global_var_types(program)

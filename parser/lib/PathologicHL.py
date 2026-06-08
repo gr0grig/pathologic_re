@@ -146,9 +146,7 @@ class StackSim:
 
 
 	def is_call(self, opcode):
-		for i in [CInstructionCall, CInstruction_NEW_2]:
-			if isinstance(opcode, i):
-				return True
+		return isinstance(opcode, CInstructionCall)
 
 	def process_node(self, node, seen_node = [], ident=0):
 		for i in node.instructions:

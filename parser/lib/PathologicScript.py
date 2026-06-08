@@ -1885,17 +1885,6 @@ class CInstructionCString2:
 		return f'{var_2} = CString2({var_1}); Pop({self.PopCount})'
 
 
-class CInstruction_NEW_2:
-	"""HD Call instruction at opcode 0x4F (same as alpha Call at 0x4D)."""
-	def __init__(self, r):
-		self.OpCode = 'NEW_2'
-		self.VarIn = r.uint32()
-
-	def __repr__(self):
-		return f'Call2 {hex(self.VarIn)}'
-
-
-
 class INSTRUCTION:
 
 	def __init__(self, r, index):
@@ -2000,7 +1989,7 @@ class INSTRUCTION:
 		else:
 			if ulType == 0x4D: return CInstructionCString(r)
 			if ulType == 0x4E: return CInstructionCString2(r)
-			if ulType == 0x4F: return CInstruction_NEW_2(r)
+			if ulType == 0x4F: return CInstructionCall(r)
 			if ulType == 0x50: return CInstructionReturn(r)
 			if ulType == 0x51: return CInstructionTaskCall(r)
 			if ulType == 0x52: return CInstructionTaskReturn(r)
@@ -2031,7 +2020,7 @@ class INSTRUCTION:
 		self.je_next = []
 
 		I_JE= [CInstructionJumpB]
-		I_CALL = [CInstructionCall, CInstruction_NEW_2]
+		I_CALL = [CInstructionCall]
 		I_CALL_ALL = I_CALL + I_JE
 		I_JUMP = [CInstructionJump]
 		I_END =  [CInstructionReturn]

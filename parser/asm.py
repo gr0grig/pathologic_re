@@ -437,8 +437,9 @@ def assemble_instruction(text, string_offsets, import_table, task_info, func_nam
         offset = poff_override if poff_override is not None else string_offsets.get(s, 0)
         return 0x04, w_uint32(var_out) + w_uint32(offset)
 
-    # Stack[-V] = CVector(x, y, z)
-    m = re.match(r'Stack\[-(\d+)\] = CVector\((-?[\d.]+(?:e[+-]?\d+)?),\s*(-?[\d.]+(?:e[+-]?\d+)?),\s*(-?[\d.]+(?:e[+-]?\d+)?)\)$', text)
+    # Stack[-V] = CVector(x, y, z)   OR   Stack[-V] = [x, y, z]   (PathologicScript.py disasm form)
+    m = re.match(r'Stack\[-(\d+)\] = CVector\((-?[\d.]+(?:e[+-]?\d+)?),\s*(-?[\d.]+(?:e[+-]?\d+)?),\s*(-?[\d.]+(?:e[+-]?\d+)?)\)$', text) \
+        or re.match(r'Stack\[-(\d+)\] = \[(-?[\d.]+(?:e[+-]?\d+)?),\s*(-?[\d.]+(?:e[+-]?\d+)?),\s*(-?[\d.]+(?:e[+-]?\d+)?)\]$', text)
     if m:
         return 0x05, w_uint32(int(m.group(1))) + w_float(float(m.group(2))) + w_float(float(m.group(3))) + w_float(float(m.group(4)))
 
@@ -477,8 +478,9 @@ def assemble_instruction(text, string_offsets, import_table, task_info, func_nam
         offset = poff_override if poff_override is not None else string_offsets.get(s, 0)
         return 0x0B, w_uint32(var_out) + w_uint32(offset)
 
-    # Stack[V + Tasks[-1].StackPointer] = CVector(x, y, z)
-    m = re.match(rf'Stack\[(\d+) \+ {TP}\] = CVector\((-?[\d.]+(?:e[+-]?\d+)?),\s*(-?[\d.]+(?:e[+-]?\d+)?),\s*(-?[\d.]+(?:e[+-]?\d+)?)\)$', text)
+    # Stack[V + Tasks[-1].StackPointer] = CVector(x, y, z)   OR   = [x, y, z]
+    m = re.match(rf'Stack\[(\d+) \+ {TP}\] = CVector\((-?[\d.]+(?:e[+-]?\d+)?),\s*(-?[\d.]+(?:e[+-]?\d+)?),\s*(-?[\d.]+(?:e[+-]?\d+)?)\)$', text) \
+        or re.match(rf'Stack\[(\d+) \+ {TP}\] = \[(-?[\d.]+(?:e[+-]?\d+)?),\s*(-?[\d.]+(?:e[+-]?\d+)?),\s*(-?[\d.]+(?:e[+-]?\d+)?)\]$', text)
     if m:
         return 0x0C, w_uint32(int(m.group(1))) + w_float(float(m.group(2))) + w_float(float(m.group(3))) + w_float(float(m.group(4)))
 
@@ -561,8 +563,9 @@ def assemble_instruction(text, string_offsets, import_table, task_info, func_nam
         offset = poff_override if poff_override is not None else string_offsets.get(s, 0)
         return 0x14, w_uint32(offset)
 
-    # Push(CVector(x, y, z)) — PushVec
-    m = re.match(r'Push\(CVector\((-?[\d.]+(?:e[+-]?\d+)?),\s*(-?[\d.]+(?:e[+-]?\d+)?),\s*(-?[\d.]+(?:e[+-]?\d+)?)\)\)$', text)
+    # Push(CVector(x, y, z))  OR  Push([x, y, z])  — PushVec
+    m = re.match(r'Push\(CVector\((-?[\d.]+(?:e[+-]?\d+)?),\s*(-?[\d.]+(?:e[+-]?\d+)?),\s*(-?[\d.]+(?:e[+-]?\d+)?)\)\)$', text) \
+        or re.match(r'Push\(\[(-?[\d.]+(?:e[+-]?\d+)?),\s*(-?[\d.]+(?:e[+-]?\d+)?),\s*(-?[\d.]+(?:e[+-]?\d+)?)\]\)$', text)
     if m:
         return 0x16, w_float(float(m.group(1))) + w_float(float(m.group(2))) + w_float(float(m.group(3)))
 
@@ -1059,13 +1062,6 @@ def assemble_instruction(text, string_offsets, import_table, task_info, func_nam
         if tv_out:
             task_byte |= 0x40
         return 0x8000 | 0x4E, w_uint32(var_in) + w_uint32(var_out) + w_int8(task_byte if task_byte < 128 else task_byte - 256)
-
-    # ── Call2 (HD Call — same instruction as Call, different opcode in HD) ──
-    m = re.match(r'Call2 (0x[0-9a-fA-F]+|\d+)$', text)
-    if m:
-        val = m.group(1)
-        addr = int(val, 16) if val.startswith('0x') else int(val)
-        return 0x4D, w_uint32(addr)  # Same as Call; shift handles HD opcode
 
     # ── Fallback: 2-operand binary ops (retry with careful parsing) ──
     # Pop(P); Push(V1 OP V2);

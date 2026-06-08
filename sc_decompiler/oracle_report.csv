@@ -1,0 +1,31 @@
+name,compile_ok,scomp_stdout,scomp_stderr,has_original,byte_match,size_compiled,size_original
+NPC_Burah_Aglaja,True,"Pattern: NPC_Burah_Aglaja.sc
+Compiling NPC_Burah_Aglaja.sc... Success
+Done!",,True,False,50316,50817
+NPC_Burah_Alexandr,True,"Pattern: NPC_Burah_Alexandr.sc
+Compiling NPC_Burah_Alexandr.sc... Success
+Done!",,True,False,21166,21719
+NPC_Burah_Andrei,True,"Pattern: NPC_Burah_Andrei.sc
+Compiling NPC_Burah_Andrei.sc... Success
+Done!",,True,False,34703,35378
+NPC_Burah_Anna,True,"Pattern: NPC_Burah_Anna.sc
+Compiling NPC_Burah_Anna.sc... Success
+Done!",,True,False,22743,22685
+NPC_Burah_BigVlad,True,"Pattern: NPC_Burah_BigVlad.sc
+Compiling NPC_Burah_BigVlad.sc... Success
+Done!",,True,False,48153,50895
+NPC_Burah_Block,True,"Pattern: NPC_Burah_Block.sc
+Compiling NPC_Burah_Block.sc... Success
+Done!",,True,False,33960,34738
+NPC_Burah_Danko,True,"Pattern: NPC_Burah_Danko.sc
+Compiling NPC_Burah_Danko.sc... Success
+Done!",,True,False,139577,140249
+NPC_Burah_Eva,True,"Pattern: NPC_Burah_Eva.sc
+Compiling NPC_Burah_Eva.sc... Success
+Done!",,True,False,25946,26822
+NPC_Burah_Georg,True,"Pattern: NPC_Burah_Georg.sc
+Compiling NPC_Burah_Georg.sc... Success
+Done!",,True,False,24401,24806
+NPC_Burah_Gorbun,True,"Pattern: NPC_Burah_Gorbun.sc
+Compiling NPC_Burah_Gorbun.sc... Success
+Done!",,True,False,19632,19679

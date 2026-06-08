@@ -1849,18 +1849,6 @@ class HLInstruction_NEW_1:
 	def __repr__(self):
 		return f'{self.VarOut} = NEW1({self.VarIn});'
 
-class HLInstruction_NEW_2:
-
-	def __init__(self, instr, callback):
-		opcode = instr.opcode
-		self.instr = instr
-		self.VarIn = opcode.VarIn
-		self.callback = callback
-
-	def __repr__(self):
-		args = self.callback(self.VarIn, self.instr)
-		return f'func_{self.VarIn}({args});'
-
 def parse_graph(node, seen=[]):
 
 	if node.addr in seen:
@@ -4960,7 +4948,4 @@ class PathologicPseudoC:
 
 			if isinstance(instr.opcode, CInstructionCString2):
 				node.instructions[i].hl = HLInstruction_NEW_1(instr)
-
-			if isinstance(instr.opcode, CInstruction_NEW_2):
-				node.instructions[i].hl = HLInstruction_NEW_2(instr, self.callback_get_func_args)
 

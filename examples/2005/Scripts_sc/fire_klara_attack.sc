@@ -35,7 +35,7 @@ maintask t0
 		@Trace("5");
 		L3 = L1;
 		L4 = 2;
-		for (L5 = 0; L5 < 600; L5 = L5 + 1) {
+		for (L5 = 0; L5 < 600; L5++) {
 			float L6;
 			@sync();
 			if (!f_9a_a1_b(Target)) {
@@ -45,7 +45,7 @@ maintask t0
 			L6 = L3 - L1 | L3 - L1;
 			if (L6 > 25) {
 				int L7;
-				for (L7 = 0; L7 < L4; L7 = L7 + 1) {
+				for (L7 = 0; L7 < L4; L7++) {
 					L0->AddSource(L1 - L2, [0.0, 1.0, 0.0], 0.5);
 				}
 				L4 = L4 + 3;

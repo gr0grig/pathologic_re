@@ -16,7 +16,7 @@ maintask t0
 	void OnLoad(void)
 	{
 		int L0;
-		for (L0 = 0; ; L0 = L0 + 1) {
+		for (L0 = 0; ; L0++) {
 			bool L1;
 			@GetLocator("pt_spawn" + (L0 + 1), L1);
 			if (!L1) {
@@ -30,10 +30,10 @@ maintask t0
 			int L3;
 			int L4;
 			@CreateIntVector(L2);
-			for (L3 = 1; L3 <= L0; L3 = L3 + 1) {
+			for (L3 = 1; L3 <= L0; L3++) {
 				L2->add(L3);
 			}
-			for (L4 = 0; L4 < 2; L4 = L4 + 1) {
+			for (L4 = 0; L4 < 2; L4++) {
 				int L5;
 				int L6;
 				@irand(L5, L0);
@@ -87,7 +87,7 @@ void f_68_a1_v(object a0)
 		int L0;
 		int L1;
 		a0->size(L0);
-		for (L1 = 0; L1 < L0; L1 = L1 + 1) {
+		for (L1 = 0; L1 < L0; L1++) {
 			object L2;
 			a0->get(L2, L1);
 			if (L2) {

@@ -77,21 +77,21 @@ void f_57_a0_v(void)
 	int L1;
 	string L2;
 	int L3;
-	bool L4;
-	int L5;
-	string L6;
-	string L7;
 	@GetGroundMaterial(L0, L1);
 	if (!L0) {
 		L1 = -1;
 	}
 	L2 = f_1a_a1_s(L1);
-	for (L3 = 0; ; L3 = L3 + 1) {
+	for (L3 = 0; ; L3++) {
+		bool L4;
 		@IsExistingSound(L4, "step_" + L2 + (L3 + 1));
 		if (!L4) {
 			break;
 		}
 	}
+	int L5;
+	string L6;
+	string L7;
 	if (!L3) {
 		g0 = "";
 		return;

@@ -260,7 +260,7 @@ object f_20e_a3_o(object a0, int a1, object a2)
 	int L2;
 	L0 = f_22d_a0_o();
 	a0->GetItemCount(L1, a1);
-	for (L2 = 0; L2 < L1; L2 = L2 + 1) {
+	for (L2 = 0; L2 < L1; L2++) {
 		object L3;
 		int L4;
 		a0->GetItem(L3, L2, a1);
@@ -373,7 +373,7 @@ void f_2a2_a3_v(object a0, object a1, object a2)
 	int L0;
 	int L1;
 	a1->size(L0);
-	for (L1 = 0; L1 < L0; L1 = L1 + 1) {
+	for (L1 = 0; L1 < L0; L1++) {
 		object L2;
 		int L3;
 		a1->get(L2, L1);

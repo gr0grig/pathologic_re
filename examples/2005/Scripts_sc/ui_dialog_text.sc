@@ -59,7 +59,7 @@ maintask t0
 		L1 = L0;
 		L1 = L1 + 10;
 		@GetAnswerCount(L3);
-		for (L5 = 0; L5 < L3; L5 = L5 + 1) {
+		for (L5 = 0; L5 < L3; L5++) {
 			string L6;
 			if (L5 == 0) {
 				L1 = L1 + 10;
@@ -87,7 +87,7 @@ maintask t0
 		L0 = L0 + tv2;
 		L0 = L0 + 10;
 		@GetAnswerCount(L2);
-		for (L4 = 0; L4 < L2; L4 = L4 + 1) {
+		for (L4 = 0; L4 < L2; L4++) {
 			string L5;
 			L5 = f_114_a1_s(L4);
 			if (L4 == tv3) {
@@ -109,7 +109,7 @@ maintask t0
 		L0 = tv0 + tv2 + 10;
 		@GetAnswerCount(L1);
 		tv3 = -1;
-		for (L3 = 0; L3 < L1; L3 = L3 + 1) {
+		for (L3 = 0; L3 < L1; L3++) {
 			string L4;
 			int L5;
 			L4 = f_114_a1_s(L3);

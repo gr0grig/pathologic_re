@@ -55,7 +55,7 @@ maintask t0
 		@CreateIntVector(L1);
 		f_810_a3_v(L1, true, 1);
 		f_834_a3_v(L1, true, 1);
-		for (L2 = 0; L2 < 12; L2 = L2 + 1) {
+		for (L2 = 0; L2 < 12; L2++) {
 			a0->add(L0);
 			a1->add(L1);
 		}
@@ -119,7 +119,7 @@ maintask t0
 			} else {
 				if (a0 == "rescue_locked") {
 					int L0;
-					for (L0 = 0; L0 < f_2d9_a0_i(); L0 = L0 + 1) {
+					for (L0 = 0; L0 < f_2d9_a0_i(); L0++) {
 						if (f_307_a1_b(L0) && f_1a_a1_b(f_2f0_a1_i(L0))) {
 							f_3b7_a1_v(L0);
 						}
@@ -164,10 +164,10 @@ maintask t0
 	{
 		int L0;
 		int L1;
-		for (L0 = 0; L0 < a0; L0 = L0 + 1) {
+		for (L0 = 0; L0 < a0; L0++) {
 			f_17f_a2_i(a2, true);
 		}
-		for (L1 = 0; L1 < a1; L1 = L1 + 1) {
+		for (L1 = 0; L1 < a1; L1++) {
 			f_17f_a2_i(a2, false);
 		}
 	}
@@ -191,7 +191,7 @@ maintask t0
 		if (L1 > 1) {
 			@irand(L2, L1);
 		}
-		for (L3 = 0; L3 < L1; L3 = L3 + 1) {
+		for (L3 = 0; L3 < L1; L3++) {
 			int L4;
 			int L5;
 			int L6;
@@ -210,7 +210,7 @@ maintask t0
 	{
 		@Trace(1);
 		int L0;
-		for (L0 = 0; L0 < f_2d9_a0_i(); L0 = L0 + 1) {
+		for (L0 = 0; L0 < f_2d9_a0_i(); L0++) {
 			int L1;
 			@Trace(2);
 			L1 = f_2f0_a1_i(L0);
@@ -234,7 +234,7 @@ maintask t0
 				@Trace(9);
 				L2->size(L3);
 				@Trace(10);
-				for (L4 = 0; L4 < L3; L4 = L4 + 1) {
+				for (L4 = 0; L4 < L3; L4++) {
 					string L5;
 					@Trace(11);
 					L2->get(L5, L4);
@@ -251,7 +251,7 @@ maintask t0
 		int L6;
 		L6 = 0;
 		int L7;
-		for (L7 = 0; L7 < f_2d9_a0_i(); L7 = L7 + 1) {
+		for (L7 = 0; L7 < f_2d9_a0_i(); L7++) {
 			int L8;
 			@Trace(16);
 			L8 = f_2f0_a1_i(L7);
@@ -266,7 +266,7 @@ maintask t0
 		int L9;
 		L9 = 0;
 		int L10;
-		for (L10 = 0; L10 < f_2d9_a0_i(); L10 = L10 + 1) {
+		for (L10 = 0; L10 < f_2d9_a0_i(); L10++) {
 			int L11;
 			@Trace(20);
 			L11 = f_2f0_a1_i(L10);
@@ -285,7 +285,7 @@ maintask t0
 		int L0;
 		disable OnTrigger;
 		@Trace("Volonteers Cleanup...");
-		for (L0 = 0; L0 < f_2d9_a0_i(); L0 = L0 + 1) {
+		for (L0 = 0; L0 < f_2d9_a0_i(); L0++) {
 			object L1;
 			tv3->get(L1, L0);
 			if (L1 != null) {
@@ -318,7 +318,7 @@ maintask t0
 		tv2 = L4;
 		@CreateObjectVector(L5);
 		tv3 = L5;
-		for (L6 = 0; L6 < f_2d9_a0_i(); L6 = L6 + 1) {
+		for (L6 = 0; L6 < f_2d9_a0_i(); L6++) {
 			object L7;
 			@SetVariable(f_2f5_a1_s(L6), 0);
 			L7 = null;
@@ -338,7 +338,7 @@ maintask t0
 	int f_2de_a1_i(int a0)
 	{
 		int L0;
-		for (L0 = 0; L0 < f_2d9_a0_i(); L0 = L0 + 1) {
+		for (L0 = 0; L0 < f_2d9_a0_i(); L0++) {
 			int L1;
 			tv0->get(L1, L0);
 			if (a0 == L1) {
@@ -410,7 +410,7 @@ maintask t0
 		int L5;
 		L4->size(L5);
 		int L6;
-		for (L6 = 0; L6 < L5; L6 = L6 + 1) {
+		for (L6 = 0; L6 < L5; L6++) {
 			string L7;
 			L4->get(L7, L6);
 			f_a6b_a2_v(L7, 1);
@@ -427,7 +427,7 @@ maintask t0
 		@SetVariable(f_2f5_a1_s(a0), L0 | 32);
 		tv4->get(L1, a0);
 		L1->size(L2);
-		for (L3 = 0; L3 < L2; L3 = L3 + 1) {
+		for (L3 = 0; L3 < L2; L3++) {
 			string L4;
 			L1->get(L4, L3);
 			f_a6b_a2_v(L4, 0);
@@ -444,7 +444,7 @@ maintask t0
 		@SetVariable(f_2f5_a1_s(a0), (L0 | 32) - 32);
 		tv4->get(L1, a0);
 		L1->size(L2);
-		for (L3 = 0; L3 < L2; L3 = L3 + 1) {
+		for (L3 = 0; L3 < L2; L3++) {
 			string L4;
 			L1->get(L4, L3);
 			f_a6b_a2_v(L4, 1);
@@ -466,7 +466,7 @@ maintask t0
 		}
 		tv4->get(L2, a0);
 		L2->size(L3);
-		for (L4 = 0; L4 < L3; L4 = L4 + 1) {
+		for (L4 = 0; L4 < L3; L4++) {
 			string L5;
 			L2->get(L5, L4);
 			f_a6b_a2_v(L5, 0);
@@ -492,7 +492,7 @@ maintask t0
 		int L5;
 		L4->size(L5);
 		int L6;
-		for (L6 = 0; L6 < L5; L6 = L6 + 1) {
+		for (L6 = 0; L6 < L5; L6++) {
 			string L7;
 			L4->get(L7, L6);
 			f_a6b_a2_v(L7, 2);
@@ -1481,7 +1481,7 @@ bool f_a7c_a0_b(void)
 	@CreateIntVector(L0);
 	f_7ef_a3_v(L0, false, -1);
 	L0->size(L1);
-	for (L2 = 0; L2 < L1; L2 = L2 + 1) {
+	for (L2 = 0; L2 < L1; L2++) {
 		int L3;
 		L0->get(L3, L2);
 		if (f_a04_a1_b(L3) || f_9fa_a1_b(L3)) {
@@ -1499,7 +1499,7 @@ bool f_aa2_a0_b(void)
 	@CreateIntVector(L0);
 	f_810_a3_v(L0, false, -1);
 	L0->size(L1);
-	for (L2 = 0; L2 < L1; L2 = L2 + 1) {
+	for (L2 = 0; L2 < L1; L2++) {
 		int L3;
 		L0->get(L3, L2);
 		if (f_a04_a1_b(L3) || f_9fa_a1_b(L3)) {
@@ -1517,7 +1517,7 @@ bool f_ac8_a0_b(void)
 	@CreateIntVector(L0);
 	f_834_a3_v(L0, false, -1);
 	L0->size(L1);
-	for (L2 = 0; L2 < L1; L2 = L2 + 1) {
+	for (L2 = 0; L2 < L1; L2++) {
 		int L3;
 		L0->get(L3, L2);
 		if (f_a04_a1_b(L3) || f_9fa_a1_b(L3)) {

@@ -33,7 +33,7 @@ maintask t0
 				object L2;
 				int L3;
 				@GetMainOutdoorScene(L2);
-				for (L3 = 1; ; L3 = L3 + 1) {
+				for (L3 = 1; ; L3++) {
 					bool L4;
 					Vector L5;
 					Vector L6;
@@ -174,7 +174,7 @@ void f_ea_a1_v(object a0)
 		int L0;
 		int L1;
 		a0->size(L0);
-		for (L1 = 0; L1 < L0; L1 = L1 + 1) {
+		for (L1 = 0; L1 < L0; L1++) {
 			object L2;
 			a0->get(L2, L1);
 			if (L2) {

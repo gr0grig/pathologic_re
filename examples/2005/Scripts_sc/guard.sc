@@ -1,0 +1,1671 @@
+event OnLoad 5;
+event OnUse 0;
+event OnAttacked 17;
+event OnPlayerDamage 30;
+event OnSteal 40;
+event OnMessage 42;
+event OnTrigger 26;
+event OnUnload 6;
+event OnDeath 41;
+event OnSee 1;
+event OnHit 22;
+event OnPropertyChange 16;
+event OnTimer 7;
+event OnStopSee 2;
+event OnCollision 10;
+event OnHit2 43;
+
+var bool g0;
+
+task t0
+{
+	void init(void)
+	{
+		do {
+			@Hold();
+		} while (!f_6c4_a0_b());
+	}
+
+	void OnLoad(void)
+	{
+		@StopGroup0();
+		@sync();
+	}
+}
+
+maintask t1
+{
+	var Vector tv0;
+	var Vector tv1;
+	var bool tv2;
+
+	void init(void)
+	{
+		tv2 = false;
+		@SensePlayerOnly(true);
+		f_922_a0_v();
+		f_1c_a0_v();
+		for (; ; ) {
+			f_e2_a0_v();
+		}
+	}
+
+	void f_1c_a0_v(void)
+	{
+		if (!f_6c4_a0_b()) {
+			f_8f5_a0_v();
+		}
+	}
+
+	void OnUse(object a0)
+	{
+		int L0;
+		L0 = f_8fb_a1_i(a0);
+		if (L0 > 0) {
+			if (L0 > 1) {
+				f_bb_a0_v();
+			}
+			f_8fe_a1_v(a0);
+		}
+	}
+
+	void OnAttacked(object a0)
+	{
+		int L0;
+		f_7b0_a1_v(a0);
+		L0 = f_8d6_a1_i(a0);
+		if (L0 > 0) {
+			if (L0 > 1) {
+				f_bb_a0_v();
+			}
+			f_8e0_a1_v(a0);
+		}
+	}
+
+	void OnPlayerDamage(object a0, object a1, bool a2)
+	{
+		if (f_92f_a3_b(a0, a1, a2)) {
+			int L0;
+			L0 = f_8e8_a2_i(a0, a2);
+			if (L0 > 0) {
+				if (L0 > 1) {
+					f_bb_a0_v();
+				}
+				f_8ef_a1_v(a0);
+			}
+		}
+	}
+
+	void OnSteal(object a0)
+	{
+		int L0;
+		L0 = f_904_a1_i(a0);
+		if (L0 > 0) {
+			if (L0 > 1) {
+				f_bb_a0_v();
+			}
+			f_907_a1_v(a0);
+		}
+	}
+
+	void OnMessage(object a0, string a1)
+	{
+		if (f_75a_a2_b(a0, a1)) {
+			f_bb_a0_v();
+			f_77a_a2_v(a0, a1);
+		} else {
+			int L0;
+			L0 = f_909_a2_i(a1, a0);
+			if (L0 > 0) {
+				if (L0 > 1) {
+					f_bb_a0_v();
+				}
+				f_90c_a2_v(a1, a0);
+			}
+		}
+	}
+
+	void OnTrigger(string a0)
+	{
+		if (f_7bd_a1_b(a0)) {
+			f_bb_a0_v();
+			f_7cd_a1_v(a0);
+		}
+	}
+
+	void OnUnload(void)
+	{
+		f_bb_a0_v();
+		f_8f5_a0_v();
+	}
+
+	void f_bb_a0_v(void)
+	{
+		if (tv2) {
+			f_8a7_a0_v();
+		} else {
+			f_136_a0_v();
+		}
+	}
+
+	void OnDeath(object a0)
+	{
+		f_bb_a0_v();
+		global.OnDeath(a0);
+	}
+
+	void OnSee(object a0)
+	{
+		if (f_793_a1_b(a0)) {
+			f_bb_a0_v();
+			f_7aa_a1_v(a0);
+		}
+	}
+
+	void f_dc_a0_v(void)
+	{
+		tv2 = true;
+		f_8ad_a0_v();
+		tv2 = false;
+	}
+
+	void f_e2_a0_v(void)
+	{
+		@GetPFPosition(tv1);
+		@GetDirection(tv0);
+		for (; ; ) {
+			int L0;
+			bool L1;
+			f_13b_a0_v();
+			@irand(L0, 10);
+			@Sleep(L0 + 5, L1);
+			if (L1) {
+				f_dc_a0_v();
+			} else {
+				for (; ; ) {
+					Vector L2;
+					f_13b_a0_v();
+					@GetPFPosition(L2);
+					if (f_718_a2_f(tv1, L2) > 40000) {
+						object L3;
+						@FindPathTo(L3, tv1);
+						if (L3 != null) {
+							@RotatePath(L3, L1);
+							if (!L1) {
+								continue;
+							}
+							@FollowPath(L3, false, L1);
+							if (!L1) {
+								continue;
+							}
+							@Rotate(tv0.x, tv0.z, L1);
+							if (!L1) {
+								continue;
+							}
+							@WaitForAnimEnd(L1);
+							if (!L1) {
+								continue;
+							}
+							break;
+						} else {
+							@Sleep(1);
+						}
+					} else {
+						@Rotate(tv0.x, tv0.z, L1);
+						if (!L1) {
+							continue;
+						}
+						@WaitForAnimEnd(L1);
+						if (!L1) {
+							continue;
+						}
+						break;
+					}
+				}
+			}
+		}
+	}
+
+	void f_136_a0_v(void)
+	{
+		@StopGroup0();
+		@Stop();
+	}
+
+	void f_13b_a0_v(void)
+	{
+	}
+}
+
+task t2
+{
+	void init(object a0)
+	{
+		disable OnUse;
+		f_15d_a1_v(a0);
+		f_954_a1_v(a0);
+		enable OnUse;
+		for (; ; ) {
+			@Hold();
+		}
+	}
+
+	void OnUse(object a0)
+	{
+		int L0;
+		L0 = f_8fb_a1_i(a0);
+		if (L0 > 0) {
+			f_8fe_a1_v(a0);
+		}
+	}
+
+	void OnUnload(void)
+	{
+		f_8f5_a0_v();
+	}
+
+	void f_15d_a1_v(object a0)
+	{
+		if (a0 == null) {
+			f_1b8_a1_v("fdie");
+		} else {
+			Vector L0;
+			a0->GetPosition(L0);
+			Vector L1;
+			@GetPosition(L1);
+			Vector L2;
+			@GetDirection(L2);
+			Vector L3;
+			L3 = L1 - L0;
+			string L4;
+			if (L3.x * L2.x + L3.z * L2.z >= 0) {
+				L4 = "fdie";
+			} else {
+				L4 = "bdie";
+			}
+			@RemoveRTEnvelope();
+			@SetDeathState();
+			@Stop();
+			@StopAsync();
+			object L5;
+			L5 = a0;
+			if (a0->FuncExist("GetScriptProperty", 2)) {
+				bool L6;
+				a0->HasScriptProperty(L6, "Owner");
+				if (L6) {
+					a0->GetScriptProperty(L5, "Owner");
+					if (L5 == null) {
+						L5 = a0;
+					}
+				}
+			}
+			bool L7;
+			if (L5->FuncExist("@GetEyesHeight", 1)) {
+				float L8;
+				Vector L9;
+				L5->GetEyesHeight(L8);
+				L9 = [0.0, 0.0, 0.0];
+				L9.y = L8;
+				@LookAsync(a0, "head", L9);
+				L7 = true;
+			} else {
+				L7 = false;
+			}
+			f_6df_a1_v(L4);
+			@PlayAnimation("all", L4);
+			@WaitForAnimEnd();
+			if (L7) {
+				@StopAsync();
+				@UnlookAsync("head");
+			}
+			@LockAnimationEnd("all", L4);
+			@RemoveEnvelope();
+		}
+	}
+
+	void f_1b8_a1_v(string a0)
+	{
+		@RemoveRTEnvelope();
+		@SetDeathState();
+		@Stop();
+		@StopAsync();
+		@StopSecondaryAnimation();
+		f_6df_a1_v(a0);
+		@PlayAnimation("all", a0);
+		@WaitForAnimEnd();
+		@LockAnimationEnd("all", a0);
+		@RemoveEnvelope();
+	}
+
+	void OnHit(object a0, int a1, float a2, float a3)
+	{
+	}
+
+	void OnPropertyChange(object a0, string a1)
+	{
+	}
+
+	void OnDeath(object a0)
+	{
+	}
+}
+
+task t3
+{
+	var object tv0;
+	var int tv1;
+	var int tv2;
+	var bool tv3;
+	var float tv4;
+	var int tv5;
+
+	void init(object a0)
+	{
+		f_1e6_a3_v(a0, true, 180.0);
+	}
+
+	float f_1e0_a2_f(object a0, int a1)
+	{
+		return 0.05000000074505806;
+	}
+
+	int f_1e3_a2_i(object a0, int a1)
+	{
+		return 0;
+	}
+
+	void f_1e6_a3_v(object a0, bool a1, float a2)
+	{
+		float L0;
+		Vector L1;
+		Vector L2;
+		bool L3;
+		bool L4;
+		float L5;
+		f_2cb_a0_v();
+		tv5 = 0;
+		if (a0->FuncExist("@GetAttackDistance", 1)) {
+			a0->GetAttackDistance(L0);
+			L0 = L0 + 50;
+		} else {
+			L0 = a2;
+		}
+		if (L0 >= 150) {
+			L0 = 150;
+		}
+		tv3 = false;
+		tv0 = a0;
+		@IsPlayerActor(tv0, L3);
+		if (L3) {
+			@PlayGlobalMusic("attack");
+			@SendPlayerEnemy(a0, f_708_a0_o());
+		}
+		if (a1) {
+			L4 = false;
+		} else {
+			L4 = true;
+		}
+		L5 = 400.0 + L0;
+		while (f_623_a1_b(tv0) && !tv3) {
+			Vector L6;
+			float L7;
+			f_468_a0_v();
+			tv0->GetPFPosition(L1);
+			@GetPFPosition(L2);
+			L6 = L1 - L2;
+			L7 = L6 | L6;
+			if (L7 >= L5 * L5) {
+				if (!t4{tv0, L0, 3000.0, true, false}) {
+					break;
+				}
+				L4 = false;
+			} else {
+				if (L7 >= a2 * a2) {
+					Vector L8;
+					bool L9;
+					float L10;
+					tv0->GetPFPosition(L8);
+					@CanReachByPF(L9, L8);
+					if (!L9) {
+						if (!t4{tv0, L0, 3000.0, true, false}) {
+							break;
+						}
+						L4 = false;
+						continue;
+					}
+					if (!L4) {
+						f_6b9_a1_v(tv0);
+						@PlayAnimation("all", "attack_on");
+						@WaitForAnimEnd();
+						f_468_a0_v();
+						@StopAsync();
+						L4 = true;
+						if (!f_623_a1_b(tv0)) {
+							break;
+						}
+					}
+					@rand(L10);
+					if (L10 < 0.25 || f_43d_a0_b()) {
+						@Face(tv0);
+						f_46f_a0_v();
+						@PlayAnimation("all", "attack_stay");
+						f_3b9_a1_b(a2);
+						@StopAsync();
+					} else {
+						@Face(tv0);
+						@PlayAnimation("all", "fjump");
+						@WaitForAnimEnd();
+						f_468_a0_v();
+						@SetSpeed([0.0, 0.0, 0.0]);
+						@Stop();
+						@StopAsync();
+						if (!f_43d_a0_b()) {
+							if (!f_623_a1_b(tv0)) {
+								break;
+							}
+							tv0->GetPFPosition(L1);
+							@GetPFPosition(L2);
+							L6 = L1 - L2;
+							L7 = L6 | L6;
+							if (L7 < a2 * a2) {
+								if (!f_315_a1_b(a2)) {
+									break;
+								}
+							}
+						}
+					}
+				} else {
+					if (!f_315_a1_b(a2)) {
+						break;
+					}
+					L4 = true;
+				}
+			}
+		}
+		@WaitForAnimEnd();
+		if (tv3) {
+			return;
+		}
+		@PlayAnimation("all", "attack_off");
+		@WaitForAnimEnd();
+		if (L3) {
+			@Sleep(2.0);
+		}
+	}
+
+	void f_2cb_a0_v(void)
+	{
+		for (tv1 = 0; ; tv1++) {
+			bool L0;
+			@HasAnimation(L0, "all", "attack_begin" + (tv1 + 1));
+			if (!L0) {
+				break;
+			}
+		}
+		for (tv2 = 0; ; tv2++) {
+			bool L1;
+			@IsExisting3DSound(L1, "attack" + (tv2 + 1));
+			if (!L1) {
+				break;
+			}
+		}
+		Vector L2;
+		@GetAnimationOffset(L2, "all", "bjump");
+		tv4 = -L2.z;
+	}
+
+	void f_2ee_a2_v(float a0, int a1)
+	{
+		object L0;
+		@GetVictim(a0 * 0.8999999761581421, L0);
+		@ReportAttack(tv0);
+		if (L0 == tv0) {
+			float L1;
+			float L2;
+			L1 = f_1e0_a2_f(L0, a1);
+			L2 = f_5b1_a3_f(L0, L1, f_1e3_a2_i(L0, a1));
+			@ReportHit(tv0, f_46d_a0_i(), L2, L1);
+			f_474_a2_v(L0, L2);
+		}
+	}
+
+	bool f_315_a1_b(float a0)
+	{
+		int L0;
+		bool L1;
+		f_468_a0_v();
+		@irand(L0, tv1);
+		L0 = L0 + 1;
+		@Face(tv0);
+		@SetAttackState(true);
+		f_74f_a0_v();
+		@PlayAnimation("all", "attack_begin" + L0);
+		@WaitForAnimEnd();
+		f_448_a0_v();
+		if (!f_623_a1_b(tv0)) {
+			@StopAsync();
+			return false;
+		}
+		f_2ee_a2_v(a0, L0);
+		@HasAnimation(L1, "all", "attack_middle" + L0);
+		if (L1) {
+			int L2;
+			f_74f_a0_v();
+			@PlayAnimation("all", "attack_middle" + L0);
+			@WaitForAnimEnd();
+			f_468_a0_v();
+			if (!f_623_a1_b(tv0)) {
+				@StopAsync();
+				return false;
+			}
+			f_2ee_a2_v(a0, L0);
+			for (L2 = 1; ; L2++) {
+				string L3;
+				L3 = "attack_middle" + L0 + "_" + L2;
+				@HasAnimation(L1, "all", L3);
+				if (!L1) {
+					break;
+				}
+				f_74f_a0_v();
+				@PlayAnimation("all", L3);
+				@WaitForAnimEnd();
+				f_468_a0_v();
+				if (!f_623_a1_b(tv0)) {
+					@StopAsync();
+					return false;
+				}
+				f_2ee_a2_v(a0, L0);
+			}
+		}
+		@SetAttackState(false);
+		@PlayAnimation("all", "attack_end" + L0);
+		if (f_476_a0_b()) {
+			f_39e_a1_b(0.75);
+			@StopAsync();
+		}
+		return true;
+	}
+
+	bool f_39e_a1_b(float a0)
+	{
+		float L0;
+		@rand(L0);
+		if (L0 < a0) {
+			for (; ; ) {
+				bool L1;
+				@IsAnimationPlaying(L1);
+				if (!L1) {
+					break;
+				}
+				if (f_400_a0_b()) {
+					return true;
+				}
+				@sync();
+			}
+		} else {
+			@WaitForAnimEnd();
+			f_468_a0_v();
+		}
+		return false;
+	}
+
+	bool f_3b9_a1_b(float a0)
+	{
+		for (; ; ) {
+			bool L0;
+			Vector L1;
+			Vector L2;
+			Vector L3;
+			float L4;
+			@IsAnimationPlaying(L0);
+			if (!L0) {
+				break;
+			}
+			if (f_400_a0_b()) {
+				return true;
+			}
+			if (!f_623_a1_b(tv0)) {
+				return false;
+			}
+			tv0->GetPFPosition(L1);
+			@GetPFPosition(L2);
+			L3 = L1 - L2;
+			L4 = L3 | L3;
+			if (L4 < a0 * a0) {
+				f_315_a1_b(a0);
+				return true;
+			}
+			@sync();
+		}
+		f_468_a0_v();
+		return false;
+	}
+
+	bool f_3e4_a0_b(void)
+	{
+		if (!f_623_a1_b(tv0)) {
+			return false;
+		}
+		if (f_43d_a0_b()) {
+			Vector L0;
+			Vector L1;
+			Vector L2;
+			float L3;
+			float L4;
+			tv0->GetPFPosition(L0);
+			@GetPFPosition(L1);
+			L2 = L0 - L1;
+			L3 = L2 | L2;
+			tv0->GetAttackDistance(L4);
+			L4 = L4 + 50;
+			return L3 <= L4 * L4;
+		}
+		return false;
+	}
+
+	bool f_400_a0_b(void)
+	{
+		if (f_3e4_a0_b() && f_410_a0_b()) {
+			return true;
+		}
+		return false;
+	}
+
+	bool f_410_a0_b(void)
+	{
+		object L0;
+		bool L1;
+		@GetScene(L0);
+		L1 = false;
+		for (; ; ) {
+			float L2;
+			Vector L3;
+			Vector L4;
+			@FindDirLength(L2, -f_591_a1_V(tv0), tv4);
+			if (L2 < tv4) {
+				break;
+			}
+			@Face(tv0);
+			@PlayAnimation("all", "bjump");
+			tv0->GetPFPosition(L3);
+			@GetPFPosition(L4);
+			@WaitForAnimEnd();
+			f_468_a0_v();
+			@StopAsync();
+			@SetSpeed([0.0, 0.0, 0.0]);
+			L1 = true;
+			if (!f_3e4_a0_b()) {
+				break;
+			}
+		}
+		return L1;
+	}
+
+	bool f_43d_a0_b(void)
+	{
+		if (tv0->FuncExist("IsAttacking", 1)) {
+			bool L0;
+			tv0->IsAttacking(L0);
+			return L0;
+		}
+		return false;
+	}
+
+	void f_448_a0_v(void)
+	{
+		float L0;
+		if (!tv2) {
+			return;
+		}
+		if (tv5) {
+			tv5 = tv5 + -1;
+			if (tv5 > 0) {
+				return;
+			}
+		}
+		@rand(L0);
+		if (L0 < f_47a_a0_f()) {
+			int L1;
+			@irand(L1, tv2);
+			L1 = L1 + 1;
+			@Speak("attack" + L1);
+			tv5 = f_478_a0_i();
+		}
+	}
+
+	void f_468_a0_v(void)
+	{
+		f_746_a1_v(tv0);
+	}
+
+	int f_46d_a0_i(void)
+	{
+		return 0;
+	}
+
+	void f_46f_a0_v(void)
+	{
+		f_6df_a1_v("attack_stay");
+	}
+
+	void f_474_a2_v(object a0, float a1)
+	{
+	}
+
+	bool f_476_a0_b(void)
+	{
+		return true;
+	}
+
+	int f_478_a0_i(void)
+	{
+		return 1;
+	}
+
+	float f_47a_a0_f(void)
+	{
+		return 0.5;
+	}
+}
+
+task t4
+{
+	var bool tv0;
+	var object tv1;
+	var bool tv2;
+
+	void OnUnload(void)
+	{
+		f_4c2_a0_v();
+		f_8f5_a0_v();
+	}
+
+	bool init(object a0, float a1, float a2, bool a3, bool a4)
+	{
+		bool L0;
+		bool L1;
+		f_746_a1_v(a0);
+		@SetTimer(1, 5);
+		@CanSee(L0, a0);
+		if (L0) {
+			tv2 = true;
+			f_6c9_a1_v(a0);
+		} else {
+			tv2 = false;
+		}
+		if (f_5a0_a1_b(a0)) {
+			@SendPlayerEnemy(a0, f_708_a0_o());
+		}
+		L1 = f_4ec_a5_b(a0, a1, a2, a3, a4);
+		if (tv2) {
+			@UnlookAsync("head");
+		}
+		@KillTimer(1);
+		return L1;
+	}
+
+	void OnTimer(int a0)
+	{
+		if (a0 == 1) {
+			f_746_a1_v(tv1);
+		} else {
+			f_552_a1_v(a0);
+		}
+	}
+
+	void f_4c2_a0_v(void)
+	{
+		@KillTimer(1);
+		if (tv2) {
+			tv2 = false;
+			@UnlookAsync("head");
+		}
+		f_568_a0_v();
+	}
+
+	void OnSee(object a0)
+	{
+		if (tv1 == a0 && !tv2) {
+			tv2 = true;
+			f_6c9_a1_v(a0);
+		}
+	}
+
+	void OnStopSee(object a0)
+	{
+		if (tv1 == a0 && tv2) {
+			tv2 = false;
+			@UnlookAsync("head");
+		}
+	}
+
+	bool f_4ec_a5_b(object a0, float a1, float a2, bool a3, bool a4)
+	{
+		bool L0;
+		bool L1;
+		tv0 = false;
+		tv1 = a0;
+		L1 = a4;
+		for (; ; ) {
+			object L2;
+			Vector L3;
+			Vector L4;
+			Vector L5;
+			float L6;
+			if (!f_578_a1_b(a0)) {
+				return false;
+			}
+			a0->GetPosition(L3);
+			@GetPosition(L4);
+			L5 = L3 - L4;
+			L6 = L5 | L5;
+			if (a2 > 0 && L6 > a2 * a2) {
+				@Stop();
+				return false;
+			}
+			if (L6 > a1 * a1) {
+				object L7;
+				a0->GetPFPosition(L3);
+				@FindPathTo(L7, L3);
+				if (L7 != null) {
+					L2 = L7;
+					L7 = null;
+				}
+				if (L2 != null) {
+					if (L1) {
+						L1 = false;
+						@RotatePath(L2, L0);
+						if (!L0) {
+							break;
+						}
+					}
+					@SetTimer(0, 0.30000001192092896);
+					@FollowPath(L2, a3, L0, f_57f_a0_s(), f_581_a0_s());
+					if (!L0) {
+						if (tv0) {
+							L2 = null;
+							break;
+						} else {
+							continue;
+						}
+					} else {
+						L2 = null;
+					}
+				} else {
+					@KillTimer(0);
+					@Sleep(0.5, L0);
+					if (!L0) {
+						if (tv0) {
+							L2 = null;
+							break;
+						}
+					}
+					@SetTimer(0, 0.30000001192092896);
+				}
+			} else {
+				@KillTimer(0);
+				break;
+			}
+		}
+		return !tv0;
+	}
+
+	void f_552_a1_v(int a0)
+	{
+		if (a0 != 0) {
+			return;
+		}
+		if (!f_578_a1_b(tv1)) {
+			tv0 = true;
+		}
+		@KillTimer(0);
+		@Stop();
+	}
+
+	void OnCollision(object a0)
+	{
+		@RequestClearPath(a0);
+	}
+
+	void f_568_a0_v(void)
+	{
+		tv0 = true;
+		@KillTimer(0);
+		@Stop();
+	}
+
+	void OnDeath(object a0)
+	{
+		f_4c2_a0_v();
+		global.OnDeath(a0);
+	}
+}
+
+bool f_578_a1_b(object a0)
+{
+	return f_623_a1_b(a0);
+}
+
+string f_57f_a0_s(void)
+{
+	return "walk";
+}
+
+string f_581_a0_s(void)
+{
+	return "run";
+}
+
+string f_583_a1_s(int a0)
+{
+	if (a0 == 2) {
+		return "fire";
+	} else {
+		if (a0 == 1) {
+			return "bullet";
+		}
+	}
+	return "phys";
+}
+
+Vector f_591_a1_V(object a0)
+{
+	Vector L0;
+	Vector L1;
+	@GetPosition(L0);
+	a0->GetPosition(L1);
+	return L1 - L0;
+}
+
+float f_598_a1_f(object a0)
+{
+	Vector L0;
+	Vector L1;
+	Vector L2;
+	@GetPosition(L0);
+	a0->GetPosition(L1);
+	L2 = L1 - L0;
+	return L2 | L2;
+}
+
+bool f_5a0_a1_b(object a0)
+{
+	bool L0;
+	@IsPlayerActor(a0, L0);
+	return L0;
+}
+
+bool f_5a5_a2_b(object a0, string a1)
+{
+	bool L0;
+	if (!a0->FuncExist("HasProperty", 2)) {
+		return false;
+	}
+	a0->HasProperty(a1, L0);
+	return L0;
+}
+
+float f_5b1_a3_f(object a0, float a1, int a2)
+{
+	int L0;
+	string L1;
+	int L2;
+	float L3;
+	float L4;
+	float L5;
+	if (!f_5a5_a2_b(a0, "health")) {
+		return 0.0;
+	}
+	if (!f_5a5_a2_b(a0, "armor")) {
+		L0 = 0;
+	} else {
+		a0->GetProperty("armor", L0);
+	}
+	L1 = "armor_" + f_583_a1_s(a2);
+	if (!f_5a5_a2_b(a0, L1)) {
+		L2 = 0;
+	} else {
+		a0->GetProperty(L1, L2);
+	}
+	L3 = f_71c_a2_f((L0 + L2) / 100.0, 1);
+	a0->GetProperty("health", L4);
+	L5 = a1 * (1 - L3);
+	a0->SetProperty("health", f_723_a3_f(L4 - L5, 0, 1));
+	if (f_5a0_a1_b(a0)) {
+		f_733_a1_v(-L5);
+	}
+	return L5;
+}
+
+bool f_5fa_a1_b(object a0)
+{
+	bool L0;
+	a0->IsDead(L0);
+	return L0;
+}
+
+bool f_5ff_a1_b(object a0)
+{
+	object L0;
+	object L1;
+	if (a0 == null) {
+		return false;
+	}
+	if (a0->FuncExist("IsDead", 1) && f_5fa_a1_b(a0)) {
+		return false;
+	}
+	@GetScene(L0);
+	if (L0 == null) {
+		return false;
+	}
+	a0->GetScene(L1);
+	if (L0 != L1) {
+		return false;
+	}
+	return true;
+}
+
+bool f_623_a1_b(object a0)
+{
+	int L0;
+	if (!f_5ff_a1_b(a0)) {
+		return false;
+	}
+	if (!f_5a5_a2_b(a0, "noaccess")) {
+		return true;
+	}
+	a0->GetProperty("noaccess", L0);
+	return L0 == 0;
+}
+
+void f_63b_a1_v(object a0)
+{
+	bool L0;
+	int L1;
+	Vector L2;
+	Vector L3;
+	Vector L4;
+	Vector L5;
+	string L6;
+	if (a0 == null) {
+		return;
+	}
+	@IsDead(L0);
+	if (L0) {
+		return;
+	}
+	@GetSecondaryAnimationType(L1);
+	if (L1 < 0) {
+		return;
+	}
+	a0->GetPosition(L2);
+	@GetPosition(L3);
+	@GetDirection(L4);
+	L5 = L3 - L2;
+	if (L5.x * L4.x + L5.z * L4.z >= 0) {
+		L6 = "fhit";
+	} else {
+		L6 = "bhit";
+	}
+	@FadeSecondaryAnimation("hit_react", L6 + "1", L6 + "2", -10);
+}
+
+void f_667_a3_v(object a0, int a1, float a2)
+{
+	if (a0 && a1 != 4 && a1 != 5) {
+		Vector L0;
+		L0 = f_70e_a1_V(f_591_a1_V(a0));
+		object L1;
+		@CreateVectorVector(L1);
+		int L2;
+		for (L2 = 1; ; L2++) {
+			bool L3;
+			Vector L4;
+			Vector L5;
+			@GetGeometryLocator("hit" + L2, L3, L4, L5);
+			if (!L3) {
+				break;
+			}
+			if ((L5 | L0) >= 0.7071067690849304) {
+				L1->add(L4);
+			}
+		}
+		int L6;
+		L1->size(L6);
+		if (L6) {
+			int L7;
+			Vector L8;
+			@irand(L7, L6);
+			L1->get(L8, L7);
+			f_6ab_a5_v(a0, a1, a2, L8, -L0);
+			return;
+		}
+	}
+	f_63b_a1_v(a0);
+}
+
+void f_6ab_a5_v(object a0, int a1, float a2, Vector a3, Vector a4)
+{
+	object L0;
+	object L1;
+	@GetScene(L0);
+	@AddActorByType(L1, "scripted", L0, a3, a4, "blood_dir.xml");
+	f_63b_a1_v(a0);
+}
+
+void f_6b9_a1_v(object a0)
+{
+	Vector L0;
+	Vector L1;
+	Vector L2;
+	a0->GetPosition(L0);
+	@GetPosition(L1);
+	L2 = L0 - L1;
+	@RotateAsync(L2.x, L2.z);
+}
+
+bool f_6c4_a0_b(void)
+{
+	bool L0;
+	@IsLoaded(L0);
+	return L0;
+}
+
+void f_6c9_a1_v(object a0)
+{
+	float L0;
+	Vector L1;
+	a0->GetEyesHeight(L0);
+	L1 = [0.0, 0.0, 0.0];
+	L1.y = L0;
+	@LookAsync(a0, "head", L1);
+}
+
+void f_6d4_a3_v(string a0, int a1, int a2)
+{
+	if (f_72e_a2_b(a1, a2)) {
+		bool L0;
+		@AddItem(L0, a0, 0);
+	}
+}
+
+void f_6df_a1_v(string a0)
+{
+	bool L0;
+	@IsExisting3DSound(L0, a0);
+	if (!L0) {
+		int L1;
+		for (L1 = 0; ; L1++) {
+			bool L2;
+			@IsExisting3DSound(L2, a0 + (L1 + 1));
+			if (!L2) {
+				break;
+			}
+		}
+		if (!L1) {
+			return;
+		}
+		int L3;
+		@irand(L3, L1);
+		a0 = a0 + (L3 + 1);
+	}
+	bool L4;
+	@Is3DSoundLoaded(L4, a0);
+	if (L4) {
+		float L5;
+		Vector L6;
+		Vector L7;
+		@GetEyesHeight(L5);
+		@GetDirection(L6);
+		L7 = L6 * 50;
+		L7.y += L5;
+		@PlayGlobalSound(a0, L7);
+	}
+}
+
+object f_708_a0_o(void)
+{
+	object L0;
+	@self(L0);
+	return L0;
+}
+
+Vector f_70e_a1_V(Vector a0)
+{
+	float L0;
+	L0 = sqrt(a0 | a0);
+	if (L0 < 9.999999974752427e-07) {
+		return [0.0, 0.0, 0.0];
+	}
+	return a0 / L0;
+}
+
+float f_718_a2_f(Vector a0, Vector a1)
+{
+	Vector L0;
+	L0 = a1 - a0;
+	return L0 | L0;
+}
+
+float f_71c_a2_f(float a0, float a1)
+{
+	return a0 < a1 ? a0 : a1;
+}
+
+float f_723_a3_f(float a0, float a1, float a2)
+{
+	if (a0 < a1) {
+		return a1;
+	}
+	if (a0 > a2) {
+		return a2;
+	}
+	return a0;
+}
+
+bool f_72e_a2_b(int a0, int a1)
+{
+	int L0;
+	@irand(L0, a1);
+	return L0 < a0;
+}
+
+void f_733_a1_v(float a0)
+{
+	object L0;
+	@CreateFloatVector(L0);
+	L0->add(a0);
+	@SendWorldWndMessage(15, L0);
+}
+
+int f_73d_a0_i(void)
+{
+	float L0;
+	@GetGameTime(L0);
+	return 1 + (int)(L0 / 24);
+}
+
+void f_746_a1_v(object a0)
+{
+	bool L0;
+	@IsPlayerActor(a0, L0);
+	if (L0) {
+		@PlayGlobalMusic("attack");
+	}
+}
+
+void f_74f_a0_v(void)
+{
+	object L0;
+	@GetScene(L0);
+	@BroadcastMessage("battle", f_708_a0_o(), L0);
+}
+
+bool f_75a_a2_b(object a0, string a1)
+{
+	if (a1 == "unholster") {
+		return f_90e_a1_b(a0);
+	} else {
+		if (a1 == "player_shot") {
+			return f_913_a1_b(a0);
+		} else {
+			if (a1 == "battle") {
+				return f_918_a1_b(a0);
+			}
+		}
+	}
+	return false;
+}
+
+void f_77a_a2_v(object a0, string a1)
+{
+	if (a1 == "unholster") {
+		f_911_a1_v(a0);
+	} else {
+		if (a1 == "player_shot") {
+			f_916_a1_v(a0);
+		} else {
+			if (a1 == "battle") {
+				f_91b_a1_v(a0);
+			}
+		}
+	}
+}
+
+bool f_793_a1_b(object a0)
+{
+	if (f_90e_a1_b(a0) && f_5a0_a1_b(a0)) {
+		bool L0;
+		a0->IsWeaponHolstered(L0);
+		if (!L0) {
+			return true;
+		}
+	}
+	return false;
+}
+
+void f_7aa_a1_v(object a0)
+{
+	f_911_a1_v(a0);
+}
+
+void f_7b0_a1_v(object a0)
+{
+	if (f_5a0_a1_b(a0)) {
+		@ReportReputationChange(a0, f_708_a0_o(), -0.05000000074505806);
+	}
+}
+
+bool f_7bd_a1_b(string a0)
+{
+	if (a0 == "heal") {
+		object L0;
+		@FindActor(L0, "player");
+		return f_91d_a1_b(L0);
+	}
+	return false;
+}
+
+void f_7cd_a1_v(string a0)
+{
+	if (a0 == "heal") {
+		object L0;
+		@FindActor(L0, "player");
+		f_920_a1_v(L0);
+	}
+}
+
+int f_7da_a0_i(void)
+{
+	int L0;
+	@GetVariable("branch", L0);
+	return L0;
+}
+
+void f_7e0_a1_v(object a0)
+{
+	if (f_7da_a0_i() == 1) {
+		@WorkWithCorpse(a0);
+	} else {
+		@Barter(a0);
+	}
+}
+
+void f_7ed_a2_v(int a0, int a1)
+{
+	int L0;
+	bool L1;
+	if (a0 > a1) {
+		@Trace("GenerateMoney: iMin > iMax");
+		return;
+	}
+	L0 = 0;
+	if (a0 != a1) {
+		@irand(L0, a1 - a0);
+	} else {
+		if (a0 == 0) {
+			return;
+		}
+	}
+	L0 = L0 + a0;
+	if (L0 == 0) {
+		return;
+	}
+	@AddItem(L1, f_85d_a1_i("Money"), 0, L0);
+}
+
+void f_80c_a1_v(string a0)
+{
+	object L0;
+	int L1;
+	bool L2;
+	@CreateInvItem(L0);
+	L0->SetItemName(a0);
+	L0->SetProperty("Organ", 1);
+	L0->GetItemID(L1);
+	@AddItem(L2, L0, 0, 1);
+}
+
+void f_81d_a0_v(void)
+{
+	if (f_7da_a0_i() != 1) {
+		return;
+	}
+	f_80c_a1_v("liver");
+	f_80c_a1_v("kidney");
+	f_80c_a1_v("heart");
+	f_80c_a1_v("blood");
+}
+
+void f_835_a0_v(void)
+{
+	bool L0;
+	@ClearSubContainer(0);
+	f_7ed_a2_v(30, 50 + f_73d_a0_i() * 40);
+	f_6d4_a3_v("tourniquet", 1, 10);
+	f_6d4_a3_v("bandage", 1, 10);
+	f_6d4_a3_v("bottle_empty", 1, 2);
+	f_6d4_a3_v("tvirin", 1, 8);
+}
+
+int f_85d_a1_i(string a0)
+{
+	int L0;
+	@GetInvItemByName(L0, a0);
+	return L0;
+}
+
+void f_862_a1_v(object a0)
+{
+	t2{a0};
+}
+
+void OnPropertyChange(object a0, string a1)
+{
+	if (a1 == "health") {
+		float L0;
+		@GetProperty("health", L0);
+		if (L0 <= 0) {
+			@SignalDeath(a0);
+		}
+	}
+}
+
+void OnDeath(object a0)
+{
+	f_862_a1_v(a0);
+}
+
+void OnHit(object a0, int a1, float a2, float a3)
+{
+	f_667_a3_v(a0, a1, a2);
+}
+
+void OnHit2(object a0, int a1, float a2, float a3, Vector a4, Vector a5)
+{
+	f_6ab_a5_v(a0, a1, a2, a4, a5);
+}
+
+string f_88f_a1_s(int a0)
+{
+	string L0;
+	L0 = "idle";
+	if (a0) {
+		L0 = L0 + a0;
+	}
+	return L0;
+}
+
+int f_896_a0_i(void)
+{
+	int L0;
+	for (L0 = 0; ; L0++) {
+		bool L1;
+		@HasAnimation(L1, "all", f_88f_a1_s(L0));
+		if (!L1) {
+			break;
+		}
+	}
+	return L0;
+}
+
+void f_8a7_a0_v(void)
+{
+	@UnlookAsync("head");
+	@StopAnimation();
+}
+
+void f_8ad_a0_v(void)
+{
+	object L0;
+	@FindActor(L0, "player");
+	if (L0) {
+		float L1;
+		L1 = sqrt(f_598_a1_f(L0));
+		if (L1 < 350) {
+			f_6c9_a1_v(L0);
+		}
+	}
+	int L2;
+	L2 = f_896_a0_i();
+	if (!L2) {
+		return;
+	}
+	int L3;
+	@irand(L3, L2);
+	@PlayAnimation("all", f_88f_a1_s(L3));
+	@WaitForAnimEnd();
+	@UnlookAsync("head");
+}
+
+int f_8d6_a1_i(object a0)
+{
+	return f_623_a1_b(a0) ? 2 : 0;
+}
+
+void f_8e0_a1_v(object a0)
+{
+	t3{a0};
+}
+
+int f_8e8_a2_i(object a0, bool a1)
+{
+	return f_8d6_a1_i(a0);
+}
+
+void f_8ef_a1_v(object a0)
+{
+	f_8e0_a1_v(a0);
+}
+
+void f_8f5_a0_v(void)
+{
+	t0{};
+}
+
+int f_8fb_a1_i(object a0)
+{
+	return 2;
+}
+
+void f_8fe_a1_v(object a0)
+{
+	f_926_a1_v(a0);
+}
+
+int f_904_a1_i(object a0)
+{
+	return 0;
+}
+
+void f_907_a1_v(object a0)
+{
+}
+
+int f_909_a2_i(string a0, object a1)
+{
+	return 0;
+}
+
+void f_90c_a2_v(string a0, object a1)
+{
+}
+
+bool f_90e_a1_b(object a0)
+{
+	return false;
+}
+
+void f_911_a1_v(object a0)
+{
+}
+
+bool f_913_a1_b(object a0)
+{
+	return false;
+}
+
+void f_916_a1_v(object a0)
+{
+}
+
+bool f_918_a1_b(object a0)
+{
+	return false;
+}
+
+void f_91b_a1_v(object a0)
+{
+}
+
+bool f_91d_a1_b(object a0)
+{
+	return false;
+}
+
+void f_920_a1_v(object a0)
+{
+}
+
+void f_922_a0_v(void)
+{
+	g0 = false;
+}
+
+void f_926_a1_v(object a0)
+{
+	if (g0) {
+		f_7e0_a1_v(a0);
+		return;
+	}
+}
+
+bool f_92f_a3_b(object a0, object a1, bool a2)
+{
+	string L0;
+	bool L1;
+	if (!f_5a5_a2_b(a1, "class")) {
+		return false;
+	}
+	a1->GetProperty("class", L0);
+	if (L0 != "guard") {
+		return false;
+	}
+	@CanSee(L1, a0);
+	if (L1 || f_598_a1_f(a0) <= 1000000.0) {
+		return true;
+	}
+	return false;
+}
+
+void f_954_a1_v(object a0)
+{
+	g0 = true;
+	@SetRTEnvelope(50, 40);
+	f_81d_a0_v();
+	if (f_5a0_a1_b(a0)) {
+		@ReportReputationChange(a0, f_708_a0_o(), -0.029999999329447746, true);
+		f_835_a0_v();
+	}
+}
+

@@ -15,7 +15,8 @@ maintask t0
 		tv0 = -1;
 		@CreateBoolVector(tv2);
 		@CreateBoolVector(tv3);
-		for (L0 = 0; L0 < 12; L0 = L0 + 1) {
+		L0 = 0;
+		for (; L0 < 12; L0++) {
 			tv2->add(false);
 			if (L0 + 1 < 6 || L0 + 1 == 12) {
 				tv3->add(false);
@@ -94,7 +95,7 @@ maintask t0
 	void f_a5_a0_v(void)
 	{
 		int L0;
-		for (L0 = 0; L0 < 12; L0 = L0 + 1) {
+		for (L0 = 0; L0 < 12; L0++) {
 			bool L1;
 			tv3->get(L1, L0);
 			f_171_a2_v(L0 + 1, L1);

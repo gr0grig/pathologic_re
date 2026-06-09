@@ -43,7 +43,7 @@ maintask t0
 		int L1;
 		tv5->add(a0);
 		tv5->size(L0);
-		for (L1 = 0; L1 < L0 - 1; L1 = L1 + 1) {
+		for (L1 = 0; L1 < L0 - 1; L1++) {
 			int L2;
 			tv5->get(L2, L1);
 			if (L2 == a0) {
@@ -63,7 +63,7 @@ maintask t0
 		int L0;
 		int L1;
 		tv3->size(L0);
-		for (L1 = 0; L1 < L0; L1 = L1 + 1) {
+		for (L1 = 0; L1 < L0; L1++) {
 			int L2;
 			tv3->get(L2, L1);
 			if (a0 == L2) {
@@ -154,7 +154,8 @@ maintask t0
 		if (!L0) {
 			return;
 		}
-		for (L1 = 0; L1 < L0; L1 = L1 + 1) {
+		L1 = 0;
+		for (; L1 < L0; L1++) {
 			float L2;
 			tv8->get(L2, L1);
 			L2 = L2 - a0;
@@ -170,7 +171,7 @@ maintask t0
 			int L3;
 			int L4;
 			tv2->size(L3);
-			for (L4 = 0; L4 < L3; L4 = L4 + 1) {
+			for (L4 = 0; L4 < L3; L4++) {
 				string L5;
 				tv2->get(L5, L4);
 				@ReleaseImage(L5);
@@ -207,7 +208,7 @@ maintask t0
 		if (!L0) {
 			return;
 		}
-		for (L1 = 0; L1 < L0; L1 = L1 + 1) {
+		for (L1 = 0; L1 < L0; L1++) {
 			int L2;
 			int L3;
 			float L4;
@@ -307,7 +308,7 @@ maintask t0
 		int L0;
 		int L1;
 		L0 = f_25e_a0_i();
-		for (L1 = 0; L1 < 4; L1 = L1 + 1) {
+		for (L1 = 0; L1 < 4; L1++) {
 			@SendMessage(L1 < L0 ? 1 : 0, "vlevel" + (L1 + 1));
 		}
 	}

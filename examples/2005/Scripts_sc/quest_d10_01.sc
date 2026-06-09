@@ -29,7 +29,7 @@ maintask t0
 			int L1;
 			f_fc_a1_b("NPC_Petr");
 			@GetSceneByName(L0, "house_petr");
-			for (L1 = 1; L1 <= 4; L1 = L1 + 1) {
+			for (L1 = 1; L1 <= 4; L1++) {
 				tv0->add(f_c7_a4_o(L0, "pt_d10q01_soldier" + L1, "pers_soldat", "d10q01_soldier.xml"));
 			}
 			tv0->add(f_c7_a4_o(L0, "pt_d10q01_msoldier", "pers_soldat", "d10q01_msoldier.xml"));
@@ -171,7 +171,7 @@ void f_108_a2_v(object a0, string a1)
 		int L0;
 		int L1;
 		a0->size(L0);
-		for (L1 = 0; L1 < L0; L1 = L1 + 1) {
+		for (L1 = 0; L1 < L0; L1++) {
 			object L2;
 			a0->get(L2, L1);
 			if (L2) {

@@ -281,7 +281,7 @@ void f_234_a0_v(void)
 		return;
 	}
 	L0 = f_32d_a0_i();
-	for (L1 = 0; L1 < 5 && f_292_a0_b(); L1 = L1 + 1) {
+	for (L1 = 0; L1 < 5 && f_292_a0_b(); L1++) {
 		int L2;
 		@irand(L2, 3);
 		if (L2 == 0) {
@@ -476,7 +476,7 @@ string f_326_a1_s(int a0)
 int f_32d_a0_i(void)
 {
 	int L0;
-	for (L0 = 0; ; L0 = L0 + 1) {
+	for (L0 = 0; ; L0++) {
 		bool L1;
 		@HasAnimation(L1, "all", f_326_a1_s(L0));
 		if (!L1) {
@@ -649,7 +649,7 @@ bool f_419_a0_b(void)
 	@CreateIntVector(L0);
 	f_3a0_a3_v(L0, false, -1);
 	L0->size(L1);
-	for (L2 = 0; L2 < L1; L2 = L2 + 1) {
+	for (L2 = 0; L2 < L1; L2++) {
 		int L3;
 		L0->get(L3, L2);
 		if (f_40f_a1_b(L3) || f_405_a1_b(L3)) {
@@ -667,7 +667,7 @@ bool f_43f_a0_b(void)
 	@CreateIntVector(L0);
 	f_3c1_a3_v(L0, false, -1);
 	L0->size(L1);
-	for (L2 = 0; L2 < L1; L2 = L2 + 1) {
+	for (L2 = 0; L2 < L1; L2++) {
 		int L3;
 		L0->get(L3, L2);
 		if (f_40f_a1_b(L3) || f_405_a1_b(L3)) {
@@ -685,7 +685,7 @@ bool f_465_a0_b(void)
 	@CreateIntVector(L0);
 	f_3e5_a3_v(L0, false, -1);
 	L0->size(L1);
-	for (L2 = 0; L2 < L1; L2 = L2 + 1) {
+	for (L2 = 0; L2 < L1; L2++) {
 		int L3;
 		L0->get(L3, L2);
 		if (f_40f_a1_b(L3) || f_405_a1_b(L3)) {

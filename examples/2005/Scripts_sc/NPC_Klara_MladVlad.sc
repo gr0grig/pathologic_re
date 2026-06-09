@@ -201,7 +201,7 @@ task t3
 	int f_108_a1_i(string a0)
 	{
 		int L0;
-		for (L0 = 0; ; L0 = L0 + 1) {
+		for (L0 = 0; ; L0++) {
 			bool L1;
 			@HasAnimation(L1, "all", f_100_a2_s(a0, L0));
 			if (!L1) {
@@ -1458,7 +1458,7 @@ maintask t18
 		@SensePlayerOnly(true);
 		f_c3d_a0_v();
 		@GetScene(L0);
-		for (tv2 = 0; ; tv2 = tv2 + 1) {
+		for (tv2 = 0; ; tv2++) {
 			bool L1;
 			L0->GetLocator(f_e79_a1_s(tv2), L1);
 			if (!L1) {
@@ -1912,7 +1912,7 @@ string f_e61_a1_s(int a0)
 int f_e68_a0_i(void)
 {
 	int L0;
-	for (L0 = 0; ; L0 = L0 + 1) {
+	for (L0 = 0; ; L0++) {
 		bool L1;
 		@HasAnimation(L1, "all", f_e61_a1_s(L0));
 		if (!L1) {

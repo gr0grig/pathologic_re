@@ -231,7 +231,8 @@ def _find_using_blocks(parent_block: OpBlock, name: str) -> List[OpBlock]:
     return using
 
 
-def _narrow_local_scopes(body: OpBlock, local_types: List[VarType]) -> None:
+def _narrow_local_scopes(body: OpBlock, local_types: List[VarType],
+                         protected_slots: Optional[set] = None) -> None:
     """In-place: move OBJECT-typed OpVar declarations from `body` into the
     innermost child block that contains all references to that local.
 
@@ -247,6 +248,18 @@ def _narrow_local_scopes(body: OpBlock, local_types: List[VarType]) -> None:
       * After moving, verify the DFS walk reproduces the same type sequence
         as `local_types`.  If not, revert that one move.
     """
+    vroot = body
+    protected_slots = protected_slots or set()
+
+    def _is_protected(var: OpVar) -> bool:
+        """True if `var` is a FUNCTION-scope object (scomp cleans it at fn-end);
+        must NOT be narrowed into an inner block."""
+        try:
+            return (var.name.startswith("L")
+                    and int(var.name[1:]) in protected_slots)
+        except ValueError:
+            return False
+
     top_vars: List[Tuple[int, OpVar]] = []
     for i, op in enumerate(body.ops):
         if isinstance(op, OpVar):
@@ -328,9 +341,30 @@ def _narrow_local_scopes(body: OpBlock, local_types: List[VarType]) -> None:
                 out.extend(_deep_copy_ops(op))
         return out
 
-    snapshot = _deep_copy_ops(body)
+    snapshot = _deep_copy_ops(vroot)
 
     def _try_narrow(var: OpVar) -> None:
+        if _is_protected(var):
+            return
+        # Determine var's slot index from its name (L<idx>) — used to detect
+        # whether the CURRENT block already contains an OpVar from a LATER
+        # slot (placed by an earlier narrow attempt).  In that case we
+        # should not descend further: `var` must share depth with the later
+        # sibling so DFS visits them in slot order.
+        try:
+            var_slot = int(var.name[1:]) if var.name.startswith("L") else -1
+        except ValueError:
+            var_slot = -1
+        def _block_has_later_slot_opvar(blk: OpBlock) -> bool:
+            for op in blk.ops:
+                if isinstance(op, OpVar) and op.name.startswith("L"):
+                    try:
+                        other = int(op.name[1:])
+                    except ValueError:
+                        continue
+                    if other > var_slot:
+                        return True
+            return False
         block_chain: List[OpBlock] = [body]
         current = body
         while True:
@@ -338,6 +372,13 @@ def _narrow_local_scopes(body: OpBlock, local_types: List[VarType]) -> None:
             if len(using) != 1:
                 break
             if using[0] is current:
+                break
+            # If we've already descended at least once AND the current block
+            # contains a later-slot OpVar from a previous narrow, stop here
+            # to preserve DFS slot-order.
+            if (var_slot >= 0
+                    and current is not body
+                    and _block_has_later_slot_opvar(current)):
                 break
             current = using[0]
             block_chain.append(current)
@@ -413,8 +454,8 @@ def _narrow_local_scopes(body: OpBlock, local_types: List[VarType]) -> None:
         # Verify this attempt didn't disrupt DFS order globally — match BOTH
         # types (for slot type compatibility) AND names (for slot index
         # mapping: scomp assigns slot k to the k-th OpVar in DFS order).
-        if (_dfs_var_types(body) != local_types
-                or _dfs_var_names(body) != expected_names):
+        if (_dfs_var_types(vroot) != local_types
+                or _dfs_var_names(vroot) != expected_names):
             for blk, ops_list in per_attempt:
                 blk.ops[:] = ops_list
 
@@ -455,8 +496,8 @@ def _narrow_local_scopes(body: OpBlock, local_types: List[VarType]) -> None:
             if var in body.ops:
                 continue
             _relocate_top_decls(body)
-            if (_dfs_var_types(body) != local_types
-                    or _dfs_var_names(body) != expected_names):
+            if (_dfs_var_types(vroot) != local_types
+                    or _dfs_var_names(vroot) != expected_names):
                 for blk, ops_list in per_attempt:
                     blk.ops[:] = ops_list
             else:
@@ -486,8 +527,8 @@ def _narrow_local_scopes(body: OpBlock, local_types: List[VarType]) -> None:
             continue
         per_attempt = _deep_copy_ops(body)
         _try_narrow(var)
-        if (_dfs_var_types(body) != local_types
-                or _dfs_var_names(body) != expected_names):
+        if (_dfs_var_types(vroot) != local_types
+                or _dfs_var_names(vroot) != expected_names):
             for blk, ops_list in per_attempt:
                 blk.ops[:] = ops_list
 
@@ -507,7 +548,7 @@ def _narrow_local_scopes(body: OpBlock, local_types: List[VarType]) -> None:
         common_block = None
         all_share = True
         for var in cur_top_block:
-            if var.init is not None:
+            if var.init is not None or _is_protected(var):
                 all_share = False
                 break
             using = _find_using_blocks(body, var.name)
@@ -544,16 +585,409 @@ def _narrow_local_scopes(body: OpBlock, local_types: List[VarType]) -> None:
                         break
                     idx -= 1
             # Verify.
-            if (_dfs_var_types(body) != local_types
-                    or _dfs_var_names(body) != expected_names):
+            if (_dfs_var_types(vroot) != local_types
+                    or _dfs_var_names(vroot) != expected_names):
                 for blk, ops_list in per_attempt:
                     blk.ops[:] = ops_list
 
+    # FOURTH-B PASS: contiguous MIDDLE-run block narrow (+ dead-local placement).
+    # A maximal run of consecutive function-top OpVars that ALL share the SAME
+    # single using sub-block (e.g. L2,L3 used only inside an `if`, while L0,L1
+    # stay function-scope and L4.. are used after) is moved together into that
+    # block; the remaining top decls are relocated to first-use.  DEAD (unused)
+    # non-object top-vars can't be relocated by first-use (no use), so after
+    # relocation they are placed at index-adjacency (right after their nearest
+    # lower-index decl) so the DFS visit order still reproduces the slot indices.
+    # The _is_protected gate (objects scomp cleans at fn-end) + DFS verify keep
+    # it correct: only objects ORIG block-scoped get a block-close cleanup;
+    # moving dead non-object vars is byte-neutral (no cleanup, alloc by index).
+    def _opvar_loc(name: str):
+        """(block, index) of the OpVar named `name` in vroot (DFS); or None."""
+        def walk(blk: OpBlock):
+            for i, op in enumerate(blk.ops):
+                if isinstance(op, OpVar) and op.name == name:
+                    return (blk, i)
+                if isinstance(op, OpIf):
+                    r = walk(op.then_block)
+                    if r:
+                        return r
+                    if op.else_block is not None:
+                        r = walk(op.else_block)
+                        if r:
+                            return r
+                elif isinstance(op, OpFor):
+                    r = walk(op.init) or walk(op.body)
+                    if r:
+                        return r
+                elif isinstance(op, (OpWhile, OpDoWhile)):
+                    r = walk(op.body)
+                    if r:
+                        return r
+                elif isinstance(op, OpBlock):
+                    r = walk(op)
+                    if r:
+                        return r
+            return None
+        return walk(vroot)
+
+    def _place_dead_top_vars(blk: OpBlock):
+        top = []
+        for op in blk.ops:
+            if isinstance(op, OpVar):
+                top.append(op)
+            else:
+                break
+        dead = [v for v in top
+                if v.type != VarType.OBJECT and v.init is None
+                and v.name in expected_set
+                and not _find_using_blocks(blk, v.name)]
+        for v in dead:
+            if v in blk.ops:
+                blk.ops.remove(v)
+
+        def _idx(v):
+            try:
+                return int(v.name[1:]) if v.name.startswith("L") else -1
+            except ValueError:
+                return -1
+        for v in sorted(dead, key=_idx):
+            k = _idx(v)
+            placed = False
+            for p in range(k - 1, -1, -1):
+                loc = _opvar_loc(f"L{p}")
+                if loc:
+                    b2, i = loc
+                    b2.ops.insert(i + 1, v)
+                    placed = True
+                    break
+            if not placed:
+                blk.ops.insert(0, v)
+
+    def _narrow_runs(blk: OpBlock):
+        cur_top_b: List[OpVar] = []
+        for op in blk.ops:
+            if isinstance(op, OpVar):
+                cur_top_b.append(op)
+            else:
+                break
+        # Collect ALL maximal runs (consecutive top OpVars sharing one single
+        # using sub-block) first, then apply them together — sibling runs into
+        # different sub-blocks are interdependent for DFS slot order (e.g. an
+        # `if(c){...L8..L15...}else{...L16,L17...}`: narrowing only one run
+        # mis-relocates the other), so verify once after all are moved.
+        runs: List[Tuple[OpBlock, List[OpVar]]] = []
+        a = 0
+        while a < len(cur_top_b):
+            var_a = cur_top_b[a]
+            if (var_a.init is not None or _is_protected(var_a)
+                    or var_a not in blk.ops):
+                a += 1
+                continue
+            ua = _find_using_blocks(blk, var_a.name)
+            if len(ua) != 1 or ua[0] is blk:
+                a += 1
+                continue
+            common = ua[0]
+            b = a
+            while b + 1 < len(cur_top_b):
+                nxt = cur_top_b[b + 1]
+                if nxt.init is not None or _is_protected(nxt) or nxt not in blk.ops:
+                    break
+                un = _find_using_blocks(blk, nxt.name)
+                if len(un) != 1 or un[0] is not common:
+                    break
+                b += 1
+            runs.append((common, cur_top_b[a:b + 1]))
+            a = b + 1
+        if not runs:
+            return
+        per_attempt = _deep_copy_ops(vroot)
+        for common, run in runs:
+            for var in run:
+                if var in blk.ops:
+                    blk.ops.remove(var)
+            for i, var in enumerate(run):
+                common.ops.insert(i, var)
+            for var in run:
+                _k = len(common.ops) - 1
+                while _k >= 0:
+                    o = common.ops[_k]
+                    if not isinstance(o, OpExprStmt):
+                        break
+                    t = o.expr
+                    if not (isinstance(t, ENAssign) and t.op == AssignType.NULL):
+                        break
+                    if t.name == var.name:
+                        common.ops.pop(_k)
+                        break
+                    _k -= 1
+        _relocate_top_decls(blk)
+        _place_dead_top_vars(blk)
+        if (_dfs_var_types(vroot) != local_types
+                or _dfs_var_names(vroot) != expected_names):
+            for b3, ops_list in per_attempt:
+                b3.ops[:] = ops_list
+
+    # Apply the run-narrowing to the function body AND recursively to every
+    # descendant block (e.g. a contiguous run of locals declared in an else-
+    # block but used only inside a for-loop in that else-block — ui_inventory).
+    def _runs_recursive(blk: OpBlock):
+        _narrow_runs(blk)
+        for op in list(blk.ops):
+            if isinstance(op, OpIf):
+                _runs_recursive(op.then_block)
+                if op.else_block is not None:
+                    _runs_recursive(op.else_block)
+            elif isinstance(op, OpFor):
+                _runs_recursive(op.init)
+                _runs_recursive(op.body)
+            elif isinstance(op, (OpWhile, OpDoWhile)):
+                _runs_recursive(op.body)
+            elif isinstance(op, OpBlock):
+                _runs_recursive(op)
+    _runs_recursive(body)
+
+    # FIFTH PASS (recursive): an OBJECT var declared INSIDE a sub-block but used
+    # only in a deeper sub-block of it should be narrowed there — scomp scopes it
+    # deep and emits its SetNull cleanup at THAT block's close, not the parent's
+    # (else we emit an extra parent-close SetNull, e.g. morlok OnUse `object L9`
+    # used only in an else-block).  The earlier passes only narrow from function-
+    # top; this recurses.  For each block we first relocate its leading decls to
+    # first-use (so later-slot siblings used AFTER an inner sub-block move past
+    # it, keeping DFS slot order), then move the object var into its single deeper
+    # using-block.  Per-attempt global DFS verify+revert keeps slot indices exact.
+    def _child_blocks(parent: OpBlock) -> List[OpBlock]:
+        out: List[OpBlock] = []
+        for op in parent.ops:
+            if isinstance(op, OpIf):
+                out.append(op.then_block)
+                if op.else_block is not None:
+                    out.append(op.else_block)
+            elif isinstance(op, OpFor):
+                out.append(op.init)
+                out.append(op.body)
+            elif isinstance(op, (OpWhile, OpDoWhile)):
+                out.append(op.body)
+            elif isinstance(op, OpBlock):
+                out.append(op)
+        return out
+
+    def _recurse_narrow(parent: OpBlock):
+        for cb in _child_blocks(parent):
+            objvars = [op for op in cb.ops
+                       if isinstance(op, OpVar) and op.type == VarType.OBJECT
+                       and op.init is None and op.name in expected_set
+                       and not _is_protected(op)]
+            for var in objvars:
+                using = _find_using_blocks(cb, var.name)
+                if len(using) != 1 or using[0] is cb:
+                    continue
+                per = _deep_copy_ops(vroot)
+                _relocate_top_decls(cb)
+                target_list = _find_using_blocks(cb, var.name)
+                if len(target_list) != 1 or target_list[0] is cb or var not in cb.ops:
+                    for blk, ops_list in per:
+                        blk.ops[:] = ops_list
+                    continue
+                target = target_list[0]
+                cb.ops.remove(var)
+                target.ops.insert(0, var)
+                # Strip a trailing `var = null;` in the target (scomp's auto-
+                # cleanup at the new scope's close re-emits it).
+                _i = len(target.ops) - 1
+                while _i >= 0:
+                    o = target.ops[_i]
+                    if not isinstance(o, OpExprStmt):
+                        break
+                    t = o.expr
+                    if not (isinstance(t, ENAssign) and t.op == AssignType.NULL):
+                        break
+                    if t.name == var.name:
+                        target.ops.pop(_i)
+                        break
+                    _i -= 1
+                if (_dfs_var_types(vroot) != local_types
+                        or _dfs_var_names(vroot) != expected_names):
+                    for blk, ops_list in per:
+                        blk.ops[:] = ops_list
+            _recurse_narrow(cb)
+    _recurse_narrow(body)
+
     # Final defensive verify.
-    if (_dfs_var_types(body) != local_types
-            or _dfs_var_names(body) != expected_names):
+    if (_dfs_var_types(vroot) != local_types
+            or _dfs_var_names(vroot) != expected_names):
         for blk, ops_list in snapshot:
             blk.ops[:] = ops_list
+
+
+def _scope_loop_body_locals(root: OpBlock, local_types: List[VarType],
+                            protected_slots: Optional[set] = None) -> None:
+    """Move declaration-only locals that are used ONLY inside a loop body into
+    that loop body, and locals used ONLY after a loop to just after the loop.
+
+    Motivation: scomp emits a per-iteration object SetNull cleanup at a loop
+    body's close ONLY for objects whose SCOPE is the loop body.  Our lifter
+    often declares such an object in the ENCLOSING block (esp. when the loop is
+    nested inside an `if` whose locals all land at the block top), so scomp
+    re-generates the cleanup at the WRONG place (block close, after the loop)
+    instead of inside the loop — producing an off-by-one Jump target / a missing
+    SetNull (the sub-pattern-B family: quest_b4_01_teleport, ui_container, ...).
+
+    Reproducing the original requires the loop-body object to be loop-scoped.
+    The move must preserve scomp's slot allocation (slot k = k-th OpVar in DFS
+    declaration order), so we ALSO push trailing after-loop-only locals to after
+    the loop and verify the global DFS name/type sequence is unchanged; any
+    attempt that perturbs it is reverted.
+    """
+    expected_names = [f"L{i}" for i in range(len(local_types))]
+    expected_set = set(expected_names)
+    protected_slots = protected_slots or set()
+
+    def _is_protected(var: OpVar) -> bool:
+        try:
+            return (var.name.startswith("L")
+                    and int(var.name[1:]) in protected_slots)
+        except ValueError:
+            return False
+
+    def _dfs_names(block: OpBlock) -> List[str]:
+        out: List[str] = []
+        def walk(blk: OpBlock):
+            for op in blk.ops:
+                if isinstance(op, OpVar):
+                    if op.name in expected_set:
+                        out.append(op.name)
+                elif isinstance(op, OpIf):
+                    walk(op.then_block)
+                    if op.else_block is not None:
+                        walk(op.else_block)
+                elif isinstance(op, OpFor):
+                    walk(op.init)
+                    walk(op.body)
+                elif isinstance(op, (OpWhile, OpDoWhile)):
+                    walk(op.body)
+                elif isinstance(op, OpBlock):
+                    walk(op)
+        walk(block)
+        return out
+
+    def _dfs_types(block: OpBlock) -> List[VarType]:
+        out: List[VarType] = []
+        def walk(blk: OpBlock):
+            for op in blk.ops:
+                if isinstance(op, OpVar):
+                    if op.name in expected_set:
+                        out.append(op.type)
+                elif isinstance(op, OpIf):
+                    walk(op.then_block)
+                    if op.else_block is not None:
+                        walk(op.else_block)
+                elif isinstance(op, OpFor):
+                    walk(op.init)
+                    walk(op.body)
+                elif isinstance(op, (OpWhile, OpDoWhile)):
+                    walk(op.body)
+                elif isinstance(op, OpBlock):
+                    walk(op)
+        walk(block)
+        return out
+
+    def _snapshot(blk: OpBlock):
+        out = [(blk, list(blk.ops))]
+        for op in blk.ops:
+            if isinstance(op, OpIf):
+                out.extend(_snapshot(op.then_block))
+                if op.else_block is not None:
+                    out.extend(_snapshot(op.else_block))
+            elif isinstance(op, OpFor):
+                out.extend(_snapshot(op.init))
+                out.extend(_snapshot(op.body))
+            elif isinstance(op, (OpWhile, OpDoWhile)):
+                out.extend(_snapshot(op.body))
+            elif isinstance(op, OpBlock):
+                out.extend(_snapshot(op))
+        return out
+
+    def _loop_body(L):
+        return L.body
+
+    def _header_refs(L, name: str) -> bool:
+        if isinstance(L, OpFor):
+            return (any(_op_refs_name(s, name) for s in L.init.ops)
+                    or _expr_refs_name(L.cond, name)
+                    or _expr_refs_name(L.loop, name))
+        if isinstance(L, (OpWhile, OpDoWhile)):
+            return _expr_refs_name(L.cond, name)
+        return False
+
+    # Collect (block, loop_index) pairs across the whole function (top-down).
+    def _collect(blk: OpBlock, acc):
+        for i, op in enumerate(blk.ops):
+            if isinstance(op, (OpFor, OpWhile, OpDoWhile)):
+                acc.append((blk, i, op))
+        for op in blk.ops:
+            if isinstance(op, OpIf):
+                _collect(op.then_block, acc)
+                if op.else_block is not None:
+                    _collect(op.else_block, acc)
+            elif isinstance(op, OpFor):
+                _collect(op.init, acc)
+                _collect(op.body, acc)
+            elif isinstance(op, (OpWhile, OpDoWhile)):
+                _collect(op.body, acc)
+            elif isinstance(op, OpBlock):
+                _collect(op, acc)
+
+    changed = True
+    guard = 0
+    while changed and guard < 200:
+        changed = False
+        guard += 1
+        pairs: list = []
+        _collect(root, pairs)
+        for blk, _li, L in pairs:
+            li = blk.ops.index(L) if L in blk.ops else -1
+            if li < 0:
+                continue
+            body = _loop_body(L)
+            lead = [op for op in blk.ops[:li]
+                    if isinstance(op, OpVar) and op.init is None]
+            if not lead:
+                continue
+            before_ops = [op for j, op in enumerate(blk.ops)
+                          if j < li and not isinstance(op, OpVar)]
+            after_ops = blk.ops[li + 1:]
+            into_loop = []
+            after_loop = []
+            for v in lead:
+                if _is_protected(v):
+                    continue  # function-scope object — keep at fn-top, don't move into loop
+                n = v.name
+                in_body = any(_op_refs_name(s, n) for s in body.ops)
+                in_header = _header_refs(L, n)
+                used_before = any(_op_refs_name(o, n) for o in before_ops)
+                used_after = any(_op_refs_name(o, n) for o in after_ops)
+                if in_body and not in_header and not used_before and not used_after:
+                    into_loop.append(v)
+                elif used_after and not in_body and not in_header and not used_before:
+                    after_loop.append(v)
+            if not into_loop:
+                continue
+            snap = _snapshot(root)
+            for v in into_loop + after_loop:
+                blk.ops.remove(v)
+            for v in reversed(into_loop):
+                body.ops.insert(0, v)
+            li2 = blk.ops.index(L)
+            for k, v in enumerate(after_loop):
+                blk.ops.insert(li2 + 1 + k, v)
+            if (_dfs_types(root) != local_types
+                    or _dfs_names(root) != expected_names):
+                for b, ops_list in snap:
+                    b.ops[:] = ops_list
+            else:
+                changed = True
+                break
 
 
 def _relocate_top_decls(body: OpBlock) -> None:
@@ -907,69 +1341,75 @@ def _lift_script(script: "PS.PathologicScript", source_path: Optional[str] = Non
                 is_nonvoid = True
             elif isinstance(after, PS.CInstructionPop) and after.PopCount < parm:
                 is_nonvoid = True
-            elif isinstance(after, PS.CInstructionPop) and op.PushCount < parm:
-                # Ambiguous case: caller's PushV(parm) could be:
-                #   (A) Non-void task with (parm-1) args + 1 ret slot
-                #   (B) Void task with `parm` args (all uninitialized)
-                # Disambiguate by scanning init body for a MID-BODY Return
-                # (= an explicit `return X;` mid-function).  Mid-body Return
-                # indicates the function actively returns a value → (A).
-                # Otherwise, the function falls through at end → (B).
-                #
-                # IMPORTANT: bound the scan to init's body only.  Heuristic:
-                # init's body ends at the FIRST Return that's followed by
-                # a function-start pattern (PushEmpty or no-pattern that
-                # looks like next function).  Actually use the simpler rule:
-                # there's a mid-body Return only if there are 2+ Returns
-                # WITHIN init's body, which we estimate by stopping the
-                # scan at the FIRST Return where Pop count matches the
-                # function's expected total (locals*2 + args).
-                #
-                # For 0-locals function (like init in this case), Return.Pop
-                # = 0.  So we look for: Return with Pop(0) followed by
-                # another Return.  If the next Return is BEFORE the FIRST
-                # one's Pop count is consistent with end-of-function, then
-                # it's a mid-body case.
-                #
-                # Simpler: take the LAST Return whose Pop count equals 0 (for
-                # 0-locals init) within a reasonable range, then count
-                # earlier Returns with the same Pop.  If > 1, mid-body exists.
-                returns = []
-                for k in range(init_addr, min(init_addr + 300, len(instrs))):
-                    iop = instrs[k].opcode
-                    if isinstance(iop, PS.CInstructionReturn):
-                        returns.append((k, iop.VarIn))
-                        # Stop scanning if we see > 5 returns (too far)
-                        if len(returns) > 5:
+            elif isinstance(after, PS.CInstructionPop):
+                # PopCount >= parm (discarded result): ambiguous.  The old gate
+                # `op.PushCount < parm` missed non-void tasks whose discarded
+                # spawn has PushCount == parm (e.g. quest_b9_03_enemy task 6:
+                # parm=1, PushCount=1 — a non-void `t{}` whose bool ret is
+                # dropped).  Run the reliable body-scan discriminator for ALL
+                # discarded-Pop spawns instead.
+                # Ambiguous: caller's PushV(parm) is either
+                #   (A) NON-void: (parm-1) args + 1 return slot, or
+                #   (B) VOID: `parm` args (e.g. a task init whose first arg is
+                #       the implicit actor object).
+                # RELIABLE discriminator (replaces the old mid-body-return
+                # heuristic, which mis-classified BOTH directions): a NON-void
+                # init WRITES its return slot — the DEEPEST caller-reserved slot,
+                # at VarOut == (init's local frame Pop) + parm — via a
+                # `return X`.  A VOID init only READS its args (never writes the
+                # bottom slot), so its actor/arg object stays an arg instead of
+                # becoming an unassigned `_null_obj` return.  Bound the scan to
+                # the init's body (next entry addr); take the frame Pop from its
+                # first Return; non-void iff any local-slot Mov-family write
+                # targets that bottom slot.  Verified: fog t0 -> VOID (no write
+                # to Stack[-9]); NPC_Burah_Eva t5 -> NON-void (Stack[-10]=-2);
+                # grabitel t2 -> NON-void (Stack[-4]=...).
+                body_end = ctx._next_entry_after(init_addr)
+                frame_pop = None
+                for k in range(init_addr, len(instrs)):
+                    if instrs[k].index >= body_end:
+                        break
+                    if isinstance(instrs[k].opcode, PS.CInstructionReturn):
+                        frame_pop = instrs[k].opcode.VarIn
+                        break
+                if frame_pop is not None:
+                    ret_slot_varout = frame_pop + parm
+                    _RW = (PS.CInstructionMovB, PS.CInstructionMovI,
+                           PS.CInstructionMovF, PS.CInstructionMovS,
+                           PS.CInstructionMovV, PS.CInstructionMov,
+                           PS.CInstructionSetNull)
+                    for k in range(init_addr, len(instrs)):
+                        if instrs[k].index >= body_end:
                             break
-                # Init's actual end: take FIRST Return where Pop > 0 OR (if
-                # all are Pop(0)) take the LAST that's WITHIN a contiguous
-                # region (= no gaps from another entry).  For simplicity:
-                # only consider 0-Pop case where init has 0 locals.
-                # Init has a "mid-body Return" if MULTIPLE Returns appear
-                # within a SHORT range that's plausibly init's body
-                # (= before the next Return-followed-by-PushEmpty boundary).
-                has_mid_body_return = False
-                if len(returns) >= 2:
-                    first_ret_pos, first_pop = returns[0]
-                    # Check if instr right after first_ret is a function-start
-                    # (PushV — function entry; scomp emits PushV(0) for
-                    # arg-taking 0-locals function as a marker too).  If so,
-                    # init ends at first_ret and the next Return is in a
-                    # different function.
-                    next_idx = first_ret_pos + 1
-                    if next_idx < len(instrs):
-                        next_op = instrs[next_idx].opcode
-                        if isinstance(next_op, PS.CInstructionPushV):
-                            # New function starts; init ends here.  No mid-body.
-                            has_mid_body_return = False
-                        else:
-                            # Next instr isn't a function-start indicator;
-                            # consider init continues, mid-body Return exists.
-                            has_mid_body_return = True
-                if has_mid_body_return:
-                    is_nonvoid = True
-                # else: stays void (default)
+                        ko = instrs[k].opcode
+                        if not isinstance(ko, _RW):
+                            continue
+                        vo = getattr(ko, "VarOut", -1)
+                        # A genuine `return X` writes the ret slot IMMEDIATELY
+                        # before a Return; a VOID init that merely REASSIGNS its
+                        # deepest ARG (also at ret_slot_varout) does so mid-body.
+                        # Require the write to be right before a Return (allowing
+                        # one trailing Pop) to avoid false non-void (which would
+                        # turn an actor arg into an unassigned `_null_obj`).
+                        nxt = instrs[k + 1].opcode if k + 1 < len(instrs) else None
+                        nxt2 = instrs[k + 2].opcode if k + 2 < len(instrs) else None
+                        before_ret = (
+                            isinstance(nxt, PS.CInstructionReturn)
+                            or (isinstance(nxt, PS.CInstructionPop)
+                                and isinstance(nxt2, PS.CInstructionReturn)))
+                        if not before_ret:
+                            continue
+                        # Standard (regular-function) ret slot at frame_pop+parm,
+                        # OR a TASK-init `return f(...)` whose ret write sits just
+                        # BELOW the popped call batch: `Mov VarOut=N; Pop(N);
+                        # Return` (frame_pop==0 for task inits makes the standard
+                        # ret_slot_varout wrong, so match VarOut == that Pop's
+                        # count instead).
+                        if (vo == ret_slot_varout
+                                or (isinstance(nxt, PS.CInstructionPop)
+                                    and vo == nxt.PopCount and nxt.PopCount > 0)):
+                            is_nonvoid = True
+                            break
         # Walk back to find the PushV that opened this task's call frame.
         for j in range(i - 1, max(-1, i - 50), -1):
             pv = instrs[j].opcode
@@ -1247,30 +1687,46 @@ def _lift_script(script: "PS.PathologicScript", source_path: Optional[str] = Non
             _entry_addrs.add(ev.ulOp)
     for ev in script.gevents.events:
         _entry_addrs.add(ev.ulOp)
-    for addr in all_func_addrs:
-        if addr in _entry_addrs:
-            continue
-        owner = owner_map.get(addr)
-        if not (isinstance(owner, int) and owner >= 0):
-            continue
-        if addr_touches_task.get(addr):
-            continue
-        caller_tasks: set = set()
-        for caller in callers_of.get(addr, ()):
-            c_owner = owner_map.get(caller)
-            if isinstance(c_owner, int) and c_owner >= 0:
-                caller_tasks.add(c_owner)
-        # Only demote when callers span MULTIPLE tasks; if all callers
-        # are in a single task different from owner, prefer to MOVE the
-        # function into that task rather than demoting to global (moving
-        # preserves the bytecode-contiguity invariant scomp relies on for
-        # task method addresses).
-        if len(caller_tasks) >= 2:
-            owner_map[addr] = None
-        elif caller_tasks and owner not in caller_tasks:
-            # Single caller-task — move ownership to that task.
-            (only_task,) = caller_tasks
-            owner_map[addr] = only_task
+    # Iterate to a FIXED POINT: moving one function to its caller's task can
+    # change the caller-task of ITS callees, which must then move too.  Without
+    # this, a helper called only by f_2db (e.g. f_2d0) is checked while f_2db is
+    # still at its address-band owner (task 3); after f_2db is later moved to
+    # task 4, f_2d0 is left stranded at task 3 -> scomp `Function f_2d0@... not
+    # found` when compiling t4::f_2db (player_burah/danko/klara SCOMP cluster).
+    _demote_changed = True
+    _demote_guard = 0
+    while _demote_changed and _demote_guard < len(all_func_addrs) + 2:
+        _demote_changed = False
+        _demote_guard += 1
+        for addr in all_func_addrs:
+            if addr in _entry_addrs:
+                continue
+            owner = owner_map.get(addr)
+            if not (isinstance(owner, int) and owner >= 0):
+                continue
+            touches = addr_touches_task.get(addr)
+            caller_tasks: set = set()
+            for caller in callers_of.get(addr, ()):
+                c_owner = owner_map.get(caller)
+                if isinstance(c_owner, int) and c_owner >= 0:
+                    caller_tasks.add(c_owner)
+            # When callers span MULTIPLE tasks, the address-band owner is wrong:
+            # demote to global (a non-task-touching helper) — but a TASK-TOUCHING
+            # helper can't be global (it uses task vars), so leave it (no safe
+            # move).  When all callers are a SINGLE task different from the
+            # address-band owner, the function is really that task's method
+            # (e.g. an inherited base-method compiled outside the task's event
+            # band); move it there.  This applies even to task-touching helpers
+            # (their tv accesses resolve against the caller task) and fixes the
+            # cross-task `Function f_X@N not found` SCOMP cluster.
+            if len(caller_tasks) >= 2:
+                if not touches and owner is not None:
+                    owner_map[addr] = None
+                    _demote_changed = True
+            elif caller_tasks and owner not in caller_tasks:
+                (only_task,) = caller_tasks
+                owner_map[addr] = only_task
+                _demote_changed = True
 
     # Pass 2: lift every discovered internal CALL target.  Each gets emitted
     # as either a global function or a method of the task whose bytecode
@@ -1477,19 +1933,21 @@ def _lift_func_with_ctx(
     # Address of the function's terminating Return (the one we stripped from
     # body_instrs).  Used by h_Jump to recognise jumps-to-end as `return;`.
     return_addr = ctx.instrs[end_return].index
-    state = _FuncLifter(
-        ctx=ctx,
-        instrs=body_instrs[skipped:],
-        num_args=num_args,
-        arg_types=arg_types,
-        local_types=local_types,
-        task_var_types=task_var_types,
-        return_type=return_type,
-        return_addr=return_addr,
-        task_index=task_index,
-        func_name=name,
-        func_addr=start,
-    )
+    def _make_state():
+        return _FuncLifter(
+            ctx=ctx,
+            instrs=body_instrs[skipped:],
+            num_args=num_args,
+            arg_types=arg_types,
+            local_types=local_types,
+            task_var_types=task_var_types,
+            return_type=return_type,
+            return_addr=return_addr,
+            task_index=task_index,
+            func_name=name,
+            func_addr=start,
+        )
+    state = _make_state()
     body = state.lift()
 
     # Prepend local var declarations in slot order so scomp's ProcessVariables
@@ -1572,7 +2030,23 @@ def _lift_func_with_ctx(
                 if trailing_val is not None:
                     n_returns = sum(1 for bi in body_instrs
                                     if isinstance(bi.opcode, PS.CInstructionReturn))
-                    if n_returns >= 1:
+                    # Only synthesise the trailing `return Y` when the last
+                    # ret-slot Mov is genuine DEAD-CODE after an early return
+                    # (scomp's `T f(){ return X; return Y; }` shape) — i.e. it
+                    # is NOT a branch target.  When the Mov IS a jump target it
+                    # is the else-branch of an if/else or ternary that the
+                    # ternary-return / if-else detection ALREADY consumed (e.g.
+                    # `return c ? 2 : 0;`'s `: 0` writes the ret slot at a
+                    # JumpB target); synthesising another return there emits a
+                    # spurious `return 0;` (+2 instrs) — see citizen_morlok
+                    # f_c33_a1_i (0xc40 JumpB→0xc43 `Stack[-2]=0`).
+                    last_idx = body_instrs[-1].index
+                    is_branch_target = any(
+                        isinstance(bi.opcode, (PS.CInstructionJump,
+                                               PS.CInstructionJumpB))
+                        and bi.opcode.VarIn == last_idx
+                        for bi in body_instrs)
+                    if n_returns >= 1 and not is_branch_target:
                         body.ops.append(OpReturn(expr=trailing_val))
 
     # innermost block where they're actually used.  This matches scomp's
@@ -1580,10 +2054,35 @@ def _lift_func_with_ctx(
     # second auto-cleanup SetNull at function end.  Slot allocation isn't
     # affected — scomp's ProcessVariables walks the whole function regardless
     # of where the OpVar lives.
-    _narrow_local_scopes(body, local_types)
+    # Function-SCOPE object locals: scomp emits their SetNull cleanup as a dead
+    # block-close run AFTER the function's terminating Return (COperators::
+    # Compile, IOperator.cpp:67).  Each such SetNull's VarOut maps to a local
+    # via L_{n_locals - VarOut} (scomp's `totalVars - varIndex`, double-walked
+    # frame na+2·nl).  These objects are FUNCTION-scoped — narrowing them into a
+    # loop/if-block makes scomp emit the cleanup at the WRONG (inner) place
+    # (f_40a `object L1` used only in a for-body but cleaned at fn-end → ui_trade
+    # over-narrow).  Protect them from the narrowing passes.
+    protected_slots: set = set()
+    k = end_return + 1
+    while k < len(ctx.instrs) and isinstance(ctx.instrs[k].opcode, PS.CInstructionSetNull):
+        vo = ctx.instrs[k].opcode.VarIn   # SetNull's slot is in VarIn
+        sidx = n_locals - vo
+        if 0 <= sidx < n_locals:
+            protected_slots.add(sidx)
+        k += 1
+    # Move sibling terminators into the else of 3-GOTO else-skip ifs (tagged by
+    # h_JumpB).  Run before narrowing/for-conversion so the if and its sibling
+    # are still adjacent in their original block.
+    _pull_terminator_into_else(body)
 
-    # Convert `if (!X) {} else { body }` → `if (X) { body }`.
-    _strip_inverted_empty_then(body)
+    _narrow_local_scopes(body, local_types, protected_slots)
+    _scope_loop_body_locals(body, local_types, protected_slots)
+
+    # NOTE: `_strip_inverted_empty_then` was previously called here to convert
+    # `if (!X) {} else { body }` → `if (X) { body }` — but that ALWAYS loses
+    # byte-identity, because the empty-then-else shape only arises in the AST
+    # when scomp's bytecode genuinely had Not + JumpB + Jump (3 instrs), and
+    # stripping it makes the recompile emit Push + JumpB (2 instrs).
 
     # Convert `for (;;) { if (!cond) break; body; }` → `while (cond) { body }`.
     # scomp compiles `while(cond) {body}` as JumpB(false→break) + body + GOTO
@@ -1601,15 +2100,59 @@ def _lift_func_with_ctx(
     # safe to pop (scomp's auto-cleanup at body-scope close handles it).
     _pop_trailing_null_assigns(body)
 
-    # Rewrite `if (cond) { continue; } X` → `if (!cond) X` ONLY when X is a
-    # single OpReturn or OpBreak.  scomp compiles `if (cond) return;` to
-    # cond+JumpB+Return (3 instrs); the if-continue form compiles to
-    # Not+JumpB+Jump+Return (4 instrs).  The rewrite produces the shorter form.
-    _simplify_if_continue_then_return(body)
+    # NOTE: `_simplify_if_continue_then_return` was REMOVED here.  It rewrote
+    # `if (cond) { continue; } break/return;` → `if (!cond) break/return;`
+    # believing the original was the shorter 3-instr form.  But a faithful lift
+    # only produces an `if(c){continue;}` shape when the BYTECODE actually has a
+    # GOTO-to-continue-addr (the 4-instr form); the 3-instr `if(!c) break;`
+    # lifts directly with no continue.  So the pass only ever converted faithful
+    # 4-instr lifts INTO 3-instr → guaranteed byte-mismatch.  Disabling it gained
+    # +10 (guard, *_patrol, butcher, ui_apparatus) with ZERO regressions (rt112).
+
+    # An empty `if (cond) {}` (empty then, no else) is always a lift artifact:
+    # the region-slicing split a conditional `if (cond) <break/continue/return>`
+    # so the action landed as the NEXT (unconditional) statement.  Fold the
+    # trailing control-flow statement back into the empty if.  scomp compiles
+    # `if (cond) {} break;` (JumpB skips the empty body → lands on the break =
+    # unconditional) differently from `if (cond) break;` (JumpB skips the break
+    # → conditional); since the empty-if form never appears in real source,
+    # folding restores the intended conditional shape.
+    _fold_empty_if_cf(body)
 
     return Function(
         name=name, return_type=return_type, args=func_args, body=body,
     )
+
+
+def _fold_empty_if_cf(body: OpBlock) -> None:
+    """Recursively fold `if (cond) {}` immediately followed by a single
+    break/continue/return into `if (cond) { <that statement> }`."""
+    def walk(blk: OpBlock):
+        i = 0
+        while i < len(blk.ops):
+            op = blk.ops[i]
+            if (isinstance(op, OpIf)
+                    and op.else_block is None
+                    and not op.then_block.ops
+                    and i + 1 < len(blk.ops)
+                    and isinstance(blk.ops[i + 1], (OpBreak, OpContinue, OpReturn))):
+                cf = blk.ops[i + 1]
+                op.then_block = OpBlock(ops=[cf])
+                del blk.ops[i + 1]
+                # fall through to recurse into the now-non-empty then_block
+            if isinstance(op, OpIf):
+                walk(op.then_block)
+                if op.else_block is not None:
+                    walk(op.else_block)
+            elif isinstance(op, OpFor):
+                walk(op.init)
+                walk(op.body)
+            elif isinstance(op, (OpWhile, OpDoWhile)):
+                walk(op.body)
+            elif isinstance(op, OpBlock):
+                walk(op)
+            i += 1
+    walk(body)
 
 
 def _simplify_if_continue_then_return(body: OpBlock) -> None:
@@ -1756,6 +2299,39 @@ def _is_iter_step(stmt, loop_var_name: str) -> bool:
     return isinstance(rhs.right, (ENInt, ENFloat))
 
 
+def _pull_terminator_into_else(body: OpBlock) -> None:
+    """Move a sibling terminator that immediately follows a 3-GOTO else-skip
+    OpIf (tagged `_pull_else` by h_JumpB's else-skip intercept) into that if's
+    else-branch.  Converts our flattened `if(c){break} <sibling continue>` back
+    into `if(c){break} else {continue}` so scomp re-emits the explicit-else end-
+    jump (the else-skip), reproducing the original 3-GOTO bytecode."""
+    def walk(blk: OpBlock):
+        ops = blk.ops
+        i = 0
+        while i < len(ops):
+            op = ops[i]
+            if isinstance(op, OpIf):
+                want = getattr(op, "_pull_else", None)
+                if (want is not None and op.else_block is None
+                        and i + 1 < len(ops)
+                        and isinstance(ops[i + 1], want)):
+                    op.else_block = OpBlock(ops=[ops[i + 1]])
+                    op._pull_else = None
+                    del ops[i + 1]
+                walk(op.then_block)
+                if op.else_block is not None:
+                    walk(op.else_block)
+            elif isinstance(op, (OpWhile, OpDoWhile)):
+                walk(op.body)
+            elif isinstance(op, OpFor):
+                walk(op.init)
+                walk(op.body)
+            elif isinstance(op, OpBlock):
+                walk(op)
+            i += 1
+    walk(body)
+
+
 def _strip_inverted_empty_then(body: OpBlock) -> None:
     """Recursively rewrite:
         `if (!X) {} else { body }`     → `if (X) { body }`
@@ -1810,6 +2386,7 @@ def _infinite_for_to_while(body: OpBlock) -> None:
                 and op.else_block is None
                 and len(op.then_block.ops) == 1
                 and isinstance(op.then_block.ops[0], OpBreak))
+
 
     def _strip_outer_not(expr):
         """If expr is `!X`, return X; otherwise return None.  Used to extract
@@ -2028,6 +2605,11 @@ class _FuncLifter:
     ):
         self.ctx = ctx
         self.instrs = instrs
+        # Stable reference to the WHOLE function's instruction stream.  `instrs`
+        # above is swapped out to the current slice during subblock lifting, so
+        # this preserves a way to look up instructions (e.g. an if-else's
+        # else-label) that fall just past the current slice boundary.
+        self.func_instrs = instrs
         self.num_args = num_args
         self.arg_types = arg_types
         self.local_types = local_types
@@ -2127,12 +2709,44 @@ class _FuncLifter:
                 cleanups.add(instrs[j].index)
                 j -= 1
 
+        # ALSO handle DO-WHILE back-edges (backward CInstructionJumpB): scomp
+        # emits the do-body object cleanup SetNulls AFTER the body and BEFORE
+        # the loop-test COND expression (which precedes the back-JumpB).  Walk
+        # back from the JumpB past the cond (a bounded run of non-SetNull, non-
+        # control-flow instrs) to the contiguous SetNull run.  Without this we
+        # emit an explicit `L=null` AND scomp re-emits the scope-close SetNull
+        # → duplicate (player_klara `do { object L5; ...; } while(f_3bf())`).
+        for k, ins in enumerate(instrs):
+            if not isinstance(ins.opcode, PS.CInstructionJumpB):
+                continue
+            if ins.opcode.VarIn >= ins.index:
+                continue  # forward
+            j = k - 1
+            skipped = 0
+            while (j >= 0 and skipped < 8
+                   and not isinstance(instrs[j].opcode, PS.CInstructionSetNull)):
+                if isinstance(instrs[j].opcode, (PS.CInstructionJump,
+                                                 PS.CInstructionJumpB,
+                                                 PS.CInstructionReturn)):
+                    break
+                j -= 1
+                skipped += 1
+            while j >= 0 and isinstance(instrs[j].opcode, PS.CInstructionSetNull):
+                cleanups.add(instrs[j].index)
+                j -= 1
 
         self._cleanup_positions: set = cleanups
         # Stack of currently-enclosing loops (innermost last).  Each entry is
         # a tuple (continue_addr, break_addr) — addresses (instr indices)
         # that Jump/JumpB might target to mean continue/break respectively.
         self.loops: List[Tuple[int, int]] = []
+        # back_jump_addr of loops emitted as INFINITE `for(;;)` (no cond/iter).
+        # scomp routes `continue;` in such loops to the BACK-JUMP, not the loop
+        # head — so a then-block continue whose target is the loop HEAD must NOT
+        # be emitted as OpContinue for these (it would mis-route); keep the
+        # if/else handling instead.  Distinguishes the 82 infinite-for false
+        # positives from the citizen while-loop true continues.
+        self.infinite_backs: set = set()
         # Stack of merge addresses for currently-open subblocks (innermost
         # last).  An inner JumpB/Jump whose target equals an entry here is
         # a "skip-to-outer-merge" — recognised as if-else merging into outer
@@ -2319,6 +2933,18 @@ class _FuncLifter:
             guard += 1
             if guard > 100000:
                 raise LiftError(f"lift loop guard exceeded at pos={self.pos}")
+            # Infinite-for detection BEFORE short-circuit: a `for(;;)` loop HEAD
+            # can itself be an && / || scaffold (sanitar/rats:
+            # `for(;;){ if(A && B) break; ... }`).  If short-circuit ran first it
+            # would consume the head's scaffold, leaving the back-Jump
+            # unstructured.  `_find_infinite_loop_end`'s while-disambiguation now
+            # skips the leading scaffold, so it returns None for genuine
+            # `while(A&&B)` heads (no false fire) and non-None only for true
+            # for(;;) heads.  Inside the lifted body the back-Jump is excluded,
+            # so the && is handled there normally.
+            if self._try_lift_infinite_for():
+                continue
+
             # Short-circuit AND/OR detection: PushV(BOOL)+MovB+...+JumpB+...+MovB.
             if self._try_lift_short_circuit():
                 continue
@@ -2346,39 +2972,40 @@ class _FuncLifter:
                 self._lift_while_trailing_cond_at(wt_end)
                 continue
 
-            # Inline infinite-for detection: if any later unconditional Jump
-            # targets the current instruction's address, this position is the
-            # head of an infinite for-loop.  Lift the body and skip the Jump.
-            loop_end = self._find_infinite_loop_end()
-            if loop_end is not None:
-                body_instrs = self.instrs[self.pos:loop_end]
-                continue_addr = self.instrs[self.pos].index
-                # break-target = the address right after the closing Jump.
-                # Addresses are sequential instruction indices in the .bin, so
-                # (Jump.index + 1) is the post-loop address even if the next
-                # instruction isn't in our current slice.
-                back_jump_addr = self.instrs[loop_end].index
-                break_addr = back_jump_addr + 1
-                # Inner jumps targeting either the head (continue_addr) OR the
-                # back-Jump instruction itself (back_jump_addr) both achieve a
-                # `continue` — jumping to the back-Jump just falls through it.
-                self.loops.append((continue_addr, break_addr, back_jump_addr))
-                try:
-                    body_block = _lift_subblock(self, body_instrs)
-                finally:
-                    self.loops.pop()
-                self.statements.append(OpFor(
-                    init=OpBlock(ops=[]), cond=None, loop=None, body=body_block,
-                ))
-                self.pos = loop_end + 1
-                continue
-
             op = self.instrs[self.pos].opcode
             cls = type(op).__name__
             handler = _HANDLERS.get(cls)
             if handler is None:
                 raise LiftError(f"unhandled opcode {cls} at instruction {self.instrs[self.pos].index:#x}")
             handler(self, op)
+
+    def _try_lift_infinite_for(self) -> bool:
+        """If a later unconditional Jump targets the current address, this is an
+        infinite-for head: lift [pos, back-Jump) as the body, register the loop,
+        and skip past the closing Jump.  Returns True if a loop was lifted."""
+        loop_end = self._find_infinite_loop_end()
+        if loop_end is None:
+            return False
+        body_instrs = self.instrs[self.pos:loop_end]
+        continue_addr = self.instrs[self.pos].index
+        # break-target = the address right after the closing Jump.  Addresses
+        # are sequential instruction indices in the .bin, so (Jump.index + 1) is
+        # the post-loop address even if the next instruction isn't in our slice.
+        back_jump_addr = self.instrs[loop_end].index
+        break_addr = back_jump_addr + 1
+        # Inner jumps targeting either the head (continue_addr) OR the back-Jump
+        # instruction itself (back_jump_addr) both achieve a `continue`.
+        self.loops.append((continue_addr, break_addr, back_jump_addr))
+        self.infinite_backs.add(back_jump_addr)  # emitted as for(;;)
+        try:
+            body_block = _lift_subblock(self, body_instrs)
+        finally:
+            self.loops.pop()
+        self.statements.append(OpFor(
+            init=OpBlock(ops=[]), cond=None, loop=None, body=body_block,
+        ))
+        self.pos = loop_end + 1
+        return True
 
     def _try_lift_short_circuit(self) -> bool:
         """Recognise scomp's AND/OR short-circuit pattern (Expression.cpp:1657-1691):
@@ -2409,6 +3036,29 @@ class _FuncLifter:
         if not isinstance(movb, PS.CInstructionMovB) or movb.VarOut != 1:
             return False
         b_set = bool(movb.bVal)
+
+        # Try the RECURSIVE _parse_andor parser FIRST — it correctly handles
+        # arbitrary NESTED &&/|| (OR-of-ANDs, &&-of-ORs, >=3-term) that the flat
+        # scan below mis-counts (its _find_inner_close miscounts the multi-slot
+        # scaffolds in quest_d2_02 / NPC_Danko_Eva / sanitar-rats &&-bodies).
+        # On ANY structural mismatch it raises → we restore and fall back to the
+        # flat scan (which still handles the special arg-init-MovB cases).
+        _sv_stack = list(self.stack)
+        _sv_stmts = list(self.statements)
+        _sv_pos = self.pos
+        _sv_instrs = self.instrs
+        try:
+            self._push(_Reserved(VarType.BOOL))   # scomp's PushV(1,BOOL) dest slot
+            expr, end_pos = _parse_andor(self, self.pos + 1)
+            self.stack[-1].expr = expr
+            self.stack[-1].was_assigned = True
+            self.pos = end_pos
+            return True
+        except (LiftError, IndexError, KeyError):
+            self.stack[:] = _sv_stack
+            self.statements[:] = _sv_stmts
+            self.pos = _sv_pos
+            self.instrs = _sv_instrs
 
         # Scan forward for the closing MovB(slot=1, !bSet) and collect JumpBs.
         # When we encounter a nested PushV(1, BOOL)+MovB(slot=1) inside a cond
@@ -2461,8 +3111,17 @@ class _FuncLifter:
                         continue
             if isinstance(iop, PS.CInstructionMovB):
                 if iop.VarOut == 1 and bool(iop.bVal) == (not b_set):
-                    closing_pos = i
-                    break
+                    # Candidate closing.  But a MovB(slot=1, !bSet) INSIDE a
+                    # cond's CALL frame (a bool arg init, e.g. ui_trade `if(A &&
+                    # f(...,true))` 0x1c5) has VarOut==1 relative to the pushed
+                    # frame, NOT the andor slot — accepting it closes early.
+                    # The TRUE closing's post-address (index+1) is where ALL the
+                    # andor's cond JumpBs land.  Require that before accepting;
+                    # otherwise it's an inner MovB → keep scanning.
+                    if jumpbs and all(self.instrs[j].opcode.VarIn == self.instrs[i].index + 1
+                                      for j in jumpbs):
+                        closing_pos = i
+                        break
             elif isinstance(iop, PS.CInstructionJumpB):
                 if iop.lVar == 1 and iop.bVal == int(b_set) and iop.sPop == 1:
                     jumpbs.append(i)
@@ -2646,13 +3305,41 @@ class _FuncLifter:
         whose closing JumpB is at self.instrs[dw_end]."""
         jumpb = self.instrs[dw_end].opcode
         body_instrs = self.instrs[self.pos:dw_end]
-        continue_addr = self.instrs[dw_end].index  # where `continue;` jumps to (the cond test)
-        # Actually for do-while, scomp's continue jumps to the cond setup
-        # start.  We don't currently track that finely — leaving continue
-        # as the JumpB's address means inner Jumps targeting it would
-        # be (correctly) treated as a continue.
+        dw_addr = self.instrs[dw_end].index
+        continue_addr = dw_addr  # default: the closing JumpB's address
+        # For a do-while, scomp's `continue;` jumps to the START of the
+        # condition region (where the loop-test expression begins), NOT the
+        # back-JumpB.  The cond region is the trailing run of expression
+        # instructions before dw_end; it begins right after the last
+        # control-flow Jump/Return in the body.  Adopt that cond-start as the
+        # continue target ONLY when some body GOTO actually targets it (i.e.
+        # there really is a `continue;`), so non-continue do-whiles are
+        # unaffected.
+        cond_start = None
+        for k in range(len(body_instrs) - 1, -1, -1):
+            kop = body_instrs[k].opcode
+            if isinstance(kop, (PS.CInstructionJump, PS.CInstructionReturn)):
+                if k + 1 < len(body_instrs):
+                    cond_start = body_instrs[k + 1].index
+                break
+        # The walk-back cond_start can land one or more statements BEFORE the
+        # actual cond-eval start when a trailing `if(x) return;`/statement sits
+        # between the last body terminator and the cond expression (player_klara
+        # `do{...; if(m_bWC) return; continue;}while(f())` — last Return at
+        # 0x3a6, then `Stack[-14]=0` at 0x3a7, then the cond `f()` at 0x3a8; the
+        # `continue;` targets 0x3a8).  So accept the EARLIEST body-GOTO target
+        # that lands inside the cond region [cond_start, dw_addr] (a forward
+        # jump from the body proper, index < cond_start) as the continue addr.
+        if cond_start is not None:
+            cont_cands = [
+                b.opcode.VarIn for b in body_instrs
+                if isinstance(b.opcode, PS.CInstructionJump)
+                and b.index < cond_start
+                and cond_start <= b.opcode.VarIn <= dw_addr]
+            if cont_cands:
+                continue_addr = min(cont_cands)
         # break exits past the JumpB.
-        break_addr = self.instrs[dw_end].index + 1
+        break_addr = dw_addr + 1
         self.loops.append((continue_addr, break_addr, None))
         try:
             body_block = _lift_subblock(self, body_instrs, allow_imbalance=1)
@@ -2699,16 +3386,59 @@ class _FuncLifter:
         # plausible cond-setup distance), let h_JumpB handle this as a
         # while loop rather than treating it as `for(;;)`.
         end_addr = self.instrs[last].index + 1
-        for i in range(self.pos, last):
+        # Scan the LINEAR cond-setup prefix up to the first branch.  A `while
+        # (cond) body` has purely sequential cond-setup (possibly a Call with
+        # many arg pushes — e.g. `while (!f(a,b,c,d)) {...}`, kactor1) ending
+        # in a JumpB whose target is END_ADDR (just past the back-Jump).  A
+        # `for(;;)` whose body starts with an `if`/`if(!c) break` instead has
+        # its first JumpB target END_if (the body merge), never END_ADDR, so it
+        # falls through to the `for(;;)` interpretation.  Stop at the first
+        # Jump/JumpB: anything past it belongs to the body, not the cond, so a
+        # deeper break/continue can't masquerade as the loop's conditional exit
+        # (no fixed distance cap — the cond's call args can be arbitrarily long).
+        # If the head is a value-producing short-circuit scaffold (PushV(bool);
+        # MovB(slot=1,v0); ...; MovB(slot=1,!v0)) — i.e. `while(A&&B)` — the
+        # scaffold's internal cond-JumpBs target the scaffold END, not the loop
+        # END, so the naive "first JumpB" check below mis-reads it as a for(;;)
+        # (citizen_boy 0xb84).  Skip the leading scaffold (depth-counted over
+        # nested scaffolds) so the scan sees the REAL loop-exit JumpB after it.
+        scan_start = self.pos
+        sp = self.pos
+        if (sp + 1 < len(self.instrs)
+                and isinstance(self.instrs[sp].opcode, PS.CInstructionPushV)
+                and self.instrs[sp].opcode.VarCount == 1
+                and self.instrs[sp].opcode.VarTypes[0] == 1
+                and isinstance(self.instrs[sp + 1].opcode, PS.CInstructionMovB)
+                and self.instrs[sp + 1].opcode.VarOut == 1):
+            v0 = bool(self.instrs[sp + 1].opcode.bVal)
+            depth = 1
+            k = sp + 2
+            while k < last:
+                kop = self.instrs[k].opcode
+                if (isinstance(kop, PS.CInstructionPushV)
+                        and kop.VarCount == 1 and kop.VarTypes[0] == 1
+                        and k + 1 < len(self.instrs)
+                        and isinstance(self.instrs[k + 1].opcode, PS.CInstructionMovB)
+                        and self.instrs[k + 1].opcode.VarOut == 1):
+                    depth += 1
+                    k += 2
+                    continue
+                if (isinstance(kop, PS.CInstructionMovB)
+                        and kop.VarOut == 1
+                        and bool(kop.bVal) == (not v0)):
+                    depth -= 1
+                    if depth == 0:
+                        scan_start = k + 1
+                        break
+                k += 1
+        for i in range(scan_start, last):
             op = self.instrs[i].opcode
             if isinstance(op, PS.CInstructionJumpB):
                 if op.VarIn == end_addr:
                     return None  # while-loop pattern
                 break
-            # Stop scanning after a few instructions — break/continue inside a
-            # deeper body don't disqualify the infinite-for interpretation.
-            if i - self.pos > 6:
-                break
+            if isinstance(op, PS.CInstructionJump):
+                break  # hit body control-flow before any cond JumpB → for(;;)
         return last
 
 
@@ -2836,6 +3566,27 @@ def h_PopE(s: _FuncLifter, op):
     s.pos += 1
 
 
+def _as_global_incr(gname: str, rhs):
+    """If `rhs` is `gname + 1` / `gname - 1` (or `gname + -1`), return the
+    compact INCRP/DECRP assign — scomp compiles a global `g++`/`g--` WITHOUT
+    re-pushing the global ref, so the optimized bytecode our lifter sees must
+    round-trip as `g++`/`g--`, not `g = g + 1` (which adds an extra global
+    push).  Other increments (g + N, N!=1) are left as ordinary assigns."""
+    if not isinstance(rhs, ENOp2):
+        return None
+    if not (isinstance(rhs.left, ENId) and rhs.left.name == gname):
+        return None
+    if not isinstance(rhs.right, ENInt):
+        return None
+    if rhs.op == Op2Type.PLUS and rhs.right.value == 1:
+        return ENAssign(op=AssignType.INCRP, name=gname, expr=None)
+    if rhs.op == Op2Type.PLUS and rhs.right.value == -1:
+        return ENAssign(op=AssignType.DECRP, name=gname, expr=None)
+    if rhs.op == Op2Type.MINUS and rhs.right.value == 1:
+        return ENAssign(op=AssignType.DECRP, name=gname, expr=None)
+    return None
+
+
 def h_PopGE(s: _FuncLifter, op):
     """Global var assignment: `g_N = expr;`. Flags bit 0 = leave-on-stack."""
     if op.Flags & 0x01:
@@ -2843,7 +3594,10 @@ def h_PopGE(s: _FuncLifter, op):
     gname = s.ctx.global_var_names[op.VarOut]
     rhs = s._slot_to_expr(1)
     s._pop(1)
-    s.statements.append(OpExprStmt(expr=ENAssign(AssignType.NONE, gname, rhs)))
+    incr = _as_global_incr(gname, rhs)
+    s.statements.append(OpExprStmt(
+        expr=incr if incr is not None
+        else ENAssign(AssignType.NONE, gname, rhs)))
     s.pos += 1
 
 
@@ -2866,6 +3620,8 @@ def h_MovB(s, op):
     # ... <condN>; JumpB(end, V0); MovB(slot=ret_slot, !V0).
     # Lift as `<ret_slot> = cond1 [&& cond2 ...];` (V0=0 → AND, V0=1 → OR).
     if _try_lift_andor_to_ret_slot(s, op):
+        return
+    if _try_lift_andor_nested(s, op):
         return
     _assign_local_slot(s, op.VarOut, ENBool(bool(op.bVal))); s.pos += 1
 
@@ -2894,8 +3650,26 @@ def _try_lift_andor_to_ret_slot(s: _FuncLifter, op) -> bool:
     if op.VarOut != ret_depth:
         return False
     v0 = bool(op.bVal)
-    # Scan forward: cond regions separated by JumpB(end, V0).
-    end_addr = s.return_addr
+    # Scan forward: cond regions separated by JumpB(merge, V0).
+    # The chain's JumpBs all target the MERGE point = the instruction right
+    # AFTER the closing `MovB(ret, !v0)` — NOT necessarily the function's
+    # canonical return_addr.  When the AND/OR result is returned at a LOCAL
+    # return (one of several `Return`s) the merge differs from s.return_addr
+    # (e.g. fog_hunter: JumpBs -> 0x3cc local return, but return_addr=0x3ce).
+    # Pre-scan to the first MovB to find that closing MovB and the merge addr.
+    _pscan = s.pos + 1
+    _close = None
+    while _pscan < len(s.instrs):
+        _io = s.instrs[_pscan].opcode
+        if isinstance(_io, PS.CInstructionMovB):
+            if _io.VarOut == ret_depth and bool(_io.bVal) != v0:
+                _close = _pscan
+            break
+        _pscan += 1
+    if _close is None:
+        return False
+    end_addr = (s.instrs[_close + 1].index
+                if _close + 1 < len(s.instrs) else s.return_addr)
     pos = s.pos + 1
     jumpbs: List[int] = []
     cond_starts: List[int] = [pos]
@@ -2950,6 +3724,144 @@ def _try_lift_andor_to_ret_slot(s: _FuncLifter, op) -> bool:
         pos += 1
     return False
 
+
+def _is_bool_pushv(op) -> bool:
+    """PushV reserving exactly one BOOL slot — scomp's andor sub-result scaffold."""
+    return (isinstance(op, PS.CInstructionPushV)
+            and op.VarCount == 1 and len(op.VarTypes) == 1 and op.VarTypes[0] == 1)
+
+
+def _parse_andor(s: _FuncLifter, movb_pos: int):
+    """Recursively parse scomp's value-producing OR/AND short-circuit codegen
+    (Expression.cpp CENodeOp2::Compile + IOperator.cpp CompileCondJump):
+
+        MovB(dest, v0)                       ; v0=true → OR, v0=false → AND
+        <region0 value>;  JumpB(==v0, sPop=1, target=END)
+        <region1 value>;  JumpB(==v0, sPop=1, target=END)
+        MovB(dest, !v0)
+        END:
+
+    Each region's value is either a simple expression (lifted via
+    _lift_subblock) or a NESTED andor (`PushV(bool); MovB(top, v0'); ...`,
+    which scomp emits for a sub-`||`/`&&` because `node->Compile(ulRet=0)`
+    reserves a fresh bool slot).  Always exactly 2 regions per level
+    (left-assoc `a||b||c` = `(a||b)||c` nests on region0).
+
+    Mutates s.stack to keep depth consistent for the simple-region lifts; the
+    caller must save/restore on failure.  Returns (expr_node, end_pos).  Raises
+    LiftError if the structure doesn't match."""
+    if movb_pos >= len(s.instrs):
+        raise LiftError("andor: movb_pos OOB")
+    movb = s.instrs[movb_pos].opcode
+    if not isinstance(movb, PS.CInstructionMovB):
+        raise LiftError("andor: expected opening MovB")
+    v0 = bool(movb.bVal)
+    dest_depth = movb.VarOut
+    if dest_depth < 1 or dest_depth > len(s.stack):
+        raise LiftError("andor: dest depth out of range")
+    if not isinstance(s._slot_at(dest_depth), _Reserved):
+        raise LiftError("andor: dest not a reserved slot")
+    op2 = Op2Type.OR if v0 else Op2Type.AND
+    pos = movb_pos + 1
+    operands = []
+    region_jumpbs = []
+    for _ in range(2):
+        expr, pos = _parse_andor_region(s, pos, v0)
+        operands.append(expr)
+        if pos >= len(s.instrs):
+            raise LiftError("andor: missing region JumpB")
+        jb = s.instrs[pos].opcode
+        if not (isinstance(jb, PS.CInstructionJumpB) and jb.lVar == 1
+                and jb.bVal == int(v0) and jb.sPop == 1):
+            raise LiftError("andor: expected region JumpB(==v0,sPop=1)")
+        region_jumpbs.append(pos)
+        s._pop(1)            # the JumpB consumes the operand value
+        pos += 1
+    if pos >= len(s.instrs):
+        raise LiftError("andor: missing closing MovB")
+    close = s.instrs[pos].opcode
+    if not (isinstance(close, PS.CInstructionMovB)
+            and close.VarOut == dest_depth and bool(close.bVal) != v0):
+        raise LiftError("andor: expected closing MovB(dest,!v0)")
+    end_addr = (s.instrs[pos + 1].index if pos + 1 < len(s.instrs)
+                else s.return_addr)
+    for jbp in region_jumpbs:
+        if s.instrs[jbp].opcode.VarIn != end_addr:
+            raise LiftError("andor: region JumpB target != END")
+    return ENOp2(op2, operands[0], operands[1]), pos + 1
+
+
+def _parse_andor_region(s: _FuncLifter, pos: int, v0: bool):
+    """Parse one operand region; leave its value on the stack (+1 net) and
+    return (expr, pos_of_terminating_JumpB)."""
+    if pos >= len(s.instrs):
+        raise LiftError("andor region: OOB")
+    op = s.instrs[pos].opcode
+    nxt = s.instrs[pos + 1].opcode if pos + 1 < len(s.instrs) else None
+    if (_is_bool_pushv(op) and isinstance(nxt, PS.CInstructionMovB)
+            and nxt.VarOut == 1):
+        # Nested andor: the PushV(bool) reserves this sub-expression's slot.
+        s._push(_Reserved(VarType.BOOL))
+        expr, end = _parse_andor(s, pos + 1)
+        # value now lives on the pushed slot (still on stack → +1 net).
+        s.stack[-1].expr = expr
+        s.stack[-1].was_assigned = True
+        return expr, end
+    # Simple region: everything up to the next JumpB(==v0, sPop=1).
+    jb_pos = pos
+    while jb_pos < len(s.instrs):
+        iop = s.instrs[jb_pos].opcode
+        if (isinstance(iop, PS.CInstructionJumpB) and iop.lVar == 1
+                and iop.bVal == int(v0) and iop.sPop == 1):
+            break
+        jb_pos += 1
+    if jb_pos <= pos or jb_pos >= len(s.instrs):
+        raise LiftError("andor region: no terminating JumpB")
+    region_instrs = s.instrs[pos:jb_pos]
+    _lift_subblock(s, region_instrs, allow_imbalance=1)
+    return s._slot_to_expr(1), jb_pos
+
+
+def _try_lift_andor_nested(s: _FuncLifter, op) -> bool:
+    """Recursive andor lift for the function RETURN slot, handling NESTED
+    operands (which the flat _try_lift_andor_to_ret_slot bails on, e.g.
+    soldier_stationary f_6d8 `return cls=="worker"||cls=="butcher"||...`).
+    Fires only when MovB writes the ret slot (batch_id -1, BOOL) AND region0
+    begins with a nested andor scaffold (`PushV(bool)+MovB`)."""
+    if s.return_type == VarType.VOID:
+        return False
+    if not s.stack or not isinstance(s.stack[0], _Reserved):
+        return False
+    if getattr(s.stack[0], "batch_id", 0) != -1 or s.stack[0].type != VarType.BOOL:
+        return False
+    ret_depth = len(s.stack)
+    if op.VarOut != ret_depth:
+        return False
+    p = s.pos + 1
+    if not (p + 1 < len(s.instrs) and _is_bool_pushv(s.instrs[p].opcode)
+            and isinstance(s.instrs[p + 1].opcode, PS.CInstructionMovB)):
+        return False
+    saved_stack = list(s.stack)
+    saved_stmts = list(s.statements)
+    saved_pos = s.pos
+    try:
+        expr, end_pos = _parse_andor(s, s.pos)
+    except (LiftError, IndexError, KeyError, AttributeError):
+        s.stack = saved_stack
+        s.statements = saved_stmts
+        s.pos = saved_pos
+        return False
+    if len(s.stack) != len(saved_stack):
+        s.stack = saved_stack
+        s.statements = saved_stmts
+        s.pos = saved_pos
+        return False
+    s.stack[0].was_assigned = True
+    s.stack[0].expr = expr
+    s.pos = end_pos
+    return True
+
+
 def h_MovI(s, op): _assign_local_slot(s, op.VarOut, ENInt(int(op.lVal))); s.pos += 1
 def h_MovF(s, op): _assign_local_slot(s, op.VarOut, ENFloat(float(op.fVal))); s.pos += 1
 def h_MovS(s, op): _assign_local_slot(s, op.VarOut, ENString(op.String)); s.pos += 1
@@ -2981,6 +3893,37 @@ def h_Mov(s: _FuncLifter, op):
     except LiftError:
         dest_v = None
     dest_type = getattr(dest_v, "type", None)
+    # SKIP cast when next instruction is the Call/typed-literal-Mov for the
+    # following arg setup — that's the scomp implicit-conversion pattern of
+    # `Test(z)` (z=int, Test takes bool): one Mov directly into the typed
+    # arg slot, no source-level cast.  Explicit cast `(bool)z` always emits
+    # an extra `Mov(temp→arg) + Pop` after the first Mov, so the next instr
+    # would NOT be Call/MovI/etc.
+    next_is_arg_consumer = False
+    # The arg-setup Mov for a direct (last) call arg is followed by a Pop that
+    # cleans up the value temp before the Call: `Push(v); Mov(arg=v); Pop(1);
+    # Call`.  Look PAST that single Pop so the implicit conversion is detected
+    # (ui_map `f_119(tv25.x)` — float vec component into an int arg).  An
+    # EXPLICIT cast `(T)x` instead has `cast-Mov; Pop; plain-Mov(arg=temp); ...`
+    # — past the Pop is a plain CInstructionMov (NOT in the consumer list
+    # below), so the cast is still correctly kept.
+    np = s.pos + 1
+    if np < len(s.instrs) and isinstance(s.instrs[np].opcode, PS.CInstructionPop):
+        np += 1
+    if np < len(s.instrs):
+        nxt = s.instrs[np].opcode
+        if isinstance(nxt, (PS.CInstructionCall,
+                            PS.CInstructionFunc,
+                            PS.CInstructionObjFunc,
+                            PS.CInstructionTObjFunc,
+                            PS.CInstructionTaskCall,
+                            PS.CInstructionMovI,
+                            PS.CInstructionMovB,
+                            PS.CInstructionMovF,
+                            PS.CInstructionMovS,
+                            PS.CInstructionMovV,
+                            PS.CInstructionMovT)):
+            next_is_arg_consumer = True
     if (src_type is not None
             and dest_type is not None
             and src_type != dest_type
@@ -2988,7 +3931,8 @@ def h_Mov(s: _FuncLifter, op):
             and dest_type in (VarType.INT, VarType.FLOAT, VarType.BOOL)
             and isinstance(dest_v, _Reserved)
             and not dest_v.was_assigned
-            and getattr(dest_v, "batch_id", 0) > 0):
+            and getattr(dest_v, "batch_id", 0) > 0
+            and not next_is_arg_consumer):
         # Only wrap with cast when dest is a mid-body PushV temp slot
         # (batch_id > 0).  Function-entry / return slots (batch_id <= 0)
         # implicitly convert via the Mov itself — adding `(T)` to source
@@ -3037,9 +3981,24 @@ def h_SetNull(s: _FuncLifter, op):
     if isinstance(target, _Slot):
         s.statements.append(OpExprStmt(expr=ENAssign(AssignType.NULL, target.name, None)))
     elif isinstance(target, _Reserved):
-        # SetNull on a reserved slot is scomp's auto cleanup at block end —
-        # silently no-op for us (the local declaration suffices).
-        pass
+        # SetNull on a reserved slot is normally scomp's auto cleanup at
+        # block end — silently no-op for us.  EXCEPT when the slot was
+        # just pushed by PushGE (its default_expr is ENId(global_name)) AND
+        # the next instruction is PopGE writing back to the same global —
+        # that's scomp's `g_var = null;` assignment pattern.  Emit the
+        # explicit null-assign and consume both SetNull + PopGE.
+        if (isinstance(target.expr, ENId)
+                and s.pos + 1 < len(s.instrs)
+                and isinstance(s.instrs[s.pos + 1].opcode, PS.CInstructionPopGE)
+                and not (s.instrs[s.pos + 1].opcode.Flags & 0x01)):
+            popge_op = s.instrs[s.pos + 1].opcode
+            gname = s.ctx.global_var_names[popge_op.VarOut]
+            if target.expr.name == gname:
+                s.statements.append(
+                    OpExprStmt(expr=ENAssign(AssignType.NULL, gname, None)))
+                s._pop(1)
+                s.pos += 2
+                return
     else:
         raise LiftError(f"SetNull on slot of type {type(target).__name__}")
     s.pos += 1
@@ -3197,6 +4156,57 @@ def h_JumpB(s: _FuncLifter, op):
 
     target_addr = op.VarIn
     bVal = op.bVal  # 0 = jump if false, 1 = jump if true
+
+    # Explicit `if (c) { break/return } else { continue/break }` where scomp
+    # emitted the ELSE-SKIP jump (3 consecutive GOTOs):
+    #     i:     JumpB(bVal=0 -> T)
+    #     i+1:   GOTO A          (then-branch terminator)
+    #     i+2:   GOTO (T+1)      (else-skip = scomp's if-else end-jump)
+    #     T=i+3: GOTO B          (else-branch terminator)
+    #     T+1:   merge
+    # Our default lift flattens this to `if(c){break}` + a SIBLING `continue;`
+    # which scomp re-compiles WITHOUT the else-skip (only 2 GOTOs) -> 6 bytes
+    # short.  We want the explicit if-else so scomp re-emits the else-skip.  The
+    # else-label B-GOTO usually sits one instruction PAST the current slice (it
+    # is the enclosing block's trailing jump), and the sibling `continue;` is
+    # already produced by the existing machinery — so rather than duplicating
+    # it, we emit the then-only `if(c){break}` TAGGED, and a post-pass
+    # (_pull_terminator_into_else) moves the following sibling terminator into
+    # the else.  Discriminator vs a genuine `{break; continue;}` plain-if (a
+    # 2-GOTO pattern where g2 -> the loop continue, NOT -> T+1): require g2 to
+    # jump to T+1 (= just past the else-label) AND the instruction at T to be a
+    # GOTO that itself resolves to a control-flow terminator.
+    if bVal == 0 and s.pos + 2 < len(s.instrs):
+        _i = s.pos
+        _g1 = s.instrs[_i + 1].opcode
+        _g2 = s.instrs[_i + 2].opcode
+        if (isinstance(_g1, PS.CInstructionJump)
+                and isinstance(_g2, PS.CInstructionJump)
+                and target_addr == s.instrs[_i + 2].index + 1
+                and _g2.VarIn == target_addr + 1):
+            # Locate the else-label instruction (at target_addr): in-slice if
+            # present, otherwise just past the slice -> use func_instrs.
+            _gt = None
+            if _i + 3 < len(s.instrs) and s.instrs[_i + 3].index == target_addr:
+                _gt = s.instrs[_i + 3].opcode
+            else:
+                for _it in s.func_instrs:
+                    if _it.index == target_addr:
+                        _gt = _it.opcode
+                        break
+            if isinstance(_gt, PS.CInstructionJump):
+                _then = _resolve_cf(s, _g1.VarIn)
+                _else = _resolve_cf(s, _gt.VarIn)
+                if _then is not None and _else is not None:
+                    # JumpB(==0->T): cond FALSE -> T (else); cond TRUE -> fall
+                    # to i+1 (then).  Emit `if(cond){then}` and tag it so the
+                    # post-pass pulls the sibling `else` terminator in.
+                    _ifop = OpIf(cond=cond_expr,
+                                 then_block=OpBlock(ops=[_then]))
+                    _ifop._pull_else = type(_else)  # OpContinue/OpBreak/OpReturn
+                    s.statements.append(_ifop)
+                    s.pos = _i + 3  # consumed JumpB, then-GOTO, else-skip
+                    return
 
     # Stack-ternary pattern: each branch pushes exactly one literal/expr
     # and they merge.  Pattern:
@@ -3422,6 +4432,57 @@ def h_JumpB(s: _FuncLifter, op):
                         ))
                         s.pos += 2  # consumed JumpB + Jump
                         return
+                # When target == back_addr (the trailing Jump itself) AND
+                # there's MORE body after this JumpB AND the next instruction
+                # is NOT a Jump-to-cont/brk/return, the source shape was
+                # `if (body_cond) { rest_of_body }` — NOT `if (cond) continue;
+                # rest`.  Detection: scomp emits `if (X) { body }` at end of
+                # loop body as `JumpB(false-skip) → back_jump_addr; body`
+                # (no extra Jump).  Compare to `if (cond) continue; rest`
+                # which emits `JumpB(false-skip) → past_continue; Jump →
+                # cont_addr; rest` (extra Jump).  Distinguishing on the
+                # presence/absence of that follow-up Jump.
+                if (back_addr is not None
+                        and target_addr == back_addr
+                        and target_addr != cont_addr
+                        and nxt_pos < len(s.instrs)):
+                    nxt = s.instrs[nxt_pos].opcode
+                    is_cf_jump = (
+                        isinstance(nxt, PS.CInstructionJump)
+                        and nxt.VarIn in (cont_addr, brk_addr, s.return_addr)
+                    )
+                    if not is_cf_jump:
+                        body_cond = cond_expr if bVal == 0 else _not_expr(cond_expr)
+                        rest_instrs = s.instrs[s.pos + 1:]
+                        body_block = _lift_subblock(s, rest_instrs)
+                        s.statements.append(OpIf(cond=body_cond, then_block=body_block))
+                        s.pos = len(s.instrs)
+                        return
+                # Same shape but target == cont_addr (the loop's continue /
+                # iter-step position) with bVal==0 (skip-to-cont when cond is
+                # FALSE) and body following DIRECTLY (no GOTO between).  scomp
+                # compiles `if (cond) { body }` at end of a loop body as a
+                # single `JumpB(false→cont_addr); body` — the body falls
+                # through to the iter step.  A genuine `if(!cond) continue;`
+                # would instead emit Not/NullEq + JumpB(→past) + GOTO(→cont)
+                # (an explicit follow-up Jump), so the ABSENCE of a follow-up
+                # control-flow Jump after the JumpB is the discriminator.
+                # (`if(cond)continue;` is the bVal==1 case — handled below.)
+                if (target_addr == cont_addr
+                        and bVal == 0
+                        and nxt_pos < len(s.instrs)):
+                    nxt = s.instrs[nxt_pos].opcode
+                    is_cf_jump = (
+                        isinstance(nxt, PS.CInstructionJump)
+                        and nxt.VarIn in (cont_addr, brk_addr, s.return_addr)
+                    )
+                    if not is_cf_jump:
+                        body_cond = cond_expr
+                        rest_instrs = s.instrs[s.pos + 1:]
+                        body_block = _lift_subblock(s, rest_instrs)
+                        s.statements.append(OpIf(cond=body_cond, then_block=body_block))
+                        s.pos = len(s.instrs)
+                        return
                 _emit_if(OpContinue()); s.pos += 1; return
         if target_addr == s.return_addr:
             # If there's body after this JumpB (within the slice), the source
@@ -3447,6 +4508,33 @@ def h_JumpB(s: _FuncLifter, op):
             rest_instrs = s.instrs[s.pos + 1:]
             # Cond to enter the body: opposite of the "take the jump" cond.
             body_cond = _not_expr(cond_take)
+            # If the rest ends with a GOTO straight back to THIS same exit, that
+            # trailing Jump is the else-skip of an `if (cond) { then } else { }`
+            # with an EMPTY else — scomp emits the else-skip Jump even for an
+            # empty else (player_common.sci `if(iCharge>=10){...}else{}`).  Lift
+            # the then-block (minus the trailing Jump) and a preserved empty
+            # else so the Jump round-trips; otherwise the plain-if drops it.
+            if (len(rest_instrs) >= 2
+                    and isinstance(rest_instrs[-1].opcode, PS.CInstructionJump)
+                    and rest_instrs[-1].opcode.VarIn == target_addr
+                    # Nested-if guard: if an inner JumpB in the rest targets the
+                    # SAME exit, the trailing GOTO is THAT nested if-else's else-
+                    # skip, not this if's empty else.  Skip so the inner JumpB
+                    # claims it (else we attach the empty else to the wrong,
+                    # outer block — same instrs but wrong debug-line offset).
+                    and not any(
+                        isinstance(bi.opcode, PS.CInstructionJumpB)
+                        and bi.opcode.VarIn == target_addr
+                        for bi in rest_instrs[:-1])):
+                then_block = _lift_subblock(
+                    s, rest_instrs[:-1], exit_addrs=[target_addr])
+                s.statements.append(OpIf(
+                    cond=body_cond,
+                    then_block=then_block,
+                    else_block=OpBlock(ops=[]),
+                ))
+                s.pos = len(s.instrs)
+                return
             body_block = _lift_subblock(s, rest_instrs)
             s.statements.append(OpIf(cond=body_cond, then_block=body_block))
             s.pos = len(s.instrs)  # consumed the rest
@@ -3559,11 +4647,79 @@ def h_JumpB(s: _FuncLifter, op):
                 jt_addr = last.opcode.VarIn
                 jt_pos = _find_pos_by_addr(s.instrs, jt_addr)
                 if jt_pos is not None:
-                    if jt_pos > target_pos:
+                    # A trailing Jump to a loop break/continue (or the
+                    # function-end Return) is a control-flow ACTION inside the
+                    # then-block — e.g. `if (c1) { ...; if (c2) break; }` —
+                    # NOT a skip-else jump.  Treating it as if-else wrongly
+                    # splits the inner `if (c2)` and mis-scopes the rest.  Only
+                    # treat a forward trailing Jump as the else-skip when it
+                    # targets a plain forward merge (not a CF target).
+                    # Nested-if guard: an INNER JumpB in the then-body targeting
+                    # this if's OWN merge (target_addr) means the trailing Jump is
+                    # that inner if's then-body (action), NOT this if's continue/
+                    # else-skip.  Treat as a plain-if so the inner if claims the
+                    # trailing Jump (arena_manager `if(L4){...; if(L6) continue;}`
+                    # — 0x454 JumpB→0x456 + 0x455 GOTO iter).  Without this the
+                    # inner if(L6) gets an empty then and the continue is dropped.
+                    _nested_inner = any(
+                        isinstance(bi.opcode, PS.CInstructionJumpB)
+                        and bi.opcode.VarIn == target_addr
+                        for bi in s.instrs[cur_pos:end_then_pos - 1])
+                    if _nested_inner:
+                        pass  # plain-if: leave end_else_pos / then_terminator None
+                    elif jt_pos > target_pos:
+                        # A trailing forward Jump to a loop CONTINUE target can
+                        # be a `continue` ACTION — original source `if (cond) {
+                        # then; continue; } rest` rather than `if (cond) { then }
+                        # else { rest }`.  These two shapes are byte-identical
+                        # EXCEPT when scomp auto-emits an object SetNull cleanup
+                        # at loop-body close (just before the iter step): the
+                        # if-continue `continue` jumps PAST that cleanup to
+                        # cont_addr, whereas the if-else merge lands ON the
+                        # cleanup → off-by-one Jump target (world_burah's
+                        # plant/grave loops).  Gate strictly on the cleanup's
+                        # presence (instr at cont_addr-1 is SetNull): without
+                        # it, converting only adds a redundant continue Jump
+                        # (+6 bytes) and regresses files like ui_agony/
+                        # ui_playerstat/ui_repair.
+                        cont_cleanup = False
+                        for _c, _b, _bk in reversed(s.loops):
+                            if jt_addr == _c or (_bk is not None and jt_addr == _bk):
+                                cpos = _find_pos_by_addr(s.instrs, _c)
+                                if (cpos is not None and cpos > 0
+                                        and isinstance(s.instrs[cpos - 1].opcode,
+                                                       PS.CInstructionSetNull)):
+                                    cont_cleanup = True
+                                break
+                        if cont_cleanup:
+                            then_terminator = OpContinue()
+                            end_else_pos = len(s.instrs)
+                        else:
+                            end_else_pos = jt_pos
+                    elif jt_pos == target_pos:
+                        # Trailing Jump targets EXACTLY the JumpB merge: the
+                        # then-block's else-skip jumps straight to the merge with
+                        # NO else body — an `if (cond) { then } else { }` with an
+                        # EMPTY else.  scomp emits the else-skip Jump for the
+                        # empty else; dropping it (plain-if) loses that Jump.
+                        # Preserve the (empty) else so it round-trips.
                         end_else_pos = jt_pos
                     elif jt_pos < s.pos:
                         is_while = True
                 else:
+                    # Nested-if guard: if an inner JumpB in the then-block
+                    # targets the SAME merge (target_addr), then this trailing
+                    # break/continue/return GOTO is the inner if's ACTION (e.g.
+                    # `if(c1){ if(c2){ body; break } }`), NOT the outer then's
+                    # terminator.  Extracting it as the terminator wrongly
+                    # places the break AFTER the inner if (unconditional) and
+                    # mis-targets its JumpB.  Skip extraction → fall through to
+                    # the plain-if path, which keeps the trailing GOTO in the
+                    # then-block so the nested if absorbs it.
+                    nested_signal = any(
+                        isinstance(bi.opcode, PS.CInstructionJumpB)
+                        and bi.opcode.VarIn == target_addr
+                        for bi in s.instrs[cur_pos:end_then_pos - 1])
                     # Check loops FIRST: when a loop sits at the function
                     # tail, brk_addr can equal return_addr.  scomp's
                     # if-else-with-break emits Jump → brk_addr (post-loop),
@@ -3571,8 +4727,15 @@ def h_JumpB(s: _FuncLifter, op):
                     # return_addr — same address in both cases.  When the
                     # if is inside a loop, the BREAK shape is the correct
                     # match (an outer if-else can't span across a loop).
-                    matched = False
-                    for cont_addr, brk_addr, back_addr in reversed(s.loops):
+                    matched = nested_signal  # skip extraction when nested
+                    # A bare `continue;` continues the INNERMOST loop, so only
+                    # emit OpContinue when the target is the innermost loop's
+                    # continue addr — matching an OUTER loop's cont would emit a
+                    # `continue;` that scomp routes to the INNER loop (wrong;
+                    # broke gatherer1 etc. when applied to all loop levels).
+                    _innermost_cont = s.loops[-1][0] if s.loops else None
+                    _innermost_back = s.loops[-1][2] if s.loops else None
+                    for cont_addr, brk_addr, back_addr in (() if nested_signal else reversed(s.loops)):
                         if jt_addr == brk_addr:
                             end_else_pos = len(s.instrs)
                             then_terminator = OpBreak()
@@ -3580,6 +4743,22 @@ def h_JumpB(s: _FuncLifter, op):
                             break
                         if jt_addr == cont_addr or (back_addr is not None and jt_addr == back_addr):
                             end_else_pos = len(s.instrs)
+                            # A then-block trailing Jump to the loop's CONTINUE
+                            # addr (distinct from the back-jump) is an EXPLICIT
+                            # `continue;` (scomp routes it DIRECTLY to the loop
+                            # top) — emit it + flatten the rest as siblings, so
+                            # it doesn't degrade into an if/else whose arm-skip
+                            # lands on the cascade-merge trampoline (sub-pattern
+                            # A, e.g. attack_melee `if(!bCanReach){...;continue;}`
+                            # citizen 0x48d).  But a Jump to the BACK-JUMP addr
+                            # is an IMPLICIT arm-skip / merge (citizen 0x475,
+                            # arm1's fall-through to the cascade end) — keep the
+                            # old no-terminator if/else behavior for that.
+                            if (jt_addr == cont_addr and jt_addr != back_addr
+                                    and jt_addr == _innermost_cont
+                                    and jt_addr != _innermost_back
+                                    and _innermost_back not in s.infinite_backs):
+                                then_terminator = OpContinue()
                             matched = True
                             break
                     if not matched:
@@ -3609,13 +4788,121 @@ def h_JumpB(s: _FuncLifter, op):
             # this address effectively `continue` (they fall straight into
             # the back-Jump).
             back_jump_addr = s.instrs[end_then_pos - 1].index
-            s.loops.append((continue_addr, break_addr, back_jump_addr))
+            # For-loop iter-step detection: scomp's `for (init; cond; iter)`
+            # sets `m_rpLoopContinue` to the START of the iter step.  An
+            # explicit `continue;` in source jumps THERE (not to cond check).
+            # Detect the typical iter step pattern at the end of body_instrs:
+            # `PushI(±N) + Add2(slot)` or similar in-place increment.  When
+            # found, override continue_addr to point at the iter step start
+            # so inner Jumps to that address are recognised as `continue;`.
+            iter_continue_addr = None
+            if len(body_instrs) >= 2:
+                last2 = body_instrs[-1]
+                last1 = body_instrs[-2]
+                if (isinstance(last2.opcode, (PS.CInstructionAdd2,
+                                              PS.CInstructionSub2,
+                                              PS.CInstructionMult2,
+                                              PS.CInstructionDiv2))
+                        and isinstance(last1.opcode, (PS.CInstructionPushI,
+                                                      PS.CInstructionPushF,
+                                                      PS.CInstructionPushB))):
+                    iter_continue_addr = last1.index
+            # Only use iter_continue_addr when the body actually has a Jump
+            # to it — otherwise we'd misclassify perfectly normal `if (cond)
+            # body` patterns as `if (!cond) continue; rest` (which scomp
+            # compiles to a different shape and gives us +6 bytes per
+            # occurrence).
+            used_iter_continue = False
+            if iter_continue_addr is not None and any(
+                    isinstance(b.opcode, PS.CInstructionJump) and b.opcode.VarIn == iter_continue_addr
+                    and b.index != iter_continue_addr
+                    for b in body_instrs):
+                s.loops.append((iter_continue_addr, break_addr, back_jump_addr))
+                used_iter_continue = True
+            else:
+                s.loops.append((continue_addr, break_addr, back_jump_addr))
             try:
                 body_block = _lift_subblock(s, body_instrs)
             finally:
                 s.loops.pop()
             cond_final = cond_expr if bVal == 0 else _not_expr(cond_expr)
-            s.statements.append(OpWhile(cond=cond_final, body=body_block))
+            # Detect `for (init; cond; ) { body }` vs `init; while (cond)
+            # { body }` for explicit-continue handling.  scomp's continue
+            # emission differs:
+            #   * `for (; cond; )`: `continue;` → `Jump → back_jump_addr`
+            #     (continues through SetNull cleanup region naturally).
+            #   * `while (cond)`:   `continue;` → `Jump → cond_check_addr`
+            #     (direct, skipping inner cleanup).
+            # The two compile to differing bytecode.  Scan the body's Jumps
+            # for targets equal to back_jump_addr: if any, the source was
+            # a for-loop with empty iter — emit OpFor so the recompile
+            # matches.
+            # for(;cond;) continue -> back_jump_addr (the back-Jump INSTRUCTION);
+            # while(cond) continue -> the back-Jump's TARGET (the cond re-check /
+            # loop top).  The old check only looked for jumps to back_jump_addr,
+            # but a WHILE loop's object-cleanup TRAMPOLINE also does
+            # `GOTO back_jump_addr` (falls into the back-jump) — which falsely
+            # flagged for-style and routed continues through the trampoline
+            # instead of direct to the loop top (sub-pattern A, citizen/soldier
+            # families).  Discriminator: for-style iff the body jumps to
+            # back_jump_addr AND does NOT jump to the cond-check (loop top);
+            # a body jump to the loop top is a while-continue.
+            back_jump_target = s.instrs[end_then_pos - 1].opcode.VarIn
+            hits_backjump = False
+            hits_condcheck = False
+            for binst in body_instrs:
+                if not isinstance(binst.opcode, PS.CInstructionJump):
+                    continue
+                if binst.index == back_jump_addr:
+                    continue
+                if binst.opcode.VarIn == back_jump_addr:
+                    hits_backjump = True
+                elif binst.opcode.VarIn == back_jump_target:
+                    hits_condcheck = True
+            is_for_style = hits_backjump and not hits_condcheck
+            # in the while cond — `while (pre_call, cond) { body }`.
+            # ONLY fire when the last statement is a method call on a task
+            # variable (e.g. `tv0->Next(L2, L3)`) — these are the iterator-
+            # style patterns where scomp emits `Method(args); Pop; Push cond;
+            # JumpB → exit; body; GOTO Method`.  Restricted form to avoid
+            # over-collapsing legitimate pre-loop calls.
+            jumpb_addr = s.instrs[s.pos].index
+            jumpb_pos = s.pos
+            try:
+                continue_pos = _find_pos_by_addr(s.instrs, continue_addr)
+            except Exception:
+                continue_pos = None
+            if (continue_pos is not None
+                    and jumpb_pos - continue_pos >= 3
+                    and s.statements
+                    and isinstance(s.statements[-1], OpExprStmt)
+                    and isinstance(s.statements[-1].expr, ENFunc)
+                    and s.statements[-1].expr.obj is not None
+                    and isinstance(s.statements[-1].expr.obj, ENId)):
+                comma_parts = [s.statements.pop().expr]
+                cond_final = ENOp2(Op2Type.COMMA, comma_parts[0], cond_final)
+            # When continue routes to the ITER STEP (iter_continue_addr used),
+            # this is `for (init; cond; iter)` with a NON-empty iter — the iter
+            # is the last body statement.  Extract it into the for-header so a
+            # recompiled `continue;` jumps to the iter (not the cond-check, as a
+            # `while` would).  Without this we emit `while(cond){...; iter}` and
+            # continues mis-route (arena_manager `for(L1=0;L1<L0;L1++){...;L1--}`).
+            if (used_iter_continue and body_block.ops
+                    and isinstance(body_block.ops[-1], OpExprStmt)
+                    and isinstance(body_block.ops[-1].expr, ENAssign)):
+                iter_expr = body_block.ops[-1].expr
+                new_body = OpBlock(ops=body_block.ops[:-1])
+                s.statements.append(OpFor(
+                    init=OpBlock(ops=[]), cond=cond_final, loop=iter_expr,
+                    body=new_body,
+                ))
+            elif is_for_style:
+                s.statements.append(OpFor(
+                    init=OpBlock(ops=[]), cond=cond_final, loop=None,
+                    body=body_block,
+                ))
+            else:
+                s.statements.append(OpWhile(cond=cond_final, body=body_block))
             s.pos = end_then_pos
             return
 
@@ -3633,6 +4920,17 @@ def h_JumpB(s: _FuncLifter, op):
             tj_op = s.instrs[end_then_pos - 1].opcode
             if isinstance(tj_op, PS.CInstructionJump):
                 exit_addrs.append(tj_op.VarIn)
+            # Also treat the merge / else-start address as a then-block exit.
+            # A nested `if(c1){ ...; if(c2) <action> }` compiles c2's skip-jump
+            # to the SAME address as c1's (the merge after the whole if), which
+            # is the else-start here.  Without this, that inner JumpB raises
+            # "target not in current body".  Safe: an OK file can't already
+            # have a then-block JumpB to the else-start (it would be LIFT_ERROR
+            # today), so adding this exit only affects currently-failing files.
+            if end_then_pos < len(s.instrs):
+                merge_addr = s.instrs[end_then_pos].index
+                if merge_addr not in exit_addrs:
+                    exit_addrs.append(merge_addr)
             # Snapshot ret_slot.expr to detect per-branch silent writes.
             # Used below to convert `if(c){silent_ret=X}else{silent_ret=Y}` →
             # `if(c) return X; return Y;` shape when both branches assign the
@@ -3641,7 +4939,54 @@ def h_JumpB(s: _FuncLifter, op):
             if (s.stack and isinstance(s.stack[0], _Reserved)
                     and getattr(s.stack[0], "batch_id", 0) == -1):
                 ret_slot_pre = s.stack[0].expr
-            then_block = _lift_subblock(s, then_instrs, exit_addrs=exit_addrs)
+            # Snapshot ALL _Reserved slots' exprs to also catch a ternary into a
+            # CALL-ARG slot: `f(cond ? A : B)` compiles to `if(cond){arg=A}else
+            # {arg=B}` (both branches silently write the same pushed arg slot),
+            # which our empty-both-branches lift otherwise drops (taking only the
+            # else value) — scene_normal `f_2bc(a2 ? 0.05 : 0.2)`.
+            depth_pre = len(s.stack)
+            pre_exprs = {i: sl.expr for i, sl in enumerate(s.stack)
+                         if isinstance(sl, _Reserved)}
+            # Value-producing if-else (stack-leaving ternary): when a branch
+            # leaves a VALUE on the stack consumed by the op AFTER the if-else
+            # (e.g. `m->SetLength(g3 ? f(..) : 0.05)` — sanitar/rats), the
+            # statement-if lift (allow_imbalance=0) raises "unbalanced".  Retry
+            # lifting BOTH branches as value-producers (+1 each, no statements)
+            # and push `cond ? A : B`.  Only triggers on currently-failing
+            # (unbalanced) lifts, so it can't regress passing files.
+            _vt_stack = list(s.stack)
+            _vt_stmts = list(s.statements)
+            _vt_pos = s.pos
+            _vt_instrs = s.instrs
+            try:
+                then_block = _lift_subblock(s, then_instrs, exit_addrs=exit_addrs)
+            except LiftError as _vt_e:
+                if "unbalanced" not in str(_vt_e):
+                    raise
+                s.stack[:] = _vt_stack
+                s.statements[:] = _vt_stmts
+                s.pos = _vt_pos
+                s.instrs = _vt_instrs
+                tvb = _lift_subblock(s, then_instrs, exit_addrs=exit_addrs,
+                                     allow_imbalance=1)
+                then_val = s._slot_to_expr(1)
+                s._pop(1)
+                evb = _lift_subblock(s, else_instrs, exit_addrs=exit_addrs,
+                                     allow_imbalance=1)
+                else_val = s._slot_to_expr(1)
+                s._pop(1)
+                if tvb.ops or evb.ops:
+                    raise _vt_e  # branches have statements → not a simple ternary
+                cond_take = cond_expr if bVal == 0 else _not_expr(cond_expr)
+                vt_type = (_expr_node_type(then_val, s)
+                           or _expr_node_type(else_val, s) or VarType.FLOAT)
+                s._push(_Reserved(vt_type, default_expr=ENOp3(
+                    Op3Type.IF, cond_take, then_val, else_val)))
+                s.pos = end_else_pos
+                return
+            then_exprs = ({i: sl.expr for i, sl in enumerate(s.stack)
+                           if isinstance(sl, _Reserved)}
+                          if len(s.stack) == depth_pre else None)
             then_ret = None
             if (s.stack and isinstance(s.stack[0], _Reserved)
                     and getattr(s.stack[0], "batch_id", 0) == -1
@@ -3717,6 +5062,33 @@ def h_JumpB(s: _FuncLifter, op):
                 s.pos = end_else_pos + (1 if consume_return else 0)
                 return
 
+            # Generic CALL-ARG ternary: both branches empty, both silently wrote
+            # the SAME non-return _Reserved slot with different values → fold to
+            # `slot = cond ? then_val : else_val` (silent; the slot is consumed
+            # by the following Call/arg-setup).  No statement emitted; the
+            # if-else collapses.  (scene family `f(cond ? A : B)`.)
+            if (not then_block.ops and not else_block.ops
+                    and then_exprs is not None
+                    and len(s.stack) == depth_pre):
+                else_exprs = {i: sl.expr for i, sl in enumerate(s.stack)
+                              if isinstance(sl, _Reserved)}
+                # A slot written in BOTH branches (then & else each changed it
+                # vs pre, and to different values).  Exclude the function return
+                # slot (idx 0, batch_id -1) — handled by the ret-ternary above.
+                cand = [i for i in pre_exprs
+                        if i in then_exprs and i in else_exprs
+                        and then_exprs[i] is not pre_exprs[i]
+                        and else_exprs[i] is not then_exprs[i]
+                        and else_exprs[i] is not pre_exprs[i]
+                        and not (i == 0 and getattr(s.stack[0], "batch_id", 0) == -1)]
+                if len(cand) == 1:
+                    i = cand[0]
+                    cond_take = cond_expr if bVal == 0 else _not_expr(cond_expr)
+                    s.stack[i].expr = ENOp3(Op3Type.IF, cond_take,
+                                            then_exprs[i], else_exprs[i])
+                    s.stack[i].was_assigned = True
+                    s.pos = end_else_pos
+                    return
             if bVal == 0:
                 stmt = OpIf(cond=cond_expr, then_block=then_block, else_block=else_block)
             else:
@@ -3745,6 +5117,20 @@ def h_JumpB(s: _FuncLifter, op):
     # are intermixed with the body (no clean separation in our linear lift).
     # For now, raise — to be implemented when we have a region-based structurer.
     raise LiftError(f"backward JumpB at 0x{s.instrs[s.pos].index:x} -> 0x{target_addr:x}; do-while not yet supported")
+
+
+def _resolve_cf(s: _FuncLifter, target_addr):
+    """Map an unconditional-GOTO target to OpBreak/OpContinue/OpReturn using the
+    same loop-stack precedence as h_Jump.  Returns None if it doesn't resolve to
+    a control-flow terminator (so callers can fall back to default handling)."""
+    for cont_addr, brk_addr, back_addr in reversed(s.loops):
+        if target_addr == brk_addr:
+            return OpBreak()
+        if target_addr == cont_addr or (back_addr is not None and target_addr == back_addr):
+            return OpContinue()
+    if target_addr == s.return_addr:
+        return OpReturn()
+    return None
 
 
 def h_Jump(s: _FuncLifter, op):
@@ -3779,12 +5165,17 @@ def h_Jump(s: _FuncLifter, op):
     # "skip-past-else" Jump after a then-branch that ended with GOTO).
     # If the last emitted statement was already a terminator (OpReturn,
     # OpBreak, OpContinue) OR the previous bytecode instruction was already
-    # an unconditional Jump, this Jump is dead code; silently skip it.
+    # an unconditional Jump / Return, this Jump is dead code; silently skip.
     if s.pos > 0:
         prev_op = s.instrs[s.pos - 1].opcode
-        if isinstance(prev_op, PS.CInstructionJump):
+        if isinstance(prev_op, (PS.CInstructionJump, PS.CInstructionReturn)):
             s.pos += 1
             return
+    # ALSO: if our last emitted statement was a terminator (Return / Break /
+    # Continue) that we previously synthesised, this Jump is unreachable.
+    if s.statements and isinstance(s.statements[-1], (OpReturn, OpBreak, OpContinue)):
+        s.pos += 1
+        return
     raise LiftError(f"unstructured Jump at 0x{s.instrs[s.pos].index:x} -> 0x{target_addr:x}")
 
 
@@ -3863,13 +5254,39 @@ def _make_binop_handler(op2type, has_result_slot, pop_mask):
                 # Only wrap with cast when dest is a fresh Reserved temp —
                 # named-Slot assignments do an implicit conversion via the
                 # Mov (no source-level cast needed).
+                # SKIP when the very next instruction is a Call/typed-Mov
+                # (which is arg-setup for an upcoming Call, not a cast Mov)
+                # — in that case the binop wrote directly into a function's
+                # arg slot whose type happens to differ from the binop's
+                # natural type (scomp implicit conversion of `Test(x % 2)`
+                # where Test takes bool but `x % 2` is int — no source
+                # cast was emitted).  The explicit-cast pattern always has
+                # an intermediate plain `Mov` (slot-to-slot, not literal)
+                # between the binop and the next consumer.
+                next_is_arg_consumer = False
+                if s.pos + 1 < len(s.instrs):
+                    nxt = s.instrs[s.pos + 1].opcode
+                    if isinstance(nxt, (PS.CInstructionCall,
+                                        PS.CInstructionFunc,
+                                        PS.CInstructionObjFunc,
+                                        PS.CInstructionTObjFunc,
+                                        PS.CInstructionTaskCall,
+                                        # Typed-literal Movs for arg setup
+                                        PS.CInstructionMovI,
+                                        PS.CInstructionMovB,
+                                        PS.CInstructionMovF,
+                                        PS.CInstructionMovS,
+                                        PS.CInstructionMovV,
+                                        PS.CInstructionMovT)):
+                        next_is_arg_consumer = True
                 if (isinstance(dest_slot, _Reserved)
                         and not dest_slot.was_assigned
                         and getattr(dest_slot, "batch_id", 0) > 0
                         and nat_type is not None
                         and dest_slot.type != nat_type
                         and dest_slot.type in (VarType.INT, VarType.FLOAT, VarType.BOOL)
-                        and nat_type in (VarType.INT, VarType.FLOAT, VarType.BOOL)):
+                        and nat_type in (VarType.INT, VarType.FLOAT, VarType.BOOL)
+                        and not next_is_arg_consumer):
                     expr = ENTypeC(dest_slot.type, expr)
                 _assign_local_slot(s, op.VarOut, expr)
             s._pop(pop_count)
@@ -4049,6 +5466,19 @@ def h_ObjFunc(s: _FuncLifter, op):
     s.pos += 1
     push_count = _consume_trailing_pop(s)
     s._pop(push_count)
+    # scomp quirk: when a method call's RECEIVER is itself a function call,
+    # `F()->Method(a1..aM)` re-evaluates the receiver F() once per argument as
+    # a separate DISCARDED call (Expression.cpp obj-method codegen).  h_Call
+    # lifted each such reeval as a bare statement; drop the trailing M (= arg
+    # count) that exactly match the receiver expression — they are NOT real
+    # source statements, just scomp's per-argument receiver re-evaluations.
+    if (isinstance(obj, (ENFunc, ENFuncGlobal))
+            and getattr(obj, "obj", None) is None):
+        m = len(args)
+        if m and len(s.statements) >= m and all(
+                isinstance(st, OpExprStmt) and st.expr == obj
+                for st in s.statements[-m:]):
+            del s.statements[-m:]
     s.statements.append(OpExprStmt(expr=ENFunc(name=op.func_name, args=args, obj=obj)))
 
 

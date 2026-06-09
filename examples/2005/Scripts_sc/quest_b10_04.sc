@@ -198,7 +198,7 @@ void f_155_a2_v(object a0, string a1)
 		int L0;
 		int L1;
 		a0->size(L0);
-		for (L1 = 0; L1 < L0; L1 = L1 + 1) {
+		for (L1 = 0; L1 < L0; L1++) {
 			object L2;
 			a0->get(L2, L1);
 			if (L2) {

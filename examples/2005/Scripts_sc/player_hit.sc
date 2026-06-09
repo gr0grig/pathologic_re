@@ -158,7 +158,7 @@ float f_bd_a1_f(float a0)
 int f_c6_a1_i(string a0)
 {
 	int L0;
-	for (L0 = 0; ; L0 = L0 + 1) {
+	for (L0 = 0; ; L0++) {
 		bool L1;
 		@IsExistingSound(L1, a0 + (L0 + 1));
 		if (!L1) {

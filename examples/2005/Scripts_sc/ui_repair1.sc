@@ -30,7 +30,7 @@ maintask t0
 		int L0;
 		tv1->size(L0);
 		int L1;
-		for (L1 = 0; L1 < L0; L1 = L1 + 1) {
+		for (L1 = 0; L1 < L0; L1++) {
 			object L2;
 			if (L1 >= 4) {
 				break;
@@ -39,7 +39,7 @@ maintask t0
 			@SendMessage(0, "cslot0" + (L1 + 1), L2);
 		}
 		int L3;
-		for (L3 = L0; L3 < 4; L3 = L3 + 1) {
+		for (L3 = L0; L3 < 4; L3++) {
 			@SendMessage(32768, "cslot0" + (L3 + 1));
 		}
 	}
@@ -63,7 +63,7 @@ maintask t0
 				@DestroyWindow();
 			} else {
 				int L0;
-				for (L0 = 0; L0 < 4; L0 = L0 + 1) {
+				for (L0 = 0; L0 < 4; L0++) {
 					if (a1 == f_66_a1_s(L0)) {
 					}
 				}

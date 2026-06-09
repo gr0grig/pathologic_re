@@ -342,7 +342,7 @@ void f_2be_a0_v(void)
 		return;
 	}
 	L0 = f_3e8_a0_i();
-	for (L1 = 0; L1 < 5 && f_31c_a0_b(); L1 = L1 + 1) {
+	for (L1 = 0; L1 < 5 && f_31c_a0_b(); L1++) {
 		int L2;
 		@irand(L2, 3);
 		if (L2 == 0) {
@@ -594,7 +594,7 @@ string f_3e1_a1_s(int a0)
 int f_3e8_a0_i(void)
 {
 	int L0;
-	for (L0 = 0; ; L0 = L0 + 1) {
+	for (L0 = 0; ; L0++) {
 		bool L1;
 		@HasAnimation(L1, "all", f_3e1_a1_s(L0));
 		if (!L1) {
@@ -676,7 +676,7 @@ bool f_460_a1_b(object a0)
 	@GetInvItemByName(L2, "bird_balahon");
 	L3 = false;
 	L4 = false;
-	for (L5 = 0; L5 < L0; L5 = L5 + 1) {
+	for (L5 = 0; L5 < L0; L5++) {
 		object L6;
 		int L7;
 		a0->GetItem(L6, L5, 1);

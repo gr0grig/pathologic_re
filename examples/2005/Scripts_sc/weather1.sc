@@ -146,7 +146,7 @@ maintask t0
 			return;
 		}
 		tv0 = false;
-		for (L0 = 0; L0 < 3; L0 = L0 + 1) {
+		for (L0 = 0; L0 < 3; L0++) {
 			Vector L1;
 			@GetColorMod(L1, L0);
 			@LinearColorMod(L0, L1, [1.0, 1.0, 1.0], 0.20000000298023224);

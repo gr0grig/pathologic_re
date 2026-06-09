@@ -38,7 +38,7 @@ maintask t0
 			object L0;
 			int L1;
 			@GetSceneByName(L0, "shouse1_kabak");
-			for (L1 = 1; ; L1 = L1 + 1) {
+			for (L1 = 1; ; L1++) {
 				bool L2;
 				Vector L3;
 				Vector L4;
@@ -54,7 +54,7 @@ maintask t0
 				object L5;
 				int L6;
 				@GetMainOutdoorScene(L5);
-				for (L6 = 1; ; L6 = L6 + 1) {
+				for (L6 = 1; ; L6++) {
 					bool L7;
 					Vector L8;
 					Vector L9;
@@ -277,7 +277,7 @@ void f_1ba_a1_v(object a0)
 		int L0;
 		int L1;
 		a0->size(L0);
-		for (L1 = 0; L1 < L0; L1 = L1 + 1) {
+		for (L1 = 0; L1 < L0; L1++) {
 			object L2;
 			a0->get(L2, L1);
 			if (L2) {
@@ -294,7 +294,7 @@ void f_1cf_a2_v(object a0, string a1)
 		int L0;
 		int L1;
 		a0->size(L0);
-		for (L1 = 0; L1 < L0; L1 = L1 + 1) {
+		for (L1 = 0; L1 < L0; L1++) {
 			object L2;
 			a0->get(L2, L1);
 			if (L2) {

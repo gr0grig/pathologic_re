@@ -58,7 +58,7 @@ maintask t0
 							int L5;
 							int L6;
 							tv2->size(L5);
-							for (L6 = 0; L6 < L5; L6 = L6 + 1) {
+							for (L6 = 0; L6 < L5; L6++) {
 								object L7;
 								tv2->get(L7, L6);
 								if (L7) {
@@ -273,7 +273,7 @@ void f_19d_a1_v(object a0)
 		int L0;
 		int L1;
 		a0->size(L0);
-		for (L1 = 0; L1 < L0; L1 = L1 + 1) {
+		for (L1 = 0; L1 < L0; L1++) {
 			object L2;
 			a0->get(L2, L1);
 			if (L2) {

@@ -62,7 +62,7 @@ maintask t0
 						int L3;
 						@GetSceneByName(L2, "uprava_prison");
 						tv3 = f_18e_a4_o(L2, "pt_k10q01_wastedmale", "pers_wasted_male", "k10q01_wastedmale.xml");
-						for (L3 = 1; ; L3 = L3 + 1) {
+						for (L3 = 1; ; L3++) {
 							bool L4;
 							Vector L5;
 							Vector L6;
@@ -276,7 +276,7 @@ void f_1cf_a2_v(object a0, string a1)
 		int L0;
 		int L1;
 		a0->size(L0);
-		for (L1 = 0; L1 < L0; L1 = L1 + 1) {
+		for (L1 = 0; L1 < L0; L1++) {
 			object L2;
 			a0->get(L2, L1);
 			if (L2) {

@@ -85,6 +85,7 @@ list:
 | [console_commands.md](console_commands.md) | In-game console commands.                              |
 | [scripts_catalog.md](scripts_catalog.md) | Catalogue of all 373 shipped scripts.                   |
 | [pipeline.md](pipeline.md)               | The reverse-engineering toolchain (asm/c round-trip).   |
+| [sc_decompiler.md](sc_decompiler.md)     | Source-level (`.sc`) decompiler, verified byte-identical via real `scomp.exe`. |
 
 ## Tooling and edition differences
 

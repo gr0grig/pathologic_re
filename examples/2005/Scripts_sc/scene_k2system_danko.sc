@@ -47,7 +47,7 @@ maintask t0
 			tv5 = true;
 		}
 		tv0->size(L3);
-		for (L4 = 0; L4 < L3; L4 = L4 + 1) {
+		for (L4 = 0; L4 < L3; L4++) {
 			string L5;
 			string L6;
 			object L7;
@@ -68,7 +68,7 @@ maintask t0
 		int L0;
 		int L1;
 		tv4->size(L0);
-		for (L1 = 0; L1 < L0; L1 = L1 + 1) {
+		for (L1 = 0; L1 < L0; L1++) {
 			object L2;
 			tv4->get(L2, L1);
 			if (L2) {

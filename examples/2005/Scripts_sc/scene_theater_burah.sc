@@ -24,9 +24,9 @@ maintask t0
 
 void f_13_a0_v(void)
 {
-	int L0;
-	int L1;
 	if (f_b1_a0_b()) {
+		int L0;
+		int L1;
 		object L2;
 		object L3;
 		L0 = f_a0_a0_i();

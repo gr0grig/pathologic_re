@@ -226,7 +226,7 @@ maintask t2
 			return;
 		}
 		L0 = f_3a0_a0_i();
-		for (L1 = 0; L1 < 5 && f_2cc_a0_b(); L1 = L1 + 1) {
+		for (L1 = 0; L1 < 5 && f_2cc_a0_b(); L1++) {
 			int L2;
 			@irand(L2, 3);
 			if (L2 == 0) {
@@ -309,17 +309,14 @@ task t3
 			f_21f_a1_v("fdie");
 		} else {
 			Vector L0;
-			Vector L1;
-			Vector L2;
-			Vector L3;
-			string L4;
-			object L5;
-			bool L6;
-			bool L7;
 			a0->GetPosition(L0);
+			Vector L1;
 			@GetPosition(L1);
+			Vector L2;
 			@GetDirection(L2);
+			Vector L3;
 			L3 = L1 - L0;
+			string L4;
 			if (L3.x * L2.x + L3.z * L2.z >= 0) {
 				L4 = "fdie";
 			} else {
@@ -329,8 +326,10 @@ task t3
 			@SetDeathState();
 			@Stop();
 			@StopAsync();
+			object L5;
 			L5 = a0;
 			if (a0->FuncExist("GetScriptProperty", 2)) {
+				bool L6;
 				a0->HasScriptProperty(L6, "Owner");
 				if (L6) {
 					a0->GetScriptProperty(L5, "Owner");
@@ -339,6 +338,7 @@ task t3
 					}
 				}
 			}
+			bool L7;
 			if (L5->FuncExist("@GetEyesHeight", 1)) {
 				float L8;
 				Vector L9;
@@ -445,15 +445,14 @@ void f_27a_a3_v(object a0, int a1, float a2)
 {
 	if (a0 && a1 != 4 && a1 != 5) {
 		Vector L0;
-		object L1;
-		int L2;
-		bool L3;
-		Vector L4;
-		Vector L5;
-		int L6;
 		L0 = f_379_a1_V(f_23f_a1_V(a0));
+		object L1;
 		@CreateVectorVector(L1);
-		for (L2 = 1; ; L2 = L2 + 1) {
+		int L2;
+		for (L2 = 1; ; L2++) {
+			bool L3;
+			Vector L4;
+			Vector L5;
 			@GetGeometryLocator("hit" + L2, L3, L4, L5);
 			if (!L3) {
 				break;
@@ -462,6 +461,7 @@ void f_27a_a3_v(object a0, int a1, float a2)
 				L1->add(L4);
 			}
 		}
+		int L6;
 		L1->size(L6);
 		if (L6) {
 			int L7;
@@ -591,11 +591,10 @@ void f_350_a1_v(string a0)
 {
 	bool L0;
 	@IsExisting3DSound(L0, a0);
-	int L1;
-	bool L2;
 	if (!L0) {
-		int L3;
-		for (L1 = 0; ; L1 = L1 + 1) {
+		int L1;
+		for (L1 = 0; ; L1++) {
+			bool L2;
 			@IsExisting3DSound(L2, a0 + (L1 + 1));
 			if (!L2) {
 				break;
@@ -604,6 +603,7 @@ void f_350_a1_v(string a0)
 		if (!L1) {
 			return;
 		}
+		int L3;
 		@irand(L3, L1);
 		a0 = a0 + (L3 + 1);
 	}
@@ -669,7 +669,7 @@ string f_399_a1_s(int a0)
 int f_3a0_a0_i(void)
 {
 	int L0;
-	for (L0 = 0; ; L0 = L0 + 1) {
+	for (L0 = 0; ; L0++) {
 		bool L1;
 		@HasAnimation(L1, "all", f_399_a1_s(L0));
 		if (!L1) {

@@ -27,7 +27,7 @@ maintask t0
 	void OnMessage(int a0, string a1, object a2)
 	{
 		int L0;
-		for (L0 = 0; L0 < 12; L0 = L0 + 1) {
+		for (L0 = 0; L0 < 12; L0++) {
 			if (a1 == "button_day" + (L0 + 1)) {
 				tv0 = L0;
 				break;
@@ -40,7 +40,8 @@ maintask t0
 void f_3e_a1_v(int a0)
 {
 	int L0;
-	for (L0 = 0; L0 < 12; L0 = L0 + 1) {
+	L0 = 0;
+	for (; L0 < 12; L0++) {
 		if (L0 == a0) {
 			@SendMessage(1, "button_day" + (L0 + 1));
 		} else {

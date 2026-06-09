@@ -27,7 +27,7 @@ maintask t0
 	void f_e_a0_v(void)
 	{
 		int L0;
-		for (L0 = 1; ; L0 = L0 + 1) {
+		for (L0 = 1; ; L0++) {
 			string L1;
 			bool L2;
 			Vector L3;
@@ -85,7 +85,7 @@ void f_4d_a1_v(object a0)
 		int L0;
 		int L1;
 		a0->size(L0);
-		for (L1 = 0; L1 < L0; L1 = L1 + 1) {
+		for (L1 = 0; L1 < L0; L1++) {
 			object L2;
 			a0->get(L2, L1);
 			if (L2) {

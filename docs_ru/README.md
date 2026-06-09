@@ -86,6 +86,7 @@
 | [console_commands.md](console_commands.md) | Внутриигровые команды консоли.                       |
 | [scripts_catalog.md](scripts_catalog.md) | Каталог всех 373 поставляемых скриптов.                |
 | [pipeline.md](pipeline.md)               | Тулчейн реверс-инжиниринга (asm/c round-trip).         |
+| [sc_decompiler.md](sc_decompiler.md)     | Декомпилятор в исходный язык (`.sc`), проверенный побайтово через настоящий `scomp.exe`. |
 
 ## Инструменты и различия между изданиями
 

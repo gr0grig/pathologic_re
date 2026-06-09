@@ -604,7 +604,7 @@ void f_4c6_a0_v(void)
 		return;
 	}
 	L0 = f_601_a0_i();
-	for (L1 = 0; L1 < 5 && f_524_a0_b(); L1 = L1 + 1) {
+	for (L1 = 0; L1 < 5 && f_524_a0_b(); L1++) {
 		int L2;
 		@irand(L2, 3);
 		if (L2 == 0) {
@@ -857,7 +857,7 @@ string f_5fa_a1_s(int a0)
 int f_601_a0_i(void)
 {
 	int L0;
-	for (L0 = 0; ; L0 = L0 + 1) {
+	for (L0 = 0; ; L0++) {
 		bool L1;
 		@HasAnimation(L1, "all", f_5fa_a1_s(L0));
 		if (!L1) {

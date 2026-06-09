@@ -22,7 +22,7 @@ maintask t0
 			int L1;
 			tv0->clear();
 			@GetSceneByName(L0, "termitnik");
-			for (L1 = 0; L1 < tv1; L1 = L1 + 1) {
+			for (L1 = 0; L1 < tv1; L1++) {
 				tv0->add(f_8d_a4_o(L0, "pt_d8q04_morlok" + (L1 + 1), "pers_morlok", "d8q04_morlok.xml"));
 			}
 		} else {
@@ -134,7 +134,7 @@ void f_b0_a2_v(object a0, string a1)
 		int L0;
 		int L1;
 		a0->size(L0);
-		for (L1 = 0; L1 < L0; L1 = L1 + 1) {
+		for (L1 = 0; L1 < L0; L1++) {
 			object L2;
 			a0->get(L2, L1);
 			if (L2) {

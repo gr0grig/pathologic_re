@@ -505,7 +505,7 @@ bool f_38f_a0_b(void)
 	@CreateIntVector(L0);
 	f_316_a3_v(L0, false, -1);
 	L0->size(L1);
-	for (L2 = 0; L2 < L1; L2 = L2 + 1) {
+	for (L2 = 0; L2 < L1; L2++) {
 		int L3;
 		L0->get(L3, L2);
 		if (f_385_a1_b(L3) || f_37b_a1_b(L3)) {
@@ -523,7 +523,7 @@ bool f_3b5_a0_b(void)
 	@CreateIntVector(L0);
 	f_337_a3_v(L0, false, -1);
 	L0->size(L1);
-	for (L2 = 0; L2 < L1; L2 = L2 + 1) {
+	for (L2 = 0; L2 < L1; L2++) {
 		int L3;
 		L0->get(L3, L2);
 		if (f_385_a1_b(L3) || f_37b_a1_b(L3)) {
@@ -541,7 +541,7 @@ bool f_3db_a0_b(void)
 	@CreateIntVector(L0);
 	f_35b_a3_v(L0, false, -1);
 	L0->size(L1);
-	for (L2 = 0; L2 < L1; L2 = L2 + 1) {
+	for (L2 = 0; L2 < L1; L2++) {
 		int L3;
 		L0->get(L3, L2);
 		if (f_385_a1_b(L3) || f_37b_a1_b(L3)) {

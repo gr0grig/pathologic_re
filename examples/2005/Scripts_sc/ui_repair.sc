@@ -31,7 +31,7 @@ maintask t0
 		int L0;
 		int L1;
 		tv2->size(L0);
-		for (L1 = 0; L1 < L0; L1 = L1 + 1) {
+		for (L1 = 0; L1 < L0; L1++) {
 			int L2;
 			tv2->get(L2, L1);
 			if (L2 == a0) {
@@ -60,7 +60,7 @@ maintask t0
 		int L0;
 		int L1;
 		tv2->size(L0);
-		for (L1 = 0; L1 < L0; L1 = L1 + 1) {
+		for (L1 = 0; L1 < L0; L1++) {
 			int L2;
 			tv2->get(L2, L1);
 			if (L2 == a0) {
@@ -114,7 +114,8 @@ maintask t0
 		@SendMessage(f_13c_a0_i(), "money_slot");
 		@SendMessage(tv4, "sel_money_slot");
 		tv0->size(L0);
-		for (L1 = tv5; L1 < tv5 + 4; L1 = L1 + 1) {
+		L1 = tv5;
+		for (; L1 < tv5 + 4; L1++) {
 			if (L1 < L0) {
 				object L2;
 				int L3;
@@ -202,7 +203,7 @@ string f_11a_a1_s(int a0)
 int f_12a_a2_i(int a0, string a1)
 {
 	int L0;
-	for (L0 = 0; L0 < 4; L0 = L0 + 1) {
+	for (L0 = 0; L0 < 4; L0++) {
 		if (a1 == f_11a_a1_s(L0)) {
 			return L0;
 		}

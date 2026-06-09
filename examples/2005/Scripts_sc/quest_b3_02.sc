@@ -33,7 +33,7 @@ maintask t0
 					int L3;
 					L1 = false;
 					tv0->size(L2);
-					for (L3 = 0; L3 < L2; L3 = L3 + 1) {
+					for (L3 = 0; L3 < L2; L3++) {
 						object L4;
 						tv0->get(L4, L3);
 						if (L4) {
@@ -55,7 +55,7 @@ maintask t0
 						int L6;
 						int L7;
 						tv0->size(L6);
-						for (L7 = 0; L7 < L6; L7 = L7 + 1) {
+						for (L7 = 0; L7 < L6; L7++) {
 							object L8;
 							tv0->get(L8, L7);
 							if (L8) {
@@ -78,7 +78,7 @@ maintask t0
 							object L11;
 							int L12;
 							@GetMainOutdoorScene(L11);
-							for (L12 = 1; L12 <= 4; L12 = L12 + 1) {
+							for (L12 = 1; L12 <= 4; L12++) {
 								tv0->add(f_104_a4_o(L11, "pt_b3q02_grabitel2_" + L12, "pers_grabitel", "b3q02_grabitel2.xml"));
 							}
 						} else {
@@ -203,7 +203,7 @@ void f_127_a1_v(object a0)
 		int L0;
 		int L1;
 		a0->size(L0);
-		for (L1 = 0; L1 < L0; L1 = L1 + 1) {
+		for (L1 = 0; L1 < L0; L1++) {
 			object L2;
 			a0->get(L2, L1);
 			if (L2) {

@@ -1201,7 +1201,7 @@ void f_99d_a0_v(void)
 		return;
 	}
 	L0 = f_bc7_a0_i();
-	for (L1 = 0; L1 < 5 && f_a0b_a0_b(); L1 = L1 + 1) {
+	for (L1 = 0; L1 < 5 && f_a0b_a0_b(); L1++) {
 		if (!L0) {
 			bool L2;
 			@Sleep(3, L2);
@@ -1613,7 +1613,7 @@ string f_bc0_a1_s(int a0)
 int f_bc7_a0_i(void)
 {
 	int L0;
-	for (L0 = 0; ; L0 = L0 + 1) {
+	for (L0 = 0; ; L0++) {
 		bool L1;
 		@HasAnimation(L1, "all", f_bc0_a1_s(L0));
 		if (!L1) {

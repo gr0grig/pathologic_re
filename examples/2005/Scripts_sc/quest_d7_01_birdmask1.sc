@@ -487,7 +487,7 @@ bool f_3a4_a1_b(object a0)
 	@GetInvItemByName(L2, "bird_balahon");
 	L3 = false;
 	L4 = false;
-	for (L5 = 0; L5 < L0; L5 = L5 + 1) {
+	for (L5 = 0; L5 < L0; L5++) {
 		object L6;
 		int L7;
 		a0->GetItem(L6, L5, 1);

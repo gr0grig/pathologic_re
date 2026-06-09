@@ -14,7 +14,7 @@ maintask t0
 		int L1;
 		@CreateObjectVector(tv1);
 		@GetMainOutdoorScene(L0);
-		for (L1 = 0; L1 < 5; L1 = L1 + 1) {
+		for (L1 = 0; L1 < 5; L1++) {
 			tv1->add(f_c8_a4_o(L0, "pt_k6q03_bomber" + (L1 + 1), "pers_bomber", "k6q03_bomber.xml"));
 		}
 		@SetVariable("k6q03", 1);
@@ -163,7 +163,7 @@ void f_ed_a1_v(object a0)
 		int L0;
 		int L1;
 		a0->size(L0);
-		for (L1 = 0; L1 < L0; L1 = L1 + 1) {
+		for (L1 = 0; L1 < L0; L1++) {
 			object L2;
 			a0->get(L2, L1);
 			if (L2) {
@@ -234,7 +234,7 @@ int f_14d_a1_i(string a0)
 	object L0;
 	int L1;
 	@GetMainOutdoorScene(L0);
-	for (L1 = 0; ; L1 = L1 + 1) {
+	for (L1 = 0; ; L1++) {
 		bool L2;
 		Vector L3;
 		Vector L4;

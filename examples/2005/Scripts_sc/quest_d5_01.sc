@@ -84,7 +84,7 @@ maintask t0
 								int L6;
 								f_230_a2_b(f_1a1_a0_o(), -0.25);
 								tv1->size(L5);
-								for (L6 = 0; L6 < L5; L6 = L6 + 1) {
+								for (L6 = 0; L6 < L5; L6++) {
 									object L7;
 									bool L8;
 									tv1->get(L7, L6);
@@ -331,7 +331,7 @@ void f_25d_a1_v(object a0)
 		int L0;
 		int L1;
 		a0->size(L0);
-		for (L1 = 0; L1 < L0; L1 = L1 + 1) {
+		for (L1 = 0; L1 < L0; L1++) {
 			object L2;
 			a0->get(L2, L1);
 			if (L2) {
@@ -348,7 +348,7 @@ void f_272_a1_v(object a0)
 		int L0;
 		int L1;
 		a0->size(L0);
-		for (L1 = 0; L1 < L0; L1 = L1 + 1) {
+		for (L1 = 0; L1 < L0; L1++) {
 			object L2;
 			a0->get(L2, L1);
 			if (L2) {
@@ -365,7 +365,7 @@ void f_287_a2_v(object a0, string a1)
 		int L0;
 		int L1;
 		a0->size(L0);
-		for (L1 = 0; L1 < L0; L1 = L1 + 1) {
+		for (L1 = 0; L1 < L0; L1++) {
 			object L2;
 			a0->get(L2, L1);
 			if (L2) {

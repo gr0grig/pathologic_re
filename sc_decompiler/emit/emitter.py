@@ -198,7 +198,15 @@ def _emit_op(w: _Writer, op) -> None:
     elif isinstance(op, OpFor):
         init = "; ".join(_inline_op(o) for o in op.init.ops) if op.init.ops else ""
         cond = _expr(op.cond, 0) if op.cond is not None else ""
-        loop = _expr(op.loop, 0) if op.loop is not None else ""
+        # For-iter compact form: scomp does NOT call Optimize on COperatorFor's
+        # loop expr (only on its cond — see IOperator.cpp:130).  So
+        # `slot = slot + -1` lowers to PushI(1) + Neg + Add2 (3 instrs) instead
+        # of PushI(-1) + Add2 (2 instrs).  ASS_DECR/INCR have a dedicated
+        # emission path in Expression.cpp:182 that always emits PushI(±1) +
+        # Add2 — same bytecode as the constant-folded version.  Rewrite the
+        # iter to `++slot` / `--slot` when applicable to match original .bin.
+        loop_expr = _compact_for_iter(op.loop) if op.loop is not None else None
+        loop = _expr(loop_expr, 0) if loop_expr is not None else ""
         w.line(f"for ({init}; {cond}; {loop}) {{")
         w.indent()
         for sub in op.body.ops:
@@ -325,6 +333,25 @@ def _render_op3(e: ENOp3, parent_prec: int) -> str:
     if e.op == Op3Type.FUNC_EXIST:
         return f"{_expr(e.a, _PREC_PRIMARY)}->FuncExist({_expr(e.b, 0)}, {_expr(e.c, 0)})"
     raise ValueError(f"unknown Op3Type {e.op}")
+
+
+def _compact_for_iter(e):
+    """Rewrite for-loop iter `slot = slot + 1` / `slot = slot + -1` into
+    `++slot` / `--slot` — see comment at OpFor emission for the why."""
+    if not isinstance(e, ENAssign) or e.op != AssignType.NONE or e.expr is None:
+        return e
+    rhs = e.expr
+    if not isinstance(rhs, ENOp2) or rhs.op != Op2Type.PLUS:
+        return e
+    if not isinstance(rhs.left, ENId) or rhs.left.name != e.name:
+        return e
+    if not isinstance(rhs.right, ENInt):
+        return e
+    if rhs.right.value == 1:
+        return ENAssign(op=AssignType.INCRP, name=e.name, expr=None)
+    if rhs.right.value == -1:
+        return ENAssign(op=AssignType.DECRP, name=e.name, expr=None)
+    return e
 
 
 def _render_assign(e: ENAssign) -> str:

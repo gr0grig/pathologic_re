@@ -36,7 +36,8 @@ maintask t0
 			}
 		}
 		tv5->size(L0);
-		for (L1 = 0; L1 < L0; L1 = L1 + 1) {
+		L1 = 0;
+		for (; L1 < L0; L1++) {
 			int L2;
 			tv5->get(L2, L1);
 			if (f_4f7_a1_b(L2)) {
@@ -83,7 +84,8 @@ maintask t0
 		L0 = a0 + 15;
 		L2 = true;
 		tv5->size(L3);
-		for (L4 = 0; L4 < L3; L4 = L4 + 1) {
+		L4 = 0;
+		for (; L4 < L3; L4++) {
 			tv5->get(L5, L4);
 			if (f_4f7_a1_b(L5)) {
 				L2 = false;
@@ -94,9 +96,9 @@ maintask t0
 				@PrintInWidth(L8, "name", 3 * tv3 / 5, L0 + 140 - L8, 2 * tv3 / 5, L7, 0.6000000238418579, 0.6000000238418579, 0.6000000238418579);
 				if (L8 > 140) {
 					L0 = L0 + L8;
-				} else {
-					L0 = L0 + 140;
+					continue;
 				}
+				L0 = L0 + 140;
 			}
 		}
 		if (L2) {
@@ -119,7 +121,7 @@ maintask t0
 		L0 = a0;
 		tv5->size(L2);
 		L3 = true;
-		for (L4 = 0; L4 < L2; L4 = L4 + 1) {
+		for (L4 = 0; L4 < L2; L4++) {
 			int L5;
 			tv5->get(L5, L4);
 			if (f_501_a1_b(L5)) {

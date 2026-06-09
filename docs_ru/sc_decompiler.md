@@ -195,9 +195,11 @@ python pathologic_re/sc_decompiler/notes/classify_fail.py tmp_diff/report.csv
 
 ## Требования
 
-- `scomp.exe` + `sbuild.dll` в `SRC/Scripts/build/tools/` (настраивается через
-  `scomp_dir`). Это подлинные бинарники тулчейна 2005 года; одна и та же пара
-  компилирует и 2005, и HD скрипты.
+- `scomp.exe` + `sbuild.dll` — подлинный компилятор игры. Копия приложена в
+  `pathologic_re/tools/`; они взяты из утёкшего исходника игры
+  `SRC/Scripts/build/tools/` (сборка 2005-03-10). Верификатор по умолчанию читает
+  их из `SRC/Scripts/build/tools/` (настраивается через `scomp_dir`). Одна и та
+  же пара компилирует и 2005, и HD скрипты.
 - `parser/lib/PathologicScript.py` (парсер `.bin`) на пути; модули добавляют
   его автоматически.
 

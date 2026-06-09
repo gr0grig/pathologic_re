@@ -186,9 +186,11 @@ python pathologic_re/sc_decompiler/notes/classify_fail.py tmp_diff/report.csv
 
 ## Requirements
 
-- `scomp.exe` + `sbuild.dll` at `SRC/Scripts/build/tools/` (configurable via
-  `scomp_dir`). These are the genuine 2005 toolchain binaries; the same pair
-  compiles both 2005 and HD scripts.
+- `scomp.exe` + `sbuild.dll` — the genuine game compiler. A copy is bundled in
+  `pathologic_re/tools/`; they originate from the leaked game source at
+  `SRC/Scripts/build/tools/` (2005-03-10 build). The verify harness reads them
+  from `SRC/Scripts/build/tools/` by default (configurable via `scomp_dir`).
+  The same pair compiles both 2005 and HD scripts.
 - `parser/lib/PathologicScript.py` (the `.bin` parser) on the path; the
   modules add it automatically.
 

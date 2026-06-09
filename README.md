@@ -85,12 +85,13 @@ sc_text = emit_sc(lift_bin("script.bin", is_alpha=False))
 
 ### Getting edited scripts back into the game
 
-Take the **two compiler files from the leaked game source** — `scomp.exe` and
-`sbuild.dll` (both in `SRC/Scripts/build/tools/`, they must sit side by side) —
-and compile your edited `.sc` with them:
+You need the **two original compiler files**, `scomp.exe` and `sbuild.dll` (they
+must sit side by side). They are bundled here in **[`tools/`](tools/)**; they were
+taken from the leaked game source tree at `SRC/Scripts/build/tools/` (build dated
+2005-03-10). Compile your edited `.sc` with them:
 
 ```bash
-scomp.exe player.sc        # → player.bin
+tools/scomp.exe player.sc        # → player.bin
 ```
 
 Then drop the resulting `.bin` into the game's `data/scripts` folder.
@@ -168,6 +169,7 @@ Internal libraries (in `parser/lib/`):
 - `PathologicPseudoC.py` — C pseudocode generator (~2380 lines)
 
 Additional tools (in `tools/`):
+- `scomp.exe` + `sbuild.dll` — the original game script compiler (`.sc` → `.bin`), taken from the leaked source `SRC/Scripts/build/tools/` (2005-03-10 build). Keep them side by side.
 - `AlphaPatScript.bt` — 010 Editor binary template
 - `dump_vm_state2.py` — IDA Pro debug script for VM state dump
 

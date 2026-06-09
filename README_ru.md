@@ -89,12 +89,13 @@ sc_text = emit_sc(lift_bin("script.bin", is_alpha=False))
 
 ### Возврат отредактированных скриптов в игру
 
-Возьмите **два файла компилятора из утёкшего исходного кода игры** — `scomp.exe`
-и `sbuild.dll` (оба в `SRC/Scripts/build/tools/`, должны лежать рядом) — и
-скомпилируйте ими отредактированный `.sc`:
+Нужны **два оригинальных файла компилятора** — `scomp.exe` и `sbuild.dll` (должны
+лежать рядом). Они приложены здесь в **[`tools/`](tools/)**; взяты из утёкшего
+исходного дерева игры `SRC/Scripts/build/tools/` (сборка от 2005-03-10).
+Скомпилируйте ими отредактированный `.sc`:
 
 ```bash
-scomp.exe player.sc        # → player.bin
+tools/scomp.exe player.sc        # → player.bin
 ```
 
 Затем положите полученный `.bin` в папку игры `data/scripts`.
@@ -173,6 +174,7 @@ python parser/asm.py HD_compiled/ --hd -o HD_assembled/
 - `PathologicPseudoC.py` — генератор C-псевдокода (~2380 строк)
 
 Дополнительные инструменты (в `tools/`):
+- `scomp.exe` + `sbuild.dll` — оригинальный компилятор скриптов игры (`.sc` → `.bin`), взят из утёкшего исходника `SRC/Scripts/build/tools/` (сборка 2005-03-10). Держите рядом.
 - `AlphaPatScript.bt` — шаблон бинаря для 010 Editor
 - `dump_vm_state2.py` — отладочный скрипт IDA Pro для дампа состояния VM
 

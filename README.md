@@ -85,90 +85,15 @@ sc_text = emit_sc(lift_bin("script.bin", is_alpha=False))
 
 ### Getting edited scripts back into the game
 
-> **Important — the shipping engine does *not* compile `.sc` on the fly.**
-> At runtime `CScriptManager::CreateInstance` loads the script *verbatim* and
-> parses it as **bytecode** (`new CScript(ptr, size)`) — there is no extension
-> probing and no `.sc` → `.bin` fallback
-> (`SRC/PlagueCity/Game/Engine/ScriptManager.cpp:371-408`,
-> `Script.cpp:285`). A runtime-compiler hook exists — the constructor does
-> `LoadLibrary("sbuild.dll")` + `GetProcAddress("_BuildScript@16")`
-> (`ScriptManager.cpp:197-208`) — but the resulting function pointer
-> `m_pBuildFunc` is **never called** anywhere in the engine. This is verified
-> in the shipping `Engine.dll` (IDA): in the constructor at `0x1002f1c5` the
-> field is loaded; across the entire binary it is referenced exactly three
-> times — two writes and one `if(!m_pBuildFunc)` null-check for the log line —
-> with **zero indirect calls**. The actual loader `CScriptManager::CreateInstance`
-> (`0x1002fdfb`) unconditionally does `m_pFS->CreateMappedLoadObject(name)` →
-> `new CScript(ptr, size)` (bytecode parse). It logs *"Runtime script
-> compilation disabled"* and loads bytecode regardless. So dropping a loose
-> `.sc` — **even with `sbuild.dll` present** — will not make the game compile
-> it; the DLL is loaded but its entry point is never invoked. You must compile
-> to `.bin` yourself.
+Take the **two compiler files from the leaked game source** — `scomp.exe` and
+`sbuild.dll` (both in `SRC/Scripts/build/tools/`, they must sit side by side) —
+and compile your edited `.sc` with them:
 
-The practical drop-in workflow takes advantage of the fact that the script
-filesystem defaults to **loose files**: `InitFileSystem` mounts
-`FS.dll` over `../../data/scripts` unless the game ini has an
-`[FS] scriptsType` key (`Game.cpp:201-214`, `Game.cpp:456`). So a compiled
-`.bin` placed in `data/scripts` is picked up with **no VFS repack**.
-
-1. Make sure the game uses loose files for scripts: in the game ini, either
-   leave the `[FS] scriptsType` key absent (default) or set it so scripts come
-   from `data/scripts`. (If it is set to `VFS`, the engine reads from the
-   packed archive instead — remove the key to use loose files, or repack.)
-2. Compile your edited `.sc` to `.bin` with the genuine compiler:
-   ```bash
-   # scomp.exe needs sbuild.dll co-located; it writes <name>.bin next to the .sc
-   scomp.exe player.sc            # → player.bin
-   ```
-3. Drop the resulting `player.bin` into `<game>\data\scripts\`. The engine loads
-   it by name on the next `RunScript` / `CreateInstance`.
-
-To approximate "edit-and-it's-live", run the compiler as an **external
-file-watcher** that rebuilds `.bin` into `data/scripts` whenever you save a
-`.sc` (the game still only ever loads the `.bin`). Keep `scomp.exe` +
-`sbuild.dll` next to your sources, e.g.:
-
-```powershell
-# Watch a folder of .sc sources and auto-compile each on save.
-# This folder holds scomp.exe, sbuild.dll, and your .sc files; .bin lands beside them.
-$dir = "C:\Games\Pathologic\data\scripts"
-$seen = @{}
-while ($true) {
-    Get-ChildItem $dir -Filter *.sc | ForEach-Object {
-        if ($seen[$_.FullName] -ne $_.LastWriteTimeUtc) {
-            $seen[$_.FullName] = $_.LastWriteTimeUtc
-            Push-Location $dir
-            & .\scomp.exe $_.Name      # writes <name>.bin next to the .sc
-            Pop-Location
-            Write-Host "compiled $($_.Name)"
-        }
-    }
-    Start-Sleep -Seconds 1
-}
+```bash
+scomp.exe player.sc        # → player.bin
 ```
 
-This is the closest supported equivalent of "drop `.sc` in and the game runs
-it": the watcher compiles on save, and the loose-file FS makes the fresh `.bin`
-live without repacking. (Scripts are cached per name once instantiated, so a
-brand-new `.bin` is picked up on the next fresh load of that script.)
-
-#### True on-the-fly compilation (custom FS driver)
-
-The dead `sbuild.dll` hook is not the only seam — genuine transparent `.sc`
-compilation *is* achievable without patching the executable, by replacing the
-**filesystem driver** for the scripts mount. Scripts are fetched through
-`IFileSystem::CreateMappedLoadObject(name)`, and the driver itself is a DLL:
-the FS shell loads `<name>.dll` and calls its `_CreateFileSystem@4` export
-(`FSShell.cpp:68-73`), where `<name>` comes from the `[FS] scriptsType` ini key
-(`Game.cpp:201-214`). A custom driver can therefore intercept a request for
-`player.bin`, look for a sibling `player.sc`, compile it to bytecode on demand
-(via `sbuild`'s `_BuildScript@16`, a `scomp.exe` shell-out, or its own
-compiler), and return the freshly compiled bytes — falling back to the real
-file otherwise. Selecting it is just `[FS] scriptsType=<YourDriver>` in the ini,
-so only the script mount is affected. This is the architecturally correct hook
-(the FS interface, not the unused build pointer). The heavier alternative is a
-binary patch to `Engine.dll` so `CreateInstance` actually calls `m_pBuildFunc`
-for `.sc` names — version-specific and fragile by comparison.
+Then drop the resulting `.bin` into the game's `data/scripts` folder.
 
 📖 Full documentation: **[docs_en/sc_decompiler.md](docs_en/sc_decompiler.md)**.
 

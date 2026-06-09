@@ -1048,6 +1048,437 @@ from scripts.
 
 ---
 
+## 11. Additional functions used by HD scripts
+
+A sweep of all **963 decompiled HD scripts** (`pathologic_re/examples/HD/Scripts_sc/`)
+surfaced **248 native names** (202 `@`-globals + 46 `obj->` methods) that were not
+listed above. They are documented here, grouped by subsystem. Each entry is
+verified against the engine source (`SRC/PlagueCity`) where it exists; functions
+**added by the HD remaster** have no 2005-source registration and are marked
+**HD-only (inferred)** — their signatures were reconstructed from real call sites
+in the HD scripts. `N` = argument count at the call (out-vars included).
+
+### UI windows & drawing — `CUIWnd` globals
+
+Source: `Game/UI/UIWnd.cpp`. Invoked bare (`@Name`) from a window's own script;
+the implicit receiver is the window.
+
+| Function | N | Description |
+|----------|---|-------------|
+| `CreateWindow(string xml, bool modal)` | 2 | Loads `xml`, creates+attaches a child window. (The `modal` arg is read but the SetModal call is commented out in the handler.) |
+| `CreateWindow(string xml, bool modal, out object wnd)` | 3 | As above; also returns the new window's script-class. |
+| `DestroyWindow()` / `DestroyWindow(int exitCode)` | 0 / 1 | Destroys this window with the given exit code (default 0). Also callable as `wnd->DestroyWindow(...)`. |
+| `FindWindow(out object wnd, int x, int y)` | 3 | Returns the topmost window under screen point (x,y), or null. |
+| `CreatePolyImage(out object poly, int faceCount, string texture)` | 3 | Creates a renderable poly-image with `faceCount` faces using `texture`. |
+| `Blit(string image, int x, int y)` | 3 | Draws named image at window-relative (x,y); clips if clipping enabled. |
+| `Blit(string image, int x, int y, float amount)` | 4 | As above with alpha/blend `amount` (1.0 = opaque). |
+| `BlitClipped(string image, int x, int y, int l, int t, int w, int h)` | 7 | Draws image at (x,y) clipped to window-relative rect (l,t,w,h). |
+| `BlitClipped(... , float amount)` | 8 | As above with alpha. |
+| `StretchBlit(string image, int x, int y, int xsize, int ysize)` | 5 | Draws image stretched to xsize×ysize. |
+| `EnableClipping()` / `EnableClipping(bool)` | 0 / 1 | Turns clipping to the window rect on (default) or to the given state. |
+| `Print(string font, int x, int y, string text)` | 4 | Prints `text` in white; clips if enabled. |
+| `Print(string font, int x, int y, string text, float r, float g, float b)` | 7 | As above with RGB color (0..1). |
+| `PrintInWidth(out int height, string font, int x, int y, int width, string text)` | 6 | Word-wraps `text` to `width` px, prints it, returns total `height`. |
+| `PrintInWidth(... , float r, float g, float b)` | 9 | As above with RGB color. |
+| `GetTextWidth(out int width, string font, string text)` | 3 | Pixel width of `text` in `font`. |
+| `GetTextWidth(out int width, string font, string text, int count)` | 4 | Pixel width of the first `count` chars. |
+| `GetTextHeightInWidth(out int height, string font, int width, string text)` | 4 | Wrapped pixel height of `text` constrained to `width`. |
+| `GetFontHeight(out int height, string font)` | 2 | Line height of `font` in pixels. |
+| `FontHasCharacterGlyph(out bool has, string font, int charCode)` | 3 | Whether `font` has a glyph for the wide-char code. |
+| `LoadImage(string texture)` | 1 | Loads an image into this window's resource storage; fails (error message) if missing. |
+| `LoadVideo(string texture)` | 1 | Loads a video-image resource; fails on error. |
+| `ReleaseVideo(string name)` | 1 | Releases a loaded video-image by name. |
+| `FindVideo(out object video, string name)` | 2 | Returns a loaded video-image's script-class by name, or null. |
+| `CaptureKeyboard()` / `ReleaseKeyboard()` | 0 | Routes / releases all keyboard input to/from this window. |
+| `CaptureMouse()` / `ReleaseMouse()` | 0 | Routes / releases all mouse input to/from this window. |
+| `ShowCursor()` / `ShowCursor(bool)` | 0 / 1 | Shows (default) or shows/hides the cursor. |
+| `SetCursor(string cursorName)` | 1 | Sets the active cursor to a named cursor; logs (succeeds) if not found. |
+| `GetCursorPos(out int x, out int y)` | 2 | Current cursor position (screen coords). |
+| `ClientToScreen(inout int x, inout int y)` | 2 | Converts window-relative → screen coords in place. |
+| `ScreenToClient(inout int x, inout int y)` | 2 | Converts screen → window-relative coords in place. |
+| `GetWindowSize(out int w, out int h)` | 2 | This window's size. |
+| `GetWindowName(out string name)` | 1 | This window's name. |
+| `SetTooltip(int type, string text)` | 2 | Sets this window's tooltip type+text. |
+| `SetTooltip(int type, string text, object obj)` | 3 | As above plus an associated object. |
+| `GetTooltipType(out int)` / `GetTooltipText(out string)` / `GetTooltipObject(out object)` | 1 | The window's current tooltip type/text/object (also callable as `wnd->...`). |
+| `SetBackground(string image)` | 1 | Sets the window's background image. |
+| `SetOwnerDraw(bool)` | 1 | Enables/disables script-driven (owner) painting. |
+| `SetModal(bool)` | 1 | Sets the window's modal flag. |
+| `SetNeedUpdate(bool)` | 1 | Whether the window needs per-frame script updates. |
+| `SendToParent()` / `SendToParent(bool)` | 0 / 1 | Forwards unhandled input to the parent window. |
+| `SendMessageToParent(int msg)` | 1 | Sends a numeric message up to the parent window. |
+| `SendMessageToParent(int msg, object obj)` | 2 | As above with an attached object. |
+| `SendMessage(int msg, string targetWnd)` | 2 | Sends message `msg` to the named target window via the station. |
+| `SendMessage(int msg, string targetWnd, object data)` | 3 | As above with an object payload. |
+| `PauseSound(string name)` | 1 | Pauses the named UI sound (logs, does not fail, if not found). |
+
+### UI drawable objects — `obj->` methods
+
+Sources: `Game/UI/UIImage.cpp`, `UIVideoImage.cpp`, `UIPolyImage.cpp`.
+
+| Method | N | Description |
+|--------|---|-------------|
+| `img->Blit(int x, int y)` | 2 | Draws the image/frame at (x,y) at native size. |
+| `img->BlitClipped(int x, int y, int l, int t, int r, int b)` | 6 | Draws clipped to the given screen rect. |
+| `vid->StretchBlit(int x, int y, int xsize, int ysize)` | 4 | Draws the video frame stretched. |
+| `vid->Play()` / `vid->Play(bool loop)` | 0 / 1 | Starts video playback, optionally looping. |
+| `vid->IsPlaying(out bool)` | 1 | Whether the video is currently playing. |
+| `vid->IsLost(out bool)` | 1 | Whether the underlying device image was lost. |
+| `vid->Restore(out bool)` | 1 | Resets the lost-device flag; out gets the result. |
+| `poly->Blit(int x, int y)` | 2 | Renders the poly-image (maps (x,y) to normalized screen space). |
+| `poly->SetRotation(int x, int y, float angle)` | 3 | Rotates the poly-image by `angle` (rad) about pivot (x,y). |
+
+### UI context globals — std / window / map
+
+Sources: `Game/UI/UIStdScriptContext.cpp`, `Game/Game/UIWindowContext.cpp`, `Game/Game/UIMapContext.cpp`.
+
+| Function | N | Description |
+|----------|---|-------------|
+| `UITrace(string text)` | 1 | Writes `text` (with script-console prefix) to the UI manager console. |
+| `GetScreenSize(out int w, out int h)` | 2 | The screen size (w in arg0, h in arg1). |
+| `GetWindowData(out object data)` | 1 | The script-class object backing this window context. |
+| `RenderMap(int dl,int dt,int dr,int db, int sl,int st,int sr,int sb)` | 8 | Renders the world map: source rect (s*) into destination rect (d*). |
+| `RenderRegions(int dl,int dt,int dr,int db, int sl,int st,int sr,int sb)` | 8 | Renders the region-overlay layer with the same src→dst mapping. |
+| `SetRegionColor(int region, float r, float g, float b, float a)` | 5 | Tint color (RGBA, 0..1) of a map region. |
+| `ProcessEvents()` | 0 | **Latent.** Starts a latent event-processing loop on the UI script context. |
+| `StopEventProcessing()` | 0 | Stops all in-progress `ProcessEvents` loops on this context. |
+
+HD-only UI globals (inferred from call sites; no 2005 registration):
+
+| Function | N | Description |
+|----------|---|-------------|
+| `HideCursor()` | 0 | **HD-only.** Hides the cursor (2005 equivalent: `ShowCursor(false)`). |
+| `SetMousePos(int x, int y)` | 2 | **HD-only.** Sets the cursor position. |
+| `SendWorldWndMessage(int msg)` / `(int msg, object obj)` | 1 / 2 | **HD-only.** Sends a numeric message (optionally with object) to the world/game window. Widely used by actor scripts. |
+| `UISync()` | 0 | **HD-only.** Latent one-tick yield for UI scripts (UI analogue of `sync()`). |
+| `ReleaseImage(string name)` | 1 | **HD-only (unconfirmed).** Releases a loaded image (counterpart to `LoadImage`); inferred by analogy — not seen at a clear call site. |
+| `IsImageLoaded(out bool, string name)` | 2 | **HD-only (unconfirmed).** Queries whether an image is loaded; inferred by analogy. |
+| `GetColorMod(...)` / `LinearColorMod(...)` | ? | **HD-only (unresolved).** Color-modulation get/set; no 2005 registration and no resolvable call site — listed for completeness only. |
+
+### Player stats, needs & money — `CUIPlayerStatContext`
+
+Source: `Game/Game/UIPlayerStatContext.cpp`. Read the player's PropertySet.
+
+| Function | N | Description |
+|----------|---|-------------|
+| `GetPlayerHealth(out float)` | 1 | Player `health` property (0 if no player). |
+| `GetPlayerHunger(out float)` | 1 | Player `Hunger` property. |
+| `GetPlayerDisease(out float)` | 1 | Player `disease`/illness level. |
+| `GetPlayerImmunity(out float)` | 1 | Player `Immunity` property. |
+| `GetPlayerTiredness(out float)` | 1 | Player `Tiredness` property. |
+| `GetPlayerMoneyCount(out float)` | 1 | Player `money` property. |
+| `SetPlayerMoneyCount(float)` | 1 | Sets the player `money` property. |
+
+### Player map position — `CUIMapContext`
+
+| Function | N | Description |
+|----------|---|-------------|
+| `GetPlayerMapPos(out float x, out float y)` | 2 | Player world position converted to map coords; false if no player. |
+| `GetPlayerMapAngle(out float)` | 1 | Player facing angle (rad) on the map, `-atan2(dir.z,dir.x)+PI/2`. |
+
+### Inventory & player container — `CUIInventoryContext`
+
+Source: `Game/Game/UIInventoryContext.cpp`.
+
+| Function | N | Description |
+|----------|---|-------------|
+| `SetPlayerHandsItem(int itemID)` | 1 | Sets the item in the player container's hands slot. |
+| `UseItem(int pos, int container, out bool applied)` | 3 | Uses item at slot `pos` in sub-container `container`; reads its OnUse effect params and applies them to the player. `applied` = effect applied and not `noremove`. |
+| `GetPlayerContainer(out object)` | 1 | The player's inventory container as a script object. |
+| `GetContainer(out object)` | 1 | The secondary/target container (corpse/chest) as a script object. |
+| `GetItemImage(int itemID, out string sprite)` | 2 | Sprite name for the item-DB id; fails if none. |
+| `GetItemMaxStackSize(int itemID, out int max)` | 2 | Item's max stack size from the item database. |
+
+### Sleep / dream loop override — `CSleepLoopOverride`
+
+Source: `Game/Game/SleepLoopOverride.cpp`. (Also exposes all `CUIPlayerStatContext` + `CUIStdContext` functions.)
+
+| Function | N | Description |
+|----------|---|-------------|
+| `GetPlayer(out object)` | 1 | The player actor as a script object. |
+| `BeginPlayerUpdate()` | 0 | Enables player updating during the override loop. |
+
+### Player controller & first-person (mixed SRC + HD)
+
+| Function | N | Description |
+|----------|---|-------------|
+| `SwitchToRun()` | 0 | `CActorBiped` (`ActorBiped.cpp`): switches locomotion from walk to run; false if not in walk/run. |
+| `GetSeeFOV(out float)` / `SetSeeFOV(float)` | 1 | `CActorAnimBone` (`ActorAnimBone.cpp`): the FOV used for can-see checks (`m_fSeeFOV`). |
+| `GetSeeThreshold(out float)` / `SetSeeThreshold(float)` | 1 | `CActorAnimBone`/`CActorFog`: the visibility threshold for can-see checks (`m_fSeeThresh`). |
+| `IsVisirOn(out bool)` | 1 | `CActorPlayer` (`ActorPlayer.cpp`): whether the visor overlay is on. Callable as `@IsVisirOn(out)` in the player's context or `player->IsVisirOn(out)`. |
+| `GetForce(out vector)` / `SetForce(vector)` | 1 | `CActorPlayer` (`ActorPlayer.cpp:101-102`): get/set the player camera-shake force vector. **Not HD-only.** |
+| `GetPlayerFOV(out float)` / `SetPlayerFOV(float)` | 1 | **HD-only (inferred).** Player camera FOV (options FOV slider). |
+| `GetEyesHeightCoef(out float)` / `SetEyesHeightCoef(float)` | 1 | **HD-only (inferred).** Eye-height coefficient (1.0 standing, lowered when crouching); animates the FP camera height. |
+| `IsSneakEnabled(out bool)` | 1 | **HD-only (inferred).** Whether sneak/crouch mode is active. |
+| `SetBaseVisibility(float)` | 1 | **HD-only (inferred).** Player base visibility level (time-of-day driven). |
+| `GetStat(string name, out int)` | 2 | **HD-only (inferred).** Reads a named global player stat bitfield (e.g. `"STAT_LOOK"`). |
+| `SetStat(string name, int)` | 2 | **HD-only (inferred).** Writes a named global player stat. |
+| `GetAdditionalData(out object)` | 1 | **HD-only (inferred).** Auxiliary data passed to a UI dialog (alongside `GetChooseItems`/`GetReturnValue`). |
+
+### Dialog / conversation context — `CUIDialogContext`
+
+Source: `Game/Game/UIDialogContext.cpp`. Available while a dialog UI is active.
+
+| Function | N | Description |
+|----------|---|-------------|
+| `GetReplic(out string)` | 1 | Current NPC replic/message text (`CConversation::GetMessage`). |
+| `GetAnswerCount(out int)` | 1 | Number of available player answers. |
+| `GetAnswer(int i, out string)` | 2 | Answer text at index `i`. |
+| `GetAnswer(int i, out string, out int nextReplicID)` | 3 | Also the next-replic id for that answer. |
+| `GetAnswer(int i, out string, out int nextReplicID, out int replyID)` | 4 | Also the answer's own reply id. |
+| `SelectAnswer(int nextReplicID, int replyID)` | 2 | Selects an answer; fires `CGameDialogReply(nextReplicID, replyID)`. No out var. |
+| `GetConversation(out object)` | 1 | The underlying `CConversation` object (for the methods below). |
+| `GetChooseItems(out object)` | 1 | `CUIChooseItemContext`: the choose-window data object. |
+
+### `CConversation` — dialog object (`obj->`)
+
+Source: `Game/Game/Conversation.cpp`. Created by `@CreateDialog(out object)`; the
+same object is returned by `GetConversation()`.
+
+| Method | N | Description |
+|--------|---|-------------|
+| `dlg->SetNPCName(int stringID)` | 1 | NPC name from a string-DB id. |
+| `dlg->GetNPCName(out string)` | 1 | The NPC name string. |
+| `dlg->SetNPCDescription(int stringID)` | 1 | NPC description from a string-DB id. |
+| `dlg->GetNPCDescription(out string)` | 1 | The NPC description string. |
+| `dlg->SetPlayerName(int stringID)` | 1 | Player name from a string-DB id. |
+| `dlg->GetPlayerName(out string)` | 1 | The player name string. |
+| `dlg->SetPhoto(string path)` | 1 | Primary portrait resource path (literal string, not an id). |
+| `dlg->GetPhoto(out string)` | 1 | The primary photo path. |
+| `dlg->SetPhoto2(string path)` | 1 | Secondary portrait resource path. |
+| `dlg->GetPhoto2(out string)` | 1 | The secondary photo path. |
+
+> Note: the Name/Description setters take a **string-database id**; `SetPhoto`/`SetPhoto2` take a **literal path**.
+
+### Actor script properties (`obj->`)
+
+Source: `Game/Game/ActorScriptClass.cpp`. On any script-class actor.
+
+| Method | N | Description |
+|--------|---|-------------|
+| `obj->SetScriptProperty(value, string name)` | 2 | Sets script property `name` to `value` (any type). |
+| `obj->GetScriptProperty(out value, string name)` | 2 | Reads property `name`; the out-var's existing type selects the typed getter. Fails if absent. |
+| `obj->HasScriptProperty(out bool, string name)` | 2 | Whether property `name` exists. |
+
+### VM built-ins (not name-table natives)
+
+| Form | Description |
+|------|-------------|
+| `obj->FuncExist(string funcName, int parmCount)` | Compiled to a dedicated VM op (`CInstructionFuncExist`), not a table native. Yields `true` if `obj` exposes a script method `funcName` taking `parmCount` params (false if obj is null). Source: `Game/Script/InstructionFuncExist.cpp`. |
+| `entry->GetTextID(out int)` | Object method on a Diary entry (`Diary.cpp`) **or** a map mark (`WorldMap.cpp`): returns the entry's text string-DB id (`m_ulTextID`). There is no global `@GetTextID`. |
+
+### World, scene & geometry
+
+Sources: `Engine/SceneBase.cpp`, `Game/GameSceneBase.cpp`, `Game/ActorScriptClass.cpp`, `Game/StdScriptContext.cpp`.
+
+| Function | N | Description |
+|----------|---|-------------|
+| `Trigger(object recv, ...)` | ≥2 | Sends a `CGameTrigger` event (trailing args as params) to `recv`. Variadic, dynamically dispatched. |
+| `TriggerWorld(...)` | ≥1 | Sends a `CGameTrigger` event with all args to the world's custom-world receiver. |
+| `TriggerWeapon(...)` | ≥1 | Player-only: sends a `CGameTrigger` event to the player's weapon script context. |
+| `obj->GetScene(out object)` | 1 | The actor's owning scene as a script class (also seen called global-style in HD). |
+| `obj->BlockPolygons(int value, int mask)` | 2 | Marks pathfinding polys matching value/mask as blocked. |
+| `obj->UnblockPolygons(int value, int mask)` | 2 | Reverses `BlockPolygons`. |
+| `obj->GetGroupActors(out object enum, int groupID)` | 2 | An actor-enumerator over a scene group, or null. |
+| `obj->SwitchLights(int groupID, bool on)` | 2 | Toggles all light-switch actors in the group. |
+| `obj->EnableSubsets(int groupID, int subsetID, bool enable)` | 3 | Enables/disables a render subset on every actor in the group. |
+| `obj->EnableSubsets(... , bool forceNow)` | 4 | As above; `forceNow` applies immediately. |
+| `AddScene(string isc)` | 1 | **HD-only (inferred).** Loads/inserts an `.isc` indoor scene by name. |
+| `RemoveScene(object)` | 1 | **HD-only (inferred).** Removes a scene from the scene manager. |
+| `RemoveWorld()` | 0 | **HD-only (inferred).** Tears down the current world (deferred). |
+| `EnableGeometry(string name, bool on)` | 2 | **HD-only (inferred).** Shows/hides a named geometry subset on the calling actor. |
+| `ActivateInitGameOverride(string xml)` | 1 | **HD-only (inferred).** Pushes a loop-override screen (e.g. character select). |
+| `SendPlayerEnemy(object player, object enemy)` | 2 | **HD-only (inferred).** Registers `enemy` as hostile to the player (combat AI hint). |
+| `GetAnimationLength(out float)` | 1 | **HD-only (inferred).** Duration of the actor's current/default animation. |
+| `LookAsyncCamera(string bone)` | 1 | **HD-only (inferred).** Orients the actor to look toward the camera, tracking the named bone, asynchronously. |
+
+### LSH bone-animation NPC — `CActorBipedLSH` (`obj->`)
+
+Source: `Game/Game/ActorBipedLSH.cpp` (LSH = the LS-head lip-sync/bone variant).
+
+| Method | N | Description |
+|--------|---|-------------|
+| `obj->lshHasAnimation(out bool, string name)` | 2 | Whether the named LSH animation exists. |
+| `obj->lshPlayAnimation(float start, float end)` | 2 | Plays an LSH animation from `start` to `end` frame; clears active LSH sounds. |
+| `obj->lshPlayAnimation(float start, float end, bool blend)` | 3 | As above; `blend` cross-fades from the current animation. (0/1-arg forms exist on the cutscene variant `CActorBipedLSHCS`.) |
+| `obj->lshStopAnimation()` | 0 | Stops the current LSH animation; clears blend list and sounds. |
+| `obj->lshWaitForAnimEnd()` / `lshWaitForAnimEnd(var)` | 0 / 1 | **Latent.** Yields until the current LSH animation ends. |
+| `obj->lshGetAnimTimes(string name, out float start, out float end)` | 3 | The named animation's start/end times. |
+| `obj->lshPlaySpeech(string mms)` | 1 | Loads+plays an `.mms` lip-sync/speech sequence on the LS-head. |
+| `obj->lshStopSpeech()` | 0 | Stops speech; detaches speech data; clears speech sounds. |
+| `obj->lshHasSpeech(out bool, string name)` | 2 | **HD-only (inferred).** Whether a speech sequence of that name is available. (2005 source instead has the latent `lshWaitForSpeechEnd()`.) |
+
+### Particle systems — fire / smoke (`obj->` + creators)
+
+Source: `Game/Game/ActorScripted.cpp` (+ HD additions).
+
+| Function | N | Description |
+|----------|---|-------------|
+| `CreateFire(out object, string name, int n)` | 3 | **HD-only (inferred).** Creates a fire particle-system actor; `n` is a size/count. |
+| `CreateSmoke(out object, string name, int n)` | 3 | **HD-only (inferred).** Creates a smoke particle-system actor; same interface. |
+| `ps->AddSource(vector pos, vector dir, float spreadAngle)` | 3 | Adds an emission source at `pos`, emitting along `dir` with cone half-angle `spreadAngle`. |
+| `ps->Enable()` / `ps->Enable(bool)` | 0 / 1 | Enables/shows the scene object (`CActorScripted`). |
+| `ps->Fade()` / `ps->Fade(bool fadeOut)` | 0 / 1 | Fades the particle system in/out (`CActorScripted`). |
+| `ps->SetLifeTime(float seconds)` | 1 | **HD-only (inferred).** Sets particle lifetime. |
+| `obj->SetOpacity(float opacity)` | 1 | **HD-only (inferred).** Sets object opacity (0..1). |
+| `obj->SetRotation(float a)` / `SetRotation(float a, float b)` | 1 / 2 | Scene-object rotation (`CActorScripted`). |
+| `obj->SetRotationY(float angle)` | 1 | Scene-object Y-axis rotation (`CActorScripted`). |
+
+### Sound (global 3D) — `CActorSoundSourceContext`
+
+Source: `Game/Game/ActorSoundSourceContext.cpp`.
+
+| Function | N | Description |
+|----------|---|-------------|
+| `PlayGlobalSound(string name, vector offset[, float vol, float minDist, float maxDist])` | 2–5 | Plays a non-looping 3D sound at the actor's position + `offset`, scaled by global volume. Defaults: vol 1.0, minDist 100, maxDist 1e9. |
+| `PlayLoopedGlobalSound(out object src, string name, vector offset[, float vol, ...])` | 3–5 | Looped variant; returns the playing sound source in arg0 for later control. |
+| `IsExisting3DSound(out bool, string name)` | 2 | Whether a 3D sound resource of that name exists. |
+| `Is3DSoundLoaded(out bool, string name)` | 2 | **Latent.** Whether the named 3D sound is fully loaded. |
+| `WaitFor3DSoundToLoad(string name)` | 1 | **Latent.** Yields until the named 3D sound finishes async loading. |
+| `IsSoundPlaying(out bool, string name)` | 2 | **HD-only (inferred).** Whether the named sound source is currently playing. |
+| `src->FadeIn(float time)` / `src->FadeOut(float time)` | 1 | Fades a sound source in/out over `time` seconds (`ActorSoundSource.cpp`). |
+
+### Envelopes, flames, paths, marks, detail objects (`obj->`)
+
+| Method | N | Description |
+|--------|---|-------------|
+| `obj->RemoveRTEnvelope()` | 0 | `CActorAnimBone`: removes the actor's ray-trace collision envelope. |
+| `flame->GetLength(out float)` | 1 | A flame actor's set length (`ActorFlame.cpp`). |
+| `path->GetLength(out float, bool streamline)` | 2 | A scene-path object's length with optional smoothing (`SceneBase.cpp`). |
+| `flame->SetLength(float)` | 1 | Sets the flame geometry length. |
+| `obj->RemoveOnUnload()` / `RemoveOnUnload(bool)` | 0 / 1 | Detailed-object actor: flag to remove when its sector unloads (removes now if already unloaded). |
+| `obj->GetName(out string)` | 1 | A scene object's name (`CSceneBase`). |
+| `mark->GetType(out int)` | 1 | A world-map mark's type (`CWorldMap`). |
+| `mark->GetTime(out float)` | 1 | A world-map mark's timestamp. |
+
+### Inventory barter / corpse — `CContainerScriptContext`
+
+Source: `Game/Game/ContainerScriptContext.cpp`. Called globally (`@Barter(a0)`); the arg is the player's container.
+
+| Function | N | Description |
+|----------|---|-------------|
+| `Barter(object playerContainer)` | 1 | **Latent.** Opens the barter/trade UI between the player container and this context's container (installs a `CInventoryOverride`). Blocks until dismissed. |
+| `WorkWithCorpse(object playerContainer)` | 1 | **Latent.** Corpse-looting variant of the inventory override. Blocks until closed. |
+
+### Diary — `CUIDiaryContext`
+
+| Function | N | Description |
+|----------|---|-------------|
+| `GetDiarySelectedSection(out int)` | 1 | The diary's currently selected section index. |
+| `SetDiarySelectedSection(int)` | 1 | Sets the diary's selected section. |
+
+### Random pick — `CStdScriptContext`
+
+| Function | N | Description |
+|----------|---|-------------|
+| `RandOneOf(out value, int w1..wN, v1..vN)` | 2N+1 (odd, ≥3) | Variadic: out slot, then N non-negative weights, then N candidate values. Picks one by weighted random (`Util::RandMulti`). Negative weight fails. |
+
+### Save / load enumeration (HD)
+
+All **HD-only (inferred)** — the 2005 engine has no script save-enumeration API.
+
+| Function | N | Description |
+|----------|---|-------------|
+| `CreateSaveEnumerator(out object enum)` | 1 | Creates a save-game enumerator; null on failure. Iterated via `enum->Next(out object save)`; each save exposes the methods below. |
+| `DeleteGame(string fileName)` | 1 | Deletes the save file identified by `fileName`. |
+| `SetSaveProperty(int index, value)` | 2 | Stamps property slot `index` onto the next/current save (e.g. tag the active character/scenario). |
+| `save->GetSaveTime(out int, out int, out int, out int, out int)` | 5 | The save's timestamp components (year/month/day/hour/minute). |
+| `save->IsQuickSave(out bool)` | 1 | Whether the save entry is a quicksave. |
+| `save->GetFileName(out string)` | 1 | The save entry's on-disk file name (pass to `DeleteGame`). |
+
+### Persistent registry & string/math helpers (HD)
+
+All **HD-only (inferred)**.
+
+| Function | N | Description |
+|----------|---|-------------|
+| `GetRegistryData(out value, string key, default)` | 3 | Reads a persistent cross-save registry entry `key`; writes `default` when absent (e.g. campaign-completion flags). |
+| `SetRegistryData(string key, value)` | 2 | Writes `value` to the persistent registry under `key`. |
+| `format(out string result, string fmt, ...)` | var | printf/`%`-style string formatter; writes the formatted string into `result`. |
+| `round(float x, out float r)` | 2 | Rounds `x` into `r` (used to snap slider values). |
+| `shift(out value, int by, int max)` | 3 | Cyclic index shift — advances an index by `by`, wrapping within a range. |
+
+> Note: `@door1` / `@door2` are **not functions** — they appear only inside object-name string literals such as `"theater@door1"`, naming a specific door instance within a location passed to a door-toggle method.
+
+### Audio settings (HD)
+
+All **HD-only (inferred)** from `ui_options.sc`. Volumes are 0.0–1.0.
+
+| Function | N | Description |
+|----------|---|-------------|
+| `GetVolMaster(out float)` / `SetVolMaster(float)` | 1 | Master volume. |
+| `GetVolMusic(out float)` / `SetVolMusic(float)` | 1 | Music volume. |
+| `GetVolSounds(out float)` / `SetVolSounds(float)` | 1 | Sound-effects volume. |
+| `GetVolVoice(out float)` / `SetVolVoice(float)` | 1 | Voice/dialogue volume. |
+
+### Video settings (HD)
+
+All **HD-only (inferred)** from `ui_options.sc` / `ui_options_page_video.sc`.
+
+| Function | N | Description |
+|----------|---|-------------|
+| `GetGammaCorrection(out float)` / `SetGammaCorrection(float)` | 1 | Gamma correction (slider ~0.5–1.25). |
+| `EnableBloom(bool)` / `IsBloomEnabled(out bool)` | 1 | Bloom post-effect on/off + query. |
+| `EnableDOF(bool)` / `IsDOFEnabled(out bool)` | 1 | Depth-of-field on/off + query. |
+| `EnableFXAA(bool)` / `IsFXAAEnabled(out bool)` | 1 | FXAA anti-aliasing on/off + query. |
+| `EnableSSAO(bool)` / `IsSSAOEnabled(out bool)` | 1 | Screen-space ambient occlusion on/off + query. |
+| `EnableMotionBlur(bool)` / `IsMotionBlurEnabled(out bool)` | 1 | Motion blur on/off + query. |
+| `EnableShadows(bool)` / `IsShadowsEnabled(out bool)` | 1 | Dynamic shadows on/off + query. |
+| `EnableVSync(bool)` / `IsVSyncEnabled(out bool)` | 1 | Vertical sync on/off + query. |
+| `GetMaxAnisotropic(out float)` | 1 | Max supported anisotropic-filtering level. |
+| `GetCurrentAnisotropic(out float)` / `SetAnisotropic(float)` | 1 | Current anisotropic level + set (0..max). |
+| `GetResolutionsCount(out int)` | 1 | Number of available display resolutions. |
+| `GetResolution(int index, out int w, out int h)` | 3 | Width/height of the resolution at `index`. |
+| `GetCurrentResolution(out int index)` / `SetResolution(int index)` | 1 | Current resolution index + select. |
+
+### Input & key binding (HD)
+
+All **HD-only (inferred)** (`ui_options.sc`, `ui_key_action_list.sc`). The
+misspelling "Sensivity" is the genuine native name.
+
+| Function | N | Description |
+|----------|---|-------------|
+| `GetMouseSensivity(out float)` / `SetMouseSensivity(float)` | 1 | Mouse sensitivity. |
+| `GetGamepadSensivity(out float)` / `SetGamepadSensivity(float)` | 1 | Gamepad look sensitivity. |
+| `GetGamepadUISensivity(out float)` / `SetGamepadUISensivity(float)` | 1 | Gamepad UI-cursor sensitivity. |
+| `InvertMouse(bool)` / `IsMouseInverted(out bool)` | 1 | Mouse Y-axis inversion + query. |
+| `InvertGamepad(bool)` / `IsGamepadInverted(out bool)` | 1 | Gamepad Y-axis inversion + query. |
+| `EnableGamepadRumble(bool)` / `IsGamepadRumbleEnabled(out bool)` | 1 | Gamepad rumble on/off + query. |
+| `SaveConfig()` | 0 | Persists all option/config values to disk. |
+| `WriteBinds()` | 0 | Persists the current key bindings to disk. |
+| `Bind(int vkey, int action)` | 2 | Binds a virtual-key code to an action id. |
+| `Unbind(int vkey)` | 1 | Removes any binding on the key. |
+| `GetBindType(out int type, int vkey)` | 2 | Bind type: 0 unbound, 1 action, 2 command. |
+| `GetBindAction(out int action, int vkey)` | 2 | Action id bound to a key (when type 1). |
+| `GetBindCommand(out string cmd, int vkey)` | 2 | Console command bound to a key (when type 2, e.g. "qsave"). |
+| `GetKeyName(out string name, int vkey)` | 2 | Display name of a virtual-key code. |
+| `IsValidVirtualKey(out bool, int vkey)` | 2 | Whether the code is a valid/bindable key (codes ≥256 are mouse/gamepad). |
+| `GetKeyboardState(out object)` | 1 | A keyboard-state object (see `kb->GetKeyState` below); null on failure. |
+| `kb->GetKeyState(out int state, int vkey)` | 2 | On the keyboard-state object: current state of the given virtual key. |
+| `CreateKeyEnumerator(out object)` | 1 | An enumerator of bindable keys (`->Next(out bool ok, out int vkey)`). |
+
+### Achievements, rumble & post-process mods (HD)
+
+| Function | N | Description |
+|----------|---|-------------|
+| `UnlockAchievement(string id)` | 1 | **HD-only.** Unlocks the named platform achievement (e.g. `"ACHIEVEMENT_MIGHT"`). |
+| `RumblePlay(float strength, int durationMs)` | 2 | **HD-only.** Gamepad rumble at `strength` (0..1) for `durationMs`. |
+| `ModGetDOFParams(out float, out float, out float, out float)` | 4 | **HD-only.** Reads the four DOF "Mod" parameters. |
+| `ModSetDOFParams(float, float, float, float)` | 4 | **HD-only.** Sets the four DOF "Mod" parameters. |
+| `ModSetDOFEnabled(bool)` / `ModIsDOFEnabled(out bool)` | 1 | **HD-only.** DOF "Mod" override on/off + query. |
+| `SetSepia(float amount, float intensity)` | 2 | **HD-only.** Sepia post-effect blend amount + intensity (0,0 = off). |
+| `SetAmbientMod(vector rgb)` | 1 | **HD-only.** Ambient-light color modulation ([0,0,0] = none). |
+
+### Misc reclassifications
+
+A few names listed elsewhere are **not** what their location suggested:
+`DisableUpdate()` is a `CActorStatic` native (`ActorStatic.cpp`), not a UI call,
+though HD container windows invoke it bare. `Enable`/`Fade`/`SetRotation`/
+`SetRotationY` are `CActorScripted` scene-object methods, not window methods.
+`GetName`/`GetType`/`GetTime`/`GetLength` are scene/world-map/flame/path methods.
+
+---
+
 ## Cross-reference — old-docs inaccuracies fixed in this pass
 
 While auditing the original sources I found these issues in the prior doc and

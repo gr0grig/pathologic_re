@@ -1066,6 +1066,439 @@ subcontainer 0 — «основной».
 
 ---
 
+## 11. Дополнительные функции, используемые в HD-скриптах
+
+Сканирование всех **963 декомпилированных HD-скриптов**
+(`pathologic_re/examples/HD/Scripts_sc/`) выявило **248 имён нативов**
+(202 `@`-глобальных + 46 методов `obj->`), которых не было выше. Они
+задокументированы здесь, сгруппированы по подсистемам. Каждая запись сверена с
+исходниками движка (`SRC/PlagueCity`), где функция существует; функции,
+**добавленные ремастером HD**, не имеют регистрации в исходниках 2005 года и
+помечены **HD-only (по вызовам)** — их сигнатуры восстановлены по реальным
+местам вызова в HD-скриптах. `N` = число аргументов в вызове (включая out-vars).
+
+### Окна и отрисовка UI — глобали `CUIWnd`
+
+Источник: `Game/UI/UIWnd.cpp`. Вызываются без префикса (`@Name`) из скрипта
+окна; неявный получатель — само окно.
+
+| Функция | N | Описание |
+|---------|---|----------|
+| `CreateWindow(string xml, bool modal)` | 2 | Загружает `xml`, создаёт и присоединяет дочернее окно. (Аргумент `modal` читается, но вызов SetModal в обработчике закомментирован.) |
+| `CreateWindow(string xml, bool modal, out object wnd)` | 3 | То же; ещё возвращает скрипт-класс нового окна. |
+| `DestroyWindow()` / `DestroyWindow(int exitCode)` | 0 / 1 | Уничтожает это окно с кодом выхода (по умолчанию 0). Также `wnd->DestroyWindow(...)`. |
+| `FindWindow(out object wnd, int x, int y)` | 3 | Верхнее окно под экранной точкой (x,y) или null. |
+| `CreatePolyImage(out object poly, int faceCount, string texture)` | 3 | Создаёт poly-image с `faceCount` гранями из `texture`. |
+| `Blit(string image, int x, int y)` | 3 | Рисует именованное изображение в (x,y) относительно окна; клипует, если клиппинг включён. |
+| `Blit(string image, int x, int y, float amount)` | 4 | То же с альфой/блендом `amount` (1.0 — непрозрачно). |
+| `BlitClipped(string image, int x, int y, int l, int t, int w, int h)` | 7 | Рисует с клиппингом к прямоугольнику (l,t,w,h) относительно окна. |
+| `BlitClipped(... , float amount)` | 8 | То же с альфой. |
+| `StretchBlit(string image, int x, int y, int xsize, int ysize)` | 5 | Рисует, растягивая до xsize×ysize. |
+| `EnableClipping()` / `EnableClipping(bool)` | 0 / 1 | Включает клиппинг к прямоугольнику окна (по умолчанию) или в заданное состояние. |
+| `Print(string font, int x, int y, string text)` | 4 | Печатает `text` белым; клипует, если включено. |
+| `Print(string font, int x, int y, string text, float r, float g, float b)` | 7 | То же с цветом RGB (0..1). |
+| `PrintInWidth(out int height, string font, int x, int y, int width, string text)` | 6 | Переносит `text` по словам в ширину `width` px, печатает, возвращает суммарную `height`. |
+| `PrintInWidth(... , float r, float g, float b)` | 9 | То же с цветом RGB. |
+| `GetTextWidth(out int width, string font, string text)` | 3 | Ширина `text` в пикселях в шрифте `font`. |
+| `GetTextWidth(out int width, string font, string text, int count)` | 4 | Ширина первых `count` символов. |
+| `GetTextHeightInWidth(out int height, string font, int width, string text)` | 4 | Высота `text` с переносом в ширину `width`. |
+| `GetFontHeight(out int height, string font)` | 2 | Высота строки шрифта `font` в пикселях. |
+| `FontHasCharacterGlyph(out bool has, string font, int charCode)` | 3 | Есть ли в `font` глиф для wide-символа. |
+| `LoadImage(string texture)` | 1 | Загружает изображение в хранилище окна; ошибка (сообщение) если нет. |
+| `LoadVideo(string texture)` | 1 | Загружает видео-изображение; ошибка при сбое. |
+| `ReleaseVideo(string name)` | 1 | Освобождает загруженное видео-изображение по имени. |
+| `FindVideo(out object video, string name)` | 2 | Скрипт-класс загруженного видео-изображения по имени или null. |
+| `CaptureKeyboard()` / `ReleaseKeyboard()` | 0 | Перенаправляет / освобождает весь ввод с клавиатуры в это окно. |
+| `CaptureMouse()` / `ReleaseMouse()` | 0 | Перенаправляет / освобождает весь ввод мыши. |
+| `ShowCursor()` / `ShowCursor(bool)` | 0 / 1 | Показывает (по умолчанию) или показывает/скрывает курсор. |
+| `SetCursor(string cursorName)` | 1 | Делает активным именованный курсор; логирует (успех) если не найден. |
+| `GetCursorPos(out int x, out int y)` | 2 | Текущая позиция курсора (экранные координаты). |
+| `ClientToScreen(inout int x, inout int y)` | 2 | Преобразует координаты окна → экранные на месте. |
+| `ScreenToClient(inout int x, inout int y)` | 2 | Преобразует экранные → координаты окна на месте. |
+| `GetWindowSize(out int w, out int h)` | 2 | Размер этого окна. |
+| `GetWindowName(out string name)` | 1 | Имя этого окна. |
+| `SetTooltip(int type, string text)` | 2 | Задаёт тип и текст тултипа окна. |
+| `SetTooltip(int type, string text, object obj)` | 3 | То же плюс связанный объект. |
+| `GetTooltipType(out int)` / `GetTooltipText(out string)` / `GetTooltipObject(out object)` | 1 | Текущий тип/текст/объект тултипа окна (также `wnd->...`). |
+| `SetBackground(string image)` | 1 | Фоновое изображение окна. |
+| `SetOwnerDraw(bool)` | 1 | Включает/выключает отрисовку, управляемую скриптом (owner-draw). |
+| `SetModal(bool)` | 1 | Флаг модальности окна. |
+| `SetNeedUpdate(bool)` | 1 | Нужно ли окну покадровое обновление скриптом. |
+| `SendToParent()` / `SendToParent(bool)` | 0 / 1 | Пересылать необработанный ввод родительскому окну. |
+| `SendMessageToParent(int msg)` | 1 | Шлёт числовое сообщение родительскому окну. |
+| `SendMessageToParent(int msg, object obj)` | 2 | То же с присоединённым объектом. |
+| `SendMessage(int msg, string targetWnd)` | 2 | Шлёт сообщение `msg` именованному окну через станцию. |
+| `SendMessage(int msg, string targetWnd, object data)` | 3 | То же с объектом-нагрузкой. |
+| `PauseSound(string name)` | 1 | Ставит на паузу именованный UI-звук (логирует, не падает, если не найден). |
+
+### Рисуемые UI-объекты — методы `obj->`
+
+Источники: `Game/UI/UIImage.cpp`, `UIVideoImage.cpp`, `UIPolyImage.cpp`.
+
+| Метод | N | Описание |
+|-------|---|----------|
+| `img->Blit(int x, int y)` | 2 | Рисует изображение/кадр в (x,y) в нативном размере. |
+| `img->BlitClipped(int x, int y, int l, int t, int r, int b)` | 6 | Рисует с клиппингом к заданному экранному прямоугольнику. |
+| `vid->StretchBlit(int x, int y, int xsize, int ysize)` | 4 | Рисует кадр видео растянутым. |
+| `vid->Play()` / `vid->Play(bool loop)` | 0 / 1 | Запускает воспроизведение видео, опционально зациклено. |
+| `vid->IsPlaying(out bool)` | 1 | Проигрывается ли видео сейчас. |
+| `vid->IsLost(out bool)` | 1 | Потеряно ли устройство-изображение. |
+| `vid->Restore(out bool)` | 1 | Сбрасывает флаг потери устройства; out получает результат. |
+| `poly->Blit(int x, int y)` | 2 | Рендерит poly-image (отображает (x,y) в нормализованные экранные координаты). |
+| `poly->SetRotation(int x, int y, float angle)` | 3 | Поворачивает poly-image на `angle` (рад) вокруг точки (x,y). |
+
+### Глобали контекстов UI — std / window / map
+
+Источники: `Game/UI/UIStdScriptContext.cpp`, `Game/Game/UIWindowContext.cpp`, `Game/Game/UIMapContext.cpp`.
+
+| Функция | N | Описание |
+|---------|---|----------|
+| `UITrace(string text)` | 1 | Пишет `text` (с префиксом скрипт-консоли) в консоль менеджера UI. |
+| `GetScreenSize(out int w, out int h)` | 2 | Размер экрана (w в arg0, h в arg1). |
+| `GetWindowData(out object data)` | 1 | Скрипт-класс-объект, стоящий за этим контекстом окна. |
+| `RenderMap(int dl,int dt,int dr,int db, int sl,int st,int sr,int sb)` | 8 | Рендерит карту мира: исходный прямоугольник (s*) в целевой (d*). |
+| `RenderRegions(int dl,int dt,int dr,int db, int sl,int st,int sr,int sb)` | 8 | Рендерит слой регионов с тем же отображением src→dst. |
+| `SetRegionColor(int region, float r, float g, float b, float a)` | 5 | Цвет тонировки (RGBA, 0..1) региона карты. |
+| `ProcessEvents()` | 0 | **Latent.** Запускает латентный цикл обработки событий в контексте UI-скрипта. |
+| `StopEventProcessing()` | 0 | Останавливает все идущие циклы `ProcessEvents` в этом контексте. |
+
+HD-only глобали UI (по вызовам; регистрации в 2005 нет):
+
+| Функция | N | Описание |
+|---------|---|----------|
+| `HideCursor()` | 0 | **HD-only.** Скрывает курсор (эквивалент 2005: `ShowCursor(false)`). |
+| `SetMousePos(int x, int y)` | 2 | **HD-only.** Задаёт позицию курсора. |
+| `SendWorldWndMessage(int msg)` / `(int msg, object obj)` | 1 / 2 | **HD-only.** Шлёт числовое сообщение (опц. с объектом) окну мира/игры. Широко используется акторными скриптами. |
+| `UISync()` | 0 | **HD-only.** Латентная уступка на один тик для UI-скриптов (UI-аналог `sync()`). |
+| `ReleaseImage(string name)` | 1 | **HD-only (не подтверждено).** Освобождает загруженное изображение (пара к `LoadImage`); выведено по аналогии — без явного места вызова. |
+| `IsImageLoaded(out bool, string name)` | 2 | **HD-only (не подтверждено).** Загружено ли изображение; выведено по аналогии. |
+| `GetColorMod(...)` / `LinearColorMod(...)` | ? | **HD-only (не разрешено).** Get/set цветовой модуляции; ни регистрации 2005, ни разрешимого места вызова — приведены для полноты. |
+
+### Статы, нужды и деньги игрока — `CUIPlayerStatContext`
+
+Источник: `Game/Game/UIPlayerStatContext.cpp`. Читают PropertySet игрока.
+
+| Функция | N | Описание |
+|---------|---|----------|
+| `GetPlayerHealth(out float)` | 1 | Свойство `health` игрока (0 без игрока). |
+| `GetPlayerHunger(out float)` | 1 | Свойство `Hunger`. |
+| `GetPlayerDisease(out float)` | 1 | Уровень `disease`/болезни. |
+| `GetPlayerImmunity(out float)` | 1 | Свойство `Immunity`. |
+| `GetPlayerTiredness(out float)` | 1 | Свойство `Tiredness`. |
+| `GetPlayerMoneyCount(out float)` | 1 | Свойство `money`. |
+| `SetPlayerMoneyCount(float)` | 1 | Задаёт `money` игрока. |
+
+### Позиция игрока на карте — `CUIMapContext`
+
+| Функция | N | Описание |
+|---------|---|----------|
+| `GetPlayerMapPos(out float x, out float y)` | 2 | Позиция игрока в координатах карты; false если игрока нет. |
+| `GetPlayerMapAngle(out float)` | 1 | Угол игрока (рад) на карте, `-atan2(dir.z,dir.x)+PI/2`. |
+
+### Инвентарь и контейнер игрока — `CUIInventoryContext`
+
+Источник: `Game/Game/UIInventoryContext.cpp`.
+
+| Функция | N | Описание |
+|---------|---|----------|
+| `SetPlayerHandsItem(int itemID)` | 1 | Кладёт предмет в слот рук контейнера игрока. |
+| `UseItem(int pos, int container, out bool applied)` | 3 | Использует предмет в слоте `pos` суб-контейнера `container`; читает его эффект OnUse и применяет к игроку. `applied` = эффект применён и не `noremove`. |
+| `GetPlayerContainer(out object)` | 1 | Контейнер инвентаря игрока как скрипт-объект. |
+| `GetContainer(out object)` | 1 | Вторичный/целевой контейнер (труп/сундук) как скрипт-объект. |
+| `GetItemImage(int itemID, out string sprite)` | 2 | Имя спрайта по id предмета в БД; падает, если нет. |
+| `GetItemMaxStackSize(int itemID, out int max)` | 2 | Макс. размер стека предмета из БД. |
+
+### Оверрайд цикла сна/сна-видения — `CSleepLoopOverride`
+
+Источник: `Game/Game/SleepLoopOverride.cpp`. (Также даёт все функции `CUIPlayerStatContext` + `CUIStdContext`.)
+
+| Функция | N | Описание |
+|---------|---|----------|
+| `GetPlayer(out object)` | 1 | Актор игрока как скрипт-объект. |
+| `BeginPlayerUpdate()` | 0 | Включает обновление игрока во время цикла-оверрайда. |
+
+### Контроллер игрока и вид от первого лица (SRC + HD)
+
+| Функция | N | Описание |
+|---------|---|----------|
+| `SwitchToRun()` | 0 | `CActorBiped` (`ActorBiped.cpp`): переключает локомоцию с ходьбы на бег; false если не в ходьбе/беге. |
+| `GetSeeFOV(out float)` / `SetSeeFOV(float)` | 1 | `CActorAnimBone` (`ActorAnimBone.cpp`): FOV для проверок «вижу» (`m_fSeeFOV`). |
+| `GetSeeThreshold(out float)` / `SetSeeThreshold(float)` | 1 | `CActorAnimBone`/`CActorFog`: порог видимости для проверок «вижу» (`m_fSeeThresh`). |
+| `IsVisirOn(out bool)` | 1 | `CActorPlayer` (`ActorPlayer.cpp`): включён ли оверлей визора. Вызывается как `@IsVisirOn(out)` в контексте игрока или `player->IsVisirOn(out)`. |
+| `GetForce(out vector)` / `SetForce(vector)` | 1 | `CActorPlayer` (`ActorPlayer.cpp:101-102`): get/set вектора тряски камеры игрока. **Не HD-only.** |
+| `GetPlayerFOV(out float)` / `SetPlayerFOV(float)` | 1 | **HD-only (по вызовам).** FOV камеры игрока (слайдер FOV в опциях). |
+| `GetEyesHeightCoef(out float)` / `SetEyesHeightCoef(float)` | 1 | **HD-only (по вызовам).** Коэффициент высоты глаз (1.0 стоя, ниже при приседе); анимирует высоту FP-камеры. |
+| `IsSneakEnabled(out bool)` | 1 | **HD-only (по вызовам).** Активен ли режим скрытности/приседа. |
+| `SetBaseVisibility(float)` | 1 | **HD-only (по вызовам).** Базовый уровень заметности игрока (зависит от времени суток). |
+| `GetStat(string name, out int)` | 2 | **HD-only (по вызовам).** Читает именованное битовое поле глобального стата игрока (напр. `"STAT_LOOK"`). |
+| `SetStat(string name, int)` | 2 | **HD-only (по вызовам).** Пишет именованный стат игрока. |
+| `GetAdditionalData(out object)` | 1 | **HD-only (по вызовам).** Доп. данные, передаваемые в UI-диалог (рядом с `GetChooseItems`/`GetReturnValue`). |
+
+### Контекст диалога/разговора — `CUIDialogContext`
+
+Источник: `Game/Game/UIDialogContext.cpp`. Доступен, пока активен UI диалога.
+
+| Функция | N | Описание |
+|---------|---|----------|
+| `GetReplic(out string)` | 1 | Текст текущей реплики NPC (`CConversation::GetMessage`). |
+| `GetAnswerCount(out int)` | 1 | Число доступных ответов игрока. |
+| `GetAnswer(int i, out string)` | 2 | Текст ответа с индексом `i`. |
+| `GetAnswer(int i, out string, out int nextReplicID)` | 3 | Также id следующей реплики для этого ответа. |
+| `GetAnswer(int i, out string, out int nextReplicID, out int replyID)` | 4 | Также собственный reply-id ответа. |
+| `SelectAnswer(int nextReplicID, int replyID)` | 2 | Выбирает ответ; шлёт `CGameDialogReply(nextReplicID, replyID)`. Без out. |
+| `GetConversation(out object)` | 1 | Подлежащий объект `CConversation` (для методов ниже). |
+| `GetChooseItems(out object)` | 1 | `CUIChooseItemContext`: объект данных окна выбора. |
+
+### `CConversation` — объект диалога (`obj->`)
+
+Источник: `Game/Game/Conversation.cpp`. Создаётся `@CreateDialog(out object)`;
+тот же объект возвращает `GetConversation()`.
+
+| Метод | N | Описание |
+|-------|---|----------|
+| `dlg->SetNPCName(int stringID)` | 1 | Имя NPC по id из строковой БД. |
+| `dlg->GetNPCName(out string)` | 1 | Строка имени NPC. |
+| `dlg->SetNPCDescription(int stringID)` | 1 | Описание NPC по id строковой БД. |
+| `dlg->GetNPCDescription(out string)` | 1 | Строка описания NPC. |
+| `dlg->SetPlayerName(int stringID)` | 1 | Имя игрока по id строковой БД. |
+| `dlg->GetPlayerName(out string)` | 1 | Строка имени игрока. |
+| `dlg->SetPhoto(string path)` | 1 | Путь к основному портрету (литеральная строка, не id). |
+| `dlg->GetPhoto(out string)` | 1 | Путь к основному фото. |
+| `dlg->SetPhoto2(string path)` | 1 | Путь ко вторичному портрету. |
+| `dlg->GetPhoto2(out string)` | 1 | Путь ко вторичному фото. |
+
+> Примечание: сеттеры Name/Description берут **id строковой БД**; `SetPhoto`/`SetPhoto2` берут **литеральный путь**.
+
+### Скрипт-свойства актора (`obj->`)
+
+Источник: `Game/Game/ActorScriptClass.cpp`. На любом скрипт-класс-акторе.
+
+| Метод | N | Описание |
+|-------|---|----------|
+| `obj->SetScriptProperty(value, string name)` | 2 | Задаёт скрипт-свойство `name` в `value` (любой тип). |
+| `obj->GetScriptProperty(out value, string name)` | 2 | Читает свойство `name`; тип out-переменной выбирает типизированный геттер. Падает, если нет. |
+| `obj->HasScriptProperty(out bool, string name)` | 2 | Существует ли свойство `name`. |
+
+### Встроенные операторы VM (не натив из таблицы имён)
+
+| Форма | Описание |
+|-------|----------|
+| `obj->FuncExist(string funcName, int parmCount)` | Компилируется в отдельную VM-инструкцию (`CInstructionFuncExist`), не в табличный натив. Даёт `true`, если `obj` имеет скрипт-метод `funcName` с `parmCount` параметрами (false, если obj null). Источник: `Game/Script/InstructionFuncExist.cpp`. |
+| `entry->GetTextID(out int)` | Метод объекта на записи дневника (`Diary.cpp`) **или** на метке карты (`WorldMap.cpp`): возвращает id текста записи в строковой БД (`m_ulTextID`). Глобального `@GetTextID` нет. |
+
+### Мир, сцена и геометрия
+
+Источники: `Engine/SceneBase.cpp`, `Game/GameSceneBase.cpp`, `Game/ActorScriptClass.cpp`, `Game/StdScriptContext.cpp`.
+
+| Функция | N | Описание |
+|---------|---|----------|
+| `Trigger(object recv, ...)` | ≥2 | Шлёт событие `CGameTrigger` (хвостовые аргументы как параметры) получателю `recv`. Вариативная, динамическая диспетчеризация. |
+| `TriggerWorld(...)` | ≥1 | Шлёт `CGameTrigger` со всеми аргументами кастомному получателю мира. |
+| `TriggerWeapon(...)` | ≥1 | Только для игрока: шлёт `CGameTrigger` в скрипт-контекст оружия игрока. |
+| `obj->GetScene(out object)` | 1 | Сцена-владелец актора как скрипт-класс (в HD встречается и в глобальном стиле). |
+| `obj->BlockPolygons(int value, int mask)` | 2 | Помечает полигоны пасфайндинга по value/mask как заблокированные. |
+| `obj->UnblockPolygons(int value, int mask)` | 2 | Обратное к `BlockPolygons`. |
+| `obj->GetGroupActors(out object enum, int groupID)` | 2 | Энумератор акторов группы сцены или null. |
+| `obj->SwitchLights(int groupID, bool on)` | 2 | Переключает все light-switch-акторы в группе. |
+| `obj->EnableSubsets(int groupID, int subsetID, bool enable)` | 3 | Вкл/выкл рендер-подмножество у каждого актора группы. |
+| `obj->EnableSubsets(... , bool forceNow)` | 4 | То же; `forceNow` применяет немедленно. |
+| `AddScene(string isc)` | 1 | **HD-only (по вызовам).** Загружает/вставляет внутреннюю сцену `.isc` по имени. |
+| `RemoveScene(object)` | 1 | **HD-only (по вызовам).** Удаляет сцену из менеджера сцен. |
+| `RemoveWorld()` | 0 | **HD-only (по вызовам).** Разбирает текущий мир (отложенно). |
+| `EnableGeometry(string name, bool on)` | 2 | **HD-only (по вызовам).** Показывает/скрывает именованное подмножество геометрии вызывающего актора. |
+| `ActivateInitGameOverride(string xml)` | 1 | **HD-only (по вызовам).** Пушит экран-оверрайд цикла (напр. выбор персонажа). |
+| `SendPlayerEnemy(object player, object enemy)` | 2 | **HD-only (по вызовам).** Регистрирует `enemy` как враждебного игроку (подсказка боевому ИИ). |
+| `GetAnimationLength(out float)` | 1 | **HD-only (по вызовам).** Длительность текущей/дефолтной анимации актора. |
+| `LookAsyncCamera(string bone)` | 1 | **HD-only (по вызовам).** Поворачивает актора смотреть на камеру, отслеживая названную кость, асинхронно. |
+
+### LSH-NPC с костной анимацией — `CActorBipedLSH` (`obj->`)
+
+Источник: `Game/Game/ActorBipedLSH.cpp` (LSH = вариант LS-head с lip-sync/костями).
+
+| Метод | N | Описание |
+|-------|---|----------|
+| `obj->lshHasAnimation(out bool, string name)` | 2 | Есть ли названная LSH-анимация. |
+| `obj->lshPlayAnimation(float start, float end)` | 2 | Играет LSH-анимацию с кадра `start` по `end`; очищает активные LSH-звуки. |
+| `obj->lshPlayAnimation(float start, float end, bool blend)` | 3 | То же; `blend` — кросс-фейд с текущей анимации. (Формы на 0/1 арг — у cutscene-варианта `CActorBipedLSHCS`.) |
+| `obj->lshStopAnimation()` | 0 | Останавливает текущую LSH-анимацию; очищает blend-список и звуки. |
+| `obj->lshWaitForAnimEnd()` / `lshWaitForAnimEnd(var)` | 0 / 1 | **Latent.** Уступает до конца текущей LSH-анимации. |
+| `obj->lshGetAnimTimes(string name, out float start, out float end)` | 3 | Времена начала/конца названной анимации. |
+| `obj->lshPlaySpeech(string mms)` | 1 | Загружает+играет lip-sync/речь `.mms` на LS-head. |
+| `obj->lshStopSpeech()` | 0 | Останавливает речь; отсоединяет данные речи; очищает её звуки. |
+| `obj->lshHasSpeech(out bool, string name)` | 2 | **HD-only (по вызовам).** Доступна ли речь с этим именем. (В 2005 вместо неё латентная `lshWaitForSpeechEnd()`.) |
+
+### Системы частиц — огонь/дым (`obj->` + создатели)
+
+Источник: `Game/Game/ActorScripted.cpp` (+ добавления HD).
+
+| Функция | N | Описание |
+|---------|---|----------|
+| `CreateFire(out object, string name, int n)` | 3 | **HD-only (по вызовам).** Создаёт актор-систему частиц огня; `n` — размер/количество. |
+| `CreateSmoke(out object, string name, int n)` | 3 | **HD-only (по вызовам).** Создаёт актор-систему частиц дыма; тот же интерфейс. |
+| `ps->AddSource(vector pos, vector dir, float spreadAngle)` | 3 | Добавляет источник эмиссии в `pos`, испускающий вдоль `dir` с полууглом конуса `spreadAngle`. |
+| `ps->Enable()` / `ps->Enable(bool)` | 0 / 1 | Включает/показывает объект сцены (`CActorScripted`). |
+| `ps->Fade()` / `ps->Fade(bool fadeOut)` | 0 / 1 | Появление/исчезновение системы частиц (`CActorScripted`). |
+| `ps->SetLifeTime(float seconds)` | 1 | **HD-only (по вызовам).** Задаёт время жизни частиц. |
+| `obj->SetOpacity(float opacity)` | 1 | **HD-only (по вызовам).** Задаёт прозрачность объекта (0..1). |
+| `obj->SetRotation(float a)` / `SetRotation(float a, float b)` | 1 / 2 | Поворот объекта сцены (`CActorScripted`). |
+| `obj->SetRotationY(float angle)` | 1 | Поворот объекта сцены вокруг оси Y (`CActorScripted`). |
+
+### Звук (глобальный 3D) — `CActorSoundSourceContext`
+
+Источник: `Game/Game/ActorSoundSourceContext.cpp`.
+
+| Функция | N | Описание |
+|---------|---|----------|
+| `PlayGlobalSound(string name, vector offset[, float vol, float minDist, float maxDist])` | 2–5 | Играет незацикленный 3D-звук в позиции актора + `offset`, масштабируя глобальной громкостью. Дефолты: vol 1.0, minDist 100, maxDist 1e9. |
+| `PlayLoopedGlobalSound(out object src, string name, vector offset[, float vol, ...])` | 3–5 | Зацикленный вариант; возвращает играющий источник в arg0 для управления. |
+| `IsExisting3DSound(out bool, string name)` | 2 | Существует ли 3D-звук с таким именем. |
+| `Is3DSoundLoaded(out bool, string name)` | 2 | **Latent.** Полностью ли загружен названный 3D-звук. |
+| `WaitFor3DSoundToLoad(string name)` | 1 | **Latent.** Уступает до завершения асинхронной загрузки звука. |
+| `IsSoundPlaying(out bool, string name)` | 2 | **HD-only (по вызовам).** Проигрывается ли названный источник звука. |
+| `src->FadeIn(float time)` / `src->FadeOut(float time)` | 1 | Появление/затухание источника звука за `time` секунд (`ActorSoundSource.cpp`). |
+
+### Огибающие, пламя, пути, метки, detail-объекты (`obj->`)
+
+| Метод | N | Описание |
+|-------|---|----------|
+| `obj->RemoveRTEnvelope()` | 0 | `CActorAnimBone`: убирает ray-trace огибающую коллизии актора. |
+| `flame->GetLength(out float)` | 1 | Заданная длина актора-пламени (`ActorFlame.cpp`). |
+| `path->GetLength(out float, bool streamline)` | 2 | Длина объекта-пути сцены с опц. сглаживанием (`SceneBase.cpp`). |
+| `flame->SetLength(float)` | 1 | Задаёт длину геометрии пламени. |
+| `obj->RemoveOnUnload()` / `RemoveOnUnload(bool)` | 0 / 1 | Detail-актор: флаг на удаление при выгрузке сектора (удаляет сразу, если уже выгружен). |
+| `obj->GetName(out string)` | 1 | Имя объекта сцены (`CSceneBase`). |
+| `mark->GetType(out int)` | 1 | Тип метки карты мира (`CWorldMap`). |
+| `mark->GetTime(out float)` | 1 | Временная метка метки карты. |
+
+### Бартер/труп инвентаря — `CContainerScriptContext`
+
+Источник: `Game/Game/ContainerScriptContext.cpp`. Вызывается глобально (`@Barter(a0)`); аргумент — контейнер игрока.
+
+| Функция | N | Описание |
+|---------|---|----------|
+| `Barter(object playerContainer)` | 1 | **Latent.** Открывает UI бартера между контейнером игрока и контейнером контекста (ставит `CInventoryOverride`). Блокирует до закрытия. |
+| `WorkWithCorpse(object playerContainer)` | 1 | **Latent.** Вариант оверрайда для обыска трупа. Блокирует до закрытия. |
+
+### Дневник — `CUIDiaryContext`
+
+| Функция | N | Описание |
+|---------|---|----------|
+| `GetDiarySelectedSection(out int)` | 1 | Индекс текущей выбранной секции дневника. |
+| `SetDiarySelectedSection(int)` | 1 | Задаёт выбранную секцию дневника. |
+
+### Случайный выбор — `CStdScriptContext`
+
+| Функция | N | Описание |
+|---------|---|----------|
+| `RandOneOf(out value, int w1..wN, v1..vN)` | 2N+1 (нечётное, ≥3) | Вариативная: out-слот, затем N неотрицательных весов, затем N кандидатов. Выбирает один по взвешенному random (`Util::RandMulti`). Отрицательный вес — ошибка. |
+
+### Перечисление сохранений (HD)
+
+Все **HD-only (по вызовам)** — в движке 2005 нет скрипт-API перечисления сохранений.
+
+| Функция | N | Описание |
+|---------|---|----------|
+| `CreateSaveEnumerator(out object enum)` | 1 | Создаёт энумератор сохранений; null при сбое. Итерация `enum->Next(out object save)`; каждое сохранение даёт методы ниже. |
+| `DeleteGame(string fileName)` | 1 | Удаляет файл сохранения с именем `fileName`. |
+| `SetSaveProperty(int index, value)` | 2 | Ставит свойство в слот `index` для следующего/текущего сохранения (напр. тег активного персонажа/сценария). |
+| `save->GetSaveTime(out int, out int, out int, out int, out int)` | 5 | Компоненты времени сохранения (год/месяц/день/час/минута). |
+| `save->IsQuickSave(out bool)` | 1 | Является ли запись быстрым сохранением. |
+| `save->GetFileName(out string)` | 1 | Имя файла записи сохранения (передаётся в `DeleteGame`). |
+
+### Постоянный реестр и строковые/математические помощники (HD)
+
+Все **HD-only (по вызовам)**.
+
+| Функция | N | Описание |
+|---------|---|----------|
+| `GetRegistryData(out value, string key, default)` | 3 | Читает постоянную запись реестра `key` (между сохранениями); пишет `default`, если нет (напр. флаги прохождения кампании). |
+| `SetRegistryData(string key, value)` | 2 | Пишет `value` в постоянный реестр под ключом `key`. |
+| `format(out string result, string fmt, ...)` | var | Форматтер строк в стиле printf/`%`; пишет результат в `result`. |
+| `round(float x, out float r)` | 2 | Округляет `x` в `r` (для снэпа значений слайдеров). |
+| `shift(out value, int by, int max)` | 3 | Циклический сдвиг индекса — сдвигает на `by` с заворачиванием в диапазоне. |
+
+> Примечание: `@door1` / `@door2` — **не функции**; они встречаются только внутри строковых литералов имён объектов вроде `"theater@door1"`, называя конкретный экземпляр двери в локации, передаваемый методу переключения двери.
+
+### Настройки звука (HD)
+
+Все **HD-only (по вызовам)** из `ui_options.sc`. Громкости 0.0–1.0.
+
+| Функция | N | Описание |
+|---------|---|----------|
+| `GetVolMaster(out float)` / `SetVolMaster(float)` | 1 | Общая громкость. |
+| `GetVolMusic(out float)` / `SetVolMusic(float)` | 1 | Громкость музыки. |
+| `GetVolSounds(out float)` / `SetVolSounds(float)` | 1 | Громкость звуковых эффектов. |
+| `GetVolVoice(out float)` / `SetVolVoice(float)` | 1 | Громкость голоса/диалогов. |
+
+### Настройки видео (HD)
+
+Все **HD-only (по вызовам)** из `ui_options.sc` / `ui_options_page_video.sc`.
+
+| Функция | N | Описание |
+|---------|---|----------|
+| `GetGammaCorrection(out float)` / `SetGammaCorrection(float)` | 1 | Гамма-коррекция (слайдер ~0.5–1.25). |
+| `EnableBloom(bool)` / `IsBloomEnabled(out bool)` | 1 | Bloom вкл/выкл + запрос. |
+| `EnableDOF(bool)` / `IsDOFEnabled(out bool)` | 1 | Глубина резкости вкл/выкл + запрос. |
+| `EnableFXAA(bool)` / `IsFXAAEnabled(out bool)` | 1 | Сглаживание FXAA вкл/выкл + запрос. |
+| `EnableSSAO(bool)` / `IsSSAOEnabled(out bool)` | 1 | SSAO (ambient occlusion) вкл/выкл + запрос. |
+| `EnableMotionBlur(bool)` / `IsMotionBlurEnabled(out bool)` | 1 | Размытие движения вкл/выкл + запрос. |
+| `EnableShadows(bool)` / `IsShadowsEnabled(out bool)` | 1 | Динамические тени вкл/выкл + запрос. |
+| `EnableVSync(bool)` / `IsVSyncEnabled(out bool)` | 1 | Вертикальная синхронизация вкл/выкл + запрос. |
+| `GetMaxAnisotropic(out float)` | 1 | Макс. поддерживаемый уровень анизотропной фильтрации. |
+| `GetCurrentAnisotropic(out float)` / `SetAnisotropic(float)` | 1 | Текущий уровень анизотропии + задать (0..max). |
+| `GetResolutionsCount(out int)` | 1 | Число доступных разрешений экрана. |
+| `GetResolution(int index, out int w, out int h)` | 3 | Ширина/высота разрешения с индексом `index`. |
+| `GetCurrentResolution(out int index)` / `SetResolution(int index)` | 1 | Индекс текущего разрешения + выбрать. |
+
+### Ввод и привязка клавиш (HD)
+
+Все **HD-only (по вызовам)** (`ui_options.sc`, `ui_key_action_list.sc`).
+Опечатка «Sensivity» — настоящее имя натива.
+
+| Функция | N | Описание |
+|---------|---|----------|
+| `GetMouseSensivity(out float)` / `SetMouseSensivity(float)` | 1 | Чувствительность мыши. |
+| `GetGamepadSensivity(out float)` / `SetGamepadSensivity(float)` | 1 | Чувствительность взгляда геймпада. |
+| `GetGamepadUISensivity(out float)` / `SetGamepadUISensivity(float)` | 1 | Чувствительность UI-курсора геймпада. |
+| `InvertMouse(bool)` / `IsMouseInverted(out bool)` | 1 | Инверсия оси Y мыши + запрос. |
+| `InvertGamepad(bool)` / `IsGamepadInverted(out bool)` | 1 | Инверсия оси Y геймпада + запрос. |
+| `EnableGamepadRumble(bool)` / `IsGamepadRumbleEnabled(out bool)` | 1 | Вибрация геймпада вкл/выкл + запрос. |
+| `SaveConfig()` | 0 | Сохраняет все значения опций/конфига на диск. |
+| `WriteBinds()` | 0 | Сохраняет текущие привязки клавиш на диск. |
+| `Bind(int vkey, int action)` | 2 | Привязывает код виртуальной клавиши к id действия. |
+| `Unbind(int vkey)` | 1 | Убирает привязку на клавише. |
+| `GetBindType(out int type, int vkey)` | 2 | Тип привязки: 0 нет, 1 действие, 2 команда. |
+| `GetBindAction(out int action, int vkey)` | 2 | Id действия на клавише (при типе 1). |
+| `GetBindCommand(out string cmd, int vkey)` | 2 | Консольная команда на клавише (при типе 2, напр. "qsave"). |
+| `GetKeyName(out string name, int vkey)` | 2 | Отображаемое имя кода виртуальной клавиши. |
+| `IsValidVirtualKey(out bool, int vkey)` | 2 | Валиден ли код как привязываемая клавиша (коды ≥256 — мышь/геймпад). |
+| `GetKeyboardState(out object)` | 1 | Объект состояния клавиатуры (см. `kb->GetKeyState` ниже); null при сбое. |
+| `kb->GetKeyState(out int state, int vkey)` | 2 | На объекте состояния клавиатуры: текущее состояние данной виртуальной клавиши. |
+| `CreateKeyEnumerator(out object)` | 1 | Энумератор привязываемых клавиш (`->Next(out bool ok, out int vkey)`). |
+
+### Достижения, вибрация и пост-обработка (HD)
+
+| Функция | N | Описание |
+|---------|---|----------|
+| `UnlockAchievement(string id)` | 1 | **HD-only.** Открывает названное достижение платформы (напр. `"ACHIEVEMENT_MIGHT"`). |
+| `RumblePlay(float strength, int durationMs)` | 2 | **HD-only.** Вибрация геймпада силой `strength` (0..1) на `durationMs`. |
+| `ModGetDOFParams(out float, out float, out float, out float)` | 4 | **HD-only.** Читает четыре параметра DOF «Mod». |
+| `ModSetDOFParams(float, float, float, float)` | 4 | **HD-only.** Задаёт четыре параметра DOF «Mod». |
+| `ModSetDOFEnabled(bool)` / `ModIsDOFEnabled(out bool)` | 1 | **HD-only.** Оверрайд DOF «Mod» вкл/выкл + запрос. |
+| `SetSepia(float amount, float intensity)` | 2 | **HD-only.** Пост-эффект сепии: степень смешивания + интенсивность (0,0 = выкл). |
+| `SetAmbientMod(vector rgb)` | 1 | **HD-only.** Модуляция цвета окружающего света ([0,0,0] = нет). |
+
+### Замечания по переклассификации
+
+Несколько имён, перечисленных в других местах, — **не** то, на что указывало их
+расположение: `DisableUpdate()` — натив `CActorStatic` (`ActorStatic.cpp`), а не
+UI-вызов, хотя HD-окна контейнеров вызывают его без префикса.
+`Enable`/`Fade`/`SetRotation`/`SetRotationY` — методы объектов сцены
+`CActorScripted`, а не методы окна. `GetName`/`GetType`/`GetTime`/`GetLength` —
+методы сцены/карты мира/пламени/пути.
+
+---
+
 ## Cross-reference — неточности старой документации, исправленные в этом проходе
 
 В ходе аудита оригинальных исходников были выявлены следующие проблемы в

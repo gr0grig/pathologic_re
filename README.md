@@ -6,6 +6,8 @@ and recompiling compiled scripts (`.bin`) from **Pathologic** (Engine.dll).
 Based on reverse engineering of Engine.dll and Game.exe via IDA Pro.
 Articles: [Part 1](https://hackmag.com/coding/pathologic-reverse) | [Part 2](https://hackmag.com/coding/pathologic-decompile)
 
+> 💬 **Join the Pathologic modding community:** [t.me/patologic_re](https://t.me/patologic_re) — Telegram channel about modding, reverse engineering, and tooling for the game.
+
 > Русская версия: [README_ru.md](README_ru.md).
 
 ---

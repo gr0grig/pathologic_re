@@ -7,6 +7,8 @@
 Основан на реверс-инжиниринге Engine.dll и Game.exe средствами IDA Pro.
 Статьи: [Часть 1](https://hackmag.com/coding/pathologic-reverse) | [Часть 2](https://hackmag.com/coding/pathologic-decompile)
 
+> 💬 **Присоединяйся к сообществу моддеров Pathologic:** [t.me/patologic_re](https://t.me/patologic_re) — Telegram-канал про моддинг, реверс-инжиниринг и инструменты для игры.
+
 > English version: [README.md](README.md).
 
 ---

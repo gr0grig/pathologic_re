@@ -1,4 +1,4 @@
-event evt_11 11;
+event OnDialogReply 11;
 event OnUse 0;
 event OnSee 1;
 event OnHear 3;
@@ -38,7 +38,7 @@ task t0
 		}
 	}
 
-	void evt_11(int a0)
+	void OnDialogReply(int a0)
 	{
 		if (f_c20_a0_b()) {
 			@lshStopAnimation();
@@ -143,7 +143,7 @@ task t2
 		tv2 = a0;
 	}
 
-	void evt_11(int a0, int a1)
+	void OnDialogReply(int a0, int a1)
 	{
 		while (1) {
 			f_8a3_a0_v();

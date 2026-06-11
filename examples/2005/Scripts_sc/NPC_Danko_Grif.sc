@@ -1,5 +1,5 @@
 event OnLoad 5;
-event evt_11 11;
+event OnDialogReply 11;
 event OnTimer 7;
 event OnUnload 6;
 event OnLSHAnimationEnd 45;
@@ -42,7 +42,7 @@ task t1
 		}
 	}
 
-	void evt_11(int a0)
+	void OnDialogReply(int a0)
 	{
 		@lshStopAnimation();
 		@StopTrade();
@@ -149,7 +149,7 @@ task t3
 		tv2 = a0;
 	}
 
-	void evt_11(int a0, int a1)
+	void OnDialogReply(int a0, int a1)
 	{
 		while (1) {
 			f_15f1_a0_v();
@@ -345,7 +345,7 @@ task t5
 		tv2 = a0;
 	}
 
-	void evt_11(int a0, int a1)
+	void OnDialogReply(int a0, int a1)
 	{
 		while (1) {
 			f_15f1_a0_v();
@@ -480,7 +480,7 @@ task t7
 		tv2 = a0;
 	}
 
-	void evt_11(int a0, int a1)
+	void OnDialogReply(int a0, int a1)
 	{
 		while (1) {
 			f_15f1_a0_v();
@@ -640,7 +640,7 @@ task t9
 		tv2 = a0;
 	}
 
-	void evt_11(int a0, int a1)
+	void OnDialogReply(int a0, int a1)
 	{
 		while (1) {
 			f_15f1_a0_v();
@@ -904,7 +904,7 @@ task t11
 		tv2 = a0;
 	}
 
-	void evt_11(int a0, int a1)
+	void OnDialogReply(int a0, int a1)
 	{
 		while (1) {
 			f_15f1_a0_v();
@@ -1198,7 +1198,7 @@ task t13
 		tv2 = a0;
 	}
 
-	void evt_11(int a0, int a1)
+	void OnDialogReply(int a0, int a1)
 	{
 		while (1) {
 			f_15f1_a0_v();
@@ -1381,7 +1381,7 @@ task t15
 		tv2 = a0;
 	}
 
-	void evt_11(int a0, int a1)
+	void OnDialogReply(int a0, int a1)
 	{
 		while (1) {
 			f_15f1_a0_v();
@@ -1660,7 +1660,7 @@ task t17
 		tv2 = a0;
 	}
 
-	void evt_11(int a0, int a1)
+	void OnDialogReply(int a0, int a1)
 	{
 		while (1) {
 			f_15f1_a0_v();
@@ -1779,7 +1779,7 @@ task t19
 		tv2 = a0;
 	}
 
-	void evt_11(int a0, int a1)
+	void OnDialogReply(int a0, int a1)
 	{
 		while (1) {
 			f_15f1_a0_v();
@@ -1898,7 +1898,7 @@ task t21
 		tv2 = a0;
 	}
 
-	void evt_11(int a0, int a1)
+	void OnDialogReply(int a0, int a1)
 	{
 		while (1) {
 			f_15f1_a0_v();
@@ -2017,7 +2017,7 @@ task t23
 		tv2 = a0;
 	}
 
-	void evt_11(int a0, int a1)
+	void OnDialogReply(int a0, int a1)
 	{
 		while (1) {
 			f_15f1_a0_v();
@@ -2136,7 +2136,7 @@ task t25
 		tv2 = a0;
 	}
 
-	void evt_11(int a0, int a1)
+	void OnDialogReply(int a0, int a1)
 	{
 		while (1) {
 			f_15f1_a0_v();
@@ -2256,7 +2256,7 @@ task t27
 		tv2 = a0;
 	}
 
-	void evt_11(int a0, int a1)
+	void OnDialogReply(int a0, int a1)
 	{
 		while (1) {
 			f_15f1_a0_v();

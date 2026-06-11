@@ -1,4 +1,4 @@
-event evt_11 11;
+event OnDialogReply 11;
 event OnUse 0;
 event OnSee 1;
 event OnHear 3;
@@ -106,7 +106,7 @@ task t1
 		tv2 = a0;
 	}
 
-	void evt_11(int a0, int a1)
+	void OnDialogReply(int a0, int a1)
 	{
 		while (1) {
 			f_845_a0_v();

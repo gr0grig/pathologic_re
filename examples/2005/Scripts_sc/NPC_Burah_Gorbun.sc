@@ -3,7 +3,7 @@ event OnUnload 6;
 event OnUse 0;
 event OnCollision 10;
 event OnTimer 7;
-event evt_11 11;
+event OnDialogReply 11;
 event OnTrigger 26;
 event OnGameTime 9;
 
@@ -338,7 +338,7 @@ task t5
 		tv2 = a0;
 	}
 
-	void evt_11(int a0, int a1)
+	void OnDialogReply(int a0, int a1)
 	{
 		while (1) {
 			f_64f_a0_v();
@@ -559,7 +559,7 @@ task t7
 		tv2 = a0;
 	}
 
-	void evt_11(int a0, int a1)
+	void OnDialogReply(int a0, int a1)
 	{
 		while (1) {
 			f_64f_a0_v();

@@ -1,5 +1,5 @@
 event OnLoad 5;
-event evt_11 11;
+event OnDialogReply 11;
 event OnTimer 7;
 event OnUnload 6;
 event OnLSHAnimationEnd 45;
@@ -134,7 +134,7 @@ task t2
 		tv2 = a0;
 	}
 
-	void evt_11(int a0, int a1)
+	void OnDialogReply(int a0, int a1)
 	{
 		while (1) {
 			f_1c8c_a0_v();
@@ -362,7 +362,7 @@ task t4
 		tv2 = a0;
 	}
 
-	void evt_11(int a0, int a1)
+	void OnDialogReply(int a0, int a1)
 	{
 		while (1) {
 			f_1c8c_a0_v();
@@ -481,7 +481,7 @@ task t6
 		tv2 = a0;
 	}
 
-	void evt_11(int a0, int a1)
+	void OnDialogReply(int a0, int a1)
 	{
 		while (1) {
 			f_1c8c_a0_v();
@@ -669,7 +669,7 @@ task t8
 		tv2 = a0;
 	}
 
-	void evt_11(int a0, int a1)
+	void OnDialogReply(int a0, int a1)
 	{
 		while (1) {
 			f_1c8c_a0_v();
@@ -903,7 +903,7 @@ task t10
 		tv2 = a0;
 	}
 
-	void evt_11(int a0, int a1)
+	void OnDialogReply(int a0, int a1)
 	{
 		while (1) {
 			f_1c8c_a0_v();
@@ -1049,7 +1049,7 @@ task t12
 		tv2 = a0;
 	}
 
-	void evt_11(int a0, int a1)
+	void OnDialogReply(int a0, int a1)
 	{
 		while (1) {
 			f_1c8c_a0_v();
@@ -1183,7 +1183,7 @@ task t14
 		tv2 = a0;
 	}
 
-	void evt_11(int a0, int a1)
+	void OnDialogReply(int a0, int a1)
 	{
 		while (1) {
 			f_1c8c_a0_v();
@@ -1381,7 +1381,7 @@ task t16
 		tv2 = a0;
 	}
 
-	void evt_11(int a0, int a1)
+	void OnDialogReply(int a0, int a1)
 	{
 		while (1) {
 			f_1c8c_a0_v();
@@ -1700,7 +1700,7 @@ task t18
 		tv2 = a0;
 	}
 
-	void evt_11(int a0, int a1)
+	void OnDialogReply(int a0, int a1)
 	{
 		while (1) {
 			f_1c8c_a0_v();
@@ -2051,7 +2051,7 @@ task t20
 		tv2 = a0;
 	}
 
-	void evt_11(int a0, int a1)
+	void OnDialogReply(int a0, int a1)
 	{
 		while (1) {
 			f_1c8c_a0_v();
@@ -2205,7 +2205,7 @@ task t22
 		tv2 = a0;
 	}
 
-	void evt_11(int a0, int a1)
+	void OnDialogReply(int a0, int a1)
 	{
 		while (1) {
 			f_1c8c_a0_v();
@@ -2551,7 +2551,7 @@ task t24
 		tv2 = a0;
 	}
 
-	void evt_11(int a0, int a1)
+	void OnDialogReply(int a0, int a1)
 	{
 		while (1) {
 			f_1c8c_a0_v();
@@ -2765,7 +2765,7 @@ task t26
 		tv2 = a0;
 	}
 
-	void evt_11(int a0, int a1)
+	void OnDialogReply(int a0, int a1)
 	{
 		while (1) {
 			f_1c8c_a0_v();

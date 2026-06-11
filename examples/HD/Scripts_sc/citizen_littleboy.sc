@@ -1,4 +1,4 @@
-event evt_11 11;
+event OnDialogReply 11;
 event OnUse 0;
 event OnAttacked 17;
 event OnPlayerDamage 30;
@@ -40,7 +40,7 @@ task t0
 		}
 	}
 
-	void evt_11(int a0)
+	void OnDialogReply(int a0)
 	{
 		if (f_182b_a0_b()) {
 			@lshStopAnimation();
@@ -1299,7 +1299,7 @@ task t9
 		tv2 = a0;
 	}
 
-	void evt_11(int a0, int a1)
+	void OnDialogReply(int a0, int a1)
 	{
 		while (1) {
 			f_14af_a0_v();

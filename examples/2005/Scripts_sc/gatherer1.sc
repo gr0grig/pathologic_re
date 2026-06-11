@@ -1,4 +1,4 @@
-event evt_11 11;
+event OnDialogReply 11;
 event OnUse 0;
 event OnLoad 5;
 event OnTrigger 26;
@@ -27,7 +27,7 @@ task t0
 		}
 	}
 
-	void evt_11(int a0)
+	void OnDialogReply(int a0)
 	{
 		if (f_724_a0_b()) {
 			@lshStopAnimation();
@@ -134,7 +134,7 @@ task t2
 		tv2 = a0;
 	}
 
-	void evt_11(int a0, int a1)
+	void OnDialogReply(int a0, int a1)
 	{
 		while (1) {
 			f_5c9_a0_v();
@@ -339,7 +339,7 @@ task t4
 		tv2 = a0;
 	}
 
-	void evt_11(int a0, int a1)
+	void OnDialogReply(int a0, int a1)
 	{
 		while (1) {
 			f_5c9_a0_v();

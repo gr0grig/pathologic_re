@@ -1,4 +1,4 @@
-event evt_11 11;
+event OnDialogReply 11;
 event OnUnload 6;
 event OnLoad 5;
 event OnUse 0;
@@ -26,7 +26,7 @@ task t0
 		}
 	}
 
-	void evt_11(int a0)
+	void OnDialogReply(int a0)
 	{
 		if (f_21c_a0_b()) {
 			@lshStopAnimation();

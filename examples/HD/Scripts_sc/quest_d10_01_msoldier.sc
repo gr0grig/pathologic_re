@@ -1,6 +1,6 @@
 event OnTrigger 26;
 event OnLoad 5;
-event evt_11 11;
+event OnDialogReply 11;
 event OnUse 0;
 event OnHit 22;
 event OnPropertyChange 16;
@@ -151,7 +151,7 @@ task t2
 		tv2 = a0;
 	}
 
-	void evt_11(int a0, int a1)
+	void OnDialogReply(int a0, int a1)
 	{
 		while (1) {
 			f_727_a0_v();

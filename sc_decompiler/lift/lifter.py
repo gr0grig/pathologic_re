@@ -55,7 +55,10 @@ _STD_EVENT_NAMES = {
     0: "OnUse", 1: "OnSee", 2: "OnStopSee", 3: "OnHear", 4: "OnStopHear",
     5: "OnLoad", 6: "OnUnload", 7: "OnTimer", 8: "OnRegionChange",
     9: "OnGameTime", 10: "OnCollision",
-    # 11 has no script alias (CGameDialogReply) — keep evt_11
+    # 11 has no script alias in std.sci; it is CGameDialogReply /
+    # GAME_EVENTT_DIALOG_REPLY (events_2005.md). Name is cosmetic (does not
+    # affect bytecode), so we surface the documented OnDialogReply.
+    11: "OnDialogReply",
     12: "OnMusicChange",
     13: "OnPlayerStartShooting", 14: "OnPlayerStopShooting",
     15: "OnPlayerHolsterWeapon", 16: "OnPropertyChange",
